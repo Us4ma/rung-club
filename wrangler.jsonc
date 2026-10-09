@@ -26,7 +26,7 @@
     }
   ],
   "vars": {
-    "FIREBASE_PROJECT_ID": "",
+    "FIREBASE_PROJECT_ID": "rung-club",
     "ALLOWED_ORIGIN": "",
     "ECONOMY_ENABLED": "false",
     "PRODUCTION_ADS": "false"
