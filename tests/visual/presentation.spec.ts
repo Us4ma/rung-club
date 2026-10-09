@@ -79,3 +79,9 @@ for(const [name,width,height] of [['desktop',1440,900],['phone',390,844],['lands
  await page.screenshot({path:output+'/'+name+'-avatars.png',fullPage:true});
  });
 }
+test('game lobby progress and settings drawer are usable',async({page})=>{
+ await page.setViewportSize({width:390,height:844});await page.goto('/');await page.getByRole('button',{name:'Play as a guest'}).click();
+ await expect(page.getByRole('progressbar',{name:'Level progress'})).toHaveAttribute('aria-valuenow','0');
+ const tiles=await page.locator('.game-tile').evaluateAll(els=>els.map(el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width};}));expect(Math.abs(tiles[0].width-tiles[3].width)).toBeLessThan(2);expect(tiles[0].y).toBe(tiles[1].y);expect(tiles[2].y).toBe(tiles[3].y);
+ await page.locator('header').getByRole('button',{name:'Settings',exact:true}).click();await expect(page.getByRole('dialog',{name:'Settings'})).toBeVisible();await expect(page.locator('.lobby-background')).toHaveAttribute('inert','');await page.keyboard.press('Escape');await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.locator('header').getByRole('button',{name:'Settings',exact:true})).toBeFocused();
+});
