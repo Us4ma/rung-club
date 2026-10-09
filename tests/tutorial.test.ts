@@ -1,0 +1,2 @@
+import {it,expect} from 'vitest';import {lesson} from '../packages/core/tutorial.ts';import {invariants,legal,play,view} from '../packages/core/index.ts';import {choose} from '../packages/ai/index.ts';
+for(let index=0;index<6;index++)it('Scripted lesson '+index+' conserves cards and can complete',()=>{let s=lesson(index);invariants(s);expect(legal(s,0).length).toBeGreaterThan(0);let count=0;while(s.phase!=='finished'&&count++<52){s=play(s,s.turn,choose(view(s,s.turn),s.turn,'intermediate',()=>.5));invariants(s);}expect(s.phase).toBe('finished');});

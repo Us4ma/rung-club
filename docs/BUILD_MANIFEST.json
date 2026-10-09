@@ -1,0 +1,20 @@
+{
+  "files": {
+    "dist/manifest.webmanifest": "d034dd0236efddd47163c41a0dd1cc86ed2d628d9bbd77b9dd5ceb770090fccd",
+    "dist/sw.js": "e239d28b380aa1ebb9db72a230ea96dd5c2f3177c2337eba28b4411dab4b0666",
+    "dist/icon.svg": "47045d603abfe450d4d78581881588ee1ebb8f777dcef03e2b4acf178d9606dc",
+    "dist/index.html": "0efb15a7f5c30baa2176a04e2f347c78376ee70e23f97600e35d7fed2040f100",
+    "dist/assets/table-DSmndPt2.js": "d8fa653b3fd0522522f1834926dc4edd122f7448447856bef7f923bac78912bf",
+    "dist/assets/phaser-D8EC1TLR.js": "2946ccb85768a4543d0f38bba7bc7dbe3e24404149b4c91558d8504c44d079b8",
+    "dist/assets/rolldown-runtime-CbXtAM7H.js": "bbf7c5086ae414dc3f33777e3eebf16ea8631325b8bb4690d25091c03567f31a",
+    "dist/assets/react-C4j7wN1Z.js": "9aac05bb3b220c4fd5dc8a7716e9745893152e465bd6d359c81d6de33459d8c4",
+    "dist/assets/index-B8iUMcMS.js": "cb298b3a323051c4960160007a645a2aa2aee09b26ae8813f73454e6c7020c6d",
+    "dist/assets/index-Cy6To6e3.css": "5aaae8476e851dbae2164612b4fe0e6b9f926dd0c9544f80d4418c637a272a96",
+    "worker-dist/worker.js.map": "1d9280c3f84bfa9ae8429707dd27992a265b1bfe7912ac41a00683a48c26cb0c",
+    "worker-dist/worker.js": "90cb28514324b266da6a16b3cdd34a3f6ca2900ad3c59df03a0caa8769d7d49c",
+    "worker-dist/README.md": "e60394403407819eeb3cbf3e4eaa37af611ef423de1ce8d981ba8e68eac37d5d",
+    "playable/Rung-Club.html": "f30bfd7a7c4d79d66903bcce65ef0c91a097422a8f0cb3d815bcfec6451d7b2c"
+  },
+  "vercel_configuration": "vercel.json",
+  "deployment_status": "prepared, awaiting account/repository setup"
+}

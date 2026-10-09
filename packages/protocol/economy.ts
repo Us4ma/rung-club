@@ -1,0 +1,2 @@
+export const CATALOG={ 'back.brass':{price:50,title:'Brass House'},'frame.laurel':{price:100,title:'Laurel Frame'}} as const;
+export function purchaseStatement(uid:string,item:keyof typeof CATALOG,now:number){return {sql:'INSERT OR IGNORE INTO ledger(id,uid,amount,xp,kind,created) SELECT ?,?, ?,0,?,? WHERE (SELECT COALESCE(SUM(amount),0) FROM ledger WHERE uid=?)>=? AND NOT EXISTS(SELECT 1 FROM cosmetics WHERE uid=? AND item=?)',args:[`purchase:${uid}:${item}`,uid,-CATALOG[item].price,'cosmetic',now,uid,CATALOG[item].price,uid,item]};}

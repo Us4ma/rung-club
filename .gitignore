@@ -1,0 +1,13 @@
+node_modules/
+local-dev.sqlite*
+.wrangler/
+.env*
+!.env.example
+apps/android/native/.gradle/
+apps/android/native/local.properties
+apps/android/native/**/build/
+test-results/
+dist/
+worker-dist/
+playable/
+.vercel/
