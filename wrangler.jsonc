@@ -1,1 +1,44 @@
-{"name":"rung-club-api","main":"apps/server/worker.ts","compatibility_date":"2026-10-09","durable_objects":{"bindings":[{"name":"ROOMS","class_name":"CardRoom"}]},"migrations":[{"tag":"v1","new_sqlite_classes":["CardRoom"]}],"d1_databases":[{"binding":"DB","database_name":"rung-club","database_id":"00000000-0000-0000-0000-000000000000"}],"vars":{"FIREBASE_PROJECT_ID":"","ALLOWED_ORIGIN":"http://localhost:5173","ECONOMY_ENABLED":"false","PRODUCTION_ADS":"false"},"assets":{"directory":"dist","binding":"ASSETS","run_worker_first":["/api/*","/socket"]}}
+{
+  "name": "rung-club",
+  "main": "apps/server/worker.ts",
+  "compatibility_date": "2026-10-09",
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "ROOMS",
+        "class_name": "CardRoom"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "CardRoom"
+      ]
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "rung-club",
+      "database_id": "63704528-11e1-443c-90ee-bd3947f54674"
+    }
+  ],
+  "vars": {
+    "FIREBASE_PROJECT_ID": "",
+    "ALLOWED_ORIGIN": "",
+    "ECONOMY_ENABLED": "false",
+    "PRODUCTION_ADS": "false"
+  },
+  "assets": {
+    "directory": "dist",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/api/*",
+      "/socket"
+    ]
+  },
+  "account_id": "8e638895a04cfa485556e2764db878db",
+  "workers_dev": true
+}
