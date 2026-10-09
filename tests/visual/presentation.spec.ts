@@ -64,3 +64,18 @@ test('cancelled drags do not play; valid central drops do',async({page})=>{
  const hand=page.locator('.hand');const card=hand.locator('.legal').first();await card.dispatchEvent('dragend');await expect(hand.locator('button')).toHaveCount(13);
  const transfer=await page.evaluateHandle(()=>new DataTransfer());await card.dispatchEvent('dragstart',{dataTransfer:transfer});await page.locator('.plays').dispatchEvent('drop',{dataTransfer:transfer});await expect(hand.locator('button')).toHaveCount(12);
 });
+for(const [name,width,height] of [['desktop',1440,900],['phone',390,844],['landscape',844,390]] as const){
+ test(name+' settings and complete avatar frames fit',async({page})=>{
+ await page.setViewportSize({width,height});await page.goto('/');await page.getByRole('button',{name:'Play as a guest'}).click();await page.locator('header').getByRole('button',{name:'Settings',exact:true}).click();
+ await expect(page.getByRole('heading',{name:'Protect your guest account'})).toBeVisible();
+ const checkbox=page.getByLabel('Haptic feedback');await checkbox.check();expect(await checkbox.isChecked()).toBe(true);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ expect(await checkbox.evaluate(el=>getComputedStyle(el).width)).toBe('22px');
+ await page.screenshot({path:output+'/'+name+'-settings.png',fullPage:true});
+ await page.getByRole('button',{name:'← Back to lobby',exact:true}).click();await page.getByRole('button',{name:'◉ Your profile',exact:true}).click();
+ await expect(page.locator('.avatar-roster button')).toHaveCount(12);
+ expect(await page.locator('.avatar-roster img').first().evaluate(el=>getComputedStyle(el).borderRadius)).toBe('0px');
+ await page.getByRole('button',{name:'Avatar 12',exact:true}).click();expect(await page.evaluate(()=>localStorage.getItem('avatar'))).toBe('12');
+ await page.screenshot({path:output+'/'+name+'-avatars.png',fullPage:true});
+ });
+}

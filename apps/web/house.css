@@ -45,3 +45,24 @@
 @media(max-width:600px){.screen-lobby .game-tile .mode-tile,.tile-choice{height:130px}.screen-lobby .game-tile .mode-tile p{font-size:8px;margin:0 0 8px;min-height:22px}}
 @media(max-height:550px) and (min-width:601px){.screen-lobby .game-tile .mode-tile,.tile-choice{height:135px}.screen-lobby .game-tile .mode-tile p{font-size:9px}}
 .screen-lobby .game-tile .mode-tile{gap:0}
+
+/* Avatar artwork already includes a circular frame; avoid clipping its ornaments. */
+.avatar{border-radius:0;object-fit:contain;flex-shrink:0}
+.screen-table .seat .avatar,.screen-table .self-seat .avatar{border-radius:0;background:transparent;border-color:transparent}
+.avatar-roster button{min-width:0;display:grid;place-items:center;aspect-ratio:1;padding:8px;overflow:visible}
+.avatar-roster .avatar{width:100%;height:auto;aspect-ratio:1;max-width:96px;border-radius:0}
+.settings-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+.settings-group,.account-protection{min-width:0;padding:20px;border:1px solid #b99b5c66;border-radius:12px;background:#0b261f}
+.settings-group h3,.account-protection h3{margin-top:0}
+.screen-settings .setting{align-items:center;gap:20px;font-size:14px;line-height:1.5}
+.screen-settings .setting input[type=checkbox]{width:22px;height:22px;flex:0 0 22px;margin:0;accent-color:#d6b771}
+.screen-settings select{width:100%;margin-top:8px;min-height:44px}
+.account-protection form{display:grid;gap:10px;margin:12px 0}
+.account-protection input{width:100%;min-width:0;margin:0;min-height:44px}
+.account-protection button{min-height:44px;width:100%}
+.account-protection small{display:block;line-height:1.6;color:#c1c9be}
+.account-divider{text-align:center;color:#c1c9be;margin:18px 0 8px;font-size:12px}
+.signout-button{margin-top:24px;min-height:44px}
+@media(max-width:700px){.settings-grid{grid-template-columns:1fr;gap:16px}.settings-group,.account-protection{padding:16px}.avatar-roster{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.screen-settings .setting{margin:0;min-height:60px;padding:12px 0}
+.screen-settings .setting input[type=checkbox]{padding:0;min-height:0;box-sizing:border-box}

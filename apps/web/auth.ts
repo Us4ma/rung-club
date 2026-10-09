@@ -30,3 +30,7 @@ export function authMessage(e:unknown){const code=(e as {code?:string})?.code;co
 export async function protectAccount(){await socialLogin('google');return 'Account linked. Your existing UID and progress are preserved.';}
 export async function removeIdentity(){if(!auth?.currentUser)throw Error('No cloud identity');await deleteUser(auth.currentUser);}
 export async function logout(){if(auth)await signOut(auth);}
+
+async function guestToProtect(){const a=required();await a.authStateReady();const user=a.currentUser||(await signInAnonymously(a)).user;if(!user.isAnonymous)throw Error('This account is already linked. Sign in with its existing method.');return user;}
+export async function secureGuestGoogle(){if(Capacitor.isNativePlatform())throw Error('Google linking is available in the browser. Use email in the Android app.');return (await linkWithPopup(await guestToProtect(),new GoogleAuthProvider())).user;}
+export async function secureGuestEmail(email:string,password:string){const user=await guestToProtect();const linked=(await linkWithCredential(user,EmailAuthProvider.credential(email,password))).user;await sendEmailVerification(linked).catch(()=>{});return linked;}
