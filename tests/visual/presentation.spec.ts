@@ -85,3 +85,18 @@ test('game lobby progress and settings drawer are usable',async({page})=>{
  const tiles=await page.locator('.game-tile').evaluateAll(els=>els.map(el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width};}));expect(Math.abs(tiles[0].width-tiles[3].width)).toBeLessThan(2);expect(tiles[0].y).toBe(tiles[1].y);expect(tiles[2].y).toBe(tiles[3].y);
  await page.locator('header').getByRole('button',{name:'Settings',exact:true}).click();await expect(page.getByRole('dialog',{name:'Settings'})).toBeVisible();await expect(page.locator('.lobby-background')).toHaveAttribute('inert','');await page.keyboard.press('Escape');await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.locator('header').getByRole('button',{name:'Settings',exact:true})).toBeFocused();
 });
+for(const [name,width,height] of [['desktop',1440,1000],['portrait',390,844],['small-phone',320,640]] as const){
+ test(name+' profile choices and account controls stay separated',async({page})=>{
+  await page.setViewportSize({width,height});await page.goto('/');await page.getByRole('button',{name:'Play as a guest'}).click();await page.getByRole('button',{name:'Your profile',exact:true}).click();await expect(page.locator('.avatar-roster button')).toHaveCount(12);
+  await page.getByRole('button',{name:'Avatar 5',exact:true}).click();await expect(page.getByRole('button',{name:'Avatar 5',exact:true})).toHaveAttribute('aria-pressed','true');
+  const buttons=await page.locator('.avatar-roster button').evaluateAll(els=>els.map(el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height};}));
+  for(let i=0;i<buttons.length;i++){expect(buttons[i].w).toBeGreaterThanOrEqual(44);for(let j=i+1;j<buttons.length;j++){const a=buttons[i],b=buttons[j];expect(a.x+a.w<=b.x+.5||b.x+b.w<=a.x+.5||a.y+a.h<=b.y+.5||b.y+b.h<=a.y+.5).toBe(true);}}
+  expect(await page.locator('.avatar-roster button').first().evaluate(el=>getComputedStyle(el).backgroundImage)).toBe('none');
+  const account=await page.locator('.account-protection').boundingBox(),deletion=await page.locator('.delete-account').boundingBox();expect(deletion!.y).toBeGreaterThanOrEqual(account!.y+account!.height+10);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  await page.screenshot({path:output+'/'+name+'-profile.png',fullPage:true});
+ });
+}
+test('registration asks for a bounded username alongside account details',async({page})=>{
+ await page.setViewportSize({width:390,height:844});await page.goto('/');await page.getByRole('button',{name:'Create an account',exact:true}).click();const field=page.getByLabel('Username',{exact:true});await expect(field).toBeVisible();await expect(field).toHaveAttribute('maxlength','20');await field.fill('Baazi_123');await page.screenshot({path:output+'/portrait-registration.png',fullPage:true});
+});
