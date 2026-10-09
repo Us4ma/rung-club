@@ -490,42 +490,48 @@
     "source": "assets/characters/avatars/avatar_07.png",
     "bytes": 31040,
     "sha256": "5d058c0fd756a36e537b0bb96bc9c73b0232bd16c9388926abc01915022f72dd",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained optional artwork; excluded from the active six-avatar roster"
   },
   {
     "path": "/art/avatars/avatar_08.webp",
     "source": "assets/characters/avatars/avatar_08.png",
     "bytes": 32574,
     "sha256": "f80f7867e98e4948aaed28bd36fb40fc6650b3a38ececfe36557a3a7990d1ac3",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained optional artwork; excluded from the active six-avatar roster"
   },
   {
     "path": "/art/avatars/avatar_09.webp",
     "source": "assets/characters/avatars/avatar_09.png",
     "bytes": 30678,
     "sha256": "9f7701a5a3c799acd1a8f8a5a274abcc8ddcf76ca6237a57c892388bb8396c93",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained optional artwork; excluded from the active six-avatar roster"
   },
   {
     "path": "/art/avatars/avatar_10.webp",
     "source": "assets/characters/avatars/avatar_10.png",
     "bytes": 29296,
     "sha256": "83c6648a97f0684cfc232b606b9a29c369c636e97efb72fd758a805afcb702a2",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained optional artwork; excluded from the active six-avatar roster"
   },
   {
     "path": "/art/avatars/avatar_11.webp",
     "source": "assets/characters/avatars/avatar_11.png",
     "bytes": 28354,
     "sha256": "3eb612c5140a8fe40464db3d86e40a49e87fc693fe996550be35b9890f60c46c",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained optional artwork; excluded from the active six-avatar roster"
   },
   {
     "path": "/art/avatars/avatar_12.webp",
     "source": "assets/characters/avatars/avatar_12.png",
     "bytes": 30674,
     "sha256": "a9a2425d59e021988cce7011a8451071d0d91b5ec5be9a0a178f12c1597d64fe",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained optional artwork; excluded from the active six-avatar roster"
   },
   {
     "path": "/art/ui/buttons/blue.svg",
@@ -1471,5 +1477,14 @@
     "format": "webp",
     "license": "Owner-supplied/generated dealer derivative; ASSET_LICENSE.md",
     "usage": "Decorative host only"
+  },
+  {
+    "path": "/art/house/club-atmosphere.svg",
+    "source": "Original project SVG, constructed for Rung Club",
+    "bytes": 1545,
+    "sha256": "68a0131cee3136dc9d15c28efbecbbd21450b188f909c768b109c971b94ac601",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Responsive lobby and secondary-screen woven emerald surface with walnut edges"
   }
 ]

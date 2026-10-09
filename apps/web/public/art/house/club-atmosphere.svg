@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100" preserveAspectRatio="none">
+<!-- Original seamless card-room surface: woven emerald, walnut edge, soft brass light. -->
+<defs>
+<radialGradient id="felt" cx="50%" cy="22%" r="90%"><stop stop-color="#245842"/><stop offset=".52" stop-color="#103729"/><stop offset="1" stop-color="#071d17"/></radialGradient>
+<linearGradient id="wood"><stop stop-color="#171710"/><stop offset=".4" stop-color="#403022"/><stop offset=".6" stop-color="#57432c"/><stop offset="1" stop-color="#201c13"/></linearGradient>
+<pattern id="weave" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0 1h6M1 0v6" stroke="#d6dfc3" stroke-opacity=".025" stroke-width=".5"/><path d="M0 4h6M4 0v6" stroke="#000" stroke-opacity=".07" stroke-width=".5"/></pattern>
+<radialGradient id="light"><stop stop-color="#dfb560" stop-opacity=".13"/><stop offset="1" stop-color="#dfb560" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1600" height="1100" fill="url(#wood)"/>
+<rect x="12" y="12" width="1576" height="1076" rx="25" fill="url(#felt)" stroke="#9d8150" stroke-opacity=".45"/>
+<rect x="13" y="13" width="1574" height="1074" rx="24" fill="url(#weave)"/>
+<ellipse cx="170" cy="70" rx="440" ry="310" fill="url(#light)"/><ellipse cx="1440" cy="80" rx="470" ry="330" fill="url(#light)"/>
+<path d="M28 95V52q0-24 24-24h43M1505 28h43q24 0 24 24v43M28 1005v43q0 24 24 24h43M1505 1072h43q24 0 24-24v-43" fill="none" stroke="#c9a36a" stroke-opacity=".38" stroke-width="1.5"/>
+</svg>
