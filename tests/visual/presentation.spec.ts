@@ -100,3 +100,19 @@ for(const [name,width,height] of [['desktop',1440,1000],['portrait',390,844],['s
 test('registration asks for a bounded username alongside account details',async({page})=>{
  await page.setViewportSize({width:390,height:844});await page.goto('/');await page.getByRole('button',{name:'Create an account',exact:true}).click();const field=page.getByLabel('Username',{exact:true});await expect(field).toBeVisible();await expect(field).toHaveAttribute('maxlength','20');await field.fill('Baazi_123');await page.screenshot({path:output+'/portrait-registration.png',fullPage:true});
 });
+for(const [name,width,height] of [['desktop',1440,900],['portrait',390,844],['landscape',844,390]] as const){
+ test(name+' card loading screen paints before the app bundle and clears when ready',async({page})=>{
+  await page.setViewportSize({width,height});const requested:string[]=[];page.on('request',r=>requested.push(r.url()));
+  let release!:()=>void;const held=new Promise<void>(resolve=>{release=resolve;});await page.route('**/main.tsx',async route=>{await held;await route.continue();});
+  await page.goto('/',{waitUntil:'domcontentloaded'});await expect(page.locator('#boot-screen')).toBeVisible();await expect(page.locator('.boot-card')).toHaveCount(3);await expect(page.locator('#root')).toHaveAttribute('inert','');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.screenshot({path:output+'/'+name+'-loading.png',fullPage:true});
+  release();await expect(page.locator('#boot-screen')).toHaveCount(0);await expect(page.getByRole('button',{name:'Play as a guest'})).toBeVisible();await expect(page.locator('#root')).not.toHaveAttribute('inert','');
+  expect(requested.some(url=>/phaser|firebase_auth/.test(url))).toBe(false);await page.getByRole('button',{name:'Play as a guest'}).click();await page.getByRole('button',{name:'Practice table'}).click();await expect.poll(()=>requested.some(url=>/phaser/.test(url))).toBe(true);
+ });
+}
+test('loading failure shows a retry instead of an endless animation',async({page})=>{
+ await page.route('**/main.tsx',route=>route.abort('failed'));await page.goto('/');await expect(page.getByRole('status')).toContainText('Couldn’t load the club');await expect(page.getByRole('button',{name:'Try again'})).toBeVisible();await expect(page.locator('#boot-screen')).toHaveClass(/boot-error/);
+});
+test('reduced motion loading uses a static fan and exits normally',async({page})=>{
+ await page.emulateMedia({reducedMotion:'reduce'});let release!:()=>void;const held=new Promise<void>(resolve=>{release=resolve;});await page.route('**/main.tsx',async route=>{await held;await route.continue();});await page.goto('/',{waitUntil:'domcontentloaded'});expect(await page.locator('.boot-card').first().evaluate(el=>getComputedStyle(el).animationName)).toBe('none');release();await expect(page.locator('#boot-screen')).toHaveCount(0);await expect(page.getByRole('button',{name:'Play as a guest'})).toBeVisible();
+});
