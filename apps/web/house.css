@@ -66,3 +66,14 @@
 @media(max-width:700px){.settings-grid{grid-template-columns:1fr;gap:16px}.settings-group,.account-protection{padding:16px}.avatar-roster{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .screen-settings .setting{margin:0;min-height:60px;padding:12px 0}
 .screen-settings .setting input[type=checkbox]{padding:0;min-height:0;box-sizing:border-box}
+
+.settings-group .setting small{display:block;font-size:12px;line-height:1.5;color:#b5c6ba;margin-top:4px;font-weight:400}
+.setting-description{font-size:12px;color:#b5c6ba;line-height:1.5}
+.screen-settings .setting{min-height:76px}
+.screen-settings .setting input[role=switch]{appearance:none;-webkit-appearance:none;width:44px;height:26px;flex:0 0 44px;position:relative;border-radius:20px;border:1px solid #869587;background:#30483c;cursor:pointer;transition:background .15s}
+.screen-settings .setting input[role=switch]::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#eee8da;transition:transform .15s}
+.screen-settings .setting input[role=switch]:checked{background:#c6a65e;border-color:#e7cd90}
+.screen-settings .setting input[role=switch]:checked::after{transform:translateX(18px);background:#173024}
+.screen-settings .setting input[role=switch]:focus-visible{outline:2px solid #f2d38d;outline-offset:4px}
+.profile-pill .icon-button{width:44px;height:44px;min-height:44px;padding:9px;background-image:none;background:#112c23;border:1px solid #a78c56;border-radius:10px;display:grid;place-items:center}
+.profile-pill .icon-button .ui-icon{width:24px;height:24px}

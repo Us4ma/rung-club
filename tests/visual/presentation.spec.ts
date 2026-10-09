@@ -68,9 +68,9 @@ for(const [name,width,height] of [['desktop',1440,900],['phone',390,844],['lands
  test(name+' settings and complete avatar frames fit',async({page})=>{
  await page.setViewportSize({width,height});await page.goto('/');await page.getByRole('button',{name:'Play as a guest'}).click();await page.locator('header').getByRole('button',{name:'Settings',exact:true}).click();
  await expect(page.getByRole('heading',{name:'Protect your guest account'})).toBeVisible();
- const checkbox=page.getByLabel('Haptic feedback');await checkbox.check();expect(await checkbox.isChecked()).toBe(true);
+ const checkbox=page.getByRole('switch',{name:'Vibration'});await checkbox.check();expect(await checkbox.isChecked()).toBe(true);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
- expect(await checkbox.evaluate(el=>getComputedStyle(el).width)).toBe('22px');
+ expect(await checkbox.evaluate(el=>getComputedStyle(el).width)).toBe('44px');
  await page.screenshot({path:output+'/'+name+'-settings.png',fullPage:true});
  await page.getByRole('button',{name:'← Back to lobby',exact:true}).click();await page.getByRole('button',{name:'◉ Your profile',exact:true}).click();
  await expect(page.locator('.avatar-roster button')).toHaveCount(12);

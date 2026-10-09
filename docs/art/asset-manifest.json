@@ -725,10 +725,10 @@
   },
   {
     "path": "/art/ui/icons/settings.svg",
-    "source": "assets/ui/icons/svg/settings.svg",
-    "bytes": 385,
-    "sha256": "7bff0120af9e56824c21db9bfaff43612e6fb2f6ac831ccbfd5be2678a7f0ebe",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "source": "Original code-drawn gear icon",
+    "bytes": 443,
+    "sha256": "2fcdd332147110278a8ba2b52e78232c6a0cad600e4f4507871de613461398a3",
+    "license": "Original project SVG; MIT"
   },
   {
     "path": "/art/ui/icons/shield.svg",
