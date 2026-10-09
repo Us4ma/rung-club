@@ -1,0 +1,926 @@
+[
+  {
+    "path": "/art/cards/10C.webp",
+    "source": "assets/cards/front/png/10C.png",
+    "bytes": 5822,
+    "sha256": "9b3e7a71a6aa9333ce6662ff81da0d5c7ad638d45c531829fb86d167f1e1b777",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/10D.webp",
+    "source": "assets/cards/front/png/10D.png",
+    "bytes": 5140,
+    "sha256": "f5e429b9a0593b72876cb0069fcfea2ad1e068493b476909151a76b1289adaf1",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/10H.webp",
+    "source": "assets/cards/front/png/10H.png",
+    "bytes": 5682,
+    "sha256": "1515d0a2d88d110ec31e55a9be435e64a043cb073680a73e60254b34651426ba",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/10S.webp",
+    "source": "assets/cards/front/png/10S.png",
+    "bytes": 5414,
+    "sha256": "8224a01dd7b0e627f6a4c3e0dfa51f64971b826a3d3ee4dd1bc8c54835725899",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/2C.webp",
+    "source": "assets/cards/front/png/2C.png",
+    "bytes": 3634,
+    "sha256": "911f533838f0facb3dbdd50b537de0775338ad5456e374706ae0f347e821e319",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/2D.webp",
+    "source": "assets/cards/front/png/2D.png",
+    "bytes": 3444,
+    "sha256": "30b10141bf7b1da5fd592f7da1918814401d20f4090aa35d247dbb85457cc740",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/2H.webp",
+    "source": "assets/cards/front/png/2H.png",
+    "bytes": 3588,
+    "sha256": "5c97f49e05dfcd1dc98c114f2afa9e6280ccb2893c0973240ee1b767b022d6a8",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/2S.webp",
+    "source": "assets/cards/front/png/2S.png",
+    "bytes": 3468,
+    "sha256": "32925e7395ff32cdaa35c67b25f176a531f55b1502be4c1e62bec0eb1b551bb6",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/3C.webp",
+    "source": "assets/cards/front/png/3C.png",
+    "bytes": 3968,
+    "sha256": "a769995bd886e30c9d79a8343894f9b9af97adbc9895de52402749bcf3aaecd7",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/3D.webp",
+    "source": "assets/cards/front/png/3D.png",
+    "bytes": 3664,
+    "sha256": "b8b3cbae1e7a01043ad5c39c27e244a38743b5102de6fd20cfc9463dbb6829fa",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/3H.webp",
+    "source": "assets/cards/front/png/3H.png",
+    "bytes": 3902,
+    "sha256": "3482448b7316b76b653eaa80f430ec92966e26037056a74e37fbc81b3c04d8a3",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/3S.webp",
+    "source": "assets/cards/front/png/3S.png",
+    "bytes": 3780,
+    "sha256": "400bf6443df80bbf750b3e1a854eef9ad4ec3480c14d7d517d6d4054bcb60c2b",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/4C.webp",
+    "source": "assets/cards/front/png/4C.png",
+    "bytes": 4278,
+    "sha256": "27aa56136e77581527654093d4182ab52fa0de0e29aa09cfa377afffa8c23994",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/4D.webp",
+    "source": "assets/cards/front/png/4D.png",
+    "bytes": 3852,
+    "sha256": "dd23c38397a5d0723f850bd61c08e41576f26c362fdb37b16691be1366e25ddf",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/4H.webp",
+    "source": "assets/cards/front/png/4H.png",
+    "bytes": 4160,
+    "sha256": "3e2fa6e8684bcdaa4224bc695f37466b350b94183ed27d5afc58c760c666b384",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/4S.webp",
+    "source": "assets/cards/front/png/4S.png",
+    "bytes": 4016,
+    "sha256": "7c2dc013844fbd499f41924832739e392b37af1ab9ffc5232b3553e519e21bf8",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/5C.webp",
+    "source": "assets/cards/front/png/5C.png",
+    "bytes": 4572,
+    "sha256": "fa588e444ffe746528f99e1d6b8b194cc7758ba7ee89d30784578ca693e0689e",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/5D.webp",
+    "source": "assets/cards/front/png/5D.png",
+    "bytes": 4122,
+    "sha256": "42b1dbe67a3a21c630072bd9768415f45509e7a5b6de11dab15343143f0c9f26",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/5H.webp",
+    "source": "assets/cards/front/png/5H.png",
+    "bytes": 4430,
+    "sha256": "9912587a2caf10668182bd686299990a5c9861c81091849589884cc0c626abe2",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/5S.webp",
+    "source": "assets/cards/front/png/5S.png",
+    "bytes": 4328,
+    "sha256": "ef324db8d80ccf9ccd644eb2e63d09286102fec3a6dae8d857a9f760a5a587bc",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/6C.webp",
+    "source": "assets/cards/front/png/6C.png",
+    "bytes": 4956,
+    "sha256": "5d0fe81d526d2b1348af1f69b3287cce0cebf7830128b8d49e88fb98c53d39b4",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/6D.webp",
+    "source": "assets/cards/front/png/6D.png",
+    "bytes": 4414,
+    "sha256": "f1e92dcfdeca1cb2ba7262f1d819e27b7c2c3b124b27f053b0a5ad945180aa79",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/6H.webp",
+    "source": "assets/cards/front/png/6H.png",
+    "bytes": 4824,
+    "sha256": "a62885eaa04b074f0bab9f7874e1a7f234760b5b8ea58cfddf1ebfa04e70efae",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/6S.webp",
+    "source": "assets/cards/front/png/6S.png",
+    "bytes": 4700,
+    "sha256": "9264314d000496cc17c90dd5230dc5cc0cc02b9bd613bc723dac5afb10fdf2c3",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/7C.webp",
+    "source": "assets/cards/front/png/7C.png",
+    "bytes": 5104,
+    "sha256": "39df6e18032f6aabaa48c2cf76baabe4f832d98d17d69f137f6771901439534e",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/7D.webp",
+    "source": "assets/cards/front/png/7D.png",
+    "bytes": 4492,
+    "sha256": "4ae23bbcffb2b52d44945a2afe4d024a281bc19a0f132e348eb3a8890f246caa",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/7H.webp",
+    "source": "assets/cards/front/png/7H.png",
+    "bytes": 4986,
+    "sha256": "33dcc894ff59aded41c458c621751b5577762abd10b6e7b3b7e19aad7e41dc73",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/7S.webp",
+    "source": "assets/cards/front/png/7S.png",
+    "bytes": 4738,
+    "sha256": "49cd7bc364ac91b41d8bead1bbad759e17b872e56988aaff9ba5b0dce059468f",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/8C.webp",
+    "source": "assets/cards/front/png/8C.png",
+    "bytes": 5678,
+    "sha256": "dcf3b7abad6ca5f34f0ec74bd2157d703998ed0f65af282ffe1ad7ac7c4d3a20",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/8D.webp",
+    "source": "assets/cards/front/png/8D.png",
+    "bytes": 4930,
+    "sha256": "cfb51dfb378bcb5d4ea94f8d3a9f338a349d607b5c037dd187bab8f2958a6aea",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/8H.webp",
+    "source": "assets/cards/front/png/8H.png",
+    "bytes": 5444,
+    "sha256": "54e08e3fe6d465ec3709feab061ec935f63cbd107b8ba2af1d1e590ac43e5261",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/8S.webp",
+    "source": "assets/cards/front/png/8S.png",
+    "bytes": 5298,
+    "sha256": "97f603e728d48949d90e18e215e89160cf7f108d300f8a7dd2f13973fe75fa4c",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/9C.webp",
+    "source": "assets/cards/front/png/9C.png",
+    "bytes": 5428,
+    "sha256": "733b12f1bae4330c52b1d3d0e39b902cf0e87d52909f99ac8daf42b27d32753f",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/9D.webp",
+    "source": "assets/cards/front/png/9D.png",
+    "bytes": 4790,
+    "sha256": "b1072164f35f0dde0c7ce2fe7ac6ae45ce9b886890948f9c211faa950c7226b5",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/9H.webp",
+    "source": "assets/cards/front/png/9H.png",
+    "bytes": 5232,
+    "sha256": "bd09752355e334fdd278442596b4653499a2c38139a4edf98f7055e66b1a2c7c",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/9S.webp",
+    "source": "assets/cards/front/png/9S.png",
+    "bytes": 4940,
+    "sha256": "a4ce107c8942736009ea517f375eb921528cb309048c07ebc6210edc7fd9d4e2",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/AC.webp",
+    "source": "assets/cards/front/png/AC.png",
+    "bytes": 5188,
+    "sha256": "763b133dc4b12c53bbb5ecfa933c392302dafeb9006a158b1e8bc0c319088991",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/AD.webp",
+    "source": "assets/cards/front/png/AD.png",
+    "bytes": 4936,
+    "sha256": "d0eb3438c5d50d36d502dd095be5f8db60bd7a273537de7d0f49599100e2f23a",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/AH.webp",
+    "source": "assets/cards/front/png/AH.png",
+    "bytes": 5110,
+    "sha256": "711d450a5adc79c92d37b9240f462b2faf151c88ac15bb39641656c0a7ba67f2",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/AS.webp",
+    "source": "assets/cards/front/png/AS.png",
+    "bytes": 4964,
+    "sha256": "f326cc40336fbe66071c19aec08d59a022a5226b363d27eebd82865353198974",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/JC.webp",
+    "source": "assets/cards/front/png/JC.png",
+    "bytes": 12132,
+    "sha256": "97fe1069f85df62ad741c59307ac91570e96782d9962f4e613ef5c39f11fa38d",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/JD.webp",
+    "source": "assets/cards/front/png/JD.png",
+    "bytes": 12374,
+    "sha256": "3775d3a074986ac32008ab92c5b8738031133b34d2524fca551b27957241c0fc",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/JH.webp",
+    "source": "assets/cards/front/png/JH.png",
+    "bytes": 13208,
+    "sha256": "2b32542d75d85a200152b12075969ad848cf87a4ed4b346d87a9fb83dc20bfaf",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/JS.webp",
+    "source": "assets/cards/front/png/JS.png",
+    "bytes": 13584,
+    "sha256": "b04c23d8e56856072a5d75834e87f011954196d6c264f20adb9b5115ea2ef979",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/KC.webp",
+    "source": "assets/cards/front/png/KC.png",
+    "bytes": 12186,
+    "sha256": "2bd19e23520959953487ecdb924292d81caeebda435e9645b6f559c9d78a9c79",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/KD.webp",
+    "source": "assets/cards/front/png/KD.png",
+    "bytes": 12848,
+    "sha256": "e6a4571c5069737c570f7c4866fc554915d2e8fd8f7609515d4ca4e7978de580",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/KH.webp",
+    "source": "assets/cards/front/png/KH.png",
+    "bytes": 14498,
+    "sha256": "1f52338cb0c1cca11af75ca600be7270475a18a3eb5a818140cca73654249030",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/KS.webp",
+    "source": "assets/cards/front/png/KS.png",
+    "bytes": 14274,
+    "sha256": "886a62b605955ea3af63f7dfc3ee2fd867111fef3d4adb0d103ea9dab4e9781f",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/QC.webp",
+    "source": "assets/cards/front/png/QC.png",
+    "bytes": 11542,
+    "sha256": "3a6ff6cae58e359ae850b7d005b4c910ef1be3ddef17a4bd00efd3ae129e3b4c",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/QD.webp",
+    "source": "assets/cards/front/png/QD.png",
+    "bytes": 13448,
+    "sha256": "67cced741aa7b9713d172a31012b249f165c09fa81a36a188604de7083ec9bc6",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/QH.webp",
+    "source": "assets/cards/front/png/QH.png",
+    "bytes": 13038,
+    "sha256": "f7f7286d1c5157deaa327d5c7b6cba9dc1348d2b0431b463f493132607650225",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/cards/QS.webp",
+    "source": "assets/cards/front/png/QS.png",
+    "bytes": 13764,
+    "sha256": "1e1a80a42c4c56b6a2d0e982e93c306911a849452bfc9aa4e2829b65424730c4",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/backs/emerald.svg",
+    "source": "assets/cards/back/svg/emerald.svg",
+    "bytes": 1524,
+    "sha256": "c9ec955194ae55cc07c7ddb909800786bccb8a3588f79686d4228459bd660a92",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/backs/obsidian.svg",
+    "source": "assets/cards/back/svg/obsidian.svg",
+    "bytes": 1524,
+    "sha256": "bd7595ddd8615a7b22ed1bc56b2fcbab4808b68a218c441a4d73d46f9a7ec527",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/backs/royal_blue.svg",
+    "source": "assets/cards/back/svg/royal_blue.svg",
+    "bytes": 1524,
+    "sha256": "c02532a5a8f4dd249b6595f8be82cd9d914aa0a4488ed3012aa69ab12acccbe1",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/backs/ruby.svg",
+    "source": "assets/cards/back/svg/ruby.svg",
+    "bytes": 1524,
+    "sha256": "458ec5f6e28b637d3223bee3506d444ee937224d8965c88c25761f87e4f258b7",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/avatars/avatar_01.webp",
+    "source": "assets/characters/avatars/avatar_01.png",
+    "bytes": 31028,
+    "sha256": "82427b7c590ffb69d0160ade9d40f673522b5d3be0814a4500e881051e34726e",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/avatars/avatar_02.webp",
+    "source": "assets/characters/avatars/avatar_02.png",
+    "bytes": 30812,
+    "sha256": "86d8c5a76b81be78f37031b6590deff842ba92674516feda45a44f04d55d5205",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/avatars/avatar_03.webp",
+    "source": "assets/characters/avatars/avatar_03.png",
+    "bytes": 31720,
+    "sha256": "eeb5a23c6ab7fa8c435dfa1f116fe7a49fbede2b55f0a4a2a89bf26d4d0b44ac",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/avatars/avatar_04.webp",
+    "source": "assets/characters/avatars/avatar_04.png",
+    "bytes": 31136,
+    "sha256": "a322fa2881f1d35c055ddf271df7deb3d78715a714774d9c429c36c95aafab3f",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/avatars/avatar_05.webp",
+    "source": "assets/characters/avatars/avatar_05.png",
+    "bytes": 31270,
+    "sha256": "6d65656833bba1469d2934be40b8571b7c3245ca13bcffbbd45d359075614619",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/avatars/avatar_06.webp",
+    "source": "assets/characters/avatars/avatar_06.png",
+    "bytes": 32768,
+    "sha256": "17e3cc92db43d36c1e788245f00c38f7c7112cd86b755255ae6f1514c5aab39b",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/avatars/avatar_07.webp",
+    "source": "assets/characters/avatars/avatar_07.png",
+    "bytes": 31040,
+    "sha256": "5d058c0fd756a36e537b0bb96bc9c73b0232bd16c9388926abc01915022f72dd",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/avatars/avatar_08.webp",
+    "source": "assets/characters/avatars/avatar_08.png",
+    "bytes": 32574,
+    "sha256": "f80f7867e98e4948aaed28bd36fb40fc6650b3a38ececfe36557a3a7990d1ac3",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/avatars/avatar_09.webp",
+    "source": "assets/characters/avatars/avatar_09.png",
+    "bytes": 30678,
+    "sha256": "9f7701a5a3c799acd1a8f8a5a274abcc8ddcf76ca6237a57c892388bb8396c93",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/avatars/avatar_10.webp",
+    "source": "assets/characters/avatars/avatar_10.png",
+    "bytes": 29296,
+    "sha256": "83c6648a97f0684cfc232b606b9a29c369c636e97efb72fd758a805afcb702a2",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/avatars/avatar_11.webp",
+    "source": "assets/characters/avatars/avatar_11.png",
+    "bytes": 28354,
+    "sha256": "3eb612c5140a8fe40464db3d86e40a49e87fc693fe996550be35b9890f60c46c",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/avatars/avatar_12.webp",
+    "source": "assets/characters/avatars/avatar_12.png",
+    "bytes": 30674,
+    "sha256": "a9a2425d59e021988cce7011a8451071d0d91b5ec5be9a0a178f12c1597d64fe",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/buttons/blue.svg",
+    "source": "assets/ui/buttons/svg/blue.svg",
+    "bytes": 683,
+    "sha256": "17b5dd270f45cd8db5ce1012620606c10ac7d4d7ff7b226795a1c2a7905f6f86",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/buttons/dark.svg",
+    "source": "assets/ui/buttons/svg/dark.svg",
+    "bytes": 683,
+    "sha256": "4ee096e2b4993168d9f9aaa641801d41e659fdf852c655b1d9fa0a80ea2b4c0c",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/buttons/disabled.svg",
+    "source": "assets/ui/buttons/svg/disabled.svg",
+    "bytes": 683,
+    "sha256": "74ab35edc601de4afe6d021dcc9e1246ea38575b0ba64ccaddcadcc976635d04",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/buttons/emerald_secondary.svg",
+    "source": "assets/ui/buttons/svg/emerald_secondary.svg",
+    "bytes": 683,
+    "sha256": "12b2e084a3c1d6a87b2ed914412faf07c92647710f5cf5243838568ec360e6cf",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/buttons/glow.svg",
+    "source": "assets/ui/buttons/svg/glow.svg",
+    "bytes": 683,
+    "sha256": "a0ecb6a8f68602bee4782a4d3fa8367aff801de1a1ed657af78d8f9d4c53380d",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/buttons/gold_primary.svg",
+    "source": "assets/ui/buttons/svg/gold_primary.svg",
+    "bytes": 683,
+    "sha256": "608094a16cc9a6e8893ca89d1b00bd1bf72a7e1aab8a77f2f486b5615c2973c2",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/buttons/hover_gold.svg",
+    "source": "assets/ui/buttons/svg/hover_gold.svg",
+    "bytes": 683,
+    "sha256": "58e1f8439397dbe6ca72948bfa6fae993ebbfd8b470a81a1fc2cb9d89b2df3ec",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/buttons/red_danger.svg",
+    "source": "assets/ui/buttons/svg/red_danger.svg",
+    "bytes": 683,
+    "sha256": "45c480cea3c016a150fc6277a9d018dd876af48d2c193bac9bd6ed750285ef4f",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/buttons/selected.svg",
+    "source": "assets/ui/buttons/svg/selected.svg",
+    "bytes": 683,
+    "sha256": "23881e43ebe20d248e517cf2bc335d89d66ecba4aaf3e7c398a6e37d8a11b994",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/back.svg",
+    "source": "assets/ui/icons/svg/back.svg",
+    "bytes": 298,
+    "sha256": "33f9f793730cc8244d9252fb65635ecd6568f199210af21334ce6b4f11afd4eb",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/cards.svg",
+    "source": "assets/ui/icons/svg/cards.svg",
+    "bytes": 419,
+    "sha256": "aa2fa4ae95a378b98274956c5d1028aa1e15e9a636cfbe5450de773225d080d6",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/chat.svg",
+    "source": "assets/ui/icons/svg/chat.svg",
+    "bytes": 297,
+    "sha256": "70e22b3bab0c59298d6f16e5fdc3e521471674398447cce54cd4d5f8f453f4a3",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/check.svg",
+    "source": "assets/ui/icons/svg/check.svg",
+    "bytes": 288,
+    "sha256": "b4b8f253e8c31db66d84b64e4f6089d10402a1cc68a7a9ef9911cea5c7a363f6",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/clock.svg",
+    "source": "assets/ui/icons/svg/clock.svg",
+    "bytes": 318,
+    "sha256": "9615d7c4c02550e8e26ebdd42def448ff29b603e179188c07cbf0871f7f44a68",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/close.svg",
+    "source": "assets/ui/icons/svg/close.svg",
+    "bytes": 295,
+    "sha256": "4fc1957be6b86e674f0c306a6dc78b37a0ea5ed6ffb99a2f94b7d97267014c3c",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/coin.svg",
+    "source": "assets/ui/icons/svg/coin.svg",
+    "bytes": 383,
+    "sha256": "228a7df0609d71e4dac0bb2bd12b35674e8839a068d1256692e0581c90a641bd",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/crown.svg",
+    "source": "assets/ui/icons/svg/crown.svg",
+    "bytes": 310,
+    "sha256": "b1c7aea94b868dee0b36ecc02e6f9d93a802dd8928dfe5329a90198f75a16693",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/forward.svg",
+    "source": "assets/ui/icons/svg/forward.svg",
+    "bytes": 297,
+    "sha256": "43281680751628ec31b0c611f107801fe6293c18fa5c02f452b6db2146505e42",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/friends.svg",
+    "source": "assets/ui/icons/svg/friends.svg",
+    "bytes": 394,
+    "sha256": "2352e29999237988027a3117f2849f432e37c97f9c8ce0f97b5edb1e4b03ca6f",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/gift.svg",
+    "source": "assets/ui/icons/svg/gift.svg",
+    "bytes": 400,
+    "sha256": "75530c1dd23257992d4d039bdb8eddf84ce538acc1cfb9e70feec7719b9c8a23",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/home.svg",
+    "source": "assets/ui/icons/svg/home.svg",
+    "bytes": 306,
+    "sha256": "ec47a1c2780db30c1fff6210af101a772c698b776cab618a569c2cd601912975",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/info.svg",
+    "source": "assets/ui/icons/svg/info.svg",
+    "bytes": 321,
+    "sha256": "3951a5e14e2a43dcf41705a3ca3f50ff623263fd24981f7e3f1f7fdf35558847",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/lock.svg",
+    "source": "assets/ui/icons/svg/lock.svg",
+    "bytes": 350,
+    "sha256": "823f90be86f9456867651f0abbca2697c7fa137accb64dfd8fbf344400b56fca",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/mail.svg",
+    "source": "assets/ui/icons/svg/mail.svg",
+    "bytes": 338,
+    "sha256": "81839a6f14a05228fd08afe5d41b0ce7f7ebf46eab5c1c2a98416ce364cc21bf",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/music.svg",
+    "source": "assets/ui/icons/svg/music.svg",
+    "bytes": 330,
+    "sha256": "ef3620b91338efc5c7afb93e922a9e68c4316ddfc7b8d5ec3c7b2d8105a23c94",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/play.svg",
+    "source": "assets/ui/icons/svg/play.svg",
+    "bytes": 289,
+    "sha256": "b2bfd9e0fef332d339a28580d3ea94d419fd4defa41df794175fd0bb7b187380",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/profile.svg",
+    "source": "assets/ui/icons/svg/profile.svg",
+    "bytes": 326,
+    "sha256": "eeb1445ee50810d8d3673d83d96db02e6e05e5a60186daf49208ebd91cd74759",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/question.svg",
+    "source": "assets/ui/icons/svg/question.svg",
+    "bytes": 346,
+    "sha256": "7b0627f495e542d75d53f69b47e995dfdccdff7e1240a44253bd16795b97d8b3",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/settings.svg",
+    "source": "assets/ui/icons/svg/settings.svg",
+    "bytes": 385,
+    "sha256": "7bff0120af9e56824c21db9bfaff43612e6fb2f6ac831ccbfd5be2678a7f0ebe",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/shield.svg",
+    "source": "assets/ui/icons/svg/shield.svg",
+    "bytes": 311,
+    "sha256": "5daae470dba6ba81804bd45c094c9b7f0214a471bfdc8d307e51ecffb9987653",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/shuffle.svg",
+    "source": "assets/ui/icons/svg/shuffle.svg",
+    "bytes": 364,
+    "sha256": "4f057daef5d543e44ffc1883c59c1ba441f17db086645c2e87b6007bda27c608",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/sparkle.svg",
+    "source": "assets/ui/icons/svg/sparkle.svg",
+    "bytes": 318,
+    "sha256": "933c0dabeee1aa0c7ceb8985ec4508e06214687cd62ea754f8afef9e2efbe09f",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/star.svg",
+    "source": "assets/ui/icons/svg/star.svg",
+    "bytes": 330,
+    "sha256": "bbf8e4e4d86676eda9ba6e39f41453c3de9ec03ee60c1cc096bbfc7a9c4cc884",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/trophy.svg",
+    "source": "assets/ui/icons/svg/trophy.svg",
+    "bytes": 364,
+    "sha256": "5b64ea620f475a5c8496a068e029196a8da356d124e0db23665823a101bdeac8",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/icons/volume.svg",
+    "source": "assets/ui/icons/svg/volume.svg",
+    "bytes": 334,
+    "sha256": "dd87d58e64b842dc5cd036f6f8a8265ca973727aae4bee63e1fff8969b68c873",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/panels/lobby_panel.svg",
+    "source": "assets/ui/panels/svg/lobby_panel.svg",
+    "bytes": 653,
+    "sha256": "3e17f29585a54991e2ad800f372aee09f52bc83e0bcb05053ad2341515317bff",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/panels/player_frame.svg",
+    "source": "assets/ui/panels/svg/player_frame.svg",
+    "bytes": 650,
+    "sha256": "bb88ec9cd117ccb2f878a818c926137d87117b3fc87059296aba1df064225d3b",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/panels/popup.svg",
+    "source": "assets/ui/panels/svg/popup.svg",
+    "bytes": 653,
+    "sha256": "f73c9799108780f82688bda4967ef3a806da98794b5e482e3746d01778da893c",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/panels/rule_tip.svg",
+    "source": "assets/ui/panels/svg/rule_tip.svg",
+    "bytes": 653,
+    "sha256": "5353b6a6956827f9e388b7751eb6d25da9b4becaf60334effa45b370387917ca",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/panels/score_panel.svg",
+    "source": "assets/ui/panels/svg/score_panel.svg",
+    "bytes": 653,
+    "sha256": "09f3f72a72f1f509a85690310c98325f982f1edb94f1934af89095ed5f2e6364",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/panels/settings_row.svg",
+    "source": "assets/ui/panels/svg/settings_row.svg",
+    "bytes": 647,
+    "sha256": "c57b7336b57c25a1df55090d180e1e3e94c255cd87a79d1ae50eb37fa15c1151",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/panels/tile.svg",
+    "source": "assets/ui/panels/svg/tile.svg",
+    "bytes": 653,
+    "sha256": "d132ab2b1cd0e57d4d9bb7adba2c7baed87ffe327cd92b478427ca4561d3cd9b",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/panels/toolbar.svg",
+    "source": "assets/ui/panels/svg/toolbar.svg",
+    "bytes": 653,
+    "sha256": "6cea83fb9d0b545cd9b7416757dc01db76d06932603bfe14f6470de17426b7de",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/panels/xp_bar.svg",
+    "source": "assets/ui/panels/svg/xp_bar.svg",
+    "bytes": 647,
+    "sha256": "6f20bf1a8f88da29ad5cdb26cce95b5810e59c6421b9783b26742b047cb35540",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/badges/kot.svg",
+    "source": "assets/ui/badges/kot.svg",
+    "bytes": 589,
+    "sha256": "8fad072c81fd8e34ec5bcb1391ad4ceb49b15a5fc211e920b699206c2738c064",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/badges/level.svg",
+    "source": "assets/ui/badges/level.svg",
+    "bytes": 589,
+    "sha256": "c498afc95afa15a14819a814dfcb51b654d7ff61020990bd52c09de377280afd",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/badges/rung.svg",
+    "source": "assets/ui/badges/rung.svg",
+    "bytes": 591,
+    "sha256": "8c208122c857483f15f9af270e10eff2f70d0814d6c8468fbdc506fb0ce85a6b",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/badges/senior.svg",
+    "source": "assets/ui/badges/senior.svg",
+    "bytes": 589,
+    "sha256": "5839811d83374f48ee4c854ff2d61fbf1a5ae2b390ce967af401a8c3159c02e9",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/badges/team_a.svg",
+    "source": "assets/ui/badges/team_a.svg",
+    "bytes": 589,
+    "sha256": "079ad0b25bf3431bf9516fd86b555bac82bbc7367f8dae40f9e5ddbd51bbdc0d",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/badges/team_b.svg",
+    "source": "assets/ui/badges/team_b.svg",
+    "bytes": 589,
+    "sha256": "1ac899104d6b16a0a1615bc2fdcdec72b3ee60f6cfd8e28675759efe1d4a6bee",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/badges/trophy.svg",
+    "source": "assets/ui/badges/trophy.svg",
+    "bytes": 591,
+    "sha256": "c8a988193d6c4b3f2f9838a0b322aab4ca677dad33fc8d59b557985abe8a178e",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/ui/badges/win.svg",
+    "source": "assets/ui/badges/win.svg",
+    "bytes": 591,
+    "sha256": "ae69226c456440466d8790336b9eec2a89d2ff0dfc395380798d5c235238be6d",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/emotes/amazed.webp",
+    "source": "assets/social/emotes/amazed.png",
+    "bytes": 5218,
+    "sha256": "a94aa000c131df8e06932bbe8a6a15ce836f3948539948cb6d6335704a3114e4",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/emotes/applause.webp",
+    "source": "assets/social/emotes/applause.png",
+    "bytes": 6320,
+    "sha256": "694bce65fc35c6fb545450a1dcad3302832cedd4d72ff1af88284adab0ee840d",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/emotes/laughing.webp",
+    "source": "assets/social/emotes/laughing.png",
+    "bytes": 5150,
+    "sha256": "3cc7347c39e949eda0d03445e3c75faa0dfddb247e04d2e21df349729391f29c",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/emotes/love.webp",
+    "source": "assets/social/emotes/love.png",
+    "bytes": 6302,
+    "sha256": "9fb7e9a106f6526e3f8ef07f40492157e1d135c60feaeffb87f065b242359665",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/emotes/sad.webp",
+    "source": "assets/social/emotes/sad.png",
+    "bytes": 5748,
+    "sha256": "472cb5f3f8a193cbbc7fa4f758e23e946333519d0fc652608b8cdd3906c297c2",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/emotes/surprised.webp",
+    "source": "assets/social/emotes/surprised.png",
+    "bytes": 6176,
+    "sha256": "d6b3c242f8960af9390cfca1a798676c6e38854c3ed8f54751c5de961e3a1a7b",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/emotes/thinking.webp",
+    "source": "assets/social/emotes/thinking.png",
+    "bytes": 4914,
+    "sha256": "a1bba16178dc2b613eba413e44a7c6449b021748f6c85aaeefd6849dab2ae4ab",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/emotes/thumbs_up.webp",
+    "source": "assets/social/emotes/thumbs_up.png",
+    "bytes": 4758,
+    "sha256": "7da353f4ee07603f197700ec75ead5a51d8cc01f018c7b3be601fd6b83d350be",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/backgrounds/lounge.webp",
+    "source": "Original image generation from approved style reference; prompt in INTEGRATION.md",
+    "bytes": 257334,
+    "sha256": "3985e297a75db6168e586603a1508769970991785b209234800f048c5cf3d3aa",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/branding/logo.svg",
+    "source": "assets/branding/rung_club_logo.svg",
+    "bytes": 666,
+    "sha256": "923e44d88bc6e1d6a8daad6c42c1fbb103fd34b2b9878b891ba4af62a0804900",
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+  },
+  {
+    "path": "/art/characters/dealer-female.webp",
+    "source": "Built-in image generation from supplied reference; prompt in docs/art/INTEGRATION.md",
+    "bytes": 175570,
+    "sha256": "ba4cf87233ecb345873c85e0f4688ebd9e4284c971a6dbb9d486a91ca7f9f2f2",
+    "license": "Original generated project art"
+  },
+  {
+    "path": "/art/tables/emerald-clean.webp",
+    "source": "Built-in image generation from supplied reference; prompt in docs/art/INTEGRATION.md",
+    "bytes": 224662,
+    "sha256": "c1ff28029eb79b05cde032a43428a44d49e30c0ba2673a4a767e0c7011a4f9fe",
+    "license": "Original generated project art"
+  }
+]

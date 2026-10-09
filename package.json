@@ -17,7 +17,8 @@
     "android:sync": "cap sync android",
     "typecheck:worker": "tsc -p tsconfig.worker.json --noEmit",
     "bundle:offline": "node scripts/standalone.mjs",
-    "benchmark": "node scripts/benchmark.ts"
+    "benchmark": "node scripts/benchmark.ts",
+    "test:visual": "playwright test --config playwright.visual.config.ts"
   },
   "keywords": [],
   "author": "",
