@@ -4,364 +4,416 @@
     "source": "assets/cards/front/png/10C.png",
     "bytes": 5822,
     "sha256": "9b3e7a71a6aa9333ce6662ff81da0d5c7ad638d45c531829fb86d167f1e1b777",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/10D.webp",
     "source": "assets/cards/front/png/10D.png",
     "bytes": 5140,
     "sha256": "f5e429b9a0593b72876cb0069fcfea2ad1e068493b476909151a76b1289adaf1",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/10H.webp",
     "source": "assets/cards/front/png/10H.png",
     "bytes": 5682,
     "sha256": "1515d0a2d88d110ec31e55a9be435e64a043cb073680a73e60254b34651426ba",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/10S.webp",
     "source": "assets/cards/front/png/10S.png",
     "bytes": 5414,
     "sha256": "8224a01dd7b0e627f6a4c3e0dfa51f64971b826a3d3ee4dd1bc8c54835725899",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/2C.webp",
     "source": "assets/cards/front/png/2C.png",
     "bytes": 3634,
     "sha256": "911f533838f0facb3dbdd50b537de0775338ad5456e374706ae0f347e821e319",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/2D.webp",
     "source": "assets/cards/front/png/2D.png",
     "bytes": 3444,
     "sha256": "30b10141bf7b1da5fd592f7da1918814401d20f4090aa35d247dbb85457cc740",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/2H.webp",
     "source": "assets/cards/front/png/2H.png",
     "bytes": 3588,
     "sha256": "5c97f49e05dfcd1dc98c114f2afa9e6280ccb2893c0973240ee1b767b022d6a8",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/2S.webp",
     "source": "assets/cards/front/png/2S.png",
     "bytes": 3468,
     "sha256": "32925e7395ff32cdaa35c67b25f176a531f55b1502be4c1e62bec0eb1b551bb6",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/3C.webp",
     "source": "assets/cards/front/png/3C.png",
     "bytes": 3968,
     "sha256": "a769995bd886e30c9d79a8343894f9b9af97adbc9895de52402749bcf3aaecd7",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/3D.webp",
     "source": "assets/cards/front/png/3D.png",
     "bytes": 3664,
     "sha256": "b8b3cbae1e7a01043ad5c39c27e244a38743b5102de6fd20cfc9463dbb6829fa",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/3H.webp",
     "source": "assets/cards/front/png/3H.png",
     "bytes": 3902,
     "sha256": "3482448b7316b76b653eaa80f430ec92966e26037056a74e37fbc81b3c04d8a3",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/3S.webp",
     "source": "assets/cards/front/png/3S.png",
     "bytes": 3780,
     "sha256": "400bf6443df80bbf750b3e1a854eef9ad4ec3480c14d7d517d6d4054bcb60c2b",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/4C.webp",
     "source": "assets/cards/front/png/4C.png",
     "bytes": 4278,
     "sha256": "27aa56136e77581527654093d4182ab52fa0de0e29aa09cfa377afffa8c23994",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/4D.webp",
     "source": "assets/cards/front/png/4D.png",
     "bytes": 3852,
     "sha256": "dd23c38397a5d0723f850bd61c08e41576f26c362fdb37b16691be1366e25ddf",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/4H.webp",
     "source": "assets/cards/front/png/4H.png",
     "bytes": 4160,
     "sha256": "3e2fa6e8684bcdaa4224bc695f37466b350b94183ed27d5afc58c760c666b384",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/4S.webp",
     "source": "assets/cards/front/png/4S.png",
     "bytes": 4016,
     "sha256": "7c2dc013844fbd499f41924832739e392b37af1ab9ffc5232b3553e519e21bf8",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/5C.webp",
     "source": "assets/cards/front/png/5C.png",
     "bytes": 4572,
     "sha256": "fa588e444ffe746528f99e1d6b8b194cc7758ba7ee89d30784578ca693e0689e",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/5D.webp",
     "source": "assets/cards/front/png/5D.png",
     "bytes": 4122,
     "sha256": "42b1dbe67a3a21c630072bd9768415f45509e7a5b6de11dab15343143f0c9f26",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/5H.webp",
     "source": "assets/cards/front/png/5H.png",
     "bytes": 4430,
     "sha256": "9912587a2caf10668182bd686299990a5c9861c81091849589884cc0c626abe2",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/5S.webp",
     "source": "assets/cards/front/png/5S.png",
     "bytes": 4328,
     "sha256": "ef324db8d80ccf9ccd644eb2e63d09286102fec3a6dae8d857a9f760a5a587bc",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/6C.webp",
     "source": "assets/cards/front/png/6C.png",
     "bytes": 4956,
     "sha256": "5d0fe81d526d2b1348af1f69b3287cce0cebf7830128b8d49e88fb98c53d39b4",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/6D.webp",
     "source": "assets/cards/front/png/6D.png",
     "bytes": 4414,
     "sha256": "f1e92dcfdeca1cb2ba7262f1d819e27b7c2c3b124b27f053b0a5ad945180aa79",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/6H.webp",
     "source": "assets/cards/front/png/6H.png",
     "bytes": 4824,
     "sha256": "a62885eaa04b074f0bab9f7874e1a7f234760b5b8ea58cfddf1ebfa04e70efae",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/6S.webp",
     "source": "assets/cards/front/png/6S.png",
     "bytes": 4700,
     "sha256": "9264314d000496cc17c90dd5230dc5cc0cc02b9bd613bc723dac5afb10fdf2c3",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/7C.webp",
     "source": "assets/cards/front/png/7C.png",
     "bytes": 5104,
     "sha256": "39df6e18032f6aabaa48c2cf76baabe4f832d98d17d69f137f6771901439534e",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/7D.webp",
     "source": "assets/cards/front/png/7D.png",
     "bytes": 4492,
     "sha256": "4ae23bbcffb2b52d44945a2afe4d024a281bc19a0f132e348eb3a8890f246caa",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/7H.webp",
     "source": "assets/cards/front/png/7H.png",
     "bytes": 4986,
     "sha256": "33dcc894ff59aded41c458c621751b5577762abd10b6e7b3b7e19aad7e41dc73",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/7S.webp",
     "source": "assets/cards/front/png/7S.png",
     "bytes": 4738,
     "sha256": "49cd7bc364ac91b41d8bead1bbad759e17b872e56988aaff9ba5b0dce059468f",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/8C.webp",
     "source": "assets/cards/front/png/8C.png",
     "bytes": 5678,
     "sha256": "dcf3b7abad6ca5f34f0ec74bd2157d703998ed0f65af282ffe1ad7ac7c4d3a20",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/8D.webp",
     "source": "assets/cards/front/png/8D.png",
     "bytes": 4930,
     "sha256": "cfb51dfb378bcb5d4ea94f8d3a9f338a349d607b5c037dd187bab8f2958a6aea",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/8H.webp",
     "source": "assets/cards/front/png/8H.png",
     "bytes": 5444,
     "sha256": "54e08e3fe6d465ec3709feab061ec935f63cbd107b8ba2af1d1e590ac43e5261",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/8S.webp",
     "source": "assets/cards/front/png/8S.png",
     "bytes": 5298,
     "sha256": "97f603e728d48949d90e18e215e89160cf7f108d300f8a7dd2f13973fe75fa4c",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/9C.webp",
     "source": "assets/cards/front/png/9C.png",
     "bytes": 5428,
     "sha256": "733b12f1bae4330c52b1d3d0e39b902cf0e87d52909f99ac8daf42b27d32753f",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/9D.webp",
     "source": "assets/cards/front/png/9D.png",
     "bytes": 4790,
     "sha256": "b1072164f35f0dde0c7ce2fe7ac6ae45ce9b886890948f9c211faa950c7226b5",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/9H.webp",
     "source": "assets/cards/front/png/9H.png",
     "bytes": 5232,
     "sha256": "bd09752355e334fdd278442596b4653499a2c38139a4edf98f7055e66b1a2c7c",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/9S.webp",
     "source": "assets/cards/front/png/9S.png",
     "bytes": 4940,
     "sha256": "a4ce107c8942736009ea517f375eb921528cb309048c07ebc6210edc7fd9d4e2",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/AC.webp",
     "source": "assets/cards/front/png/AC.png",
     "bytes": 5188,
     "sha256": "763b133dc4b12c53bbb5ecfa933c392302dafeb9006a158b1e8bc0c319088991",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/AD.webp",
     "source": "assets/cards/front/png/AD.png",
     "bytes": 4936,
     "sha256": "d0eb3438c5d50d36d502dd095be5f8db60bd7a273537de7d0f49599100e2f23a",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/AH.webp",
     "source": "assets/cards/front/png/AH.png",
     "bytes": 5110,
     "sha256": "711d450a5adc79c92d37b9240f462b2faf151c88ac15bb39641656c0a7ba67f2",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/AS.webp",
     "source": "assets/cards/front/png/AS.png",
     "bytes": 4964,
     "sha256": "f326cc40336fbe66071c19aec08d59a022a5226b363d27eebd82865353198974",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/JC.webp",
     "source": "assets/cards/front/png/JC.png",
     "bytes": 12132,
     "sha256": "97fe1069f85df62ad741c59307ac91570e96782d9962f4e613ef5c39f11fa38d",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/JD.webp",
     "source": "assets/cards/front/png/JD.png",
     "bytes": 12374,
     "sha256": "3775d3a074986ac32008ab92c5b8738031133b34d2524fca551b27957241c0fc",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/JH.webp",
     "source": "assets/cards/front/png/JH.png",
     "bytes": 13208,
     "sha256": "2b32542d75d85a200152b12075969ad848cf87a4ed4b346d87a9fb83dc20bfaf",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/JS.webp",
     "source": "assets/cards/front/png/JS.png",
     "bytes": 13584,
     "sha256": "b04c23d8e56856072a5d75834e87f011954196d6c264f20adb9b5115ea2ef979",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/KC.webp",
     "source": "assets/cards/front/png/KC.png",
     "bytes": 12186,
     "sha256": "2bd19e23520959953487ecdb924292d81caeebda435e9645b6f559c9d78a9c79",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/KD.webp",
     "source": "assets/cards/front/png/KD.png",
     "bytes": 12848,
     "sha256": "e6a4571c5069737c570f7c4866fc554915d2e8fd8f7609515d4ca4e7978de580",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/KH.webp",
     "source": "assets/cards/front/png/KH.png",
     "bytes": 14498,
     "sha256": "1f52338cb0c1cca11af75ca600be7270475a18a3eb5a818140cca73654249030",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/KS.webp",
     "source": "assets/cards/front/png/KS.png",
     "bytes": 14274,
     "sha256": "886a62b605955ea3af63f7dfc3ee2fd867111fef3d4adb0d103ea9dab4e9781f",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/QC.webp",
     "source": "assets/cards/front/png/QC.png",
     "bytes": 11542,
     "sha256": "3a6ff6cae58e359ae850b7d005b4c910ef1be3ddef17a4bd00efd3ae129e3b4c",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/QD.webp",
     "source": "assets/cards/front/png/QD.png",
     "bytes": 13448,
     "sha256": "67cced741aa7b9713d172a31012b249f165c09fa81a36a188604de7083ec9bc6",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/QH.webp",
     "source": "assets/cards/front/png/QH.png",
     "bytes": 13038,
     "sha256": "f7f7286d1c5157deaa327d5c7b6cba9dc1348d2b0431b463f493132607650225",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/cards/QS.webp",
     "source": "assets/cards/front/png/QS.png",
     "bytes": 13764,
     "sha256": "1e1a80a42c4c56b6a2d0e982e93c306911a849452bfc9aa4e2829b65424730c4",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/backs/emerald.svg",
@@ -900,7 +952,8 @@
     "source": "Original image generation from approved style reference; prompt in INTEGRATION.md",
     "bytes": 257334,
     "sha256": "3985e297a75db6168e586603a1508769970991785b209234800f048c5cf3d3aa",
-    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md"
+    "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
   },
   {
     "path": "/art/branding/logo.svg",
@@ -921,6 +974,502 @@
     "source": "Built-in image generation from supplied reference; prompt in docs/art/INTEGRATION.md",
     "bytes": 224662,
     "sha256": "c1ff28029eb79b05cde032a43428a44d49e30c0ba2673a4a767e0c7011a4f9fe",
-    "license": "Original generated project art"
+    "license": "Original generated project art",
+    "usage": "Retained legacy art; replaced in active lobby/table presentation"
+  },
+  {
+    "path": "/art/house/cards/10C.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 645,
+    "sha256": "765febc937e710d6094e8650099b19c7c27d801665d96ff383d4bb567adbb614",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/10D.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 645,
+    "sha256": "07ec095c0436a5853e0108b9f827fcc0bc44e22940f6ed48cc7c9e214ac363c2",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/10H.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 645,
+    "sha256": "a53a525a0032d61c49abc17a22e8ab757d8182fdec6d813ae06ee994def464b0",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/10S.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 645,
+    "sha256": "b397c4526df48b19b61b2a8e6ba2892edf979f010a2722d6f9617fd363f78932",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/2C.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "8587e83e9484c684436bc45be7b347cb75e70d6bc89e31dcee9a2bb518023ede",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/2D.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "17685221460ccdc6fe8bbf3b716bed304c227aa7cf38ba7cad494b2a377ec7e0",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/2H.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "bf4598d2ae21eecee2b99734d97a730fb25c0f00a6f7f9737c849057c1019a87",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/2S.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "19e651235228e4b8056d1bf61194ae9746d3b8a273bb9d21c5a920d6dc946cce",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/3C.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "2d8a7570dcfc713961ac83349184241728ac157b53356b6ea97e27545fcca764",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/3D.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "41e91859cacb2abc6a6f8028d5726c2b57accc92d0d1b0a62cea5231149d65ef",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/3H.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "6c8565d9c5b5025aed4d158d58f67c5c1b46a844d54c717c129d19486e1b8160",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/3S.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "70113cf089f44c915e951754249dbe4fc3ece3ca8086bbf82becea2bbf232bbe",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/4C.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "90dc7eaad6466401f988788e15b8ba7dbc773a8af700d5b9b4eb3b8b0318201d",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/4D.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "e9be3b279ed2dd2b07c0a4fa00b973b7b10ac0d542769d769475c62941646814",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/4H.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "daff38b03c7e8612477b528db2ec465ce0018de86f4495c84d82b721f64d7d8c",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/4S.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "d039929a45d5b90ca07b8f5ef3957d73fb449a9cc00c03fc6953cc1689c0d09e",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/5C.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "1c434093add66a1f4f3664828621b419d7e38ca7b8cebc7fb1288f47197b44bd",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/5D.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "9e8b8f7039447e17d1c77773b86615bb26aa74eeb246974ef72b822da5ecea3e",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/5H.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "cd0912e76cb9a91d5a818a004f32422d02967fe671f31b35f49e5373cba010d9",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/5S.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "4e954ab45cf37f3799f4d43615e3223f725dd5b625e4e4ec4b3c9892b1a420b9",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/6C.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "fe2df31cdcefbb09ff983d4f2905a3868bbc09155b57cda7efa4fbfd7c2b3555",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/6D.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "a696f403b6cbe2f74eb301f8922fc579cbcad525ce9292ca93420f27454292e3",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/6H.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "83468b94e5f102dd396ecea46b52894e6b73cec86951cf114273973344aaa004",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/6S.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "288c97905a38862310db072e9824cde376920f5b7090ea866c3cb707bf375f9a",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/7C.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "a594518206317bf917ffd2eda8dd188ce44ea3c2c3c471696bd7a5918599a750",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/7D.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "dbdc94d18ae244cd2aeab608c8d8752ebfbee24c503d6566faf4904a5d469de4",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/7H.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "d480f61a654aa1dd4021a621c6788d185e59d3d5d24899cb164453fe46855077",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/7S.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "3075f48241c0a651b600a8b241afa3ff2bf1fa5cbd035daaec73d6bf312a6ecc",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/8C.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "7f2093e64046f071bd3d680e328a874ac13a9464798196911db44429e8d77007",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/8D.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "876e28a287632116c954e7c34837588f1e025170ddc46111c377d70b5b4db35d",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/8H.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "e0800159c0da5cec96977c57235ae0577d241c92127292683b64814aa9da79b3",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/8S.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "ba2b7301f27f3ff86ce82b85ea8ecaa8e7e426715277b703eb7b812e63cb101f",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/9C.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "88c84b52afb7256ab221e867164856301ae60ccc8ec6c0a03da6826e0a87f395",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/9D.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "2374e74ff76fff1cb9983f3af7f714ce131abf0fdf15e2879f6deeb99f53bf51",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/9H.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "b7e351232e7111577e2956eb9bc1a50fa60eba5c341c666afc686aa1a1311525",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/9S.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "f3cba132c54df67eb4a09b7b2ccba30f35304f26654e1d9ffe6dea10c426edcf",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/AC.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "2f2c23516f3293bf5c72c8d47079598f8d5ccb9fe576fc5c3b5eff75324e3a47",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/AD.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "1f22ace596b9fd8e07a70959fcc37bceda5086328dd08695105e23c6d42cdee4",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/AH.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "a90afcaf6a1d4b96cf43c56d3ae3dfe0180855a650af60f5a959050e701bdf85",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/AS.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 643,
+    "sha256": "1debbb61524644e5241468fcb8710fffa9ffe367f190197ea19562ecb16a63c2",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/JC.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 745,
+    "sha256": "ea24389fcb4c80316b4fd605ebd0a58910ea8104bfefc98f79f5f7187c435f2d",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/JD.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 745,
+    "sha256": "f67268cb05c413371024bb766db7203eaef466127a1ea5d516907af93b0edf21",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/JH.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 745,
+    "sha256": "11a42444290d04edb7051cfd685d3dad80578446eb5ef6a289baeb9c2364d9b7",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/JS.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 745,
+    "sha256": "b00503f11c8919a7ef35cbcb4bdc16dc8357ef949fcfef414e280ddca5607e6a",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/KC.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 745,
+    "sha256": "4109f1430f4995564fcf77504ca6c531f60fd010dfcabfb29366d58bc3d10981",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/KD.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 745,
+    "sha256": "f5225d8ed96e53320e97346130ec0fdc29cab73f97db8e734f92a9026ea8c1d0",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/KH.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 745,
+    "sha256": "16bd9aa3e014ca70d8c462c81035cf42fd7a9bda0bf8e30ee1dbf4403f6cc251",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/KS.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 745,
+    "sha256": "fa2c8b97b3838b2f7ff42cc9fdcee198436591d597f1f6ea011ab945a4ed3ee4",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/QC.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 745,
+    "sha256": "586a14efb0b38d3dba18e67a20f66f8eb46b71a58b65e1c8919afe83acacc3ae",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/QD.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 745,
+    "sha256": "532abdb7047ec07d45a2495a8baaab2d7645c7422ec9e620e304e15ed823f022",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/QH.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 745,
+    "sha256": "aeb81e9df260b6e4cd604e3b3abc3f70fc7273830d6538c8a8f7da63ddf48369",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/cards/QS.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 745,
+    "sha256": "dd22535d0d220386ae586ebe6a23ad36daadbc2b919c8fb2ce3783be04a7f76d",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/club-wall.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 1662,
+    "sha256": "8d80dd4809d3b3de99241c1c6f55c10c40ba962890116a9ffad74eb3efe92784",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/house/table.svg",
+    "source": "Original project SVG authored for Card House presentation",
+    "bytes": 1533,
+    "sha256": "cf8651a9021fe04f7b779c43def56a4cc72add217f633588075310375dd202d1",
+    "format": "svg",
+    "license": "Original project code art; MIT",
+    "usage": "Live card face or separate decorative surface"
+  },
+  {
+    "path": "/art/characters/dealer-seated.webp",
+    "source": "Original generated seated pose of approved dealer; prompt in HOUSE_PRESENTATION.md",
+    "bytes": 51932,
+    "sha256": "27e449074c2fdd139482f512936e3ff55afa03cf8b31fa791ed71debe96d6dc5",
+    "format": "webp",
+    "license": "Owner-supplied/generated dealer derivative; ASSET_LICENSE.md",
+    "usage": "Decorative host only"
   }
 ]

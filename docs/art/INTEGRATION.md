@@ -1,4 +1,6 @@
-# Premium art integration
+# Premium art integration (initial release history)
+
+**Current lobby/table presentation:** see [HOUSE_PRESENTATION.md](HOUSE_PRESENTATION.md). The original table, lounge and card fronts described below are retained as legacy assets; the active lobby/table now use the Card House vector surfaces and readable deck.
 
 The owner-supplied `RungClub_Final_Art_Package_v6` is the visual source: emerald felt, walnut, brass/gold, global illustrated portraits. Runtime assets are under `apps/web/public/art/`, preserving logical card/avatar/UI groups. `asset-manifest.json` records sources, formats (path suffix), sizes, hashes and provenance. The source license and mobile specification are included alongside this document.
 

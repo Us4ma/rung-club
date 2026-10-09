@@ -1,0 +1,15 @@
+import {beforeEach,expect,it,vi} from 'vitest';
+const f=vi.hoisted(()=>{const auth={currentUser:null as any,authStateReady:vi.fn(async()=>{})};return {auth,link:vi.fn(),create:vi.fn(),email:vi.fn(),popup:vi.fn(),linkPopup:vi.fn(),guest:vi.fn(),verify:vi.fn(async()=>{}),native:false};});
+vi.mock('@capacitor/core',()=>({Capacitor:{isNativePlatform:()=>f.native}}));
+vi.mock('firebase/app',()=>({initializeApp:()=>({})}));
+vi.mock('../apps/web/deployment.ts',()=>({publicFirebaseConfig:{apiKey:'test',authDomain:'test',projectId:'test'}}));
+vi.stubEnv('VITE_FIREBASE_API_KEY','test');vi.stubEnv('VITE_FIREBASE_AUTH_DOMAIN','test');vi.stubEnv('VITE_FIREBASE_PROJECT_ID','test');
+vi.mock('firebase/auth',()=>({getAuth:()=>f.auth,signInAnonymously:f.guest,GoogleAuthProvider:class{},FacebookAuthProvider:class{},EmailAuthProvider:{credential:(email:string,password:string)=>({email,password})},linkWithCredential:f.link,createUserWithEmailAndPassword:f.create,signInWithEmailAndPassword:f.email,signInWithPopup:f.popup,linkWithPopup:f.linkPopup,sendEmailVerification:f.verify,sendPasswordResetEmail:vi.fn(),deleteUser:vi.fn(),signOut:vi.fn()}));
+const {emailLogin,socialLogin,secureSession,authMessage}=await import('../apps/web/auth.ts');
+beforeEach(()=>{vi.clearAllMocks();f.auth.currentUser=null;f.native=false;});
+it('upgrades a guest using email without changing its UID',async()=>{f.auth.currentUser={isAnonymous:true,uid:'guest-id'};f.link.mockResolvedValue({user:f.auth.currentUser});expect((await emailLogin('a@b.com','abcdef',true)).uid).toBe('guest-id');expect(f.create).not.toHaveBeenCalled();expect(f.verify).toHaveBeenCalled();});
+it('preserves guest on provider conflict',async()=>{const guest={isAnonymous:true,uid:'guest-id'};f.auth.currentUser=guest;f.linkPopup.mockRejectedValue({code:'auth/credential-already-in-use'});await expect(socialLogin('google')).rejects.toMatchObject({code:'auth/credential-already-in-use'});expect(f.popup).not.toHaveBeenCalled();expect(f.auth.currentUser).toBe(guest);});
+it('signs existing members in without creating accounts',async()=>{f.email.mockResolvedValue({user:{uid:'member'}});expect((await emailLogin('a@b.com','abcdef')).uid).toBe('member');expect(f.create).not.toHaveBeenCalled();});
+it('reuses restored identity instead of recreating anonymous guests',async()=>{f.auth.currentUser={getIdToken:async()=> 'token'};expect(await secureSession()).toEqual({token:'token'});expect(f.guest).not.toHaveBeenCalled();});
+it('does not attempt browser OAuth inside the native wrapper',async()=>{f.native=true;await expect(socialLogin('facebook')).rejects.toThrow('browser version');expect(f.popup).not.toHaveBeenCalled();});
+it('normalizes credential failures without exposing SDK details',()=>{expect(authMessage({code:'auth/wrong-password'})).toBe(authMessage({code:'auth/user-not-found'}));expect(authMessage({code:'auth/unauthorized-domain'})).toContain('not enabled');});

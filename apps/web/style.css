@@ -8,3 +8,7 @@
 
 @media(max-width:600px){.feature{min-height:270px}.feature-copy{width:72%}.feature h2{font-size:29px;white-space:nowrap}.feature>.dealer{width:63%;height:190px;right:-13%}.feature p{font-size:11px}.mode-row{margin-top:14px}.feature-copy>.gold{margin-top:12px}.feature .muted{text-align:left;max-width:170px}.house-nav{display:none}}
 @media(max-height:550px) and (min-width:601px){.actions{margin-top:70px}.actions>p{display:none}.hand-hint{margin-top:5px}.center .pile{position:absolute;left:0;top:0;max-width:115px}.center .sar-label{position:absolute;right:0;bottom:0}.table-page:has(.lesson) .actions{margin-top:60px}}
+/* Entry/lobby refinement: original felt treatment replaces the generated lounge. */
+body{background:#0a211a;background-image:repeating-linear-gradient(45deg,#ffffff02 0 1px,transparent 1px 5px)}
+body:before{background:none}
+.screen-lobby .feature{background:#0d3026;background-image:repeating-linear-gradient(45deg,#ffffff02 0 1px,transparent 1px 5px);box-shadow:inset 0 0 0 8px #071e1780,0 10px 30px #0003;border-color:#9e8a5b}
