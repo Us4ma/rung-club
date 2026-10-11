@@ -31,3 +31,7 @@ Six responsive alpha WebP files are saved under `apps/web/public/art/lobby/` (38
 The HUD now uses a serif spade wordmark and a compact identity plaque. Automatically generated Guest-UID labels display as Guest in the HUD, while stored identity/name data remains intact. The Open Rung illustration is replaced by plain code-native ivory cards with rank/suit marks, without royal portraits. Card descriptions now follow the approved reference. A separate textured felt/walnut/brass foreground layer covers the dealer's lower body and includes decorative gold coin stacks and a card deck; these are scenery, not an economy balance. The lobby bottom navigation and footer are removed. Collection and rules navigation remain available inside Profile, reached from the HUD.
 
 Production compilation and Android web-asset sync were performed to publish the update. The owner explicitly requested no tests or screenshot validation for this correction; previous screenshots and test counts above describe the earlier revision, not this follow-up.
+
+### Viewport-height correction
+
+The lobby now occupies `100dvh`, with mode artwork using the available height and a shallower foreground table clipped to the scene. Decorative table overflow cannot enlarge the page. Private-room forms retain internal scrolling when expanded or when the keyboard reduces space. No tests or screenshots were run for this owner-reviewed correction; production compilation is required for publishing.

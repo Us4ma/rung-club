@@ -65,3 +65,28 @@
 @media(max-height:550px) and (min-width:601px){.screen-lobby .lobby-identity{width:330px;padding:4px 8px;gap:12px;flex-direction:row}.screen-lobby .lobby-identity .brand{width:118px;height:32px;font-size:13px;letter-spacing:.3px;gap:5px;border-bottom:0;padding-bottom:0}.hud-brand-spade{font-size:24px}.screen-lobby .player-avatar .avatar{width:36px;height:36px}.screen-lobby .player-progress{width:125px;max-width:125px}.screen-lobby .player-progress strong{font-size:13px;max-width:125px}.screen-lobby .player-progress small,.screen-lobby .xp-caption{font-size:9px}.screen-lobby .profile-link{gap:8px}.lobby-table-front{left:-20px;right:-20px;top:calc(100% - 120px);height:250px}.table-coins{left:2%;top:61px;transform:scale(.55);transform-origin:left top}.table-deck{left:5%;top:102px;transform:scale(.55);transform-origin:left top}.screen-lobby .lobby .mode-description{display:block;min-height:26px;font-size:9px;line-height:1.25;margin:3px 0}.screen-lobby .lobby .mode-status{min-height:18px;margin:2px 0}.screen-lobby .lobby .band .mode-ribbon{font-size:8px;min-height:17px;padding:2px 5px}.screen-lobby .lobby .mode-ribbon .ui-icon{width:10px;height:10px}.screen-lobby .lobby .lobby-mode-art{height:60px}}
 .profile-shortcuts{display:flex;gap:10px;margin:16px 0;flex-wrap:wrap}
 @media(max-width:600px){.table-coins{top:40px}.table-deck{top:50px}}
+/* Fit the lobby to the actual browser viewport; decoration cannot grow the page. */
+.app.screen-lobby:not(.screen-login):not(.screen-table){height:100dvh;min-height:0;display:flex;flex-direction:column;overflow:hidden;padding-bottom:env(safe-area-inset-bottom)}
+.app.screen-lobby>header{flex:0 0 auto}
+.screen-lobby .lobby-background{flex:1;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}
+.app.screen-lobby .lobby{height:100%;min-height:0;padding-top:8px;padding-bottom:12px}
+.screen-lobby .lobby .house-content{height:100%;min-height:0}
+.screen-lobby .lobby-arrangement{height:100%;min-height:0;overflow:hidden}
+.screen-lobby .lobby-play-area{height:100%;min-height:0;display:flex;flex-direction:column;padding:4px}
+.screen-lobby .lobby .game-menu{flex:1;min-height:310px}
+.screen-lobby .lobby .game-tile{min-height:0;padding-top:10px;padding-bottom:14px}
+.screen-lobby .lobby .mode-tile{flex:1;min-height:0;overflow:hidden}
+.screen-lobby .lobby .lobby-mode-art{flex:1;min-height:0;height:0;max-height:26dvh;width:100%;object-fit:contain}
+.screen-lobby .lobby .game-tile h2,.screen-lobby .lobby .mode-tile p{flex-shrink:0}
+.screen-lobby .lobby .mode-description{min-height:0;flex-shrink:0;margin:6px 0}
+.screen-lobby .lobby .mode-status{flex-shrink:0;min-height:24px;margin:4px 0 8px}
+.screen-lobby .lobby .mode-play,.screen-lobby .lobby .mode-ribbon{flex-shrink:0}
+.screen-lobby .lobby .club-shortcuts{flex-shrink:0;margin-top:16px}
+.screen-lobby .lobby .private-room{flex-shrink:0;max-height:32dvh;overflow:auto;margin:12px 0 0}
+.lobby-table-front{top:calc(100% - 150px)!important;bottom:0!important;height:auto!important}
+.table-coins{top:45px}.table-deck{top:85px}
+/* Expanded room forms may scroll inside the lobby, never through extra scenery. */
+.screen-lobby .lobby-arrangement:has(.private-room){overflow-y:auto}
+@media(max-width:600px){.screen-lobby .lobby-arrangement{--host-height:clamp(110px,19dvh,170px);gap:0}.screen-lobby .lobby-host{height:var(--host-height);flex:0 0 var(--host-height)}.screen-lobby .lobby-play-area{flex:1;height:auto;min-height:0}.screen-lobby .lobby .game-menu{min-height:285px}.screen-lobby .lobby .game-tile{padding:7px 5px 10px}.screen-lobby .lobby .lobby-mode-art{max-height:18dvh}.screen-lobby .lobby .mode-description{min-height:39px;font-size:10px;margin:4px 0}.screen-lobby .lobby .mode-status{min-height:23px;margin:3px 0 5px}.screen-lobby .lobby .club-shortcuts{margin-top:12px}.lobby-table-front{top:calc(var(--host-height) - 45px)!important}.table-coins{top:30px}.table-deck{top:45px}}
+@media(max-height:550px) and (min-width:601px){.app.screen-lobby .lobby{padding-top:3px;padding-bottom:5px}.screen-lobby .lobby .game-menu{min-height:200px}.screen-lobby .lobby .game-tile{padding:5px 7px 8px}.screen-lobby .lobby .lobby-mode-art{max-height:21dvh}.screen-lobby .lobby .game-tile h2{font-size:20px;margin:3px 0}.screen-lobby .lobby .mode-description{font-size:9px;min-height:23px;margin:2px 0}.screen-lobby .lobby .mode-status{min-height:17px;margin:2px 0 3px}.screen-lobby .lobby .club-shortcuts{margin-top:10px}.lobby-table-front{top:calc(100% - 100px)!important}.table-coins{top:24px}.table-deck{top:55px}}
+.app.screen-lobby>header{width:100%;margin:0 auto}
