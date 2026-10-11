@@ -34,3 +34,11 @@ Compared with the supplied references, the recognizable dealer and gold/emerald 
 - `npm run android:sync`: passed; web assets copied to the existing wrapper. No APK generated in this task.
 - Full Chromium browser suite: 58 tests passed in 4.9 minutes, covering entrance, tutorials, 13-card hand, settings, profile, collection, loading, server rejection/latency, timers and reconnect. All 6 entrance checks passed again after the final foreground layer polish. Returning local guest restoration is additionally covered by a new unit regression and a final entrance/login browser rerun.
 
+
+## Overlap correction — October 11
+
+The reported username hint overlap came from a later shared `.username-note` negative margin. Login now scopes this selector to the form, makes inputs block elements and provides a 12px hint gap, including clearance for the focus ring. The input also identifies its hint with `aria-describedby`.
+
+The upper caption now belongs to the authentication panel and stays 44px above its frame; its bottom remains at least 8px above the crest. It follows the panel as form height changes, rather than remaining at a fixed screen coordinate. Mobile/short landscape layouts retain their existing hidden caption.
+
+Verification: 127 unit tests, production build and all 6 responsive entrance checks passed. Browser checks now assert actual hint/input and caption/crest separation. Updated screenshot evidence: [desktop welcome](qa-overlap/desktop-welcome.webp), [desktop signup](qa-overlap/desktop-signup.webp), [mobile signup](qa-overlap/mobile-signup.webp). Authentication logic and gameplay rules are unchanged.
