@@ -959,7 +959,7 @@
     "bytes": 257334,
     "sha256": "3985e297a75db6168e586603a1508769970991785b209234800f048c5cf3d3aa",
     "license": "Owner-supplied original/generated art; ASSET_LICENSE.md",
-    "usage": "Retained legacy art; replaced in active lobby/table presentation"
+    "usage": "Premium authentication room layer; existing owner-supplied WebP (no embedded UI)"
   },
   {
     "path": "/art/branding/logo.svg",
@@ -973,7 +973,8 @@
     "source": "Built-in image generation from supplied reference; prompt in docs/art/INTEGRATION.md",
     "bytes": 175570,
     "sha256": "ba4cf87233ecb345873c85e0f4688ebd9e4284c971a6dbb9d486a91ca7f9f2f2",
-    "license": "Original generated project art"
+    "license": "Original generated project art",
+    "usage": "Recognizable host in authentication hero, lobby and lessons; independent transparent WebP"
   },
   {
     "path": "/art/tables/emerald-clean.webp",

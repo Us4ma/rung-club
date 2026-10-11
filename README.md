@@ -32,3 +32,5 @@ New identities receive a skippable lobby introduction and a continuous, playable
 See [implementation and limitations](docs/FIRST_TIME_EXPERIENCE.md), [rule decisions](docs/RULE_DECISIONS.md), and [release QA evidence](docs/art/EXPERIENCE_QA.md). Run `npm test`, `npm run test:e2e`, `npm run test:visual`, `npm run build` and `npm run typecheck:worker`. Android: `npm run android:sync`, then use free Android Studio to generate a debug APK; Google Play publishing is deferred.
 
 Gameplay refinement: [implementation notes](docs/GAMEPLAY_REFINEMENT.md), [rules decisions](docs/RULE_DECISIONS.md), and [screenshot / test evidence](docs/art/GAMEPLAY_QA.md). The foundation now allows optional cutting when void; regional superior-Rung and Band reveal obligations remain explicit policies. Table quick play can be disabled in Settings.
+
+Premium login, email and signup presentation: [implementation and QA evidence](docs/art/ENTRANCE_QA.md). The welcome screen offers guest and Google entry before showing email fields; existing authentication and unique username reservation remain authoritative.

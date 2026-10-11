@@ -21,3 +21,7 @@ Phaser is lazy-loaded only on table entry (approximately 357 KB gzip). The stand
 ## Dealer and first-time experience overlays
 
 The dealer uses the existing owner-supplied transparent female lobby and seated table poses. No new raster art or licensed animation rig was introduced. Tutorial hand pointer, timer ring, deck sprite and card-flight overlays are original SVG/CSS/TypeScript components (`apps/web/experience.tsx`, `experience.css`), covered by this repository's MIT license. Flights reuse the existing card-back SVG and contain no opponent card faces. QA screenshots are captured from the running application, not generated concept art.
+
+## Premium authentication entrance
+
+The account entrance reuses the existing female dealer and warm lounge WebP files as independent layers. Felt table, walnut rim, brass panel/frame, crest, buttons and decorative rules are scalable CSS/HTML. Reference screenshots are visual targets only and are not shipped as flattened UI. See [entrance QA](art/ENTRANCE_QA.md) and the asset manifest for ownership, dimensions/size and responsive evidence.

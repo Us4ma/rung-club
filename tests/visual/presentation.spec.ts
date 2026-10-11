@@ -9,7 +9,7 @@ async function chooseOpenTrump(page:Page){for(let attempt=0;attempt<12;attempt++
 for(const [name,width,height] of [['desktop',1440,1000],['portrait',390,844],['landscape',844,390],['small-phone',320,640]] as const){
  test(name+' hand stays readable and playable',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.setViewportSize({width,height});await page.goto('/');await page.getByRole('button',{name:'Play as a guest'}).click();
+  await page.setViewportSize({width,height});await page.goto('/');await page.getByRole('button',{name:'Play as a Guest'}).click();
   await expect(page.locator('.splash')).toHaveCount(0);
   await page.screenshot({path:output+'/'+name+'-lobby.png',fullPage:true});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
@@ -28,7 +28,7 @@ for(const [name,width,height] of [['desktop',1440,1000],['portrait',390,844],['l
  });
 }
 test('roster, collection, hidden mode and tutorial retain working flows',async({page})=>{
- await page.addInitScript(()=>localStorage.setItem('profile',JSON.stringify({name:'TestPlayer',xp:400,matches:16,wins:8})));await page.goto('/');const missing=await page.evaluate(async()=>{const ranks=['2','3','4','5','6','7','8','9','10','J','Q','K','A'];const paths=ranks.flatMap(r=>['S','H','D','C'].map(s=>'/art/house/cards/'+r+s+'.svg'));return(await Promise.all(paths.map(path=>new Promise<string>(resolve=>{const img=new Image();img.onload=()=>resolve('');img.onerror=()=>resolve(path);img.src=path;})))).filter(Boolean);});expect(missing).toEqual([]);await page.getByRole('button',{name:'Play as a guest'}).click();await page.getByRole('button',{name:'Continue',exact:true}).click();await page.getByRole('button',{name:'Profile',exact:true}).click();
+ await page.addInitScript(()=>localStorage.setItem('profile',JSON.stringify({name:'TestPlayer',xp:400,matches:16,wins:8})));await page.goto('/');const missing=await page.evaluate(async()=>{const ranks=['2','3','4','5','6','7','8','9','10','J','Q','K','A'];const paths=ranks.flatMap(r=>['S','H','D','C'].map(s=>'/art/house/cards/'+r+s+'.svg'));return(await Promise.all(paths.map(path=>new Promise<string>(resolve=>{const img=new Image();img.onload=()=>resolve('');img.onerror=()=>resolve(path);img.src=path;})))).filter(Boolean);});expect(missing).toEqual([]);await page.getByRole('button',{name:'Play as a Guest'}).click();await page.getByRole('button',{name:'Continue',exact:true}).click();await page.getByRole('button',{name:'Profile',exact:true}).click();
  await expect(page.locator('.avatar-roster button')).toHaveCount(6);await page.getByRole('button',{name:'Avatar 6',exact:true}).click();await page.reload();expect(await page.evaluate(()=>localStorage.getItem('avatar'))).toBe('6');
  await expect(page.locator('.lobby')).toBeVisible();await page.getByRole('button',{name:'Collection',exact:true}).click();await page.getByRole('button',{name:'ruby Owned · Equip'}).click();expect(await page.evaluate(()=>localStorage.getItem('cardBack'))).toBe('ruby');
  await page.getByText('Back to lobby',{exact:true}).click();await page.locator('.mode-tile.band').click();await expect(page.locator('.mode-tile.band')).toHaveAttribute('aria-pressed','true');await page.getByRole('button',{name:'Practice table'}).click();if(await page.getByText('Choose your Rung',{exact:true}).isVisible())await page.locator('.hand button').first().click();await expect(page.getByText('HIDDEN RUNG',{exact:true})).toBeVisible();
@@ -39,15 +39,15 @@ for(const [name,width,height] of [['desktop',1440,900],['phone',390,844],['small
   await page.setViewportSize({width,height});await page.goto('/');await expect(page.getByRole('heading',{name:'Take your seat.'})).toBeVisible();await expect(page.locator('.splash')).toHaveCount(0);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   await page.screenshot({path:output+'/'+name+'-login.png',fullPage:true});
-  await page.getByLabel('Email address',{exact:true}).fill('player@example.com');await page.getByLabel('Password',{exact:true}).fill('sample-password');await page.getByRole('button',{name:'Show password'}).click();await expect(page.getByLabel('Password',{exact:true})).toHaveAttribute('type','text');
+  await page.getByRole('button',{name:'Sign In with Email',exact:true}).click();await page.getByLabel('Email address',{exact:true}).fill('player@example.com');await page.getByLabel('Password',{exact:true}).fill('sample-password');await page.getByRole('button',{name:'Show password'}).click();await expect(page.getByLabel('Password',{exact:true})).toHaveAttribute('type','text');
   await page.getByRole('button',{name:'Sign in',exact:true}).click();await expect(page.getByRole('alert')).toContainText('not configured');await expect(page.locator('.entry-screen')).toBeVisible();
-  await page.getByRole('button',{name:'Play as a guest'}).click();await expect(page.locator('.lobby')).toBeVisible();await page.reload();await expect(page.locator('.lobby')).toBeVisible();
+  await page.getByRole('button',{name:'All ways to play',exact:false}).click();await page.getByRole('button',{name:'Play as a Guest'}).click();await expect(page.locator('.lobby')).toBeVisible();await page.reload();await expect(page.locator('.lobby')).toBeVisible();
   await page.getByRole('button',{name:'Settings',exact:true}).click();await page.getByRole('button',{name:'Sign out',exact:true}).click();await expect(page.locator('.entry-screen')).toBeVisible();await page.reload();await expect(page.locator('.entry-screen')).toBeVisible();
  });
 }
 for(const [name,width,height] of [['desktop',1440,900],['portrait',390,844],['landscape',844,390],['small',320,640]] as const){
  test(name+' has four seats, separate host, readable panels and unobstructed play',async({page})=>{
-  await page.setViewportSize({width,height});await page.goto('/');await page.getByRole('button',{name:'Play as a guest'}).click();
+  await page.setViewportSize({width,height});await page.goto('/');await page.getByRole('button',{name:'Play as a Guest'}).click();
   await page.getByRole('button',{name:'Private Room',exact:false}).click();await expect(page.getByLabel('Room code')).toBeVisible();await page.getByLabel('Room code').fill('ab12');await expect(page.getByLabel('Room code')).toHaveValue('AB12');
   await page.getByRole('button',{name:'Practice table'}).click();await chooseOpenTrump(page);
   await expect(page.locator('[data-seat]')).toHaveCount(4);await expect(page.locator('.table-host')).toHaveCount(1);await expect(page.locator('.table-host img')).toBeVisible();
@@ -62,13 +62,13 @@ for(const [name,width,height] of [['desktop',1440,900],['portrait',390,844],['la
  });
 }
 test('cancelled drags do not play; valid central drops do',async({page})=>{
- await page.goto('/');await page.getByRole('button',{name:'Play as a guest'}).click();await page.getByRole('button',{name:'Practice table'}).click();await chooseOpenTrump(page);
+ await page.goto('/');await page.getByRole('button',{name:'Play as a Guest'}).click();await page.getByRole('button',{name:'Practice table'}).click();await chooseOpenTrump(page);
  const hand=page.locator('.hand');const card=hand.locator('.legal').first();await card.dispatchEvent('dragend');await expect(hand.locator('button')).toHaveCount(13);
  const transfer=await page.evaluateHandle(()=>new DataTransfer());await card.dispatchEvent('dragstart',{dataTransfer:transfer});await page.locator('.plays').dispatchEvent('drop',{dataTransfer:transfer});await expect(hand.locator('button')).toHaveCount(12);
 });
 for(const [name,width,height] of [['desktop',1440,900],['phone',390,844],['landscape',844,390]] as const){
  test(name+' settings and complete avatar frames fit',async({page})=>{
- await page.setViewportSize({width,height});await page.goto('/');await page.getByRole('button',{name:'Play as a guest'}).click();await page.locator('header').getByRole('button',{name:'Settings',exact:true}).click();
+ await page.setViewportSize({width,height});await page.goto('/');await page.getByRole('button',{name:'Play as a Guest'}).click();await page.locator('header').getByRole('button',{name:'Settings',exact:true}).click();
  await expect(page.getByRole('heading',{name:'Protect your guest account'})).toBeVisible();
  const checkbox=page.getByRole('switch',{name:'Vibration'});await checkbox.check();expect(await checkbox.isChecked()).toBe(true);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
@@ -82,14 +82,14 @@ for(const [name,width,height] of [['desktop',1440,900],['phone',390,844],['lands
  });
 }
 test('game lobby progress and settings drawer are usable',async({page})=>{
- await page.setViewportSize({width:390,height:844});await page.goto('/');await page.getByRole('button',{name:'Play as a guest'}).click();
+ await page.setViewportSize({width:390,height:844});await page.goto('/');await page.getByRole('button',{name:'Play as a Guest'}).click();
  await expect(page.getByRole('progressbar',{name:'Level progress'})).toHaveAttribute('aria-valuenow','0');
  const tiles=await page.locator('.game-tile').evaluateAll(els=>els.map(el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width};}));expect(Math.abs(tiles[0].width-tiles[3].width)).toBeLessThan(2);expect(tiles[0].y).toBe(tiles[1].y);expect(tiles[2].y).toBe(tiles[3].y);
  await page.locator('header').getByRole('button',{name:'Settings',exact:true}).click();await expect(page.getByRole('dialog',{name:'Settings'})).toBeVisible();await expect(page.locator('.lobby-background')).toHaveAttribute('inert','');await page.keyboard.press('Escape');await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.locator('header').getByRole('button',{name:'Settings',exact:true})).toBeFocused();
 });
 for(const [name,width,height] of [['desktop',1440,1000],['portrait',390,844],['small-phone',320,640]] as const){
  test(name+' profile choices and account controls stay separated',async({page})=>{
-  await page.setViewportSize({width,height});await page.goto('/');await page.getByRole('button',{name:'Play as a guest'}).click();await page.getByRole('button',{name:'Your profile',exact:true}).click();await expect(page.locator('.avatar-roster button')).toHaveCount(6);
+  await page.setViewportSize({width,height});await page.goto('/');await page.getByRole('button',{name:'Play as a Guest'}).click();await page.getByRole('button',{name:'Your profile',exact:true}).click();await expect(page.locator('.avatar-roster button')).toHaveCount(6);
   await page.getByRole('button',{name:'Avatar 5',exact:true}).click();await expect(page.getByRole('button',{name:'Avatar 5',exact:true})).toHaveAttribute('aria-pressed','true');
   const buttons=await page.locator('.avatar-roster button').evaluateAll(els=>els.map(el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height};}));
   for(let i=0;i<buttons.length;i++){expect(buttons[i].w).toBeGreaterThanOrEqual(44);for(let j=i+1;j<buttons.length;j++){const a=buttons[i],b=buttons[j];expect(a.x+a.w<=b.x+.5||b.x+b.w<=a.x+.5||a.y+a.h<=b.y+.5||b.y+b.h<=a.y+.5).toBe(true);}}
@@ -100,7 +100,7 @@ for(const [name,width,height] of [['desktop',1440,1000],['portrait',390,844],['s
  });
 }
 test('registration asks for a bounded username alongside account details',async({page})=>{
- await page.setViewportSize({width:390,height:844});await page.goto('/');await page.getByRole('button',{name:'Create an account',exact:true}).click();const field=page.getByLabel('Username',{exact:true});await expect(field).toBeVisible();await expect(field).toHaveAttribute('maxlength','20');await field.fill('Baazi_123');await page.screenshot({path:output+'/portrait-registration.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});await page.goto('/');await page.getByRole('button',{name:'Create Account',exact:true}).click();const field=page.getByLabel('Username',{exact:true});await expect(field).toBeVisible();await expect(field).toHaveAttribute('maxlength','20');await field.fill('Baazi_123');await page.screenshot({path:output+'/portrait-registration.png',fullPage:true});
 });
 for(const [name,width,height] of [['desktop',1440,900],['portrait',390,844],['landscape',844,390]] as const){
  test(name+' card loading screen paints before the app bundle and clears when ready',async({page})=>{
@@ -108,19 +108,19 @@ for(const [name,width,height] of [['desktop',1440,900],['portrait',390,844],['la
   let release!:()=>void;const held=new Promise<void>(resolve=>{release=resolve;});await page.route('**/main.tsx',async route=>{await held;await route.continue();});
   await page.goto('/',{waitUntil:'domcontentloaded'});await expect(page.locator('#boot-screen')).toBeVisible();await expect(page.locator('.boot-card')).toHaveCount(3);await expect(page.locator('#root')).toHaveAttribute('inert','');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.screenshot({path:output+'/'+name+'-loading.png',fullPage:true});
-  release();await expect(page.locator('#boot-screen')).toHaveCount(0);await expect(page.getByRole('button',{name:'Play as a guest'})).toBeVisible();await expect(page.locator('#root')).not.toHaveAttribute('inert','');
-  expect(requested.some(url=>/phaser|firebase_auth/.test(url))).toBe(false);await page.getByRole('button',{name:'Play as a guest'}).click();await page.getByRole('button',{name:'Practice table'}).click();await expect.poll(()=>requested.some(url=>/phaser/.test(url))).toBe(true);
+  release();await expect(page.locator('#boot-screen')).toHaveCount(0);await expect(page.getByRole('button',{name:'Play as a Guest'})).toBeVisible();await expect(page.locator('#root')).not.toHaveAttribute('inert','');
+  expect(requested.some(url=>/phaser|firebase_auth/.test(url))).toBe(false);await page.getByRole('button',{name:'Play as a Guest'}).click();await page.getByRole('button',{name:'Practice table'}).click();await expect.poll(()=>requested.some(url=>/phaser/.test(url))).toBe(true);
  });
 }
 test('loading failure shows a retry instead of an endless animation',async({page})=>{
  await page.route('**/main.tsx*',route=>route.abort('failed'));await page.goto('/');await expect(page.getByRole('status')).toContainText('Couldn’t load the club');await expect(page.getByRole('button',{name:'Try again'})).toBeVisible();await expect(page.locator('#boot-screen')).toHaveClass(/boot-error/);
 });
 test('reduced motion loading uses a static fan and exits normally',async({page})=>{
- await page.emulateMedia({reducedMotion:'reduce'});let release!:()=>void;const held=new Promise<void>(resolve=>{release=resolve;});await page.route('**/main.tsx',async route=>{await held;await route.continue();});await page.goto('/',{waitUntil:'domcontentloaded'});expect(await page.locator('.boot-card').first().evaluate(el=>getComputedStyle(el).animationName)).toBe('none');release();await expect(page.locator('#boot-screen')).toHaveCount(0);await expect(page.getByRole('button',{name:'Play as a guest'})).toBeVisible();
+ await page.emulateMedia({reducedMotion:'reduce'});let release!:()=>void;const held=new Promise<void>(resolve=>{release=resolve;});await page.route('**/main.tsx',async route=>{await held;await route.continue();});await page.goto('/',{waitUntil:'domcontentloaded'});expect(await page.locator('.boot-card').first().evaluate(el=>getComputedStyle(el).animationName)).toBe('none');release();await expect(page.locator('#boot-screen')).toHaveCount(0);await expect(page.getByRole('button',{name:'Play as a Guest'})).toBeVisible();
 });
 for(const [name,width,height] of [['desktop',1440,900],['portrait',390,844],['landscape',844,390]] as const){
  test(name+' simplified lobby and secondary navigation',async({page})=>{
-  await page.setViewportSize({width,height});await page.goto('/');await page.getByRole('button',{name:'Play as a guest'}).click();await expect(page.getByRole('button',{name:'Settings',exact:true})).toHaveCount(1);await expect(page.locator('.bottom-nav button')).toHaveCount(3);await expect(page.locator('.club-footer')).toContainText('One more baazi');
+  await page.setViewportSize({width,height});await page.goto('/');await page.getByRole('button',{name:'Play as a Guest'}).click();await expect(page.getByRole('button',{name:'Settings',exact:true})).toHaveCount(1);await expect(page.locator('.bottom-nav button')).toHaveCount(3);await expect(page.locator('.club-footer')).toContainText('One more baazi');
   await page.screenshot({path:output+'/'+name+'-refined-lobby.png',fullPage:true});
   await page.getByRole('button',{name:'Profile',exact:true}).click();await expect(page.locator('header')).toHaveCount(0);await expect(page.locator('.avatar-roster button')).toHaveCount(6);const back=page.getByRole('button',{name:'Back to lobby',exact:true});await expect(back).toBeVisible();expect((await back.boundingBox())!.height).toBeGreaterThanOrEqual(44);await page.screenshot({path:output+'/'+name+'-refined-profile.png',fullPage:true});await back.click();await expect(page.locator('header')).toHaveCount(1);
   for(const destination of ['Collection','Rules & lessons']){await page.getByRole('button',{name:destination,exact:true}).click();await expect(page.locator('header')).toHaveCount(0);await page.getByRole('button',{name:'Back to lobby',exact:true}).click();}
