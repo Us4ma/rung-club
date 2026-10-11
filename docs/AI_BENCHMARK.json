@@ -1,9 +1,9 @@
 {
   "games": 400,
   "advancedVsRandom": {
-    "wins": 260,
-    "winRate": 0.65,
-    "meanCollectedSars": 8.37
+    "wins": 302,
+    "winRate": 0.755,
+    "meanCollectedSars": 9.25
   },
   "caveat": "Deterministic paired-seat heuristic evaluation, not human strength or statistical validation."
 }
