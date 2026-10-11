@@ -1516,7 +1516,7 @@
     "bytes": 36390,
     "sha256": "72474f252b68b8bc6f6a35ba80b7f06c6225b322a59d9406f932a47a45006565",
     "license": "Original project-generated illustration; no commercial-game assets or third-party stock",
-    "usage": "Lobby mode artwork only; decorative, no game-state content",
+    "usage": "Inactive original illustration; replaced by plain code-native open-simple.svg",
     "format": "WebP with alpha",
     "width": 320,
     "height": 334
@@ -1527,7 +1527,7 @@
     "bytes": 109964,
     "sha256": "068e64cace34dfa2f0351fa696c966c4acfa05c87b6511deb012be00fe5ffacb",
     "license": "Original project-generated illustration; no commercial-game assets or third-party stock",
-    "usage": "Lobby mode artwork only; decorative, no game-state content",
+    "usage": "Inactive original illustration; replaced by plain code-native open-simple.svg",
     "format": "WebP with alpha",
     "width": 640,
     "height": 669
@@ -1553,5 +1553,27 @@
     "format": "WebP with alpha",
     "width": 640,
     "height": 627
+  },
+  {
+    "path": "/art/lobby/open-simple.svg",
+    "source": "Original code-native SVG constructed for Rung Club",
+    "license": "MIT project artwork",
+    "usage": "Decorative lobby layer only; no game-state content",
+    "format": "SVG",
+    "width": 400,
+    "height": 300,
+    "bytes": 2193,
+    "sha256": "808c58c5291bb77d4bfccd864d2cbc1b072864409ca3e7eb59cb0490dad38fe2"
+  },
+  {
+    "path": "/art/lobby/table-front.svg",
+    "source": "Original code-native SVG constructed for Rung Club",
+    "license": "MIT project artwork",
+    "usage": "Decorative lobby layer only; no game-state content",
+    "format": "SVG",
+    "width": 1600,
+    "height": 400,
+    "bytes": 1102,
+    "sha256": "c5ea45087a65dd9ebe2a1e4597660cc9235dfcd16a285f00573c36ea0670b8d1"
   }
 ]

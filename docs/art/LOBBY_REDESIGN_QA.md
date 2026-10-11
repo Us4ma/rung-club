@@ -25,3 +25,9 @@ Also tested at 1366 × 768, 412 × 924 and 360 × 800. Reviewed against the supp
 `apps/web/lobby.tsx`, lobby-only `apps/web/lobby.css`, and the lobby Header in `apps/web/main.tsx` contain the presentation changes. Tests update the former four-card/Quick Play selectors to the intentional three-card Open Rung layout.
 
 Six responsive alpha WebP files are saved under `apps/web/public/art/lobby/` (389.5 KiB total). [Generation prompts and provenance](LOBBY_ASSET_PROMPTS.md) document the built-in tool and separate illustration subjects. [Asset manifest](asset-manifest.json) records source, usage, dimensions, bytes and SHA-256 values. No new production dependency, paid service, store, currency or ad integration was introduced.
+
+## Owner-requested visual correction, 12 October 2026
+
+The HUD now uses a serif spade wordmark and a compact identity plaque. Automatically generated Guest-UID labels display as Guest in the HUD, while stored identity/name data remains intact. The Open Rung illustration is replaced by plain code-native ivory cards with rank/suit marks, without royal portraits. Card descriptions now follow the approved reference. A separate textured felt/walnut/brass foreground layer covers the dealer's lower body and includes decorative gold coin stacks and a card deck; these are scenery, not an economy balance. The lobby bottom navigation and footer are removed. Collection and rules navigation remain available inside Profile, reached from the HUD.
+
+Production compilation and Android web-asset sync were performed to publish the update. The owner explicitly requested no tests or screenshot validation for this correction; previous screenshots and test counts above describe the earlier revision, not this follow-up.
