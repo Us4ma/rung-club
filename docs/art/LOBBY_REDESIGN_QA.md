@@ -42,3 +42,10 @@ The lobby now occupies `100dvh`, with mode artwork using the available height an
 Removed clipping at the inset lobby grid while retaining viewport-level bounds. The foreground table now fills the screen width and bottom edge; decorative cards sit above the lower boundary. Portrait layouts use compact mode cards and a larger dealer hero, with visible descriptions and smaller titles on narrow phones.
 
 All eight responsive browser cases passed: 1920×1080, 1366×768, 412×924, 390×844, 360×800, 320×640, 844×390 and 932×430. Checks cover full-width table, card decoration bounds, visible mode descriptions and titles, minimum 44px primary buttons, shortcut visibility, no outer scrolling, Band unlock and private-room navigation. Fresh desktop, portrait, landscape and small-phone screenshots are stored in qa-lobby-redesign. Production build and Capacitor asset synchronization passed. These are browser-emulated layouts, not physical Android-device tests. Gameplay and authentication logic were unchanged.
+
+
+## Mobile reference proportion correction
+
+Compared against the supplied Mobile Lobby Showcase(2) portrait and landscape reference. The previous cards were vertically stretched despite passing viewport checks. Portrait card height now follows screen width (230–286px), rather than viewport height; the 390px layout is about 261px tall instead of 322px. Reserved ribbon/progress spacing is compact, descriptions remain readable, and buttons retain 44px targets. The existing dealer is larger in portrait and landscape. Desktop panels are capped to avoid empty internal space.
+
+Eight responsive tests pass, including new mobile card aspect-ratio and viewport-height assertions. Production build and Capacitor sync pass. Screenshot evidence refreshed for desktop, portrait, landscape and 320px phones. Physical Android device testing remains outstanding. Existing source artwork is retained; this is a layout correction, not an exact recreation of the reference illustration.

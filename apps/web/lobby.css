@@ -110,3 +110,39 @@
 @media(max-width:360px){.screen-lobby .lobby .game-tile h2{font-size:16px;letter-spacing:-.5px}}
 @media(max-width:340px){.screen-lobby .lobby .game-tile h2{font-size:14px;letter-spacing:-.3px}.screen-lobby .lobby .game-tile .mode-description{font-size:9px}}
 @media(max-height:550px) and (min-width:601px){.screen-lobby .lobby .game-tile .mode-description{display:block;font-size:9px;line-height:1.25;min-height:23px;margin:2px 0}}
+/* Reference proportions: card height follows its width, never spare viewport height. */
+@media(max-width:600px){
+ .screen-lobby .lobby-arrangement{--mode-card-height:clamp(230px,67vw,286px);--host-height:clamp(100px,calc(100dvh - var(--mode-card-height) - 244px),470px)}
+ .screen-lobby .lobby-host>.dealer{width:min(94vw,390px);max-width:100%;height:calc(var(--host-height) + 48px);bottom:-24px;left:52%}
+ .screen-lobby .lobby .game-menu{gap:8px}
+ .screen-lobby .lobby .game-tile{padding:5px 5px 9px;border-radius:11px}
+ .screen-lobby .lobby .mode-ribbon{position:absolute;top:6px;left:5px;right:5px;z-index:2}
+ .screen-lobby .lobby .band .mode-ribbon{width:auto;min-height:21px}
+ .screen-lobby .lobby .mode-tile{padding-top:22px;justify-content:flex-start}
+ .screen-lobby .lobby .lobby-mode-art{flex:1;max-height:125px;min-height:55px;width:112%;}
+ .screen-lobby .lobby .game-tile h2{margin:3px 0 4px;font-size:18px}
+ .screen-lobby .lobby .game-tile p{font-size:10px;min-height:25px;line-height:1.25}
+ .screen-lobby .lobby .game-tile .mode-description{font-size:10px;min-height:36px;margin:3px 0 5px;line-height:1.2}
+ .screen-lobby .lobby .mode-status{position:absolute;top:30px;left:9px;right:9px;min-height:0;margin:0;z-index:3}
+ .screen-lobby .lobby .mode-status progress{height:3px;margin-bottom:1px}
+ .screen-lobby .lobby .mode-status small{font-size:7px;text-shadow:0 1px 2px #000}
+ .screen-lobby .lobby .game-tile>.mode-play{height:44px;min-height:44px}
+ .screen-lobby .lobby .club-shortcuts{margin-top:15px}
+ .screen-lobby .lobby-identity{background:linear-gradient(90deg,#03180fbd,#082b1d40);box-shadow:none}
+}
+@media(max-width:360px){
+ .screen-lobby .lobby .game-tile h2{font-size:16px}
+ .screen-lobby .lobby .game-tile .mode-description{font-size:9px}
+}
+@media(max-width:340px){.screen-lobby .lobby .game-tile h2{font-size:14px}.screen-lobby .lobby .game-tile p{font-size:9px}}
+@media(max-height:550px) and (min-width:601px){
+ .screen-lobby .lobby-arrangement{grid-template-columns:28% minmax(0,1fr);gap:16px}
+ .screen-lobby .lobby-host>.dealer{width:300px;height:calc(100dvh - 62px);max-width:145%;bottom:8px}
+ .screen-lobby .lobby .game-menu{flex:0 1 270px}
+ .screen-lobby .lobby-play-area{justify-content:flex-end}
+}
+@media(min-width:1001px) and (min-height:551px){
+ .screen-lobby .lobby .game-menu{flex:0 1 560px}
+ .screen-lobby .lobby-play-area{justify-content:flex-end}
+ .screen-lobby .lobby-host>.dealer{height:min(620px,90%);width:135%;max-width:510px;bottom:45px}
+}
