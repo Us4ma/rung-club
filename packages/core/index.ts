@@ -1,8 +1,8 @@
 export type Suit='S'|'H'|'D'|'C';
 export type Card={id:string,suit:Suit,rank:number};
 export type Play={seat:number,card:Card,effective:number,trump:boolean,bhaag:boolean};
-export type Policy={version:string,opening:number,superior:'opponent-only'|'always',aceChain:boolean,maxRedeals:number};
-export const DEFAULT:Policy={version:'double-sar-v1-provisional',opening:5,superior:'opponent-only',aceChain:true,maxRedeals:64};
+export type Policy={version:string,opening:number,superior:'off'|'opponent-only'|'always',voidTrump?:'optional'|'compulsory',aceChain:boolean,maxRedeals:number};
+export const DEFAULT:Policy={version:'double-sar-v2-optional-trump',opening:5,voidTrump:'optional',superior:'off',aceChain:true,maxRedeals:64};
 export type State={opening?:import('./opening.ts').OpeningDraw,matchId:string,policy:Policy,mode:'open'|'band',phase:'calling'|'playing'|'finished',hands:Card[][],stock:Card[][],indicator:Card|null,caller:number,trump:Suit|null,revealed:boolean,turn:number,senior:number|null,trick:Play[],history:Play[][],winners:number[],pile:number,scores:number[],streakSeat:number|null,streak:number,lastAce:boolean,forceTrump:number|null,revision:number,redeals:number,result:string|null};
 export const deck=():Card[]=>['S','H','D','C'].flatMap(s=>Array.from({length:13},(_,i)=>({id:s+(i+2),suit:s as Suit,rank:i+2})));
 export function seeded(seed:number){return ()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};}
@@ -13,8 +13,26 @@ export function call(s:State,seat:number,choice:string,random=secureRandom):Stat
 for(let i=0;i<4;i++)next.hands[i].push(...next.stock[i]);next.stock=[[],[],[],[]];if(next.hands.some(h=>h.filter(c=>c.suit===next.trump).length>=7)){if(s.redeals>=s.policy.maxRedeals)throw Error('Redeal safety limit; start a fresh deal');const fresh=create(s.mode,random,s.policy,s.caller);fresh.opening=s.opening;fresh.matchId=s.matchId;fresh.redeals=s.redeals+1;fresh.revision=s.revision+1;return fresh;}
 if(next.indicator)next.hands[seat]=next.hands[seat].filter(c=>c.id!==next.indicator!.id);next.phase='playing';next.revision++;return next;}
 export function winning(plays:Play[]):Play|undefined{let best=plays[0];if(!best)return undefined;const led=best.card.suit;const category=(p:Play)=>p.trump?2:p.card.suit===led?1:0;for(const p of plays.slice(1)){if(category(p)>category(best)||(category(p)===category(best)&&p.card.suit===best.card.suit&&p.effective>best.effective))best=p;}return best;}
-export function legal(s:State,seat:number):Card[]{if(s.phase!=='playing'||seat!==s.turn)return [];const hand=s.hands[seat];const led=s.trick[0]?.card.suit;const follow=hand.filter(c=>c.suit===led);if(follow.length){if(s.revealed&&led===s.trump)return superior(follow,winning(s.trick),s,seat);return follow;}if(!s.revealed||!s.trump||!led)return hand;const trumps=hand.filter(c=>c.suit===s.trump);const best=winning(s.trick);if(s.forceTrump===seat)return superior(trumps,best,s,seat).length?superior(trumps,best,s,seat):hand;if(best&&best.seat%2===seat%2&&s.policy.superior==='opponent-only')return hand;if(trumps.length)return superior(trumps,best,s,seat);return hand;}
-function superior(cards:Card[],best:Play|undefined,s:State,seat:number){if(best?.trump&&(s.policy.superior==='always'||best.seat%2!==seat%2)){const higher=cards.filter(c=>c.rank>best.effective);if(higher.length)return higher;}return cards;}
+/** Original led suit remains authoritative; voluntary cutting never removes discards. */
+export function legal(s:State,seat:number):Card[]{
+ if(s.phase!=='playing'||seat!==s.turn)return [];
+ const hand=s.hands[seat],led=s.trick[0]?.card.suit;
+ if(!led)return hand;
+ const follow=hand.filter(c=>c.suit===led),best=winning(s.trick);
+ if(follow.length)return s.revealed&&led===s.trump?superior(follow,best,s,seat):follow;
+ if(!s.revealed||!s.trump)return hand;
+ const trumps=superior(hand.filter(c=>c.suit===s.trump),best,s,seat);
+ // A valid Band reveal imposes a separate obligation, only on its requester.
+ if(s.forceTrump===seat)return trumps.length?trumps:hand;
+ if(s.policy.voidTrump==='compulsory'&&trumps.length&&
+   !(best&&best.seat%2===seat%2&&s.policy.superior==='opponent-only'))return trumps;
+ return hand.filter(c=>c.suit!==s.trump||trumps.some(t=>t.id===c.id));
+}
+function superior(cards:Card[],best:Play|undefined,s:State,seat:number){
+ if(s.policy.superior!=='off'&&best?.trump&&(s.policy.superior==='always'||best.seat%2!==seat%2)){
+  const higher=cards.filter(c=>c.rank>best.effective);if(higher.length)return higher;
+ }return cards;
+}
 export function canReveal(s:State,seat:number){return s.mode==='band'&&!s.revealed&&s.phase==='playing'&&s.turn===seat&&!!s.trick.length&&!s.hands[seat].some(c=>c.suit===s.trick[0].card.suit);}
 export function reveal(s:State,seat:number):State{if(!canReveal(s,seat))throw Error('Reveal requires inability to follow suit on your turn');const n=structuredClone(s);n.revealed=true;if(n.indicator){n.hands[n.caller].push(n.indicator);n.indicator=null;}n.forceTrump=seat;n.revision++;return n;}
 export function classifyBhaag(s:State,seat:number,c:Card,intent:boolean){return intent&&s.senior===seat&&s.trick.length===0&&c.rank!==14&&s.revealed&&c.suit!==s.trump;}

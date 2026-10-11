@@ -1,4 +1,4 @@
-# Rules decision register — double-sar-v1-provisional
+# Rules decision register — double-sar-v2-optional-trump
 
 This software implements the supplied brief. “Confirmed” below means specified by that brief, not independently agreed by all regional players. Regional adjudication is still required before competitive release.
 
@@ -7,7 +7,8 @@ This software implements the supplied brief. “Confirmed” below means specifi
 | Teams / deck / deal | Confirmed | Four players, opposite partners, 52 distinct cards; anticlockwise 5–4–4; call after five; finish 13 Sars. |
 | First collection | Provisional | Opening `5`: same individual wins Sars 4 and 5. No collection on 1–4. If missed, consecutive 5–6 can collect on 6. `Policy.opening` replaces the boundary. |
 | Double collection | Confirmed | Individual streak, never team streak. All accumulated Sars collected. Reset streak to zero after collection. 12 may collect; 13 always clears remainder. |
-| Superior trump | Provisional `opponent-only` | Follow led suit. If led suit is live trump, overtrump an opponent when possible. When void in a non-trump suit, cut an opponent if holding trump and overtrump if possible. If partner is currently winning, cutting/overtrumping is optional. `always` removes partner exemption. If no superior trump exists, any trump is allowed. |
+| Void-suit legality | Confirmed correction | Follow the original led suit if held. Otherwise any card is legal by default, even after a cut. Default `voidTrump: optional`, `superior: off`. See [Pagat play / Double Sir](https://www.pagat.com/whist/rang.html). |
+| Superior trump | Optional regional preset | `opponent-only` or `always` restricts voluntary trumps to higher ones when available; non-trump discards remain legal. When trump is led, follow suit and selected superiority apply. Explicit `voidTrump: compulsory` retains the older compulsory-cut regional preset, never selected implicitly. Stored policies without `voidTrump` use optional cutting. |
 | Bhaag | Provisional explicit intent | Senior can mark a non-Ace, non-trump lead as an escape attempt. Classification never changes legality or winner. Before Band reveal, Bhaag classification is disabled for everyone to avoid leaking the hidden suit. Other low-power thresholds are unresolved. |
 | Ace-on-Ace | Provisional exact activation | Winner's physical winning card is Ace; that same Senior immediately leads another physical Ace next Sar. Effective rank becomes 2, original card stays Ace. A downgraded winning Ace can continue this chain. No penalty on non-leading Aces. |
 | Effective ties | Provisional | Earlier played card wins equal eligible effective rank. Example: downgraded spade Ace led before spade 2 wins the tie. |
