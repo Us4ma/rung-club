@@ -24,3 +24,9 @@ See `docs/VALIDATION.md` for actual checks, `docs/RULE_DECISIONS.md` for assumpt
 - `dist`, `worker-dist`, `playable`: generated delivery artifacts
 
 MIT for original project code. Third-party libraries retain their own licenses.
+
+## First-time experience update
+
+New identities receive a skippable lobby introduction and a continuous, playable five-Sar guided deal. Regular matches use a highest-rank opening draw. Online turns and Rung calling use persisted 20-second deadlines with legal automatic actions; reconnect keeps the same deadline. Band Rung unlocks at Level 5 (400 XP), with server-ledger eligibility for online rooms. Local practice XP stays on the device. Tutorial replay and optional advanced examples are available in Settings/Rules.
+
+See [implementation and limitations](docs/FIRST_TIME_EXPERIENCE.md), [rule decisions](docs/RULE_DECISIONS.md), and [release QA evidence](docs/art/EXPERIENCE_QA.md). Run `npm test`, `npm run test:e2e`, `npm run test:visual`, `npm run build` and `npm run typecheck:worker`. Android: `npm run android:sync`, then use free Android Studio to generate a debug APK; Google Play publishing is deferred.

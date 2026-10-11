@@ -3,7 +3,9 @@ const test=process.env.BROWSER_EXECUTABLE_PATH?base.extend({context:async({playw
 import fs from 'node:fs';
 const output=process.env.QA_SCREENSHOT_DIR||'test-results/art-qa';
 fs.mkdirSync(output,{recursive:true});
-async function chooseOpenTrump(page:Page){for(let attempt=0;attempt<12;attempt++){await page.getByRole('button',{name:'♣',exact:true}).click();await page.waitForTimeout(60);if(await page.locator('.hand button').count()===13)return;}throw Error('Valid deal not reached within UI test redeal limit');}
+test.beforeEach(async({page})=>{await page.addInitScript(()=>localStorage.setItem('welcome','1'));});
+async function chooseOpenTrump(page:Page){for(let attempt=0;attempt<12;attempt++){await expect.poll(async()=>await page.locator('.hand button').count()===13||await page.getByRole('button',{name:'♣',exact:true}).isVisible()).toBe(true);if(await page.locator('.hand button').count()===13)break;await page.getByRole('button',{name:'♣',exact:true}).click();await page.waitForTimeout(60);}await expect(page.locator('.hand button')).toHaveCount(13);await expect(page.locator('.hand button.legal').first()).toBeVisible();}
+
 for(const [name,width,height] of [['desktop',1440,1000],['portrait',390,844],['landscape',844,390],['small-phone',320,640]] as const){
  test(name+' hand stays readable and playable',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
@@ -26,11 +28,11 @@ for(const [name,width,height] of [['desktop',1440,1000],['portrait',390,844],['l
  });
 }
 test('roster, collection, hidden mode and tutorial retain working flows',async({page})=>{
- await page.goto('/');const missing=await page.evaluate(async()=>{const ranks=['2','3','4','5','6','7','8','9','10','J','Q','K','A'];const paths=ranks.flatMap(r=>['S','H','D','C'].map(s=>'/art/house/cards/'+r+s+'.svg'));return(await Promise.all(paths.map(path=>new Promise<string>(resolve=>{const img=new Image();img.onload=()=>resolve('');img.onerror=()=>resolve(path);img.src=path;})))).filter(Boolean);});expect(missing).toEqual([]);await page.getByRole('button',{name:'Play as a guest'}).click();await page.getByRole('button',{name:'Profile',exact:true}).click();
+ await page.addInitScript(()=>localStorage.setItem('profile',JSON.stringify({name:'TestPlayer',xp:400,matches:16,wins:8})));await page.goto('/');const missing=await page.evaluate(async()=>{const ranks=['2','3','4','5','6','7','8','9','10','J','Q','K','A'];const paths=ranks.flatMap(r=>['S','H','D','C'].map(s=>'/art/house/cards/'+r+s+'.svg'));return(await Promise.all(paths.map(path=>new Promise<string>(resolve=>{const img=new Image();img.onload=()=>resolve('');img.onerror=()=>resolve(path);img.src=path;})))).filter(Boolean);});expect(missing).toEqual([]);await page.getByRole('button',{name:'Play as a guest'}).click();await page.getByRole('button',{name:'Continue',exact:true}).click();await page.getByRole('button',{name:'Profile',exact:true}).click();
  await expect(page.locator('.avatar-roster button')).toHaveCount(6);await page.getByRole('button',{name:'Avatar 6',exact:true}).click();await page.reload();expect(await page.evaluate(()=>localStorage.getItem('avatar'))).toBe('6');
  await expect(page.locator('.lobby')).toBeVisible();await page.getByRole('button',{name:'Collection',exact:true}).click();await page.getByRole('button',{name:'ruby Owned · Equip'}).click();expect(await page.evaluate(()=>localStorage.getItem('cardBack'))).toBe('ruby');
- await page.getByText('Back to lobby',{exact:true}).click();await page.locator('.mode-tile.band').click();await expect(page.locator('.mode-tile.band')).toHaveAttribute('aria-pressed','true');await page.getByRole('button',{name:'Practice table'}).click();await expect(page.getByText('Choose your Rung',{exact:true})).toBeVisible();await page.locator('.hand button').first().click();await expect(page.getByText('HIDDEN RUNG',{exact:true})).toBeVisible();
- await page.getByRole('button',{name:'Lobby',exact:true}).click();await page.getByRole('button',{name:'Learn the art of Rung'}).click();await expect(page.locator('.lesson img.dealer')).toBeVisible();await page.getByText('Next lesson',{exact:true}).click();await expect(page.getByText(/Follow the suit led/)).toBeVisible();
+ await page.getByText('Back to lobby',{exact:true}).click();await page.locator('.mode-tile.band').click();await expect(page.locator('.mode-tile.band')).toHaveAttribute('aria-pressed','true');await page.getByRole('button',{name:'Practice table'}).click();if(await page.getByText('Choose your Rung',{exact:true}).isVisible())await page.locator('.hand button').first().click();await expect(page.getByText('HIDDEN RUNG',{exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'Lobby',exact:true}).click();await page.getByRole('button',{name:'Learn the art of Rung'}).click();await expect(page.locator('.lesson img.dealer')).toBeVisible();await page.getByText('Begin dealing',{exact:true}).click();await page.getByRole('button',{name:'♥',exact:true}).click();await expect(page.getByText(/Follow the led suit/)).toBeVisible();
 });
 for(const [name,width,height] of [['desktop',1440,900],['phone',390,844],['small',320,640],['landscape',844,390]] as const){
  test(name+' login is usable and guest reaches lobby',async({page})=>{
@@ -111,7 +113,7 @@ for(const [name,width,height] of [['desktop',1440,900],['portrait',390,844],['la
  });
 }
 test('loading failure shows a retry instead of an endless animation',async({page})=>{
- await page.route('**/main.tsx',route=>route.abort('failed'));await page.goto('/');await expect(page.getByRole('status')).toContainText('Couldn’t load the club');await expect(page.getByRole('button',{name:'Try again'})).toBeVisible();await expect(page.locator('#boot-screen')).toHaveClass(/boot-error/);
+ await page.route('**/main.tsx*',route=>route.abort('failed'));await page.goto('/');await expect(page.getByRole('status')).toContainText('Couldn’t load the club');await expect(page.getByRole('button',{name:'Try again'})).toBeVisible();await expect(page.locator('#boot-screen')).toHaveClass(/boot-error/);
 });
 test('reduced motion loading uses a static fan and exits normally',async({page})=>{
  await page.emulateMedia({reducedMotion:'reduce'});let release!:()=>void;const held=new Promise<void>(resolve=>{release=resolve;});await page.route('**/main.tsx',async route=>{await held;await route.continue();});await page.goto('/',{waitUntil:'domcontentloaded'});expect(await page.locator('.boot-card').first().evaluate(el=>getComputedStyle(el).animationName)).toBe('none');release();await expect(page.locator('#boot-screen')).toHaveCount(0);await expect(page.getByRole('button',{name:'Play as a guest'})).toBeVisible();

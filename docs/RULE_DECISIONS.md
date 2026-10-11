@@ -21,3 +21,14 @@ This software implements the supplied brief. “Confirmed” below means specifi
 | Courts / match points | Unresolved, not implemented | Consecutive-deal courts, scoring multipliers, regional dealer penalties and match-ending thresholds are excluded from the playable single-deal preset. |
 
 Examples live in `tests/core.test.ts`. Legal cards, Sar outcome and Bhaag classification have separate functions. Policy changes belong in the core, not in UI code.
+
+## First-time experience update — highest-rank-v1
+
+- **Approved opening selection:** each new regular match/rematch resolves a public highest-rank draw before creating the full 52-card deal. Aces high; suits never break a tie. Only highest tied seats redraw. Exhausted comparison decks replenish. The draw pool is separate from the freshly shuffled deal deck.
+- **Bounded rare fallback:** after 64 tied comparison rounds, shuffle the full comparison pool and draw distinct ranks for the remaining eligible seats. This guarantees a unique highest rank without suit priority or seat nomination. The result records `boundedFallback`. This safety interpretation is provisional and independently testable.
+- **Caller/lead:** opening winner calls and leads the opening Sar. An invalid seven-trump redeal retains that caller and room; it does not run another selection ritual.
+- **Subsequent deals:** the product currently hosts single-deal matches. A rematch is a new match and uses a fresh opening draw. Multi-deal courts and dealer rotation remain unresolved; no regional rotation was silently introduced.
+- **Tutorial:** one conserved scripted deal uses the same `call`, `legal`, `play`, `reveal` and collection functions. Its caller is intentionally seat 0 for teaching. It stops after the legal fifth-Sar collection; it is not a ranked/online result and awards no XP.
+- **Progression:** existing 100 XP per level is retained. Band Rung requires 400 server-ledger XP (Level 5) to create/queue/join a new online seat. Existing valid room members can reconnect. Local practice XP is explicitly device-only and cannot unlock online access. Optional Band reveal teaching remains available below Level 5.
+- **Timeout:** 20 seconds by default, phase/turn keyed and persisted. Reveal does not buy a fresh turn. A timeout uses only the active player's redacted view and the ordinary command validator. A guaranteed legal card is the fallback. Bots act after 700 ms. Teaching sessions have no competitive deadline.
+- **Completion rewards:** online rewards require at least eight distinct manually validated card plays and a live room connection at settlement. A complete score/history is still recorded for a timeout-driven deal, but unattended/abandoned seats receive zero XP/Tokens. This participation policy prevents starting rooms and leaving to farm progression; no penalties are added.

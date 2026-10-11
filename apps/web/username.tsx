@@ -1,11 +1,11 @@
 import {useRef,useState} from 'react';
 import {restoredIdentity} from './auth.ts';
 import {ONLINE_ORIGIN,cloudHost} from './deployment.ts';
-export async function accountProfile(name?:string){
+export async function accountProfile(name?:string,tutorialStatus?:import('../../packages/protocol/progression.ts').TutorialStatus,bandUnlockSeen?:boolean){
  const user=await restoredIdentity();if(!user)throw Error('Please sign in before choosing a username.');
  const token=await user.getIdToken();
  const url=import.meta.env.PROD&&!cloudHost?ONLINE_ORIGIN+'/api/identity':'/api/identity';
- const r=await fetch(url,{method:name===undefined?'GET':'PATCH',headers:{Authorization:'Bearer '+token,...(name===undefined?{}:{'Content-Type':'application/json'})},...(name===undefined?{}:{body:JSON.stringify({name})})});
+ const r=await fetch(url,{method:name===undefined&&tutorialStatus===undefined&&bandUnlockSeen===undefined?'GET':'PATCH',headers:{Authorization:'Bearer '+token,...(name===undefined&&tutorialStatus===undefined&&bandUnlockSeen===undefined?{}:{'Content-Type':'application/json'})},...(name===undefined&&tutorialStatus===undefined&&bandUnlockSeen===undefined?{}:{body:JSON.stringify({name,tutorialStatus,bandUnlockSeen})})});
  const data=await r.json();if(!r.ok)throw Error(data.error||'Unable to connect. Please retry.');return data;
 }
 export function UsernameForm({initial='',onSaved,onCancel,standalone=false}:{initial?:string;onSaved:(data:any)=>void;onCancel?:()=>void;standalone?:boolean}){

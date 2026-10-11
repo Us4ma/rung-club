@@ -17,3 +17,7 @@ All visual assets are original code-authored assets; no commercial artwork was d
 Required final audio: menu loop (45–90 seconds), calm gameplay loop (60–120 seconds), optional competitive loop, victory and defeat stingers (2–5 seconds), card select, movement/place, shuffle/deal, Senior change, reveal, collection, Kot, button, reward and transitions. Avoid speech and distracting bass. Provide license/ownership confirmation before inclusion.
 
 Phaser is lazy-loaded only on table entry (approximately 357 KB gzip). The standard web build uses a split initial download. The convenience standalone HTML embeds the entire client and is larger; no external scripts or assets are fetched for practice.
+
+## Dealer and first-time experience overlays
+
+The dealer uses the existing owner-supplied transparent female lobby and seated table poses. No new raster art or licensed animation rig was introduced. Tutorial hand pointer, timer ring, deck sprite and card-flight overlays are original SVG/CSS/TypeScript components (`apps/web/experience.tsx`, `experience.css`), covered by this repository's MIT license. Flights reuse the existing card-back SVG and contain no opponent card faces. QA screenshots are captured from the running application, not generated concept art.
