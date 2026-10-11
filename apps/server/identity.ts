@@ -1,8 +1,8 @@
 import {bandEligible,tutorialCode,tutorialStatus,tutorialTransition,type TutorialStatus} from '../../packages/protocol/progression.ts';
 /** Narrow bearer-authenticated profile bridge for the browser and Android client. */
 interface Statement {bind(...values:unknown[]):Statement;first<T=Record<string,unknown>>():Promise<T|null>;all():Promise<{results:unknown[]}>;run():Promise<unknown>}
-export interface IdentityDatabase {prepare(sql:string):Statement}
-export type VerifiedIdentity={uid:string;authTime:number};
+export interface IdentityDatabase {prepare(sql:string):Statement;batch?(statements:any[]):Promise<unknown>}
+export type VerifiedIdentity={uid:string;authTime:number;anonymous?:boolean};
 export const validUsername=(name:unknown):name is string=>typeof name==='string'&&/^[A-Za-z0-9_]{3,20}$/.test(name)&&!/^(guest|deleted)(_|$)/i.test(name);
 export function identityOrigin(req:Request,allowed:string){const origin=req.headers.get('Origin');return !origin||origin===new URL(req.url).origin||origin===allowed||origin==='https://localhost'||origin==='https://rung-club.vercel.app'||origin==='https://rung-club.sammyqamar.workers.dev';}
 export async function identityResponse(req:Request,db:IdentityDatabase,verify:(token:string)=>Promise<VerifiedIdentity>,allowed:string,economy:boolean){
@@ -10,11 +10,25 @@ export async function identityResponse(req:Request,db:IdentityDatabase,verify:(t
  const reply=(data:unknown,status=200)=>Response.json(data,{status,headers});
  if(!identityOrigin(req,allowed))return reply({error:'Origin denied'},403);
  if(origin)headers['Access-Control-Allow-Origin']=origin;
- if(req.method==='OPTIONS'){headers['Access-Control-Allow-Methods']='GET, PATCH';headers['Access-Control-Allow-Headers']='Authorization, Content-Type';return new Response(null,{status:204,headers});}
- if(!['GET','PATCH'].includes(req.method))return reply({error:'Method not allowed'},405);
+ if(req.method==='OPTIONS'){headers['Access-Control-Allow-Methods']='GET, PATCH, DELETE';headers['Access-Control-Allow-Headers']='Authorization, Content-Type';return new Response(null,{status:204,headers});}
+ if(!['GET','PATCH','DELETE'].includes(req.method))return reply({error:'Method not allowed'},405);
  let identity:VerifiedIdentity;
  try{const token=req.headers.get('Authorization')?.match(/^Bearer (\S+)$/)?.[1];if(!token||token.length>5000)throw Error();identity=await verify(token);if(!identity.uid||!Number.isFinite(identity.authTime))throw Error();}catch{return reply({error:'Please sign in again.'},401);}
  const existing=await db.prepare('SELECT name,deleted,revoked_before,tutorial FROM accounts WHERE uid=?').bind(identity.uid).first<{name:string;deleted:number;revoked_before:number;tutorial:number}>();
+ if(req.method==='DELETE'){
+  const text=await req.text();if(text.length>4096)return reply({error:'Payload too large'},413);
+  let confirmation:unknown;try{confirmation=JSON.parse(text).confirmation;}catch{return reply({error:'Invalid request'},400);}
+  if(confirmation!=='DELETE')return reply({error:'Type DELETE to confirm account deletion.'},400);
+  if(!identity.anonymous&&Date.now()-identity.authTime>300000)return reply({error:'Confirm your sign-in again before deleting this account.'},403);
+  if(existing?.deleted)return reply({deleted:true});
+  if(existing&&identity.authTime<=existing.revoked_before)return reply({error:'Account revoked'},401);
+  if(!db.batch)return reply({error:'Account deletion is unavailable. Please retry later.'},503);
+  try{const now=Date.now();await db.batch([
+   db.prepare('INSERT INTO accounts(uid,name,created,deleted,revoked_before,tutorial) VALUES(?,?,?,1,?,0) ON CONFLICT(uid) DO UPDATE SET name=excluded.name,deleted=1,revoked_before=excluded.revoked_before,tutorial=0').bind(identity.uid,'Deleted-'+identity.uid,now,now),
+   ...['sessions','results','ledger','cosmetics'].map(table=>db.prepare(`DELETE FROM ${table} WHERE uid=?`).bind(identity.uid))
+  ]);}catch{return reply({error:'Unable to delete account. Your request can be retried.'},503);}
+  return reply({deleted:true});
+ }
  if(existing?.deleted||existing&&identity.authTime<=existing.revoked_before)return reply({error:'Account revoked'},401);
  if(req.method==='PATCH'){
   const text=await req.text();if(text.length>4096)return reply({error:'Payload too large'},413);

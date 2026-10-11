@@ -15,3 +15,5 @@ export async function protectAccount(...args:Parameters<AuthModule['protectAccou
 export async function removeIdentity(...args:Parameters<AuthModule['removeIdentity']>){return (await load()).removeIdentity(...args);}
 export async function secureGuestGoogle(...args:Parameters<AuthModule['secureGuestGoogle']>){return (await load()).secureGuestGoogle(...args);}
 export async function secureGuestEmail(...args:Parameters<AuthModule['secureGuestEmail']>){return (await load()).secureGuestEmail(...args);}
+
+export async function deletionSession(...args:Parameters<AuthModule['deletionSession']>){return (await load()).deletionSession(...args);}
