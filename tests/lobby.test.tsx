@@ -1,0 +1,13 @@
+// @vitest-environment jsdom
+import React from 'react';
+import {it,expect,vi,afterEach} from 'vitest';
+import {render,screen,fireEvent,cleanup} from '@testing-library/react';
+import {Lobby} from '../apps/web/lobby.tsx';
+afterEach(cleanup);
+function setup(xp=0,intro=false){const play=vi.fn(),practice=vi.fn(),learn=vi.fn(),setMode=vi.fn(),onIntro=vi.fn();render(<Lobby mode="open" setMode={setMode} play={play} practice={practice} learn={learn} setScreen={vi.fn()} profile={{name:'Player',xp}} avatar={1} join="" setJoin={vi.fn()} intro={intro} onIntro={onIntro}/>);return{play,practice,learn,setMode,onIntro};}
+it('shows exactly three illustrated modes without promotion or currency controls',()=>{setup();expect(document.querySelectorAll('.game-tile')).toHaveLength(3);expect(document.querySelectorAll('.lobby-mode-art')).toHaveLength(3);expect(document.querySelector('.club-banner')).toBeNull();expect(screen.queryByText('Quick Play')).toBeNull();expect(screen.queryByText(/Coins|Diamonds|Watch to Earn/)).toBeNull();});
+it('Open Rung starts existing matchmaking with the explicit mode',()=>{const {play}=setup();fireEvent.click(screen.getByRole('button',{name:'Play Open Rung'}));expect(play).toHaveBeenCalledWith('quick','open');});
+it('Band stays locked below Level 5 and shows current XP',()=>{const {play}=setup(399);expect(screen.getByRole('progressbar',{name:'Band Rung unlock progress'}).getAttribute('value')).toBe('399');fireEvent.click(screen.getByRole('button',{name:'Unlock Level 5'}));expect(screen.getByRole('dialog',{name:'Band Rung locked'})).toBeTruthy();expect(play).not.toHaveBeenCalled();});
+it('Band becomes playable at the existing Level 5 threshold',()=>{const {play}=setup(400);expect(screen.queryByRole('button',{name:'Unlock Level 5'})).toBeNull();fireEvent.click(screen.getByRole('button',{name:'Play Band Rung'}));expect(play).toHaveBeenCalledWith('quick','band');});
+it('Practice, private rooms and lessons retain existing navigation callbacks',()=>{const {practice,learn,play}=setup();fireEvent.click(screen.getByRole('button',{name:'Practice table'}));expect(practice).toHaveBeenCalledOnce();fireEvent.click(screen.getByRole('button',{name:'Learn the art of Rung'}));expect(learn).toHaveBeenCalledOnce();fireEvent.click(screen.getByRole('button',{name:/Private Room/}));fireEvent.click(screen.getByRole('button',{name:'Create Private Room →'}));expect(play).toHaveBeenCalledWith('create');});
+it('first-time Open Rung action preserves the interactive tutorial entry',()=>{const {play,onIntro}=setup(0,true);fireEvent.click(screen.getByRole('button',{name:'Play Open Rung'}));expect(onIntro).toHaveBeenCalledOnce();expect(play).not.toHaveBeenCalled();});

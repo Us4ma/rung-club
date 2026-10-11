@@ -1487,5 +1487,71 @@
     "format": "svg",
     "license": "Original project code art; MIT",
     "usage": "Responsive lobby and secondary-screen woven emerald surface with walnut edges"
+  },
+  {
+    "path": "/art/lobby/band-320.webp",
+    "source": "Built-in image generation; docs/art/LOBBY_ASSET_PROMPTS.md",
+    "bytes": 33882,
+    "sha256": "6cfc14c85007a34de460b00fb12af45ab6bb24edc5f6b193a2fbaefecd94f518",
+    "license": "Original project-generated illustration; no commercial-game assets or third-party stock",
+    "usage": "Lobby mode artwork only; decorative, no game-state content",
+    "format": "WebP with alpha",
+    "width": 320,
+    "height": 317
+  },
+  {
+    "path": "/art/lobby/band-640.webp",
+    "source": "Built-in image generation; docs/art/LOBBY_ASSET_PROMPTS.md",
+    "bytes": 101784,
+    "sha256": "d9941488ed846269f856c20612a5045f8ee7c22687995280ef24cec3340ac404",
+    "license": "Original project-generated illustration; no commercial-game assets or third-party stock",
+    "usage": "Lobby mode artwork only; decorative, no game-state content",
+    "format": "WebP with alpha",
+    "width": 640,
+    "height": 633
+  },
+  {
+    "path": "/art/lobby/open-320.webp",
+    "source": "Built-in image generation; docs/art/LOBBY_ASSET_PROMPTS.md",
+    "bytes": 36390,
+    "sha256": "72474f252b68b8bc6f6a35ba80b7f06c6225b322a59d9406f932a47a45006565",
+    "license": "Original project-generated illustration; no commercial-game assets or third-party stock",
+    "usage": "Lobby mode artwork only; decorative, no game-state content",
+    "format": "WebP with alpha",
+    "width": 320,
+    "height": 334
+  },
+  {
+    "path": "/art/lobby/open-640.webp",
+    "source": "Built-in image generation; docs/art/LOBBY_ASSET_PROMPTS.md",
+    "bytes": 109964,
+    "sha256": "068e64cace34dfa2f0351fa696c966c4acfa05c87b6511deb012be00fe5ffacb",
+    "license": "Original project-generated illustration; no commercial-game assets or third-party stock",
+    "usage": "Lobby mode artwork only; decorative, no game-state content",
+    "format": "WebP with alpha",
+    "width": 640,
+    "height": 669
+  },
+  {
+    "path": "/art/lobby/practice-320.webp",
+    "source": "Built-in image generation; docs/art/LOBBY_ASSET_PROMPTS.md",
+    "bytes": 29820,
+    "sha256": "475e61166602dda6bb61ef0eda3139bc766296fb5da9b94c95f972404638c829",
+    "license": "Original project-generated illustration; no commercial-game assets or third-party stock",
+    "usage": "Lobby mode artwork only; decorative, no game-state content",
+    "format": "WebP with alpha",
+    "width": 320,
+    "height": 314
+  },
+  {
+    "path": "/art/lobby/practice-640.webp",
+    "source": "Built-in image generation; docs/art/LOBBY_ASSET_PROMPTS.md",
+    "bytes": 86990,
+    "sha256": "1defffdec9aebfe3ad24d3577f158721d5bf6b892c8b6b416296fa94d783653b",
+    "license": "Original project-generated illustration; no commercial-game assets or third-party stock",
+    "usage": "Lobby mode artwork only; decorative, no game-state content",
+    "format": "WebP with alpha",
+    "width": 640,
+    "height": 627
   }
 ]
