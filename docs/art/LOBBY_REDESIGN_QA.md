@@ -35,3 +35,10 @@ Production compilation and Android web-asset sync were performed to publish the 
 ### Viewport-height correction
 
 The lobby now occupies `100dvh`, with mode artwork using the available height and a shallower foreground table clipped to the scene. Decorative table overflow cannot enlarge the page. Private-room forms retain internal scrolling when expanded or when the keyboard reduces space. No tests or screenshots were run for this owner-reviewed correction; production compilation is required for publishing.
+
+
+## Cutoff correction and mobile validation
+
+Removed clipping at the inset lobby grid while retaining viewport-level bounds. The foreground table now fills the screen width and bottom edge; decorative cards sit above the lower boundary. Portrait layouts use compact mode cards and a larger dealer hero, with visible descriptions and smaller titles on narrow phones.
+
+All eight responsive browser cases passed: 1920×1080, 1366×768, 412×924, 390×844, 360×800, 320×640, 844×390 and 932×430. Checks cover full-width table, card decoration bounds, visible mode descriptions and titles, minimum 44px primary buttons, shortcut visibility, no outer scrolling, Band unlock and private-room navigation. Fresh desktop, portrait, landscape and small-phone screenshots are stored in qa-lobby-redesign. Production build and Capacitor asset synchronization passed. These are browser-emulated layouts, not physical Android-device tests. Gameplay and authentication logic were unchanged.
