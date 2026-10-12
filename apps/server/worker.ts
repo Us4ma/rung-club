@@ -40,7 +40,7 @@ export class CardRoom extends DurableObject<Env>{
   const now=Date.now();const lostDue=this.life.disconnectedAt.some(at=>at!==null&&now-at>=60000);if(!lostDue&&this.session.state.phase!=='finished'&&(!this.data.clock||now<this.data.clock.deadline))return;const before=[...this.data.uids];expireDisconnected(this.life,this.data.uids,this.session.state,now);before.forEach((uid,i)=>{if(uid&&!this.data!.uids[i]){this.data!.names[i]+=' · Bot';if(i===this.session!.state.turn)this.data!.clock=undefined;}});
   if(this.life.closed){await this.closeRoom();return;}
   if(this.session.state.phase==='finished'){await this.settle();prepareTransition(this.life,this.session.state,now);if(advanceTable(this.session,this.life,now)){this.data.manualPlays=[0,0,0,0];this.data.clock=undefined;}}
-  else if(expireRoomTurn(this.session,this.data.clock,this.life,now)){await this.persist();await this.settle();}
+  else if(expireRoomTurn(this.session,this.data.clock,this.life,now)){await this.persist();this.broadcast();await this.settle();}
   await this.persist();this.broadcast();
  }
  async fetch(req:Request){const path=new URL(req.url).pathname;return path==='/limit'||path==='/queue'?this.handle(req):this.ctx.blockConcurrencyWhile(()=>this.handle(req));}
@@ -58,14 +58,17 @@ export class CardRoom extends DurableObject<Env>{
  }
  broadcast(){if(!this.data||!this.session||this.life.closed)return;for(const ws of this.ctx.getWebSockets()){const a=ws.deserializeAttachment();if(this.data.uids[a.seat]!==a.uid)continue;ws.send(JSON.stringify({type:'state',code:this.data.code,seat:a.seat,started:this.data.started,hostSeat:this.data.uids.findIndex(Boolean),deadline:this.data.deadline,duration:this.data.clock?.duration,serverNow:Date.now(),ready:this.data.ready,names:this.data.names,bots:this.data.uids.map(u=>!u),continueWithBot:this.session.state.phase==='finished'&&this.life.pendingPartners.includes(a.seat),waitingForPartnerDecision:this.session.state.phase==='finished'&&this.life.pendingPartners.length>0,seq:this.session.seq[a.seat],view:view(this.session.state,a.seat)}));}}
  async webSocketMessage(ws:WebSocket,message:string|ArrayBuffer){return this.ctx.blockConcurrencyWhile(async()=>{try{
-  if(typeof message!=='string'||message.length>4096)throw Error('Invalid message');const a=ws.deserializeAttachment();if(!this.data||this.life.closed||this.data.uids[a.seat]!==a.uid)throw Error('Seat is no longer active');if(Date.now()-a.last>1000){a.count=0;a.last=Date.now();}if(++a.count>12)throw Error('Rate limited');ws.serializeAttachment(a);const c=JSON.parse(message);
+  if(typeof message!=='string'||message.length>4096)throw Error('Invalid message');const a=ws.deserializeAttachment();if(!this.data||this.life.closed||this.data.uids[a.seat]!==a.uid)throw Error('Seat is no longer active');if(Date.now()-a.last>1000){a.count=0;a.last=Date.now();}if(++a.count>12)throw Error('Rate limited');ws.serializeAttachment(a);const c=JSON.parse(message);let accepted:{id:string,revision:number}|undefined;
   if(c.type==='leave'){leaveSeat(this.life,this.data.uids,this.session!.state,a.seat);this.data.names[a.seat]+=' · Bot';if(a.seat===this.session!.state.turn)this.data.clock=undefined;if(this.life.closed){await this.closeRoom();return;}for(const other of this.ctx.getWebSockets())if(other.deserializeAttachment()?.uid===a.uid)other.close(1000,'Seat left');}
   else if(c.type==='continue-with-bot'){continueWithBot(this.life,this.session!.state,a.seat);}
   else if(c.type==='ready'){if(this.data.started)throw Error('Already started');this.data.ready[a.seat]=true;}
   else if(c.type==='start'){if(a.seat!==this.data.uids.findIndex(Boolean)||this.data.started||this.data.uids.some((u,i)=>u&&!this.data!.ready[i]))throw Error('Host and readiness required');this.data.started=true;}
   else if(c.type==='emote'){if(!['Well played','Good luck','Nice Sar'].includes(c.text))throw Error('Invalid emote');for(const w of this.ctx.getWebSockets())w.send(JSON.stringify({type:'emote',seat:a.seat,text:c.text}));return;}
-  else {if(!this.data.started)throw Error('Not started');await this.tick();if(this.life.closed)throw Error('Table closed');const before=this.session!.state.revision;const receipt=this.session!.apply(a.seat,c);if(c.type==='play'&&this.session!.state.revision!==before){this.data.manualPlays??=[0,0,0,0];this.data.manualPlays[a.seat]++;}ws.send(JSON.stringify({type:'ack',...receipt}));}
-  await this.persist();await this.settle();if(this.session!.state.phase==='finished')await this.persist();this.broadcast();
+  else {if(!this.data.started)throw Error('Not started');await this.tick();if(this.life.closed)throw Error('Table closed');const before=this.session!.state.revision;accepted=this.session!.apply(a.seat,c);if(c.type==='play'&&this.session!.state.revision!==before){this.data.manualPlays??=[0,0,0,0];this.data.manualPlays[a.seat]++;}}
+  await this.persist();if(accepted)ws.send(JSON.stringify({type:'ack',...accepted}));this.broadcast();
+  // The move is durable and accepted. A D1 outage must not report it as illegal.
+  // The persisted finished-deal alarm retries settlement before advancing.
+  try{await this.settle();if(this.session!.state.phase==='finished')await this.persist();}catch{console.warn('Deferred room settlement; durable result will retry at its alarm.');}
  }catch(e){ws.send(JSON.stringify({type:'error',message:(e as Error).message}));}});}
  async webSocketClose(ws:WebSocket){return this.ctx.blockConcurrencyWhile(async()=>{if(!this.data||this.life.closed)return;const a=ws.deserializeAttachment();if(this.data.uids[a.seat]!==a.uid)return;if(!this.ctx.getWebSockets().some(w=>w!==ws&&w.deserializeAttachment()?.uid===a.uid)){disconnected(this.life,a.seat,Date.now());await this.persist();}});}
  async webSocketError(ws:WebSocket){return this.webSocketClose(ws);}
