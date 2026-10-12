@@ -17,7 +17,7 @@ export function guidedDeal():State{
  const hands=assigned.map(ids=>ids.map(id=>d.find(c=>c.id===id)!));
  s.hands=hands.map(h=>h.slice(0,5));s.stock=hands.map(h=>h.slice(5));s.opening=undefined;return s;
 }
-export const guidedCards=['C13','C2','H14','H13','H12'];
+export const guidedCards=['C13','C2','H14','H13','D13'];
 export function scriptedCard(v:import('./index.ts').View):string{
  const preferred=v.history.length===1&&v.turn===3?'C14':v.history.length===2&&v.turn===3&&!v.trick.length?'S14':null;
  if(preferred&&v.legal.includes(preferred))return preferred;

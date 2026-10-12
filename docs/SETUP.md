@@ -1,6 +1,6 @@
 # Start playing
 
-Open `playable/Rung-Club.html` in a modern desktop browser. This file includes all code and art needed for practice. Choose Learn to Play or Skip Tutorial, then Practice. Open and Band modes are selectable in the lobby. No login, server or service payment is required. A phone's file-preview application may not execute HTML; use a browser or the served web build.
+Run `npm ci` and `npm run dev`, then open the localhost URL printed by Vite. Practice works without cloud credentials. Use the served build for the current art library; generated standalone HTML is an experimental delivery path, not the validated current asset bundle.
 
 ## Develop / local four-player multiplayer
 
@@ -17,7 +17,7 @@ In a second terminal:
 npm run dev
 ```
 
-Open the localhost URL printed by Vite. Use separate browser profiles or private contexts for different guests; tabs in the same profile share one account. Create a room, join its code from three other contexts, mark every human Ready, then host Start. Empty seats are clearly labelled bots in these casual matches. Rooms persist in `local-dev.sqlite`. Local identity is only a development simulation. Human turns receive automatic legal moves after 45 seconds; a player is not converted into a bot. Rematch requires every human to vote.
+Open the localhost URL printed by Vite. Use separate browser profiles or private contexts for different guests; tabs in the same profile share one account. Create a room, join its code from three other contexts, mark every human Ready, then host Start. Empty seats are clearly labelled bots in these casual matches. Rooms persist in `local-dev.sqlite`. Local identity is only a development simulation. Human turns receive automatic legal moves after 20 seconds. A temporary disconnect reserves the seat for 60 seconds; intentional departure or grace expiry replaces that seat with a labelled bot. Deals continue automatically after a short result beat; a departed player’s human teammate chooses Continue With Bot or Leave at the deal boundary. Initial comparison is not repeated between deals.
 
 ```sh
 npm test
@@ -29,7 +29,7 @@ node scripts/benchmark.ts
 node scripts/standalone.mjs
 ```
 
-Playwright currently tests the actual HTTP/WebSocket server with four identity contexts, not browser screenshots. Vitest interaction tests use a DOM simulation. Visual phone/desktop and native-device QA still require a real browser/device.
+Playwright tests the HTTP/WebSocket server with four identity contexts and `npm run test:visual` exercises a real Chromium browser across desktop, portrait and landscape sizes. Vitest interaction tests use a DOM simulation. Native-device QA still needs a real Android device. See `docs/QA_CONTINUOUS_TABLE.md` for the actual results of this correction.
 
 ## Free cloud setup
 

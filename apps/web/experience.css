@@ -31,3 +31,10 @@
 
 .bhaag-note{display:block;max-width:175px;color:#f1ca86;font-size:10px;line-height:1.25}
 @media(max-width:600px){.bhaag-note{max-width:130px;font-size:9px}}
+.seat-d-tag,.seat-caller-tag{display:inline-grid;place-items:center;margin-left:4px;width:18px;height:18px;border-radius:50%;background:#dabb77;color:#142f27;font-size:11px;border:1px solid #f5dfad}.seat-caller-tag{background:#164c39;color:#f3d48f}
+.deal-result{position:absolute;z-index:18;top:20%;left:50%;transform:translateX(-50%);display:grid;gap:5px;background:#082c25ef;border:1px solid #dbb776;border-radius:12px;padding:14px 20px;text-align:center;pointer-events:none;box-shadow:0 8px 24px #0006;max-width:90%;font-size:14px}.deal-result strong{font-size:20px;color:#ffe1a0}.deal-result small{color:#caaf78}
+.continuation-dialog{position:fixed;z-index:50;left:50%;top:50%;transform:translate(-50%,-50%);background:#0c352c;border:1px solid #d6b36c;border-radius:18px;padding:24px;max-width:340px;width:90%;box-shadow:0 0 0 100vmax #001c18a8}.continuation-dialog button{margin:4px;min-height:44px}
+.collection-flight{position:absolute;pointer-events:none;z-index:16;left:50%;top:50%;transform:translate(-50%,-50%);width:90px;height:85px;text-align:center;color:#ffe0a1}.collection-flight i{position:absolute;left:26px;top:0;width:30px;height:44px;background:#164437 url('/art/backs/emerald.svg') center/cover;border:1px solid #d5b56f;border-radius:4px;box-shadow:0 2px 8px #0007}.collection-flight i:first-child{transform:rotate(-14deg) translateX(-10px)}.collection-flight i:nth-child(3){transform:rotate(14deg) translateX(10px)}.collection-flight strong,.collection-flight small{display:block;position:relative;top:48px;font-size:12px}.collection-flight small{font-size:10px}
+.dealer-state-shuffle .dealer-deck{animation:dealer-shuffle .35s infinite alternate}
+@media(max-width:600px){.deal-result{font-size:12px;padding:10px 14px;top:18%}.compact-hud>div>small:last-child{font-size:8px}.seat-d-tag,.seat-caller-tag{width:15px;height:15px;font-size:9px}}
+@media(prefers-reduced-motion:reduce){.collection-flight{animation:none}}

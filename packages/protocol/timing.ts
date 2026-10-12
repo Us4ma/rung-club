@@ -8,7 +8,7 @@ export function clockFor(s:State,started:boolean,previous:Clock|undefined,now=Da
  // Reveal changes revision but does not buy a fresh turn. Redeals do start a new calling phase.
  const key=[s.matchId,s.phase,s.turn,s.history.length,s.trick.length,s.redeals].join(':');
  if(previous?.key===key)return previous;
- const duration=bot?timers.bot:timers[s.phase];return {key,deadline:now+duration,duration};
+ const duration=bot?Math.max(timers.bot,s.phase==='playing'&&s.history.length>0&&!s.trick.length?1500:0):timers[s.phase];return {key,deadline:now+duration,duration};
 }
 export function automaticCommand(session:Session):Command{
  const s=session.state,seat=s.turn,v=view(s,seat);let card:string|undefined,type:Command['type'];
