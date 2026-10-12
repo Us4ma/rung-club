@@ -1,7 +1,7 @@
 import {view,type State} from '../core/index.ts';
 import {choose,chooseTrump} from '../ai/index.ts';
 import {Session,type Command} from './index.ts';
-export const DEFAULT_TIMERS={calling:20000,playing:20000,bot:700};
+export const DEFAULT_TIMERS={calling:20000,playing:20000,bot:1100};
 export type Clock={key:string;deadline:number;duration:number};
 export function clockFor(s:State,started:boolean,previous:Clock|undefined,now=Date.now(),bot=false,timers=DEFAULT_TIMERS):Clock|undefined{
  if(!started||s.phase==='finished')return undefined;
