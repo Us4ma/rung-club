@@ -158,3 +158,12 @@
  .table-coins{top:38px;transform:scale(.4)}
  .table-deck{top:42px;transform:scale(.4)}
 }
+
+/* Raise the complete host above the rail so both hands remain intact. */
+@media(max-width:600px){
+ .screen-lobby .lobby-host{overflow:visible}
+ .screen-lobby .lobby-host>.dealer{height:calc(var(--host-height) - 20px);bottom:40px}
+}
+@media(max-width:600px) and (max-height:700px){
+ .screen-lobby .lobby-host>.dealer{height:calc(var(--host-height) - 40px);bottom:60px}
+}

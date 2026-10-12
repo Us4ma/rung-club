@@ -54,3 +54,10 @@ Eight responsive tests pass, including new mobile card aspect-ratio and viewport
 ## Decorative cards and chips on felt
 
 Fixed the mobile foreground rail height independently of the full table area. Moved and scaled the decorative cards and chips below the curved felt boundary at desktop, portrait and landscape sizes. Fresh screenshots show them resting on the table rather than floating outside its edge. All eight responsive cases passed, including a new check against the actual SVG felt curve for every decorative card and chip.
+
+
+## Full dealer hands and one loading presentation
+
+Raised/resized the whole dealer above the rail in portrait, with a separate compact-height adjustment. The body remains behind the table and both hands remain visible. Kept the original branded boot screen until account restoration resolves; removed Checking your seat and used the original branding for later account loading as well. Profile errors retain retry, local practice and sign-out actions.
+
+25 account/auth tests and 10 browser cases passed. The final compact-phone adjustment passed its targeted 320×640 check. Production build and Android asset sync passed. Portrait and small-phone screenshot evidence updated.
