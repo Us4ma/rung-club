@@ -146,3 +146,15 @@
  .screen-lobby .lobby-play-area{justify-content:flex-end}
  .screen-lobby .lobby-host>.dealer{height:min(620px,90%);width:135%;max-width:510px;bottom:45px}
 }
+/* Decorations sit inside the felt, below the curved wooden rail. */
+.table-coins{top:58px;transform:scale(.7);transform-origin:left top}
+.table-deck{top:58px;transform:scale(.65);transform-origin:left top}
+@media(max-width:600px){
+ .lobby-table-front{top:calc(var(--host-height) - 95px)!important;background-image:url('/art/lobby/table-front.svg'),linear-gradient(transparent 139px,#0b3426 139px);background-size:100% 140px,100% 100%;background-repeat:no-repeat}
+ .table-coins{top:57px;left:4%;transform:scale(.32)}
+ .table-deck{top:58px;left:23%;transform:scale(.32)}
+}
+@media(max-height:550px) and (min-width:601px){
+ .table-coins{top:38px;transform:scale(.4)}
+ .table-deck{top:42px;transform:scale(.4)}
+}

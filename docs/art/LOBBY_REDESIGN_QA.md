@@ -49,3 +49,8 @@ All eight responsive browser cases passed: 1920×1080, 1366×768, 412×924, 390�
 Compared against the supplied Mobile Lobby Showcase(2) portrait and landscape reference. The previous cards were vertically stretched despite passing viewport checks. Portrait card height now follows screen width (230–286px), rather than viewport height; the 390px layout is about 261px tall instead of 322px. Reserved ribbon/progress spacing is compact, descriptions remain readable, and buttons retain 44px targets. The existing dealer is larger in portrait and landscape. Desktop panels are capped to avoid empty internal space.
 
 Eight responsive tests pass, including new mobile card aspect-ratio and viewport-height assertions. Production build and Capacitor sync pass. Screenshot evidence refreshed for desktop, portrait, landscape and 320px phones. Physical Android device testing remains outstanding. Existing source artwork is retained; this is a layout correction, not an exact recreation of the reference illustration.
+
+
+## Decorative cards and chips on felt
+
+Fixed the mobile foreground rail height independently of the full table area. Moved and scaled the decorative cards and chips below the curved felt boundary at desktop, portrait and landscape sizes. Fresh screenshots show them resting on the table rather than floating outside its edge. All eight responsive cases passed, including a new check against the actual SVG felt curve for every decorative card and chip.
