@@ -34,9 +34,9 @@ See [rules and remaining interpretations](docs/RULE_DECISIONS.md), [actual corre
 
 ## Delivery / remaining work
 
-The repository is public at `Us4ma/rung-club`; the Vercel frontend is `rung-club.vercel.app`. Cloudflare hosts online play at `rung-club.sammyqamar.workers.dev`. A frontend deployment does not itself update the Worker. The CLI in this workspace is currently unauthenticated, so the new live Worker rollout must be verified separately (`npx wrangler login`, then `npx wrangler deploy` using the existing free account/configuration).
+The repository is public at `Us4ma/rung-club`; the Vercel frontend is `rung-club.vercel.app`. Cloudflare hosts online play at `rung-club.sammyqamar.workers.dev`. A frontend deployment does not itself update the Worker. The existing Cloudflare Git integration deployed this release; live QA verified `double-sar-v3-continuous`, a complete 13-Sar deal, Goon Kot +26, preserved points and automatic deal 2. The isolated anonymous QA identity was deleted afterward. The CLI is unauthenticated here, but Git deployment works; `wrangler login`/`wrangler deploy` remain optional manual alternatives.
 
-Accounts, guest linking, Firebase verification, unique usernames, revocable sessions, profiles, D1 result/reward ledgers and hibernating room source remain implemented. This correction validates local and simulated Worker boundaries; it does not certify every live provider flow or native device. No ranked system, real ad provider, paid currency, full friends system, final audio or additional game runtime is introduced. Ads/economy remain disabled by default. Regional sealed-trump policies and match-ending thresholds remain documented decisions.
+Accounts, guest linking, Firebase verification, unique usernames, revocable sessions, profiles, D1 result/reward ledgers and hibernating room source remain implemented. This correction validates local, simulated Worker and a live anonymous-room path; it does not certify every Google/account-linking provider flow or native device. No ranked system, real ad provider, paid currency, full friends system, final audio or additional game runtime is introduced. Ads/economy remain disabled by default. Regional sealed-trump policies and match-ending thresholds remain documented decisions.
 
 ## Monorepo
 

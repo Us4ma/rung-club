@@ -43,7 +43,7 @@ VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=your_project
 ```
 
-Build and use `wrangler dev` for cloud-shaped local testing. The repository is linked to Vercel and Cloudflare Git builds. Cloudflare reported a successful deployment; live authenticated gameplay still needs verification. Worker assets and API are designed for the same origin so HttpOnly session cookies work. `wrangler.jsonc` uses SQLite Durable Objects and hibernating WebSockets. State and receipts restore from storage. Bots use alarms rather than permanent intervals. An empty Firebase project ID fails closed for online accounts while practice works.
+Build and use `wrangler dev` for cloud-shaped local testing. The repository is linked to Vercel and Cloudflare Git builds. The continuous-table release’s live anonymous authentication, full 13-Sar settlement and automatic successor deal were verified; see `docs/QA_CONTINUOUS_TABLE.md`. Other provider/device flows still need their own verification. Worker assets and API are designed for the same origin so HttpOnly session cookies work. `wrangler.jsonc` uses SQLite Durable Objects and hibernating WebSockets. State and receipts restore from storage. Bots use alarms rather than permanent intervals. An empty Firebase project ID fails closed for online accounts while practice works.
 
 A Cloudflare `pages.dev` option serves `dist/` for **practice only**. Upload the static build through a free Pages project. Do not claim multiplayer works on that static deployment: it requires Worker routing on the same origin, or an explicitly implemented cross-origin auth transport. No paid domain is required.
 

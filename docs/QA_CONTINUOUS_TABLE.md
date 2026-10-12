@@ -10,7 +10,8 @@
 | `npm run build` | TypeScript and production Vite build passed |
 | `npm run typecheck:worker` | Passed |
 | `npm run android:sync` | Passed; no APK generated or native-device run claimed |
-| Cloudflare CLI | `wrangler whoami`: unauthenticated; live Worker rollout is not certified by these local checks |
+| Cloudflare release | Existing Git integration deployed the correction; public assets match the build and the live room reports `double-sar-v3-continuous` |
+| Live isolated anonymous-room probe | Passed: opening/dealer/redaction checks, legal play, full 13-Sar Goon Kot +26 settlement, automatic deal 2 with preserved points, last-human closure; own QA identity cleaned up |
 
 The Vite build retains the existing lazy Phaser chunk-size warning. No new packages, paid services, paid artwork, currencies or advertising providers were added.
 
@@ -31,4 +32,4 @@ The Vite build retains the existing lazy Phaser chunk-size warning. No new packa
 
 See `RULE_DECISIONS.md`: unrevealed Band collection qualification is conservatively disabled to avoid hidden-suit leakage; final-Sar auto-reveal and the extreme repeated-tie safety fallback still need regional confirmation. No match-point ending threshold or courts policy was specified.
 
-Live Firebase/Cloudflare multiplayer, account-provider linking and physical Android behavior are not newly certified by this correction. The new Worker must be deployed to the existing owner-controlled free project and its live rollout verified. Vercel frontend deployment alone updates practice presentation/logic, not the Cloudflare room authority.
+Live anonymous Firebase authentication and the Cloudflare room path were exercised with `node --use-env-proxy scripts/live-room-smoke.mjs --complete-deal`. The proxy flag is needed in this execution environment; ordinary networks can run the script without it. The script creates a fresh in-memory anonymous QA identity, logs no tokens/cookies/UIDs and deletes only its own test identity. One live full deal settled as Goon Kot +26 and deal 2 retained its table ID/points with no repeat contest. This is live smoke evidence, not exhaustive production load/fault/provider testing. Google/account linking and physical Android behavior were not newly certified. CLI authentication remains absent here, but the existing Git deployment path published the release successfully.
