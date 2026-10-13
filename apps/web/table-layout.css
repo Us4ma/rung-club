@@ -52,3 +52,59 @@
 .screen-table [data-presenting=true] .hand{visibility:hidden}
 
 .screen-table .emote-picker{max-height:min(310px,70dvh);overflow-y:auto;overscroll-behavior:contain}
+/* Avatar-led seats: role markers live on the rail, never inside player labels. */
+.screen-table .seat,.screen-table .self-seat{width:74px;min-height:0;padding:0;background:none;border:0;border-radius:0;box-shadow:none;display:flex;flex-direction:column;gap:4px;overflow:visible}
+.screen-table .seat .avatar,.screen-table .self-seat .avatar{position:static;width:54px;height:54px;outline:2px solid #ad9057;outline-offset:3px;box-shadow:0 5px 12px #0008}
+.screen-table .seat strong,.screen-table .self-seat>span{font:600 12px/1.3 system-ui;color:#fff0d0;max-width:100%;text-shadow:0 2px 4px #000}
+.screen-table .seat small{font-size:10px;line-height:1;color:#aec6b7}
+.screen-table .seat-2{left:50%;top:-44px;transform:translateX(-50%)}
+.screen-table .seat-1{right:-28px;top:50%}.screen-table .seat-3{left:-28px;top:50%}
+.screen-table .self-seat{bottom:-33px;left:50%;transform:translateX(-50%)}
+.screen-table .self-seat .avatar{width:40px;height:40px}
+.screen-table .seat.turn,.screen-table .self-seat.turn{box-shadow:none;border:0}
+.screen-table .seat.turn .avatar,.screen-table .self-seat.turn .avatar{outline-color:#93e3b2;box-shadow:0 0 16px #60d89b55}
+.screen-table .seat.turn:after{display:none}
+.screen-table .seat-2 .backs{left:calc(100% + 24px);top:12px;transform:none}
+.screen-table .seat-1 .backs,.screen-table .seat-3 .backs{top:calc(100% + 10px)}
+.screen-table .role-coin{position:absolute;display:grid;place-items:center;width:25px;height:25px;border-radius:50%;font:700 13px Georgia;color:#372711;border:2px solid #e2c478;background:radial-gradient(circle at 35% 25%,#fff1b4,#bb8844);box-shadow:0 3px 5px #0008,inset 0 0 0 2px #8c642a;z-index:7;animation:coin-arrive .55s ease-out}
+.screen-table .dealer-coin{left:-7px;top:32px}.screen-table .caller-coin{right:-7px;top:32px}.screen-table .senior-coin{right:-4px;top:-10px;background:radial-gradient(circle at 35% 25%,#e3fff0,#55ab83);border-color:#9ad6b4;color:#153b28;box-shadow:0 3px 5px #0008,inset 0 0 0 2px #367859}
+@keyframes coin-arrive{from{transform:translateY(-12px) rotateY(180deg);opacity:0}to{transform:none;opacity:1}}
+.screen-table .table{background:linear-gradient(12deg,#241b15,#664731 45%,#322218);box-shadow:inset 0 0 0 5px #211912,inset 0 0 0 7px #b18b4e,inset 0 0 0 16px #352b20,0 18px 32px #0008}
+.screen-table .table:before{background:radial-gradient(ellipse at 50% 40%,#246b50aa,#073e2ccc),url('/art/house/table-felt.svg') center/cover;box-shadow:inset 0 0 0 4px #0b261d,inset 0 0 24px #001a13aa}
+.screen-table .table:after{display:none}
+.screen-table .table-host{right:9%;top:-12px;width:160px;height:145px;z-index:1}
+.screen-table .dealer-speech{left:auto;right:calc(9% + 150px);top:8px;max-width:215px;z-index:15;border-radius:12px 12px 2px 12px;font-size:12px}
+.screen-table .pile{left:23%;top:67%;width:52px}
+.screen-table .seat-reaction{position:absolute;left:50%;bottom:calc(100% + 14px);transform:translateX(-50%);display:flex;align-items:center;flex-direction:column;gap:3px;width:94px;padding:8px;background:#143d30f5;border:1px solid #cfb673;border-radius:20px;box-shadow:0 6px 16px #0005;z-index:35;animation:reaction-in .2s ease-out;pointer-events:none}
+.screen-table .seat-reaction .reaction-art{width:48px;height:48px;object-fit:contain}.screen-table .seat-reaction>span{font-size:11px;color:#ffebbd;white-space:nowrap}
+.screen-table .opening-draw>div>span{animation:comparison-arrive .5s backwards ease-out}
+@keyframes comparison-arrive{from{opacity:0;transform:translate(80px,-45px) rotate(12deg) scale(.6)}to{opacity:1;transform:none}}
+.screen-table .opening-draw{background:#092b23ee;border:1px solid #b3995a80;box-shadow:0 10px 30px #0006}
+.screen-table .deal-flights i{left:82%;top:19%}
+@media(max-width:600px){
+ .screen-table .seat,.screen-table .self-seat{width:56px}.screen-table .seat .avatar{width:38px;height:38px}.screen-table .self-seat .avatar{width:32px;height:32px}
+ .screen-table .seat-2{left:43%;top:-31px}.screen-table .seat-1{right:2px;top:43%}.screen-table .seat-3{left:2px;top:43%}
+ .screen-table .seat-2 .backs{left:auto;right:calc(100% + 12px);top:17px;transform:none}
+ .screen-table .self-seat{bottom:-27px}.screen-table .seat strong{font-size:11px}.screen-table .seat small{font-size:9px}
+ .screen-table .role-coin{width:21px;height:21px;font-size:11px}.screen-table .dealer-coin{left:-5px;top:24px}.screen-table .caller-coin{right:-5px;top:24px}
+ .screen-table .table-host{right:2px;top:2px;width:100px;height:108px}.screen-table .dealer-speech{top:0;right:96px;max-width:calc(100% - 108px);font-size:11px;padding:6px 8px}
+ .screen-table .pile{left:20%;top:78%;width:32px}.screen-table .pile>strong{font-size:11px}
+ .screen-table .seat-reaction{width:72px;padding:6px}.screen-table .seat-reaction .reaction-art{width:38px;height:38px}
+ .screen-table .deal-flights i{left:87%;top:23%}
+}
+@media(max-height:550px) and (min-width:601px){
+ .screen-table .seat{width:56px}.screen-table .seat .avatar{width:30px;height:30px}.screen-table .self-seat .avatar{width:26px;height:26px}.screen-table .seat-2{top:-27px}.screen-table .seat-2 .backs{left:calc(100% + 15px);top:7px}
+ .screen-table .table-host{right:4%;top:-7px;width:92px;height:91px}.screen-table .dealer-speech{right:calc(4% + 90px);top:0;max-width:170px;font-size:10px}
+ .screen-table .role-coin{width:20px;height:20px;font-size:10px}.screen-table .dealer-coin,.screen-table .caller-coin{top:20px}.screen-table .pile{left:22%;top:64%}.screen-table .self-seat{bottom:-25px}
+}
+@media(prefers-reduced-motion:reduce){.screen-table .role-coin,.screen-table .opening-draw>div>span{animation:none}}
+
+.screen-table [data-presenting=true] .dealer-speech:not(.presentation-speech){visibility:hidden}
+/* Comparison cards land individually beside the four actual seats. */
+.screen-table .opening-draw{position:absolute;inset:0;transform:none;width:100%;height:100%;max-width:none;padding:0;border:0;background:none;box-shadow:none;pointer-events:none;z-index:12}
+.screen-table .opening-draw>strong,.screen-table .opening-draw>small{display:none}.screen-table .opening-draw>div{position:absolute;inset:0;margin:0;display:block}
+.screen-table .opening-draw .comparison-seat{position:absolute;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:#ffe7aa;text-shadow:0 2px 3px #000}
+.screen-table .opening-draw .comparison-0{left:calc(50% - 28px);bottom:45px}.screen-table .opening-draw .comparison-2{left:calc(50% - 28px);top:100px}.screen-table .opening-draw .comparison-1{right:17%;top:43%}.screen-table .opening-draw .comparison-3{left:17%;top:43%}
+.screen-table .opening-draw img{width:56px;height:78px;object-fit:contain}.screen-table .opening-draw .winner img{filter:drop-shadow(0 0 7px #dbb661)}
+@media(max-width:600px){.screen-table .opening-draw img{width:43px;height:60px}.screen-table .opening-draw .comparison-2{top:95px;left:calc(50% - 21px)}.screen-table .opening-draw .comparison-0{left:calc(50% - 21px);bottom:44px}.screen-table .opening-draw .comparison-1{right:22%;top:44%}.screen-table .opening-draw .comparison-3{left:22%;top:44%}}
+@media(max-height:550px) and (min-width:601px){.screen-table .opening-draw img{width:34px;height:48px}.screen-table .opening-draw .comparison-2{top:49px}.screen-table .opening-draw .comparison-0{bottom:30px}}
