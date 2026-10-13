@@ -47,7 +47,7 @@ export function TrickCards({v,seat,names,motion}:{v:View;seat:number;names:strin
  const [recent,setRecent]=useState(0);
  const completed=!v.trick.length&&recent===v.history.length&&recent>0;
  const plays=v.trick.length?v.trick:completed?v.history.at(-1)||[]:[];
- useEffect(()=>{const old=previous.current;previous.current=v;
+ React.useLayoutEffect(()=>{const old=previous.current;previous.current=v;
   if(old.matchId!==v.matchId||v.history.length-old.history.length>1){seen.current=new Set(v.trick.map(p=>v.matchId+':'+p.card.id));setRecent(0);return;}
   if(v.history.length===old.history.length+1){setRecent(v.history.length);const t=setTimeout(()=>setRecent(0),1200);return()=>clearTimeout(t);}
  },[v.matchId,v.history.length]);
@@ -75,9 +75,9 @@ export function AccumulatedPile({v}:{v:View}){
  },[v.matchId,v.history.length,v.pile]);
  return <SarPile count={count}/>;
 }
-export function HandMotion({v,sorted,motion}:{v:View;sorted:boolean;motion:boolean}){
+export function HandMotion({v,sorted,motion,active=true}:{v:View;sorted:boolean;motion:boolean;active?:boolean}){
  const positions=useRef(new Map<string,DOMRect>()),oldSort=useRef(sorted);
- React.useLayoutEffect(()=>{const next=new Map<string,DOMRect>();document.querySelectorAll<HTMLElement>('.hand [data-card]').forEach(el=>{const id=el.dataset.card!,rect=el.getBoundingClientRect(),old=positions.current.get(id);if(motion&&old&&(oldSort.current!==sorted||old.x!==rect.x||old.y!==rect.y)&&el.animate&&!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches)el.animate([{translate:`${old.x-rect.x}px ${old.y-rect.y}px`},{translate:'0px 0px'}],{duration:180});next.set(id,rect);});positions.current=next;oldSort.current=sorted;},[v.revision,sorted,motion]);return null;
+ React.useLayoutEffect(()=>{if(!active){positions.current.clear();return;}const animations:Animation[]=[];const next=new Map<string,DOMRect>();document.querySelectorAll<HTMLElement>('.hand [data-card]').forEach(el=>{const id=el.dataset.card!,rect=el.getBoundingClientRect(),old=positions.current.get(id);if(motion&&old&&(oldSort.current!==sorted||old.x!==rect.x||old.y!==rect.y)&&el.animate&&!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches)animations.push(el.animate([{translate:`${old.x-rect.x}px ${old.y-rect.y}px`},{translate:'0px 0px'}],{duration:180}));next.set(id,rect);});positions.current=next;oldSort.current=sorted;return()=>animations.forEach(a=>a.cancel());},[v.revision,sorted,motion,active]);return null;
 }
 
 export function rememberCardOrigin(scene:HTMLDivElement|null,id:string){const card=scene?.parentElement?.querySelector<HTMLElement>(`.hand [data-card="${id}"]`);if(!scene||!card)return;const r=card.getBoundingClientRect();scene.dataset.originCard=id;scene.dataset.originX=String(r.x);scene.dataset.originY=String(r.y);}

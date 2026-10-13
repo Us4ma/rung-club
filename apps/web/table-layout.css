@@ -108,3 +108,54 @@
 .screen-table .opening-draw img{width:56px;height:78px;object-fit:contain}.screen-table .opening-draw .winner img{filter:drop-shadow(0 0 7px #dbb661)}
 @media(max-width:600px){.screen-table .opening-draw img{width:43px;height:60px}.screen-table .opening-draw .comparison-2{top:95px;left:calc(50% - 21px)}.screen-table .opening-draw .comparison-0{left:calc(50% - 21px);bottom:44px}.screen-table .opening-draw .comparison-1{right:22%;top:44%}.screen-table .opening-draw .comparison-3{left:22%;top:44%}}
 @media(max-height:550px) and (min-width:601px){.screen-table .opening-draw img{width:34px;height:48px}.screen-table .opening-draw .comparison-2{top:49px}.screen-table .opening-draw .comparison-0{bottom:30px}}
+/* Reserve room above the rail for the dealer's dialogue and medium-size seats. */
+.screen-table .table{top:98px}
+.screen-table .table-host{top:30px}
+.screen-table .dealer-speech{left:auto;right:0;top:0;width:190px;max-width:190px;box-sizing:border-box;line-height:1.35;font-size:12px;padding:8px 11px;transform:none;animation:none}
+.screen-table .dealer-speech:after{content:'';position:absolute;left:22px;bottom:-7px;width:12px;height:12px;background:#092a22;border-right:1px solid #b4985366;border-bottom:1px solid #b4985366;transform:rotate(45deg)}
+.screen-table .seat{width:84px}.screen-table .self-seat{width:76px}
+.screen-table .seat .avatar{width:64px;height:64px}.screen-table .self-seat .avatar{width:54px;height:54px}
+.screen-table .seat-2{top:-48px}.screen-table .self-seat{bottom:-42px}.screen-table .seat strong,.screen-table .self-seat>span{font-size:13px}
+.screen-table .dealer-coin,.screen-table .caller-coin{top:42px}.screen-table .seat-2 .backs{top:20px;left:calc(100% + 20px)}
+/* A counter-clockwise SVG arc surrounds the portrait; time text sits on the ring. */
+.screen-table .seat-timer,.screen-table .self-seat .seat-timer{position:absolute;inset:-8px auto auto 50%;transform:translateX(-50%);width:80px;height:80px;padding:0;border:0;background:none!important;box-shadow:none;color:inherit;font-size:0;pointer-events:none;z-index:6;animation:none}
+.screen-table .self-seat .seat-timer{width:70px;height:70px}
+.screen-table .seat-timer:before,.screen-table .seat-timer:after{content:none;display:none}
+.screen-table .seat-timer svg{display:block;width:100%;height:100%;overflow:visible;transform:rotate(-90deg)}
+.screen-table .seat-timer circle{fill:none;stroke-width:4}.screen-table .timer-track{stroke:#143d2e}.screen-table .timer-arc{stroke-linecap:round;transition:stroke .35s,stroke-dashoffset .1s linear}
+.screen-table .timer-seconds{position:absolute;right:-9px;top:-1px;padding:3px 5px;min-width:25px;box-sizing:border-box;border-radius:10px;background:#0a2c23;border:1px solid #779f7e;color:#e9ffe9;font:600 10px/1 system-ui;white-space:nowrap}
+.screen-table .seat-timer.urgent .timer-seconds{border-color:#e57167;color:#ffd2ce}
+/* Delayed flights stay hidden until their own departure; landed flights stay hidden. */
+@keyframes deal-flight{0%{transform:translate(-50%,-50%) rotate(-10deg);opacity:0}12%{opacity:1}85%{opacity:1}100%{left:var(--flight-x);top:var(--flight-y);transform:translate(-50%,-50%) rotate(12deg);opacity:0}}
+.screen-table .table-page[data-presenting=true] .hand,.screen-table .table-page[data-presenting=true] .trick-layer{visibility:hidden}
+@media(max-width:600px){
+ .screen-table .table{top:98px}.screen-table .table-host{top:37px}
+ .screen-table .dealer-speech{top:0;right:0;width:140px;max-width:140px;font-size:11px;padding:6px 8px}
+ .screen-table .seat{width:68px}.screen-table .self-seat{width:68px}.screen-table .seat .avatar{width:48px;height:48px}.screen-table .self-seat .avatar{width:44px;height:44px}
+ .screen-table .seat-2{top:-35px}.screen-table .self-seat{bottom:-34px}.screen-table .seat strong,.screen-table .self-seat>span{font-size:12px}
+ .screen-table .seat-2 .backs{left:auto;right:calc(100% + 9px);top:23px}.screen-table .seat .seat-timer{width:64px;height:64px}.screen-table .self-seat .seat-timer{width:60px;height:60px}
+ .screen-table .dealer-coin,.screen-table .caller-coin{top:34px}.screen-table .plays{top:63%}
+ .screen-table .opening-draw .comparison-2{top:153px}.screen-table .opening-draw .comparison-0{bottom:50px}
+}
+@media(max-height:550px) and (min-width:601px){
+ .screen-table .table{top:67px}.screen-table .table-host{top:16px}.screen-table .dealer-speech{width:140px;max-width:140px;font-size:10px;padding:5px 7px}
+ .screen-table .seat{width:64px}.screen-table .self-seat{width:64px}.screen-table .seat .avatar{width:40px;height:40px}.screen-table .self-seat .avatar{width:36px;height:36px}
+ .screen-table .seat-2{top:-34px}.screen-table .seat-2 small{display:none}.screen-table .seat-2 .backs{top:12px}
+ .screen-table .seat .seat-timer{width:56px;height:56px}.screen-table .self-seat .seat-timer{width:52px;height:52px}.screen-table .self-seat{bottom:-31px}
+ .screen-table .dealer-coin,.screen-table .caller-coin{top:29px}.screen-table .seat strong,.screen-table .self-seat>span{font-size:11px}.screen-table .plays{top:61%}
+ .screen-table .opening-draw .comparison-2{top:89px}
+}
+@media(prefers-reduced-motion:reduce){.screen-table .timer-arc{transition:none}}
+
+/* Keep the original five visible while the two four-card groups arrive. */
+.screen-table .table-page[data-presenting=true]:not([data-hand-count="0"]) .hand{visibility:visible}
+/* Short desktop tables need a compact cross so the top card clears the name. */
+@media(min-width:601px) and (min-height:551px) and (max-height:850px){
+ .screen-table .table-page{--trick-card:52px}.screen-table .plays{width:188px;height:168px;top:58%}
+ .screen-table .play-2{left:68px;top:0}.screen-table .play-0{left:68px;top:95px}.screen-table .play-1{left:136px;top:47px}.screen-table .play-3{left:0;top:47px}
+}
+/* Results occupy the now-empty hand area while the final Sar gathers. */
+.screen-table .deal-result{top:auto;bottom:132px;max-width:min(480px,90%);font-size:12px;padding:10px 16px}
+@media(max-width:600px){.screen-table .deal-result{bottom:122px;font-size:11px}.screen-table .deal-result strong{font-size:17px}}
+@media(max-height:550px) and (min-width:601px){.screen-table .deal-result{bottom:8px;left:40%;max-width:58%;font-size:10px;padding:7px 12px}.screen-table .deal-result strong{font-size:15px}}
+@media(min-width:601px) and (min-height:551px){.screen-table .opening-draw .comparison-2{top:165px}.screen-table .opening-draw .comparison-0{bottom:62px}}
