@@ -1,3 +1,4 @@
+import {isTableReaction} from '../../packages/protocol/emotes.ts';
 import {membership,leaveSeat,disconnected,reconnected,expireDisconnected,continueWithBot,expireRoomTurn,prepareTransition,advanceTable,roomDeadline,restoreRules,type Membership} from '../../packages/protocol/room-lifecycle.ts';
 import {createMatch} from '../../packages/core/opening.ts';
 import {clockFor,expireTurn,type Clock} from '../../packages/protocol/timing.ts';
@@ -38,7 +39,7 @@ server.on('upgrade',(req,socket,head)=>{
    else if(c.type==='continue-with-bot')continueWithBot(r!.life!,r!.game.state,seat);
    else if(c.type==='ready'){if(r!.started)throw Error('Already started');r!.ready[seat]=true;}
    else if(c.type==='start'){if(r!.seats.findIndex(Boolean)!==seat||r!.started)throw Error('Host only');if(r!.seats.some((p,i)=>p&&!r!.ready[i]))throw Error('All humans must be ready');r!.seats.forEach((p,i)=>{if(!p){r!.bots[i]=true;r!.names[i]=['Hamza','Uzair','Zain','Ali'][i]+' · Bot';}});r!.started=true;}
-   else if(c.type==='emote'){if(!['Well played','Good luck','Nice Sar'].includes(c.text))throw Error('Invalid emote');for(const [w,info]of sockets)if(info.code===code)w.send(JSON.stringify({type:'emote',seat,text:c.text}));return;}
+   else if(c.type==='emote'){if(!isTableReaction(c.text))throw Error('Invalid emote');for(const [w,info]of sockets)if(info.code===code)w.send(JSON.stringify({type:'emote',seat,text:c.text}));return;}
    else{if(!r!.started)throw Error('Not started');tick(code,r!);if(r!.life!.closed)throw Error('Table closed');const receipt=r!.game.apply(seat,c);ws.send(JSON.stringify({type:'ack',...receipt}));}
    save(code,r!);broadcast(code);advanceBots(code);
   }catch(e){ws.send(JSON.stringify({type:'error',message:(e as Error).message}));}});

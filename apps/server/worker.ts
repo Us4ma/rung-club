@@ -1,3 +1,4 @@
+import {isTableReaction} from '../../packages/protocol/emotes.ts';
 import {membership,leaveSeat,disconnected,reconnected,expireDisconnected,continueWithBot,expireRoomTurn,prepareTransition,advanceTable,roomDeadline,restoreRules,type Membership} from '../../packages/protocol/room-lifecycle.ts';
 import {createMatch} from '../../packages/core/opening.ts';
 import {clockFor,expireTurn,type Clock} from '../../packages/protocol/timing.ts';
@@ -63,7 +64,7 @@ export class CardRoom extends DurableObject<Env>{
   else if(c.type==='continue-with-bot'){continueWithBot(this.life,this.session!.state,a.seat);}
   else if(c.type==='ready'){if(this.data.started)throw Error('Already started');this.data.ready[a.seat]=true;}
   else if(c.type==='start'){if(a.seat!==this.data.uids.findIndex(Boolean)||this.data.started||this.data.uids.some((u,i)=>u&&!this.data!.ready[i]))throw Error('Host and readiness required');this.data.started=true;}
-  else if(c.type==='emote'){if(!['Well played','Good luck','Nice Sar'].includes(c.text))throw Error('Invalid emote');for(const w of this.ctx.getWebSockets())w.send(JSON.stringify({type:'emote',seat:a.seat,text:c.text}));return;}
+  else if(c.type==='emote'){if(!isTableReaction(c.text))throw Error('Invalid emote');for(const w of this.ctx.getWebSockets())w.send(JSON.stringify({type:'emote',seat:a.seat,text:c.text}));return;}
   else {if(!this.data.started)throw Error('Not started');await this.tick();if(this.life.closed)throw Error('Table closed');const before=this.session!.state.revision;accepted=this.session!.apply(a.seat,c);if(c.type==='play'&&this.session!.state.revision!==before){this.data.manualPlays??=[0,0,0,0];this.data.manualPlays[a.seat]++;}}
   await this.persist();if(accepted)ws.send(JSON.stringify({type:'ack',...accepted}));this.broadcast();
   // The move is durable and accepted. A D1 outage must not report it as illegal.

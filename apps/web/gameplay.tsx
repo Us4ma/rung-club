@@ -40,7 +40,7 @@ export function DealerAnnouncements({v,seat,names}:{v:View;seat:number;names:str
  useEffect(()=>{if(!queue.length)return;const t=setTimeout(()=>setQueue(q=>q.slice(1)),queue[0].priority===1?900:1800);return()=>clearTimeout(t);},[queue[0]?.id]);
  const e=queue[0];return e?<div key={e.id} className={'dealer-speech'+(e.voiceKey==='fifth'?' fifth-sar':e.voiceKey==='turn'?' turn-announcement':'')} role="status" data-voice-key={e.voiceKey}><strong>{e.text}</strong>{e.voiceKey==='fifth'&&<small>Win Sars 4 and 5; the fifth winning lead must be non-Ace and non-Rung.</small>}</div>:null;
 }
-export function TablePreferences({settings,onChange}:{settings:any;onChange:(value:any)=>void}){const [open,setOpen]=useState(false);return <><button className="icon-button" aria-label="Table settings" aria-expanded={open} onClick={()=>setOpen(!open)}>⚙</button>{open&&<section className="table-preferences" role="dialog" aria-label="Table preferences" onKeyDown={e=>{if(e.key==='Escape')setOpen(false);}}><strong>Table preferences</strong><button aria-label="Close table settings" onClick={()=>setOpen(false)}>×</button>{[['quickPlay','Double-tap quick play'],['motion','Animations'],['sound','Sound effects']].map(([key,label])=><label key={key}>{label}<input type="checkbox" checked={key==='quickPlay'?settings[key]!==false:!!settings[key]} onChange={e=>onChange({...settings,[key]:e.target.checked})}/></label>)}</section>}</>;}
+export function TablePreferences({settings,onChange}:{settings:any;onChange:(value:any)=>void}){const [open,setOpen]=useState(false);useEffect(()=>{if(!open)return;const close=(e:PointerEvent)=>{if(!(e.target as Element).closest('.table-tools'))setOpen(false);};document.addEventListener('pointerdown',close);return()=>document.removeEventListener('pointerdown',close);},[open]);return <><button className="icon-button" aria-label="Table settings" aria-expanded={open} onClick={()=>setOpen(!open)}>⚙</button>{open&&<section className="table-preferences" role="dialog" aria-label="Table preferences" onKeyDown={e=>{if(e.key==='Escape')setOpen(false);}}><strong>Table preferences</strong><button aria-label="Close table settings" onClick={()=>setOpen(false)}>×</button>{[['quickPlay','Double-tap quick play'],['motion','Animations'],['sound','Sound effects']].map(([key,label])=><label key={key}>{label}<input type="checkbox" checked={key==='quickPlay'?settings[key]!==false:!!settings[key]} onChange={e=>onChange({...settings,[key]:e.target.checked})}/></label>)}</section>}</>;}
 /** Hydrated cards are a baseline. Only new authoritative transitions create motion. */
 export function TrickCards({v,seat,names,motion}:{v:View;seat:number;names:string[];motion:boolean}){
  const root=useRef<HTMLDivElement>(null),previous=useRef(v),seen=useRef(new Set(v.trick.map(p=>v.matchId+':'+p.card.id))),gathered=useRef('');
@@ -49,7 +49,7 @@ export function TrickCards({v,seat,names,motion}:{v:View;seat:number;names:strin
  const plays=v.trick.length?v.trick:completed?v.history.at(-1)||[]:[];
  useEffect(()=>{const old=previous.current;previous.current=v;
   if(old.matchId!==v.matchId||v.history.length-old.history.length>1){seen.current=new Set(v.trick.map(p=>v.matchId+':'+p.card.id));setRecent(0);return;}
-  if(v.history.length===old.history.length+1){setRecent(v.history.length);const t=setTimeout(()=>setRecent(0),650);return()=>clearTimeout(t);}
+  if(v.history.length===old.history.length+1){setRecent(v.history.length);const t=setTimeout(()=>setRecent(0),1200);return()=>clearTimeout(t);}
  },[v.matchId,v.history.length]);
  React.useLayoutEffect(()=>{const animate=motion&&!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   const scene=root.current?.closest<HTMLElement>('.table-scene'),animations:Animation[]=[];
@@ -60,7 +60,7 @@ export function TrickCards({v,seat,names,motion}:{v:View;seat:number;names:strin
   });
   const gatherKey=v.matchId+':'+recent;
   if(completed&&gathered.current!==gatherKey){gathered.current=gatherKey;const pile=scene?.querySelector<HTMLElement>('.center>.pile .pile-stack')?.getBoundingClientRect();
-   root.current?.querySelectorAll<HTMLElement>('[data-play]').forEach(el=>{const r=el.getBoundingClientRect();if(animate&&pile&&el.animate)animations.push(el.animate([{translate:'0px 0px',scale:'1',opacity:1},{translate:`${pile.x+pile.width/2-r.x-r.width/2}px ${pile.y+pile.height/2-r.y-r.height/2}px`,scale:'.5',opacity:0}],{duration:250,delay:320,fill:'forwards'}));});
+   root.current?.querySelectorAll<HTMLElement>('[data-play]').forEach(el=>{const r=el.getBoundingClientRect();if(animate&&pile&&el.animate)animations.push(el.animate([{translate:'0px 0px',scale:'1',opacity:1},{translate:`${pile.x+pile.width/2-r.x-r.width/2}px ${pile.y+pile.height/2-r.y-r.height/2}px`,scale:'.5',opacity:0}],{duration:300,delay:800,fill:'forwards'}));});
   }
   return()=>animations.forEach(a=>a.cancel());
  },[v.matchId,v.revision,recent,motion]);
@@ -71,7 +71,7 @@ export function SarPile({count,collected=false}:{count:number;collected?:boolean
 export function AccumulatedPile({v}:{v:View}){
  const previous=useRef(v),[count,setCount]=useState(v.pile);
  useEffect(()=>{const old=previous.current;previous.current=v;if(old.matchId!==v.matchId||v.history.length-old.history.length!==1){setCount(v.pile);return;}
-  const t=setTimeout(()=>setCount(v.pile),v.pile===0?580:620);return()=>clearTimeout(t);
+  const t=setTimeout(()=>setCount(v.pile),1120);return()=>clearTimeout(t);
  },[v.matchId,v.history.length,v.pile]);
  return <SarPile count={count}/>;
 }
@@ -88,8 +88,8 @@ export function PileCollection({v,motion,names}:{v:View;motion:boolean;names:str
  useEffect(()=>{const old=previous.current;previous.current={match:v.matchId,sar:latest?.sar??0,history:v.history.length};
   if(old.match!==v.matchId||v.history.length-old.history>1){setFlight(undefined);return;}
   if(!latest||latest.sar<=old.sar)return;
-  setFlight(latest);const t=setTimeout(()=>setFlight(undefined),1250);return()=>clearTimeout(t);
+  setFlight(latest);const t=setTimeout(()=>setFlight(undefined),1800);return()=>clearTimeout(t);
  },[v.matchId,latest?.sar,v.history.length]);
- React.useLayoutEffect(()=>{if(!flight||!motion||globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;const el=root.current,scene=el?.closest('.table-scene'),target=scene?.querySelector(`[data-seat="${flight.recipient}"]`)?.getBoundingClientRect(),source=scene?.querySelector('.center>.pile .pile-stack')?.getBoundingClientRect();if(!el||!target||!source||!el.animate)return;const bounds=scene!.getBoundingClientRect();el.style.left=source.x-bounds.x+'px';el.style.top=source.y-bounds.y+'px';const a=el.animate([{translate:'0px 0px',scale:'1',opacity:0},{translate:'0px 0px',scale:'1',opacity:1,offset:.1},{translate:`${target.x+target.width/2-source.x-source.width/2}px ${target.y+target.height/2-source.y-source.height/2}px`,scale:'.35',opacity:0}],{duration:550,delay:580,fill:'both'});return()=>a.cancel();},[flight,motion]);
+ React.useLayoutEffect(()=>{if(!flight||!motion||globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;const el=root.current,scene=el?.closest('.table-scene'),target=scene?.querySelector(`[data-seat="${flight.recipient}"]`)?.getBoundingClientRect(),source=scene?.querySelector('.center>.pile .pile-stack')?.getBoundingClientRect();if(!el||!target||!source||!el.animate)return;const bounds=scene!.getBoundingClientRect();el.style.left=source.x-bounds.x+'px';el.style.top=source.y-bounds.y+'px';const a=el.animate([{translate:'0px 0px',scale:'1',opacity:0},{translate:'0px 0px',scale:'1',opacity:1,offset:.1},{translate:`${target.x+target.width/2-source.x-source.width/2}px ${target.y+target.height/2-source.y-source.height/2}px`,scale:'.35',opacity:0}],{duration:600,delay:1120,fill:'both'});return()=>a.cancel();},[flight,motion]);
  return flight?<div ref={root} className="collection-flight" role="status"><SarPile count={flight.count} collected/><small>To {names[flight.recipient]||'seat '+(flight.recipient+1)}</small></div>:null;
 }
