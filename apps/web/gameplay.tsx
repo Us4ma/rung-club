@@ -14,7 +14,7 @@ export function useCardInput(v:View|null,seat:number,quick:boolean,submit:(id:st
   else last.current={id,time:now,revision:v.revision};
  }};
 }
-export function TableHUD({v,seat}:{v:View;seat:number}){return <div className="scorebar compact-hud" aria-label="Table scoreboard"><div data-team={seat%2}><small>YOUR TEAM</small><strong>{v.scores[seat%2]} <span>Sars</span></strong><small>{v.table?.points[seat%2]??0} match points · {v.table?.dealsWon[seat%2]??0} deals</small></div><div className={v.revealed?'rung-known':''}><small>{v.revealed?'RUNG':'HIDDEN RUNG'}</small><strong>{v.phase==='calling'?'—':v.revealed?SUITS[v.trump!]: 'Sealed'}</strong></div><div data-team={(seat+1)%2}><small>OPPONENTS</small><strong>{v.scores[(seat+1)%2]} <span>Sars</span></strong><small>{v.table?.points[(seat+1)%2]??0} match points · {v.table?.dealsWon[(seat+1)%2]??0} deals</small></div><div><small>SAR</small><strong>{Math.min(13,v.history.length+1)} <span>/ 13</span></strong></div><div><small>PILE</small><strong>{v.pile}</strong></div></div>;}
+export function TableHUD({v,seat}:{v:View;seat:number}){return <div className="scorebar compact-hud" aria-label="Table scoreboard"><div data-team={seat%2}><small>YOUR TEAM</small><strong>{v.scores[seat%2]} <span>Sars</span></strong><small><span className="full-score-text">{v.table?.points[seat%2]??0} match points · {v.table?.dealsWon[seat%2]??0} deals</span><span className="compact-score-text" aria-hidden="true">{v.table?.points[seat%2]??0} pts · {v.table?.dealsWon[seat%2]??0} deals</span></small></div><div className={v.revealed?'rung-known':''}><small>{v.revealed?'RUNG':'HIDDEN RUNG'}</small><strong>{v.phase==='calling'?'—':v.revealed?SUITS[v.trump!]: 'Sealed'}</strong></div><div data-team={(seat+1)%2}><small>OPPONENTS</small><strong>{v.scores[(seat+1)%2]} <span>Sars</span></strong><small><span className="full-score-text">{v.table?.points[(seat+1)%2]??0} match points · {v.table?.dealsWon[(seat+1)%2]??0} deals</span><span className="compact-score-text" aria-hidden="true">{v.table?.points[(seat+1)%2]??0} pts · {v.table?.dealsWon[(seat+1)%2]??0} deals</span></small></div><div><small>SAR</small><strong>{Math.min(13,v.history.length+1)} <span>/ 13</span></strong></div><div><small>PILE</small><strong>{v.pile}</strong></div></div>;}
 export function RungBanner({v,seat,seconds,timed,disabled,onCall}:{v:View;seat:number;seconds:number;timed:boolean;disabled:(s:string)=>boolean;onCall:(s:string)=>void}){if(v.phase!=='calling')return null;return <section className="rung-banner" aria-label="Rung selection"><h3>{v.turn===seat?'CHOOSE YOUR RUNG':'Waiting for trump caller…'}</h3>{timed&&<span role="timer">{seconds}s remaining</span>}<p>{v.mode==='band'?'Select one of your five cards below to seal hidden Rung.':'Examine your five cards, then choose a suit.'}</p>{v.turn===seat&&v.mode==='open'&&<div className="suit-choices">{Object.entries(SUITS).map(([s,g])=><button key={s} aria-label={g} disabled={disabled(s)} onClick={()=>onCall(s)}><b>{g}</b><small>{suitNames[s as keyof typeof suitNames]}</small></button>)}</div>}{v.redeals>0&&<small>Reshuffled · no points awarded</small>}</section>;}
 export type Announcement={id:string;text:string;priority:number;voiceKey:string};
 export function tableEvents(previous:View,current:View,seat:number,names:string[]):Announcement[]{
@@ -24,6 +24,7 @@ export function tableEvents(previous:View,current:View,seat:number,names:string[
   if(current.revealed&&current.trump)add('rung:'+current.redeals,suitNames[current.trump]+' '+SUITS[current.trump]+' is the Rung!',4);
   else add('sealed:'+current.redeals,'Hidden Rung is sealed.',3);
  }
+ if(current.trick.length===1&&previous.trick.length===0&&current.trick[0].bhaag)add('bhaag:'+current.revision,'Bhaag Sar · eligible collection lead',2);
  if(current.history.length>previous.history.length){const n=current.history.length,w=current.winners.at(-1)!;
   if(current.phase==='finished')add('result',current.result||'Deal complete',6);
   else if(current.scores.some((score,i)=>score>previous.scores[i]))add('collection:'+n,w===seat?'You collected the Sars!':names[w]+' collects the Sars!',5);
@@ -40,29 +41,55 @@ export function DealerAnnouncements({v,seat,names}:{v:View;seat:number;names:str
  const e=queue[0];return e?<div key={e.id} className={'dealer-speech'+(e.voiceKey==='fifth'?' fifth-sar':e.voiceKey==='turn'?' turn-announcement':'')} role="status" data-voice-key={e.voiceKey}><strong>{e.text}</strong>{e.voiceKey==='fifth'&&<small>Win Sars 4 and 5; the fifth winning lead must be non-Ace and non-Rung.</small>}</div>:null;
 }
 export function TablePreferences({settings,onChange}:{settings:any;onChange:(value:any)=>void}){const [open,setOpen]=useState(false);return <><button className="icon-button" aria-label="Table settings" aria-expanded={open} onClick={()=>setOpen(!open)}>⚙</button>{open&&<section className="table-preferences" role="dialog" aria-label="Table preferences" onKeyDown={e=>{if(e.key==='Escape')setOpen(false);}}><strong>Table preferences</strong><button aria-label="Close table settings" onClick={()=>setOpen(false)}>×</button>{[['quickPlay','Double-tap quick play'],['motion','Animations'],['sound','Sound effects']].map(([key,label])=><label key={key}>{label}<input type="checkbox" checked={key==='quickPlay'?settings[key]!==false:!!settings[key]} onChange={e=>onChange({...settings,[key]:e.target.checked})}/></label>)}</section>}</>;}
+/** Hydrated cards are a baseline. Only new authoritative transitions create motion. */
 export function TrickCards({v,seat,names,motion}:{v:View;seat:number;names:string[];motion:boolean}){
- const [settled,setSettled]=useState(false),root=useRef<HTMLDivElement>(null),seenPlays=useRef(new Set<string>());
- useEffect(()=>{seenPlays.current.clear();},[v.matchId]);
- const completed=v.trick.length===0&&v.history.length>0,plays=v.trick.length?v.trick:v.history.at(-1)||[];
- useEffect(()=>{setSettled(false);if(!completed)return;const t=setTimeout(()=>setSettled(true),motion?1300:80);return()=>clearTimeout(t);},[v.revision,completed,motion]);
- useEffect(()=>{if(!motion||globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;const elements=root.current?.querySelectorAll<HTMLElement>('[data-play]');elements?.forEach(el=>{const p=plays.find(p=>p.card.id===el.dataset.play)!;const target=el.getBoundingClientRect();const origin=root.current?.closest<HTMLElement>('.table-scene')?.dataset;const source=p.seat===seat&&origin?.originCard===p.card.id?{x:Number(origin.originX),y:Number(origin.originY)}:document.querySelector<HTMLElement>(`[data-seat="${p.seat}"]`)?.getBoundingClientRect();const image=el.querySelector('img');if(!image?.animate)return;
-  if(completed){if(source&&!seenPlays.current.has(v.matchId+':'+p.card.id))image.animate([{transform:`translate(${source.x-target.x}px,${source.y-target.y}px) scale(.65)`,opacity:.4},{transform:'translate(0,0)',opacity:1}],{duration:340});const collection=v.collections?.find(c=>c.sar===v.history.length);const recipient=collection?.recipient??(v.winners.at(-1)!%2===v.caller%2?v.caller:v.dealer??rightOf(v.caller));const destination=document.querySelector(v.pile===0?`[data-seat="${recipient}"]`:'.pile')?.getBoundingClientRect();if(destination)image.animate([{transform:'translate(0,0)',opacity:1},{transform:`translate(${destination.x-target.x}px,${destination.y-target.y}px) scale(.2)`,opacity:0}],{duration:450,delay:750,fill:'forwards'});}
-  else if(source&&!seenPlays.current.has(v.matchId+':'+p.card.id))image.animate([{transform:`translate(${source.x-target.x}px,${source.y-target.y}px) scale(.65)`,opacity:.4},{transform:'translate(0,0)',opacity:1}],{duration:340});
- });plays.forEach(p=>seenPlays.current.add(v.matchId+':'+p.card.id));},[v.revision,motion]);
- if(completed&&settled)return null;
- return <div ref={root} className="trick-layer">{plays.map(p=><div key={p.card.id} data-play={p.card.id} className={'played play-'+((p.seat-seat+4)%4)+(completed&&p.seat===v.winners.at(-1)?' winning-card':'')} aria-label={names[p.seat]+': '+p.card.id+(p.effective!==p.card.rank?' counts as 2':'')}><span className="card-face small"><img src={'/art/house/cards/'+(p.card.rank===14?'A':p.card.rank===13?'K':p.card.rank===12?'Q':p.card.rank===11?'J':p.card.rank)+p.card.suit+'.svg'} alt=""/></span>{p.effective!==p.card.rank&&<small>Counts as 2</small>}</div>)}</div>;
+ const root=useRef<HTMLDivElement>(null),previous=useRef(v),seen=useRef(new Set(v.trick.map(p=>v.matchId+':'+p.card.id))),gathered=useRef('');
+ const [recent,setRecent]=useState(0);
+ const completed=!v.trick.length&&recent===v.history.length&&recent>0;
+ const plays=v.trick.length?v.trick:completed?v.history.at(-1)||[]:[];
+ useEffect(()=>{const old=previous.current;previous.current=v;
+  if(old.matchId!==v.matchId||v.history.length-old.history.length>1){seen.current=new Set(v.trick.map(p=>v.matchId+':'+p.card.id));setRecent(0);return;}
+  if(v.history.length===old.history.length+1){setRecent(v.history.length);const t=setTimeout(()=>setRecent(0),650);return()=>clearTimeout(t);}
+ },[v.matchId,v.history.length]);
+ React.useLayoutEffect(()=>{const animate=motion&&!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const scene=root.current?.closest<HTMLElement>('.table-scene'),animations:Animation[]=[];
+  root.current?.querySelectorAll<HTMLElement>('[data-play]').forEach(el=>{const p=plays.find(p=>p.card.id===el.dataset.play)!;const key=v.matchId+':'+p.card.id,target=el.getBoundingClientRect();
+   const origin=scene?.dataset,source=p.seat===seat&&origin?.originCard===p.card.id?{x:Number(origin.originX),y:Number(origin.originY)}:scene?.querySelector<HTMLElement>(`[data-seat="${p.seat}"]`)?.getBoundingClientRect();
+   if(animate&&el.animate&&source&&!seen.current.has(key))animations.push(el.animate([{translate:`${source.x-target.x}px ${source.y-target.y}px`,scale:'.7',opacity:.4},{translate:'0px 0px',scale:'1',opacity:1}],{duration:220}));
+   seen.current.add(key);
+  });
+  const gatherKey=v.matchId+':'+recent;
+  if(completed&&gathered.current!==gatherKey){gathered.current=gatherKey;const pile=scene?.querySelector<HTMLElement>('.center>.pile .pile-stack')?.getBoundingClientRect();
+   root.current?.querySelectorAll<HTMLElement>('[data-play]').forEach(el=>{const r=el.getBoundingClientRect();if(animate&&pile&&el.animate)animations.push(el.animate([{translate:'0px 0px',scale:'1',opacity:1},{translate:`${pile.x+pile.width/2-r.x-r.width/2}px ${pile.y+pile.height/2-r.y-r.height/2}px`,scale:'.5',opacity:0}],{duration:250,delay:320,fill:'forwards'}));});
+  }
+  return()=>animations.forEach(a=>a.cancel());
+ },[v.matchId,v.revision,recent,motion]);
+ return <div ref={root} className="trick-layer" data-completed={completed}>{[0,1,2,3].map(relative=><span key={relative} className={'trick-slot play-'+relative} aria-hidden="true"/>)}{plays.map(p=><div key={p.card.id} data-play={p.card.id} className={'played play-'+((p.seat-seat+4)%4)+(completed&&p.seat===v.winners.at(-1)?' winning-card':'')} aria-label={names[p.seat]+': '+p.card.id+(p.effective!==p.card.rank?' counts as 2':'')}><span className="card-face small"><img src={'/art/house/cards/'+(p.card.rank===14?'A':p.card.rank===13?'K':p.card.rank===12?'Q':p.card.rank===11?'J':p.card.rank)+p.card.suit+'.svg'} alt=""/></span>{p.effective!==p.card.rank&&<small>Counts as 2</small>}</div>)}</div>;
+}
+export function SarPile({count,collected=false}:{count:number;collected?:boolean}){return <div className="pile" aria-label={count+(collected?' collected Sars':' unclaimed Sars')}><span className="pile-stack" aria-hidden="true">{Array.from({length:Math.min(6,count)},(_,i)=><i key={i} style={{'--stack-index':i} as React.CSSProperties}/>)}</span><strong>{count}{collected?' Sars':''}</strong><small>{collected?'COLLECTED':'SAR PILE'}</small></div>;}
+/** Keep the central stack at its previous size until the four-card gather arrives. */
+export function AccumulatedPile({v}:{v:View}){
+ const previous=useRef(v),[count,setCount]=useState(v.pile);
+ useEffect(()=>{const old=previous.current;previous.current=v;if(old.matchId!==v.matchId||v.history.length-old.history.length!==1){setCount(v.pile);return;}
+  const t=setTimeout(()=>setCount(v.pile),v.pile===0?580:620);return()=>clearTimeout(t);
+ },[v.matchId,v.history.length,v.pile]);
+ return <SarPile count={count}/>;
 }
 export function HandMotion({v,sorted,motion}:{v:View;sorted:boolean;motion:boolean}){
  const positions=useRef(new Map<string,DOMRect>()),oldSort=useRef(sorted);
- React.useLayoutEffect(()=>{const next=new Map<string,DOMRect>();document.querySelectorAll<HTMLElement>('.hand [data-card]').forEach(el=>{const id=el.dataset.card!,rect=el.getBoundingClientRect(),old=positions.current.get(id);if(motion&&old&&oldSort.current!==sorted&&el.animate&&!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches)el.animate([{translate:`${old.x-rect.x}px ${old.y-rect.y}px`},{translate:'0px 0px'}],{duration:180});next.set(id,rect);});positions.current=next;oldSort.current=sorted;},[v.revision,sorted,motion]);return null;
+ React.useLayoutEffect(()=>{const next=new Map<string,DOMRect>();document.querySelectorAll<HTMLElement>('.hand [data-card]').forEach(el=>{const id=el.dataset.card!,rect=el.getBoundingClientRect(),old=positions.current.get(id);if(motion&&old&&(oldSort.current!==sorted||old.x!==rect.x||old.y!==rect.y)&&el.animate&&!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches)el.animate([{translate:`${old.x-rect.x}px ${old.y-rect.y}px`},{translate:'0px 0px'}],{duration:180});next.set(id,rect);});positions.current=next;oldSort.current=sorted;},[v.revision,sorted,motion]);return null;
 }
 
 export function rememberCardOrigin(scene:HTMLDivElement|null,id:string){const card=scene?.parentElement?.querySelector<HTMLElement>(`.hand [data-card="${id}"]`);if(!scene||!card)return;const r=card.getBoundingClientRect();scene.dataset.originCard=id;scene.dataset.originX=String(r.x);scene.dataset.originY=String(r.y);}
 
-/** Move the whole collected pile to the caller/D representative, independently of trick winner. */
+/** One collection per event; initial/reconnected snapshots never replay it. */
 export function PileCollection({v,motion,names}:{v:View;motion:boolean;names:string[]}){
- const latest=v.collections?.at(-1),seen=useRef(latest? v.matchId+':'+latest.sar:''),root=useRef<HTMLDivElement>(null),[flight,setFlight]=useState<typeof latest>(undefined);
- useEffect(()=>{if(!latest){setFlight(undefined);return;}const key=v.matchId+':'+latest.sar;if(seen.current===key)return;seen.current=key;setFlight(latest);const t=setTimeout(()=>setFlight(undefined),1400);return()=>clearTimeout(t);},[v.matchId,latest?.sar]);
- React.useLayoutEffect(()=>{if(!flight||!motion||globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;const el=root.current,source=el?.getBoundingClientRect(),target=document.querySelector(`[data-seat="${flight.recipient}"]`)?.getBoundingClientRect();if(el&&source&&target&&el.animate)el.animate([{transform:'translate(-50%,-50%) scale(1)',opacity:1},{transform:`translate(calc(-50% + ${target.x+target.width/2-source.x-source.width/2}px),calc(-50% + ${target.y+target.height/2-source.y-source.height/2}px)) scale(.35)`,opacity:0}],{duration:500,delay:750,fill:'forwards'});},[flight,motion]);
- return flight?<div ref={root} className="collection-flight" role="status"><i/><i/><i/><strong>{flight.count} Sars</strong><small>To {names[flight.recipient]||'seat '+(flight.recipient+1)}</small></div>:null;
+ const latest=v.collections?.at(-1),previous=useRef({match:v.matchId,sar:latest?.sar??0,history:v.history.length}),root=useRef<HTMLDivElement>(null),[flight,setFlight]=useState<typeof latest>(undefined);
+ useEffect(()=>{const old=previous.current;previous.current={match:v.matchId,sar:latest?.sar??0,history:v.history.length};
+  if(old.match!==v.matchId||v.history.length-old.history>1){setFlight(undefined);return;}
+  if(!latest||latest.sar<=old.sar)return;
+  setFlight(latest);const t=setTimeout(()=>setFlight(undefined),1250);return()=>clearTimeout(t);
+ },[v.matchId,latest?.sar,v.history.length]);
+ React.useLayoutEffect(()=>{if(!flight||!motion||globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;const el=root.current,scene=el?.closest('.table-scene'),target=scene?.querySelector(`[data-seat="${flight.recipient}"]`)?.getBoundingClientRect(),source=scene?.querySelector('.center>.pile .pile-stack')?.getBoundingClientRect();if(!el||!target||!source||!el.animate)return;const bounds=scene!.getBoundingClientRect();el.style.left=source.x-bounds.x+'px';el.style.top=source.y-bounds.y+'px';const a=el.animate([{translate:'0px 0px',scale:'1',opacity:0},{translate:'0px 0px',scale:'1',opacity:1,offset:.1},{translate:`${target.x+target.width/2-source.x-source.width/2}px ${target.y+target.height/2-source.y-source.height/2}px`,scale:'.35',opacity:0}],{duration:550,delay:580,fill:'both'});return()=>a.cancel();},[flight,motion]);
+ return flight?<div ref={root} className="collection-flight" role="status"><SarPile count={flight.count} collected/><small>To {names[flight.recipient]||'seat '+(flight.recipient+1)}</small></div>:null;
 }

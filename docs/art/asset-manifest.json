@@ -1575,5 +1575,13 @@
     "height": 400,
     "bytes": 1102,
     "sha256": "c5ea45087a65dd9ebe2a1e4597660cc9235dfcd16a285f00573c36ea0670b8d1"
+  },
+  {
+    "path": "/art/house/table-felt.svg",
+    "source": "Original project SVG: woven felt, vignette and stitched rail guide",
+    "bytes": 748,
+    "sha256": "3fc9c48399ee451263232fbe71c6d6020fa36891a873d818785e2018d064811c",
+    "license": "Original project code, MIT",
+    "usage": "Responsive gameplay felt layer; no flattened UI or character artwork"
   }
 ]
