@@ -1,12 +1,13 @@
 import {useRef,useState} from 'react';
 import {restoredIdentity} from './auth.ts';
 import {ONLINE_ORIGIN,cloudHost} from './deployment.ts';
-export async function accountProfile(name?:string,tutorialStatus?:import('../../packages/protocol/progression.ts').TutorialStatus,bandUnlockSeen?:boolean,avatar?:number){
+export async function accountProfile(name?:string,tutorialStatus?:import('../../packages/protocol/progression.ts').TutorialStatus,bandUnlockSeen?:boolean,avatar?:number,avatarSource?:'google'){
  const user=await restoredIdentity();if(!user)throw Error('Please sign in before choosing a username.');
  const token=await user.getIdToken();
  const url=import.meta.env.PROD&&!cloudHost?ONLINE_ORIGIN+'/api/identity':'/api/identity';
  const legacy=Number(localStorage.getItem('avatar'));const target=url+(legacy>=1&&legacy<=5?'?legacyAvatar='+legacy:'');
- const r=await fetch(target,{method:name===undefined&&tutorialStatus===undefined&&bandUnlockSeen===undefined&&avatar===undefined?'GET':'PATCH',headers:{Authorization:'Bearer '+token,...(name===undefined&&tutorialStatus===undefined&&bandUnlockSeen===undefined&&avatar===undefined?{}:{'Content-Type':'application/json'})},...(name===undefined&&tutorialStatus===undefined&&bandUnlockSeen===undefined&&avatar===undefined?{}:{body:JSON.stringify({name,tutorialStatus,bandUnlockSeen,avatar})})});
+ const readOnly=name===undefined&&tutorialStatus===undefined&&bandUnlockSeen===undefined&&avatar===undefined&&avatarSource===undefined;
+ const r=await fetch(target,{method:readOnly?'GET':'PATCH',headers:{Authorization:'Bearer '+token,...(readOnly?{}:{'Content-Type':'application/json'})},...(readOnly?{}:{body:JSON.stringify({name,tutorialStatus,bandUnlockSeen,avatar,avatarSource})})});
  const data=await r.json();if(!r.ok)throw Error(data.error||'Unable to connect. Please retry.');return data;
 }
 export function UsernameForm({initial='',onSaved,onCancel,standalone=false}:{initial?:string;onSaved:(data:any)=>void;onCancel?:()=>void;standalone?:boolean}){

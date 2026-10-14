@@ -13,5 +13,12 @@ export async function syncGoogleProfile(db:IdentityDatabase,identity:VerifiedIde
 }
 export async function publicGoogleProfile(db:IdentityDatabase,uid:string){
  const rows=await db.prepare("SELECT item FROM cosmetics WHERE uid=? AND (item LIKE 'profile:google:%' OR item IN ('profile:google-name-default','profile:avatar-source:roster'))").bind(uid).all();const items=rows.results.map(r=>(r as {item:string}).item),item=items.find(x=>x.startsWith(prefix));
- if(!item)return {};try{const data=JSON.parse(item.slice(prefix.length));return {displayName:items.includes('profile:google-name-default')?data.displayName:undefined,photoURL:items.includes('profile:avatar-source:roster')?undefined:safeAvatarPhoto(data.photoURL)};}catch{return {};}
+ if(!item)return {};try{const data=JSON.parse(item.slice(prefix.length)),googlePhotoURL=safeAvatarPhoto(data.photoURL);return {displayName:items.includes('profile:google-name-default')?data.displayName:undefined,googlePhotoURL,photoURL:items.includes('profile:avatar-source:roster')?undefined:googlePhotoURL};}catch{return {};}
+}
+/** Restore the verified Google photo from the profile stored on first Google sign-in. */
+export async function selectGoogleAvatar(db:IdentityDatabase,uid:string){
+ const row=await db.prepare("SELECT item FROM cosmetics WHERE uid=? AND item LIKE 'profile:google:%' LIMIT 1").bind(uid).first<{item:string}>();
+ if(!row||!safeAvatarPhoto((JSON.parse(row.item.slice(prefix.length)) as {photoURL?:unknown}).photoURL))throw Error('No Google profile photo is linked to this account.');
+ if(!db.batch)throw Error('Avatar saving unavailable.');
+ await db.batch([db.prepare('DELETE FROM cosmetics WHERE uid=? AND item=?').bind(uid,'profile:avatar-source:roster')]);
 }
