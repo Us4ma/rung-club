@@ -1,0 +1,81 @@
+name: Android APK and smoke test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/android/**'
+      - 'apps/web/**'
+      - 'packages/**'
+      - 'capacitor.config.ts'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'playwright.visual.config.ts'
+      - 'tests/visual/table-layout.spec.ts'
+      - 'tests/visual/input-network.spec.ts'
+      - '.github/workflows/android-apk-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Install Android build tools
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'platform-tools'
+      - run: npm ci
+      - run: npm run build
+      - run: npx cap sync android
+      - name: Run browser gameplay smoke tests
+        run: |
+          npx playwright install --with-deps chromium
+          npx playwright test --config playwright.visual.config.ts tests/visual/table-layout.spec.ts tests/visual/input-network.spec.ts
+      - name: Build Android debug APK
+        working-directory: apps/android/native
+        run: ./gradlew --no-daemon assembleDebug
+      - name: Launch APK in landscape emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          script: |
+            adb install apps/android/native/app/build/outputs/apk/debug/app-debug.apk
+            adb shell settings put system accelerometer_rotation 0
+            adb shell settings put system user_rotation 0
+            adb shell am force-stop org.rungclub.game
+            adb shell am start -n org.rungclub.game/.MainActivity
+            sleep 8
+            adb shell dumpsys activity activities | grep -q 'org.rungclub.game/.MainActivity'
+            adb exec-out screencap -p > /tmp/rung-club-screen.png
+            python3 - <<'PY'
+            import struct
+            with open('/tmp/rung-club-screen.png', 'rb') as f:
+                data = f.read(24)
+            width, height = struct.unpack('>II', data[16:24])
+            assert width > height, f'Expected landscape screenshot, got {width}x{height}'
+            print(f'APK launched in landscape: {width}x{height}')
+            PY
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: rung-club-android-debug
+          path: apps/android/native/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 30
