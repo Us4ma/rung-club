@@ -291,3 +291,8 @@ img.avatar{object-fit:cover;object-position:center top}
 .screen-table .table-page[data-phase=calling] .center>.pile,.screen-table .table-scene:has(.opening-draw) .center>.pile{visibility:hidden}
 @media(max-width:600px){.screen-table .center>.pile{left:50%;top:14%;transform:translate(-50%,-50%)}}
 @media(max-height:550px) and (min-width:601px){.screen-table .center>.pile{left:23%;top:50%;transform:translate(-50%,-50%)}}
+/* Partner labels occupy a side lane, never the HUD or felt below the portrait. */
+.screen-table .seat-2>strong{left:calc(100% + 12px);right:auto;top:16px;bottom:auto;transform:none;width:110px;max-width:110px;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.screen-table .seat-2>small{left:calc(100% + 12px);right:auto;top:38px;bottom:auto;transform:none;width:110px;max-width:110px;text-align:left}
+@media(max-width:600px){.screen-table .seat-2>strong{left:auto;right:calc(100% + 8px);top:13px;width:90px;max-width:90px;text-align:right}.screen-table .seat-2>small{left:auto;right:calc(100% + 8px);top:31px;width:90px;max-width:90px;text-align:right}.screen-table .center>.pile{left:26%;top:24%;transform:translate(-50%,-50%)}}
+@media(max-height:550px) and (min-width:601px){.screen-table .seat-2>strong{top:8px;width:100px;max-width:100px}.screen-table .seat-2>small{top:25px;width:100px;max-width:100px}}
