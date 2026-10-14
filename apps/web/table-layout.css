@@ -264,3 +264,5 @@
 /* Versioned portraits retain their original artwork, with face-first circular crops. */
 img.avatar{object-fit:cover;object-position:center top}
 .lobby .mode-play.locked{background:linear-gradient(#40546b,#26374b);color:#c5ced8;border-color:#738399;box-shadow:inset 0 1px #ffffff22;cursor:default}
+/* The SVG turn timer is the only ring; portraits have no decorative inner frame. */
+.screen-table .seat .avatar,.screen-table .self-seat .avatar,.screen-table .seat.turn .avatar,.screen-table .self-seat.turn .avatar{border:0;outline:0;box-shadow:none;padding:0}
