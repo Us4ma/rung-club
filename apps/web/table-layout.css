@@ -331,3 +331,19 @@ img.avatar{object-fit:cover;object-position:center top}
 .app.screen-table .seat .seat-timer,.app.screen-table .self-seat .seat-timer{width:calc(var(--portrait-size) + 8px)!important;height:calc(var(--portrait-size) + 8px)!important;top:-4px!important;left:50%;right:auto;transform:translateX(-50%)}
 @media(max-width:600px){.app.screen-table .seat,.app.screen-table .self-seat{--portrait-size:72px}}
 @media(max-height:550px) and (min-width:601px){.app.screen-table .seat,.app.screen-table .self-seat{--portrait-size:60px}}
+
+/* Settings use stacked groups within the existing drawer width. */
+.app .settings-drawer .settings-grid{display:flex;flex-direction:column;gap:18px;width:100%;min-width:0}
+.app .settings-drawer .settings-group{width:100%;min-width:0;margin:0;padding:0 16px 12px;border:1px solid #a28c5855;border-radius:12px;overflow:hidden;background:#0a281f;box-sizing:border-box}
+.app .settings-drawer .settings-group>h3{margin:0 -16px 6px;padding:13px 16px;background:#1b4334;border-bottom:1px solid #a28c5844;color:#f1d393;font-size:15px;letter-spacing:.4px}
+.app .settings-drawer .settings-group>.setting{margin:0;padding:12px 0;border-bottom:1px solid #bca06422;gap:14px;display:flex;align-items:center;justify-content:space-between}
+.app .settings-drawer .setting>span{min-width:0}.app .settings-drawer .setting input{flex-shrink:0}
+.app .settings-drawer .settings-group>label:first-of-type:not(.setting){display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;flex-wrap:wrap}
+.app .settings-drawer select{max-width:100%;min-width:0}.app .settings-drawer .account-protection{padding:12px 0;border:0;border-radius:0;background:none}.app .settings-drawer .account-settings{gap:8px}
+.account-info-drawer>.delete-account{display:block;width:100%;margin-top:32px;min-height:46px}
+/* Draw the timer directly over the portrait edge rather than a larger outer box. */
+.app.screen-table .seat,.app.screen-table .self-seat{--portrait-size:96px}
+.app.screen-table .seat .seat-timer,.app.screen-table .self-seat .seat-timer{width:var(--portrait-size)!important;height:var(--portrait-size)!important;top:0!important}
+.app.screen-table .seat-timer circle{r:48px;stroke-width:4px}.app.screen-table .seat-timer .timer-track{stroke:#184d38}
+@media(max-width:600px){.app.screen-table .seat,.app.screen-table .self-seat{--portrait-size:76px}}
+@media(max-height:550px) and (min-width:601px){.app.screen-table .seat,.app.screen-table .self-seat{--portrait-size:64px}}
