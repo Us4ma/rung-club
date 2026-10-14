@@ -2,7 +2,7 @@ import {partnerOf} from '../core/seats.ts';
 import {DEFAULT,type State} from '../core/index.ts';
 import {Session} from './index.ts';
 import {clockFor,expireTurn,decisionAt,type Clock} from './timing.ts';
-export const RESULT_PAUSE_MS=2400,RECONNECT_GRACE_MS=60000;
+export const RESULT_PAUSE_MS=4200,RECONNECT_GRACE_MS=60000;
 export type Membership={autoPlay?:boolean[];departed:boolean[];disconnectedAt:(number|null)[];pendingPartners:number[];closed:string|null;transitionAt?:number;settledDeal?:string};
 export function membership():Membership{return {departed:[false,false,false,false],disconnectedAt:[null,null,null,null],pendingPartners:[],closed:null};}
 export function leaveSeat(m:Membership,uids:(string|null)[],s:State,seat:number){

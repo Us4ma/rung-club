@@ -266,3 +266,17 @@ img.avatar{object-fit:cover;object-position:center top}
 .lobby .mode-play.locked{background:linear-gradient(#40546b,#26374b);color:#c5ced8;border-color:#738399;box-shadow:inset 0 1px #ffffff22;cursor:default}
 /* The SVG turn timer is the only ring; portraits have no decorative inner frame. */
 .screen-table .seat .avatar,.screen-table .self-seat .avatar,.screen-table .seat.turn .avatar,.screen-table .self-seat.turn .avatar{border:0;outline:0;box-shadow:none;padding:0}
+
+/* Opening cards share measured live-trick slots across all viewport shapes. */
+.screen-table .opening-draw .comparison-seat{right:auto;bottom:auto;gap:0;padding:0}
+.screen-table .opening-draw .comparison-seat img{width:100%;height:100%;margin:0;object-fit:contain}
+/* Count sits in a separate column, away from the stacked card edges. */
+.screen-table .center>.pile{left:29%;top:72%;width:96px;display:grid;grid-template-columns:34px 1fr;grid-template-rows:48px auto;column-gap:16px;row-gap:8px;align-items:center}
+.screen-table .center>.pile .pile-stack{width:34px;height:48px;margin:0;grid-column:1;grid-row:1}
+.screen-table .center>.pile>strong{position:static;grid-column:2;grid-row:1;margin:0;line-height:1;text-align:left}
+.screen-table .center>.pile>small{position:static;grid-column:1 / -1;grid-row:2;text-align:center;margin:0}
+.screen-table .deal-result{top:43%;bottom:auto;animation:deal-win-entrance 4200ms both}
+@keyframes deal-win-entrance{0%,28%{opacity:0;visibility:hidden;transform:translate(-50%,8px)}35%,92%{opacity:1;visibility:visible;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-5px)}}
+@media(max-width:600px){.screen-table .center>.pile{left:24%;top:76%;width:72px;grid-template-columns:23px 1fr;grid-template-rows:32px auto;column-gap:14px;row-gap:6px}.screen-table .center>.pile .pile-stack{width:23px;height:32px}.screen-table .deal-result{top:42%;bottom:auto}}
+@media(max-height:550px) and (min-width:601px){.screen-table .center>.pile{left:27%;top:70%;width:68px;grid-template-columns:23px 1fr;grid-template-rows:32px auto;column-gap:12px;row-gap:4px}.screen-table .center>.pile .pile-stack{width:23px;height:32px}.screen-table .deal-result{left:50%;top:38%;bottom:auto}}
+@media(prefers-reduced-motion:reduce){.screen-table .deal-result{animation:none}}

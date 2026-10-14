@@ -26,7 +26,7 @@ export function tableEvents(previous:View,current:View,seat:number,names:string[
  }
  if(current.history.length>=4&&current.trick.length===1&&previous.trick.length===0&&current.trick[0].bhaag&&current.streak>=1&&current.streakSeat===current.trick[0].seat)add('bhaag:'+current.revision,'Another win can collect this pile.',2);
  if(current.history.length>previous.history.length){const n=current.history.length,w=current.winners.at(-1)!;
-  if(current.phase==='finished')add('result',current.result||'Deal complete',6);
+  if(current.phase==='finished')add('result','Team '+((current.scores[0]>current.scores[1]?0:1)+1)+' won the deal.',6);
   else if(current.scores.some((score,i)=>score>previous.scores[i]))add('collection:'+n,w===seat?'You collected the Sars!':names[w]+' collects the Sars!',5);
   else add('senior:'+n,w===seat?"You're Senior!":names[w]+' is Senior!',2);
   if(n===4&&current.policy.opening===5)add('fifth','Fifth Sar. Play for the pile.',5);
@@ -55,7 +55,7 @@ export function TrickCards({v,seat,names,motion}:{v:View;seat:number;names:strin
   const scene=root.current?.closest<HTMLElement>('.table-scene'),animations:Animation[]=[];
   root.current?.querySelectorAll<HTMLElement>('[data-play]').forEach(el=>{const p=plays.find(p=>p.card.id===el.dataset.play)!;const key=v.matchId+':'+p.card.id,target=el.getBoundingClientRect();
    const origin=scene?.dataset,source=p.seat===seat&&origin?.originCard===p.card.id?{x:Number(origin.originX),y:Number(origin.originY)}:scene?.querySelector<HTMLElement>(`[data-seat="${p.seat}"]`)?.getBoundingClientRect();
-   if(animate&&el.animate&&source&&!seen.current.has(key))animations.push(el.animate([{translate:`${source.x-target.x}px ${source.y-target.y}px`,scale:'.7',opacity:.4},{translate:'0px 0px',scale:'1',opacity:1}],{duration:v.history.length>=12?100:220}));
+   if(animate&&el.animate&&source&&!seen.current.has(key))animations.push(el.animate([{translate:`${source.x-target.x}px ${source.y-target.y}px`,scale:'.7',opacity:.4},{translate:'0px 0px',scale:'1',opacity:1}],{duration:240}));
    seen.current.add(key);
   });
   const gatherKey=v.matchId+':'+recent;
