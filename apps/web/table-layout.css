@@ -316,3 +316,11 @@ img.avatar{object-fit:cover;object-position:center top}
 .screen-table .seat-1 .seat-reaction,.screen-table .seat-2 .seat-reaction{left:auto;right:calc(100% + 12px)}
 .screen-table .self-seat .seat-reaction{top:8px;left:calc(100% + 12px);right:auto}
 .screen-table .controls>.emote-toggle:disabled{opacity:.35;cursor:not-allowed}
+
+/* Portrait and turn ring use one diameter, with only a two-pixel clearance. */
+.screen-table .seat,.screen-table .self-seat{--portrait-size:84px}
+.screen-table .seat .avatar,.screen-table .self-seat .avatar{width:var(--portrait-size)!important;height:var(--portrait-size)!important;min-width:var(--portrait-size);max-width:none;border-radius:50%;flex-shrink:0}
+.screen-table .seat .seat-timer,.screen-table .self-seat .seat-timer{width:calc(var(--portrait-size) + 10px);height:calc(var(--portrait-size) + 10px);top:-5px;left:50%;transform:translateX(-50%)}
+@media(max-width:600px){.screen-table .seat,.screen-table .self-seat{--portrait-size:64px}}
+@media(max-height:550px) and (min-width:601px){.screen-table .seat,.screen-table .self-seat{--portrait-size:52px}}
+.account-settings{display:flex;flex-direction:column;gap:12px}.account-info-button{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:48px}.account-info-layer{position:fixed;inset:0;z-index:150}.account-info-backdrop{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:0;background:#0009}.account-info-drawer{position:absolute;right:0;top:0;bottom:0;width:min(440px,100%);overflow-y:auto;padding:max(24px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom));background:linear-gradient(145deg,#173b30,#071e18);border-left:1px solid #b49458;color:#f3e7c7;box-shadow:-12px 0 40px #0006;animation:account-info-enter .2s ease-out}.account-info-drawer h2{font-size:28px;margin:24px 0}.account-info-drawer dt{font-size:12px;color:#c9ac70;margin-top:24px}.account-info-drawer dd{margin:8px 0;font-size:15px;overflow-wrap:anywhere;padding-bottom:16px;border-bottom:1px solid #b4945830}.account-info-drawer small{display:block;line-height:1.6;color:#b2c6b8;margin-top:24px}@keyframes account-info-enter{from{transform:translateX(100%)}to{transform:translateX(0)}}@media(prefers-reduced-motion:reduce){.account-info-drawer{animation:none}}
