@@ -347,3 +347,12 @@ img.avatar{object-fit:cover;object-position:center top}
 .app.screen-table .seat-timer circle{r:48px;stroke-width:4px}.app.screen-table .seat-timer .timer-track{stroke:#184d38}
 @media(max-width:600px){.app.screen-table .seat,.app.screen-table .self-seat{--portrait-size:76px}}
 @media(max-height:550px) and (min-width:601px){.app.screen-table .seat,.app.screen-table .self-seat{--portrait-size:64px}}
+
+/* Overlay controls must not inherit decorative game-button edges. */
+.app .drawer-backdrop,.account-info-backdrop{background:#0008!important;background-image:none!important;border:0!important;border-image:none!important;box-shadow:none!important;outline:0!important;filter:none!important;transform:none!important;padding:0!important}
+.drawer-backdrop::before,.drawer-backdrop::after,.account-info-backdrop::before,.account-info-backdrop::after{content:none!important;display:none!important}
+.app .settings-drawer{border-image:none!important;outline:none!important;background-image:linear-gradient(#164532,#09291f)!important}
+.app .settings-drawer .account-info-button{background:#12352a!important;background-image:none!important;border:1px solid #a28c5844!important;border-image:none!important;box-shadow:none!important;color:#dfd7bd!important;text-shadow:none!important;font-weight:500;padding:12px 14px}
+.account-info-layer .account-info-drawer{background:linear-gradient(#164532,#09291f);border:1px solid #b49a63;border-radius:18px 0 0 18px;font-family:system-ui,sans-serif;box-sizing:border-box;padding:24px 22px max(24px,env(safe-area-inset-bottom))}
+.account-info-drawer .back-button{display:inline-flex;align-items:center;gap:8px;background:#12352a;border:1px solid #a28c5855;border-radius:10px;min-height:44px;padding:10px 14px;color:#f2e6c8;box-shadow:none;text-shadow:none}.account-info-drawer .back-chevron{display:flex;width:18px;height:18px}.account-info-drawer .back-chevron svg{width:18px;height:18px}
+@media(max-width:600px){.account-info-layer .account-info-drawer{width:calc(100% - 24px);border-radius:0;padding:20px 18px}}
