@@ -301,5 +301,5 @@ img.avatar{object-fit:cover;object-position:center top}
 @media(max-width:600px){.screen-table .center>.pile{left:26%;top:20%}}
 @media(max-height:550px) and (min-width:601px){.screen-table .center>.pile{left:28%;top:24%}}
 
-/* Center the unclaimed Sar pile on the felt on every layout. */
-.screen-table .center>.pile{left:50%;top:50%;transform:translate(-50%,-50%)}
+/* Keep the unclaimed Sar pile in the left-center lane, beside the live trick. */
+.screen-table .center>.pile{left:25%;top:50%;transform:translate(-50%,-50%)}
