@@ -34,10 +34,12 @@ export function tableEvents(previous:View,current:View,seat:number,names:string[
  
  return events;
 }
-export function DealerAnnouncements({v,seat,names}:{v:View;seat:number;names:string[]}){
+export function DealerAnnouncements({v,seat,names,notice,busy=false}:{v:View;seat:number;names:string[];notice?:{id:string;text:string}|null;busy?:boolean}){
+ const lastNotice=useRef('');
  const previous=useRef(v),seen=useRef(new Set<string>()),[queue,setQueue]=useState<Announcement[]>([]);
  useEffect(()=>{if(previous.current.matchId!==v.matchId){previous.current=v;seen.current.clear();setQueue([]);return;}const events=tableEvents(previous.current,v,seat,names).filter(e=>!seen.current.has(e.id));previous.current=v;events.forEach(e=>seen.current.add(e.id));setQueue(q=>[...q.filter(e=>!(e.voiceKey==='senior'&&events.some(n=>n.voiceKey==='senior'))),...events].sort((a,b)=>b.priority-a.priority));},[v.matchId,v.revision]);
  useEffect(()=>{if(!queue.length)return;const t=setTimeout(()=>setQueue(q=>q.slice(1)),queue[0].priority>=4?3200:2600);return()=>clearTimeout(t);},[queue[0]?.id]);
+ useEffect(()=>{if(!notice||busy||lastNotice.current===notice.id)return;lastNotice.current=notice.id;setQueue(q=>[...q,{id:notice.id,text:notice.text,priority:4,voiceKey:'roster'}]);},[notice?.id,busy]);
  const e=queue[0];return e?<div key={e.id} className={'dealer-speech'+(e.voiceKey==='fifth'?' fifth-sar':e.voiceKey==='turn'?' turn-announcement':'')} role="status" data-voice-key={e.voiceKey}><strong>{e.text}</strong></div>:null;
 }
 export function TablePreferences({settings,onChange}:{settings:any;onChange:(value:any)=>void}){const [open,setOpen]=useState(false);useEffect(()=>{if(!open)return;const close=(e:PointerEvent)=>{if(!(e.target as Element).closest('.table-tools'))setOpen(false);};document.addEventListener('pointerdown',close);return()=>document.removeEventListener('pointerdown',close);},[open]);return <><button className="icon-button" aria-label="Table settings" aria-expanded={open} onClick={()=>setOpen(!open)}>⚙</button>{open&&<section className="table-preferences" role="dialog" aria-label="Table preferences" onKeyDown={e=>{if(e.key==='Escape')setOpen(false);}}><strong>Table preferences</strong><button aria-label="Close table settings" onClick={()=>setOpen(false)}>×</button>{[['quickPlay','Double-tap quick play'],['motion','Animations'],['sound','Sound effects']].map(([key,label])=><label key={key}>{label}<input type="checkbox" checked={key==='quickPlay'?settings[key]!==false:!!settings[key]} onChange={e=>onChange({...settings,[key]:e.target.checked})}/></label>)}</section>}</>;}
