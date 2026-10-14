@@ -303,3 +303,10 @@ img.avatar{object-fit:cover;object-position:center top}
 
 /* Keep the unclaimed Sar pile in the left-center lane, beside the live trick. */
 .screen-table .center>.pile{left:25%;top:50%;transform:translate(-50%,-50%)}
+
+/* Plain emoji float above seats without a coloured bubble or caption. */
+.screen-table .seat-reaction,.screen-table .reaction-bubble{background:none;border:0;box-shadow:none;padding:0;width:auto;text-shadow:none}
+.screen-table .seat-reaction>span:not(.reaction-emoji){display:none}
+.screen-table .reaction-emoji,.screen-table .seat-reaction>.reaction-emoji{display:grid;place-items:center;width:48px;height:48px;font-size:40px;line-height:1;color:inherit;white-space:normal;text-shadow:none}
+.app.screen-table .emote-picker button{background:transparent!important;border:0!important;box-shadow:none!important}
+@media(max-width:600px){.screen-table .seat-reaction>.reaction-emoji{width:42px;height:42px;font-size:36px}}
