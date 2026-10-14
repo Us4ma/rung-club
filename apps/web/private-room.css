@@ -4,3 +4,16 @@
 @media(max-height:550px) and (min-width:601px){.screen-table .private-waiting-panel{padding:8px;gap:5px;width:220px}.private-waiting-panel h2{font-size:22px}.private-waiting-panel p{font-size:10px}.app .private-waiting-panel button{min-height:34px;font-size:11px;padding:5px}}
 
 .app.screen-lobby .private-room button{background:linear-gradient(#234536,#123127)!important;color:#e4ddc5!important;border:1px solid #a28c5855!important;border-image:none!important;box-shadow:inset 0 1px #fff1!important;text-shadow:none!important;border-radius:10px;min-height:44px}
+
+/* Compact waiting panel remains interactive inside the noninteractive trick layer. */
+.app.screen-table .private-waiting-panel{pointer-events:auto;display:grid;grid-template-columns:1fr 1fr;width:220px;max-width:70%;padding:10px 12px;gap:6px 8px;box-sizing:border-box}
+.private-waiting-panel>small,.private-waiting-panel>h2,.private-waiting-panel>p{grid-column:1/-1}
+.app.screen-table .private-waiting-panel h2{font-size:24px;line-height:1.15}
+.app.screen-table .private-waiting-panel p{font-size:11px;line-height:1.3}
+.app.screen-table .private-waiting-panel button{min-height:44px;padding:7px 8px;font-size:12px;pointer-events:auto}
+.app.screen-table .private-waiting-panel>small:last-child{font-size:9px;line-height:1.3}
+.app.screen-table .empty-seat button.empty-seat-invite{width:var(--portrait-size)!important;height:var(--portrait-size)!important;min-width:var(--portrait-size)!important;min-height:var(--portrait-size)!important;max-width:var(--portrait-size)!important;max-height:var(--portrait-size)!important;aspect-ratio:1;border-radius:50%!important;border-image:none!important;overflow:hidden;padding:0!important;opacity:1;box-sizing:border-box;flex-shrink:0}
+.empty-seat-invite::before,.empty-seat-invite::after{content:none!important}
+.app.screen-lobby .private-room button{background:linear-gradient(#355945,#244536)!important;color:#f0e7cf!important;border-color:#b8a06b88!important;box-shadow:inset 0 1px #ffffff22,0 2px 5px #0003!important}
+@media(max-width:600px){.app.screen-table .private-waiting-panel{width:180px;padding:8px;gap:5px}.app.screen-table .private-waiting-panel h2{font-size:21px}.app.screen-table .private-waiting-panel p{font-size:10px}}
+@media(max-height:550px) and (min-width:601px){.app.screen-table .private-waiting-panel{width:210px;padding:7px;gap:4px}.app.screen-table .private-waiting-panel h2{font-size:20px}}
