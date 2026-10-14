@@ -285,3 +285,9 @@ img.avatar{object-fit:cover;object-position:center top}
 .screen-table .seat-2>small{position:absolute;bottom:calc(100% + 3px);left:50%;transform:translateX(-50%);width:max-content;max-width:140px;margin:0;padding:0;line-height:1.2}
 @media(max-width:600px){.screen-table .seat-2>strong{bottom:calc(100% + 16px);max-width:110px}.screen-table .seat-2>small{bottom:calc(100% + 3px);max-width:110px}}
 @media(max-height:550px) and (min-width:601px){.screen-table .seat-2>strong{bottom:calc(100% + 14px);max-width:110px}.screen-table .seat-2>small{bottom:calc(100% + 2px);max-width:110px}}
+
+/* Keep the pile beside the central trick; portrait uses the clear space above it. */
+.screen-table .center>.pile{left:23%;top:50%;transform:translate(-50%,-50%)}
+.screen-table .table-page[data-phase=calling] .center>.pile,.screen-table .table-scene:has(.opening-draw) .center>.pile{visibility:hidden}
+@media(max-width:600px){.screen-table .center>.pile{left:50%;top:14%;transform:translate(-50%,-50%)}}
+@media(max-height:550px) and (min-width:601px){.screen-table .center>.pile{left:23%;top:50%;transform:translate(-50%,-50%)}}
