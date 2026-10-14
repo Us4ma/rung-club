@@ -310,3 +310,9 @@ img.avatar{object-fit:cover;object-position:center top}
 .screen-table .reaction-emoji,.screen-table .seat-reaction>.reaction-emoji{display:grid;place-items:center;width:48px;height:48px;font-size:40px;line-height:1;color:inherit;white-space:normal;text-shadow:none}
 .app.screen-table .emote-picker button{background:transparent!important;border:0!important;box-shadow:none!important}
 @media(max-width:600px){.screen-table .seat-reaction>.reaction-emoji{width:42px;height:42px;font-size:36px}}
+
+/* Reactions sit beside portraits, outside the central trick lane. */
+.screen-table .seat-reaction{top:8px;bottom:auto;left:calc(100% + 12px);right:auto;transform:none}
+.screen-table .seat-1 .seat-reaction,.screen-table .seat-2 .seat-reaction{left:auto;right:calc(100% + 12px)}
+.screen-table .self-seat .seat-reaction{top:8px;left:calc(100% + 12px);right:auto}
+.screen-table .controls>.emote-toggle:disabled{opacity:.35;cursor:not-allowed}
