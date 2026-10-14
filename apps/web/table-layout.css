@@ -280,3 +280,8 @@ img.avatar{object-fit:cover;object-position:center top}
 @media(max-width:600px){.screen-table .center>.pile{left:24%;top:76%;width:72px;grid-template-columns:23px 1fr;grid-template-rows:32px auto;column-gap:14px;row-gap:6px}.screen-table .center>.pile .pile-stack{width:23px;height:32px}.screen-table .deal-result{top:42%;bottom:auto}}
 @media(max-height:550px) and (min-width:601px){.screen-table .center>.pile{left:27%;top:70%;width:68px;grid-template-columns:23px 1fr;grid-template-rows:32px auto;column-gap:12px;row-gap:4px}.screen-table .center>.pile .pile-stack{width:23px;height:32px}.screen-table .deal-result{left:50%;top:38%;bottom:auto}}
 @media(prefers-reduced-motion:reduce){.screen-table .deal-result{animation:none}}
+/* Partner identity stays above the portrait, outside the playing surface. */
+.screen-table .seat-2>strong{position:absolute;bottom:calc(100% + 18px);left:50%;transform:translateX(-50%);width:max-content;max-width:140px;margin:0;padding:0;line-height:1.2}
+.screen-table .seat-2>small{position:absolute;bottom:calc(100% + 3px);left:50%;transform:translateX(-50%);width:max-content;max-width:140px;margin:0;padding:0;line-height:1.2}
+@media(max-width:600px){.screen-table .seat-2>strong{bottom:calc(100% + 16px);max-width:110px}.screen-table .seat-2>small{bottom:calc(100% + 3px);max-width:110px}}
+@media(max-height:550px) and (min-width:601px){.screen-table .seat-2>strong{bottom:calc(100% + 14px);max-width:110px}.screen-table .seat-2>small{bottom:calc(100% + 2px);max-width:110px}}
