@@ -356,3 +356,7 @@ img.avatar{object-fit:cover;object-position:center top}
 .account-info-layer .account-info-drawer{background:linear-gradient(#164532,#09291f);border:1px solid #b49a63;border-radius:18px 0 0 18px;font-family:system-ui,sans-serif;box-sizing:border-box;padding:24px 22px max(24px,env(safe-area-inset-bottom))}
 .account-info-drawer .back-button{display:inline-flex;align-items:center;gap:8px;background:#12352a;border:1px solid #a28c5855;border-radius:10px;min-height:44px;padding:10px 14px;color:#f2e6c8;box-shadow:none;text-shadow:none}.account-info-drawer .back-chevron{display:flex;width:18px;height:18px}.account-info-drawer .back-chevron svg{width:18px;height:18px}
 @media(max-width:600px){.account-info-layer .account-info-drawer{width:calc(100% - 24px);border-radius:0;padding:20px 18px}}
+
+/* Destructive account action keeps its red styling in the account drawer. */
+.account-info-drawer>.delete-account{background:linear-gradient(#a53737,#782525)!important;background-image:linear-gradient(#a53737,#782525)!important;color:#fff0ed!important;border:1px solid #d16a62!important;border-image:none!important;box-shadow:inset 0 1px #ffffff22,0 2px 5px #0003!important;text-shadow:none!important}
+.account-info-drawer>.delete-account:hover{background:linear-gradient(#b54141,#872b2b)!important}
