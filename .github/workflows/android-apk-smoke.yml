@@ -51,6 +51,13 @@ jobs:
       - name: Build Android debug APK
         working-directory: apps/android/native
         run: ./gradlew --no-daemon assembleDebug
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: rung-club-android-debug
+          path: apps/android/native/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 30
       - name: Launch APK in landscape emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -68,10 +75,3 @@ jobs:
             adb shell dumpsys activity activities | grep -q 'org.rungclub.game/.MainActivity'
             adb exec-out screencap -p > /tmp/rung-club-screen.png
             python3 -c "import struct; data=open('/tmp/rung-club-screen.png','rb').read(24); width,height=struct.unpack('>II',data[16:24]); print(f'APK launched in landscape: {width}x{height}'); assert width>height, f'Expected landscape screenshot, got {width}x{height}'"
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: rung-club-android-debug
-          path: apps/android/native/app/build/outputs/apk/debug/app-debug.apk
-          if-no-files-found: error
-          retention-days: 30
