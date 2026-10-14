@@ -1,24 +1,24 @@
 import {Pointer} from './experience.tsx';
-import {bandEligible,BAND_UNLOCK_XP} from '../../packages/protocol/progression.ts';
+const BAND_UNLOCK_XP=400;
 import {useState} from 'react';
 import {art,Icon,Dealer} from './art.tsx';
 type Mode='open'|'band';
 function ModeArt({mode}:{mode:Mode|'practice'}){if(mode==='open')return <img className="lobby-mode-art" src={art('lobby/open-simple.svg')} alt="" draggable={false}/>;return <img className="lobby-mode-art" src={art(`lobby/${mode}-640.webp`)} srcSet={`${art(`lobby/${mode}-320.webp`)} 320w, ${art(`lobby/${mode}-640.webp`)} 640w`} sizes="(max-width:600px) 30vw, (max-height:550px) 22vw, 25vw" alt="" draggable={false} decoding="async"/>;}
 export function Lobby({mode,setMode,play,practice,learn,setScreen,profile,join,setJoin,intro=false,onIntro}:{intro?:boolean;onIntro?:()=>void;mode:Mode;setMode:(m:Mode)=>void;play:(action:'quick'|'create'|'join',m?:Mode)=>void;practice:()=>void;learn:()=>void;setScreen:(s:string)=>void;profile:{name:string;xp:number};avatar:number;join:string;setJoin:(s:string)=>void}){
- const [rooms,setRooms]=useState(false),[locked,setLocked]=useState(false);const unlocked=bandEligible(profile.xp),progress=Math.min(BAND_UNLOCK_XP,Math.max(0,profile.xp));
+ const [rooms,setRooms]=useState(false),[locked,setLocked]=useState(false);const unlocked=false,progress=Math.min(BAND_UNLOCK_XP,Math.max(0,profile.xp));
  function select(m:Mode){if(m==='band'&&!unlocked)setLocked(true);else if(m==='open'&&intro)onIntro?.();else setMode(m);}
  return <main className="lobby"><div className="house-content"><div className="lobby-arrangement"><aside className="lobby-host"><Dealer/></aside><div className="lobby-table-front" aria-hidden="true"><div className="table-coins"><i/><i/><i/><i/></div><div className="table-deck"><img src={art('house/cards/AS.svg')} alt=""/><img src={art('house/cards/7H.svg')} alt=""/></div></div><section className="lobby-play-area" aria-label="Rung Club game modes">
  {intro&&<div className="ftue-welcome" role="status">Welcome to Rung Club! Tap Open Rung to play your first hand.</div>}
  <div className="game-menu" aria-label="Choose your table">{(['open','band'] as const).map(m=><article key={m} className={'game-tile '+m+(mode===m?' chosen':'')}>
- <div className="mode-ribbon">{m==='band'&&!unlocked?<><Icon name="lock"/>Unlocks at Level 5</>:null}</div>
+ <div className="mode-ribbon">{m==='band'&&!unlocked?<><Icon name="lock"/>Coming soon</>:null}</div>
  <button className={'mode-tile '+m+(intro&&m==='open'?' ftue-target':'')} aria-pressed={mode===m} aria-label={m==='open'?'Select Open Rung':'Select Band Rung'} onClick={()=>select(m)}><ModeArt mode={m}/><h2>{m==='open'?'Open Rung':'Band Rung'}</h2><p>{m==='open'?'5-Sar Double Rung':'Hidden trump'}</p>{intro&&m==='open'&&<Pointer/>}</button>
  <p className="mode-description">{m==='open'?'The classic Rung Club experience.':'A more strategic way to play.'}</p>
- <div className="mode-status">{m==='band'&&!unlocked?<><progress aria-label="Band Rung unlock progress" max={BAND_UNLOCK_XP} value={progress}/><small>{progress} / {BAND_UNLOCK_XP} XP</small></>:<span aria-hidden="true"/>}</div>
- <button className={'mode-play '+(m==='band'&&!unlocked?'locked':'gold')} aria-label={m==='open'?'Play Open Rung':unlocked?'Play Band Rung':'Unlock Level 5'} onClick={()=>m==='band'&&!unlocked?setLocked(true):intro&&m==='open'?onIntro?.():play('quick',m)}>{m==='band'&&!unlocked?'Unlock at Level\u00a05':'Play →'}</button>
+ <div className="mode-status">{m==='band'&&!unlocked?<><small>Hidden trump tables are on their way.</small></>:<span aria-hidden="true"/>}</div>
+ <button className={'mode-play '+(m==='band'&&!unlocked?'locked':'gold')} aria-label={m==='open'?'Play Open Rung':unlocked?'Play Band Rung':'Band Rung coming soon'} onClick={()=>m==='band'&&!unlocked?setLocked(true):intro&&m==='open'?onIntro?.():play('quick',m)}>{m==='band'&&!unlocked?'Coming soon':'Play →'}</button>
  </article>)}<article className="game-tile practice"><div className="mode-ribbon" aria-hidden="true"/><button className="mode-tile" onClick={practice} aria-label="Explore Practice"><ModeArt mode="practice"/><h2>Practice</h2><p>Play with labelled bots</p></button><p className="mode-description">Learn, improve, and play at your own pace.</p><div className="mode-status"><span aria-hidden="true"/></div><button className="mode-play gold" onClick={practice} aria-label="Practice table">Play →</button></article></div>
  <div className="club-shortcuts"><button aria-expanded={rooms} onClick={()=>setRooms(!rooms)}><Icon name="friends"/><span><strong>Private Room</strong><small>Play with friends</small></span><span>›</span></button><button onClick={learn} aria-label="Learn the art of Rung"><Icon name="question"/><span><strong>Learn Rung</strong><small>Tutorial & rules</small></span><span>›</span></button></div>
  {rooms&&<section className="private-room" aria-label="Private room"><div><h3>Your friends. Your table.</h3><p>{mode==='open'?'Open Rung':'Band Rung'} · share an invite code</p></div><button onClick={()=>play('create')}>Create Private Room →</button><div className="join"><input aria-label="Room code" value={join} maxLength={8} onChange={e=>setJoin(e.target.value.toUpperCase())} placeholder="Invite code"/><button onClick={()=>play('join')}>Join</button></div></section>}
  </section></div></div>
- {locked&&<div className="unlock-modal" role="dialog" aria-label="Band Rung locked"><section><span className="eyebrow">THE HIDDEN TRUMP CHALLENGE</span><h2>Unlocks at Level 5</h2><p>Complete Open Rung games to build your experience.</p><progress max={BAND_UNLOCK_XP} value={progress}/><p>{progress} / {BAND_UNLOCK_XP} XP</p><button className="gold" onClick={()=>setLocked(false)}>Back to the lobby</button></section></div>}
+ {locked&&<div className="unlock-modal" role="dialog" aria-label="Band Rung locked"><section><span className="eyebrow">THE HIDDEN TRUMP CHALLENGE</span><h2>Coming soon</h2><p>Band Rung is temporarily unavailable. Open Rung and Practice are ready to play.</p><button className="gold" onClick={()=>setLocked(false)}>Back to the lobby</button></section></div>}
  </main>;
 }

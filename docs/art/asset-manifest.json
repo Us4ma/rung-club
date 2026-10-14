@@ -1583,5 +1583,45 @@
     "sha256": "3fc9c48399ee451263232fbe71c6d6020fa36891a873d818785e2018d064811c",
     "license": "Original project code, MIT",
     "usage": "Responsive gameplay felt layer; no flattened UI or character artwork"
+  },
+  {
+    "path": "/art/avatars/roster-v2/avatar_01.webp",
+    "source": "Owner-supplied avatar assets.zip, image 1",
+    "bytes": 36988,
+    "sha256": "248c7327bac58f772e574b849f3968b0a06de38b85ebe51f64db663292b5aaa9",
+    "license": "Owner-supplied artwork; source rights supplied by owner",
+    "usage": "Selectable player portrait; original artwork, no added frame"
+  },
+  {
+    "path": "/art/avatars/roster-v2/avatar_02.webp",
+    "source": "Owner-supplied avatar assets.zip, image 2",
+    "bytes": 35724,
+    "sha256": "617b15605b39955ee6ba820402155efd85da66cc64475390f1759405f62370a0",
+    "license": "Owner-supplied artwork; source rights supplied by owner",
+    "usage": "Selectable player portrait; original artwork, no added frame"
+  },
+  {
+    "path": "/art/avatars/roster-v2/avatar_03.webp",
+    "source": "Owner-supplied avatar assets.zip, image 3",
+    "bytes": 19688,
+    "sha256": "c7e8782b963030090c442d331dce07eba606af0e28603dad5d690e8b821ab3ea",
+    "license": "Owner-supplied artwork; source rights supplied by owner",
+    "usage": "Selectable player portrait; original artwork, no added frame"
+  },
+  {
+    "path": "/art/avatars/roster-v2/avatar_04.webp",
+    "source": "Owner-supplied avatar assets.zip, image 4",
+    "bytes": 38854,
+    "sha256": "b6000c05521e7ae0b33ab82b8ab428d7677a7d367242a09ba939727776a8c9ff",
+    "license": "Owner-supplied artwork; source rights supplied by owner",
+    "usage": "Selectable player portrait; original artwork, no added frame"
+  },
+  {
+    "path": "/art/avatars/roster-v2/avatar_05.webp",
+    "source": "Owner-supplied avatar assets.zip, image 5",
+    "bytes": 32974,
+    "sha256": "0c9d97afcf942ffda86c223fdb3d97c57be55d85d6a70163378f2f159eeca032",
+    "license": "Owner-supplied artwork; source rights supplied by owner",
+    "usage": "Selectable player portrait; original artwork, no added frame"
   }
 ]

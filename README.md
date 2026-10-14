@@ -2,6 +2,10 @@
 
 Android/browser card platform with a shared authoritative TypeScript rules engine, React table/menu UI, local programmed bots, and Cloudflare multiplayer source. Development uses free tools and services; no paid assets or required billing. This is not a production-complete implementation of every master-brief feature.
 
+## Latest avatar update
+
+Five owner-supplied portraits are available for every player. New cloud guests and registered accounts receive a random persistent avatar; profile changes sync to their account and appear in room snapshots. Local practice retains its own selection on this device. Band Rung currently shows Coming soon; gameplay code and progression are preserved. See [asset notes](docs/ASSETS.md).
+
 ## Run and verify
 
 ```sh

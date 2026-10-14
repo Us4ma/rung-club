@@ -25,3 +25,8 @@ The dealer uses the existing owner-supplied transparent female lobby and seated 
 ## Premium authentication entrance
 
 The account entrance reuses the existing female dealer and warm lounge WebP files as independent layers. Felt table, walnut rim, brass panel/frame, crest, buttons and decorative rules are scalable CSS/HTML. Reference screenshots are visual targets only and are not shipped as flattened UI. See [entrance QA](art/ENTRANCE_QA.md) and the asset manifest for ownership, dimensions/size and responsive evidence.
+
+## Avatar roster v2 (2026-10-14)
+Five selectable characters use files 1–5 from the owner-supplied `avatar assets.zip`. File 6 is intentionally not selectable, following the requested five-character roster. Original portraits are resized to 448×560 WebP (quality 88), with no added artwork, frames or borders. Source rights are supplied by the owner; no third-party licensing claim is made. Circular UI crops use per-character vertical positions in `apps/web/art.tsx`. Versioned URLs prevent stale prior-roster images.
+
+Cloud selection is stored atomically in the existing cosmetics table under the reserved `profile:avatar-v2:` prefix; it requires no database migration or economy activation. Both anonymous and registered identities use the same random first-assignment path. Existing valid pre-update browser selections migrate for older accounts. Local practice stores its independent selection in `avatar:local`. Room snapshots carry public avatar IDs, never private gameplay information. Band Rung is temporarily unavailable in the frontend; its rules and XP data remain intact.
