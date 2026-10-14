@@ -1,4 +1,4 @@
-import {WELCOME_MS,DRAW_ROUND_MS,DEAL_PRESENTATION_MS} from '../../packages/protocol/presentation.ts';
+import {WELCOME_MS,DRAW_ROUND_MS,DEAL_PRESENTATION_MS,CALLER_RESULT_MS,INVALID_HAND_MS,REDEAL_NOTICE_MS} from '../../packages/protocol/presentation.ts';
 import React,{useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {art} from './art.tsx';
 import {rank} from '../../packages/ui/config.ts';
@@ -9,22 +9,47 @@ export function SeatTimer({active,remaining,duration,deadline}:{active:boolean;r
  useEffect(()=>{if(!active)return;setNow(Date.now());const id=setInterval(()=>setNow(Date.now()),100);return()=>clearInterval(id);},[active,deadline]);
  if(!active)return null;
  const ms=deadline?Math.max(0,deadline-now):remaining*1000,progress=Math.max(0,Math.min(1,ms/duration)),seconds=Math.ceil(ms/1000),color=progress>.5?'#62db94':progress>.25?'#edbf57':'#f16b61';
- return <span role="timer" aria-label={seconds+' seconds remaining'} className={'seat-timer'+(progress<=.25?' urgent':'')}><svg viewBox="0 0 100 100" aria-hidden="true"><circle className="timer-track" cx="50" cy="50" r="46"/><circle className="timer-arc" cx="50" cy="50" r="46" pathLength="100" stroke={color} strokeDasharray="100" strokeDashoffset={100*(1-progress)}/></svg><span className="timer-seconds">{seconds}s</span></span>;
+ return <span role="timer" aria-label={seconds+' seconds remaining'} className={'seat-timer'+(progress<=.25?' urgent':'')}><svg viewBox="0 0 100 100" aria-hidden="true"><circle className="timer-track" cx="50" cy="50" r="46"/><circle className="timer-arc" cx="50" cy="50" r="46" pathLength="100" stroke={color} strokeDasharray="100" strokeDashoffset={100*(1-progress)}/></svg></span>;
 }
-export function DealerTable({v,motion,container,active,localSeat,hydrated=false,onBusy,onHand}:{onBusy?:(busy:boolean)=>void;onHand?:(hand:View['hand']|null)=>void;v:View;hydrated?:boolean;motion:boolean;active:boolean;localSeat:number;container:React.RefObject<HTMLDivElement|null>}){
+export function DealerTable({v,motion,container,active,localSeat,hydrated=false,onBusy,onHand,onRoles}:{onRoles?:(ready:boolean)=>void;onBusy?:(busy:boolean)=>void;onHand?:(hand:View['hand']|null)=>void;v:View;hydrated?:boolean;motion:boolean;active:boolean;localSeat:number;container:React.RefObject<HTMLDivElement|null>}){
  const [flights,setFlights]=useState<{x:number;y:number;id:number;delay:number}[]>([]),[drawing,setDrawing]=useState(-1),[event,setEvent]=useState('idle'),[speech,setSpeech]=useState('');const host=useRef<HTMLDivElement>(null);const lastHand=useRef(v.hand);const mounted=useRef(false);const previous=useRef<{match:string;phase:string;redeals:number}|null>(null);const observed=useRef({revealed:v.revealed,sars:v.history.length});
  useEffect(()=>{const old=observed.current;observed.current={revealed:v.revealed,sars:v.history.length};if(!old.revealed&&v.revealed)setEvent('reveal');else if(v.history.length>old.sars&&v.pile===0)setEvent('collection');else if(v.phase==='calling')setEvent('present');else setEvent('waiting');const t=setTimeout(()=>setEvent('waiting'),1300);return()=>clearTimeout(t);},[v.revealed,v.history.length,v.phase]);
  const reduced=!motion||globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
- useLayoutEffect(()=>{const first=!mounted.current;mounted.current=true;if(!active||v.phase==='finished'){setDrawing(-1);setFlights([]);setSpeech('');onHand?.(null);onBusy?.(false);return;}const old=previous.current,openingHand=lastHand.current;lastHand.current=v.hand;previous.current={match:v.matchId,phase:v.phase,redeals:v.redeals};if(old?.match===v.matchId&&old.phase===v.phase&&old.redeals===v.redeals)return;
+ useLayoutEffect(()=>{const first=!mounted.current;mounted.current=true;if(!active||v.phase==='finished'){if(!active)onRoles?.(!v.opening);setDrawing(-1);setFlights([]);setSpeech('');onHand?.(null);onBusy?.(false);return;}const old=previous.current,openingHand=lastHand.current;lastHand.current=v.hand;previous.current={match:v.matchId,phase:v.phase,redeals:v.redeals};if(old?.match===v.matchId&&old.phase===v.phase&&old.redeals===v.redeals)return;
  const table=container.current||host.current?.closest<HTMLElement>('.table-scene');if(!table)return;const bounds=table.getBoundingClientRect();const seats=[...table.querySelectorAll<HTMLElement>('[data-seat]')];
  const schedule:ReturnType<typeof setTimeout>[]=[];setDrawing(-1);setFlights([]);setSpeech('');
- if(first&&hydrated){onHand?.(null);onBusy?.(false);return;}
- onBusy?.(true);const base=v.phase==='playing'?(old?.match===v.matchId&&openingHand.length===5?openingHand:v.hand.slice(0,5)):[];const staged=[...base,...v.hand.filter(c=>!base.some(b=>b.id===c.id))];onHand?.(base);
+ if(first&&hydrated){onRoles?.(true);onHand?.(null);onBusy?.(false);return;}
+ onBusy?.(true);
+ const invalid=v.phase==='calling'&&v.invalidDeal;
+ const wholeHand=invalid?invalid.hand:v.hand;
+ const base=(v.phase==='playing'||invalid)?(old?.match===v.matchId&&openingHand.length===5?openingHand:wholeHand.slice(0,5)):[];
+ const staged=[...base,...wholeHand.filter(c=>!base.some(b=>b.id===c.id))];onHand?.(base);
+ const later=(fn:()=>void,ms:number)=>schedule.push(setTimeout(fn,ms));
  const initial=(!old||old.match!==v.matchId)&&v.opening;let drawDuration=0;
- if(initial){const rounds=v.opening!.rounds,indices=rounds.length>3?[0,1,rounds.length-1]:rounds.map((_,i)=>i);setSpeech('Welcome to the table. Let’s find our Rung caller.');indices.forEach((index,n)=>schedule.push(setTimeout(()=>{setDrawing(index);setSpeech(n?'A tie! One more card for the tied players.':'One card each. Highest card calls Rung.');},WELCOME_MS+n*DRAW_ROUND_MS)));drawDuration=WELCOME_MS+indices.length*DRAW_ROUND_MS;schedule.push(setTimeout(()=>setSpeech(v.opening!.winner===localSeat?'Your card is highest. You call Rung.':'The highest card wins. '+(v.opening!.winner===((localSeat+2)%4)?'Your partner':'Our caller')+' chooses Rung.'),drawDuration-1100));schedule.push(setTimeout(()=>{setDrawing(-1);setSpeech(v.opening!.winner===localSeat?'You have the highest card. You call Rung.':'Our highest card wins. Five cards, then choose Rung.');},drawDuration));}
-
- const deal=()=>{if(v.phase==='finished')return;setEvent('shuffle');setSpeech(v.phase==='calling'?'Five cards each. Then we choose Rung.':'Four cards each…');schedule.push(setTimeout(()=>{if(!reduced&&v.phase!=='finished'){const ordered=[...seats].sort((a,b)=>(v.caller-Number(a.dataset.seat)+4)%4-(v.caller-Number(b.dataset.seat)+4)%4);setFlights(ordered.flatMap((el,group)=>{const target=el.getBoundingClientRect();return Array.from({length:v.phase==='calling'?5:8},(_,n)=>({x:target.left+target.width/2-bounds.left,y:target.top+target.height/2-bounds.top,id:Number(el.dataset.seat)*8+n,delay:v.phase==='calling'?group*210+n*55:(n<4?group*180+n*55:1350+group*180+(n-4)*55)}));}));}setEvent('waiting');},reduced?0:350));if(v.phase==='playing')schedule.push(setTimeout(()=>{onHand?.(staged.slice(0,9));setSpeech('And four more. Let’s play.');},1700));schedule.push(setTimeout(()=>{setFlights([]);setSpeech('');onHand?.(null);onBusy?.(false);},reduced?0:DEAL_PRESENTATION_MS));};
- if(drawDuration)schedule.push(setTimeout(deal,drawDuration));else deal();return()=>{schedule.forEach(clearTimeout);onBusy?.(false);};
+ onRoles?.(!initial);
+ if(initial){const rounds=v.opening!.rounds,indices=rounds.length>3?[0,1,rounds.length-1]:rounds.map((_,i)=>i);setSpeech('Welcome to the table. Let’s find our Rung caller.');indices.forEach((index,n)=>later(()=>{setDrawing(index);setSpeech(n?'A tie! One more card for the tied players.':'One card each. Highest card calls Rung.');},WELCOME_MS+n*DRAW_ROUND_MS));drawDuration=WELCOME_MS+indices.length*DRAW_ROUND_MS;later(()=>{onRoles?.(true);setSpeech(v.opening!.winner===localSeat?'Your card is highest. You call Rung.':'The highest card wins. Our caller chooses Rung.');},drawDuration-1100);later(()=>setDrawing(-1),drawDuration);}
+ const fly=(count:5|8)=>{setEvent('shuffle');later(()=>{if(!reduced){const ordered=[...seats].sort((a,b)=>(v.caller-Number(a.dataset.seat)+4)%4-(v.caller-Number(b.dataset.seat)+4)%4);setFlights(ordered.flatMap((el,group)=>{const target=el.getBoundingClientRect();return Array.from({length:count},(_,n)=>({x:target.left+target.width/2-bounds.left,y:target.top+target.height/2-bounds.top,id:Number(el.dataset.seat)*8+n,delay:count===5?group*210+n*55:n<4?group*180+n*55:1350+group*180+(n-4)*55}));}));}setEvent('waiting');},reduced?0:350);};
+ const finish=()=>{setFlights([]);setSpeech('');onHand?.(null);onBusy?.(false);};
+ if(invalid){
+  setSpeech('Rung selected. Let’s finish dealing this hand.');
+  later(()=>{setSpeech('Four cards each…');fly(8);},CALLER_RESULT_MS);
+  later(()=>{onHand?.(staged.slice(0,9));setSpeech('And four more.');},CALLER_RESULT_MS+1700);
+  const full=CALLER_RESULT_MS+DEAL_PRESENTATION_MS;
+  later(()=>{setFlights([]);onHand?.(staged);setSpeech('Take a look at your completed hand.');},full);
+  later(()=>setSpeech('7+ Rung cards in one hand. This deal is invalid. I’m reshuffling.'),full+INVALID_HAND_MS);
+  const retry=full+INVALID_HAND_MS+REDEAL_NOTICE_MS;
+  later(()=>{onHand?.([]);setSpeech('Same caller. Five fresh cards each.');fly(5);},retry);
+  later(finish,retry+DEAL_PRESENTATION_MS);
+ }else if(v.phase==='playing'){
+  setSpeech(v.revealed&&v.trump?({S:'Spades',H:'Hearts',D:'Diamonds',C:'Clubs'}[v.trump]+' is the Rung.'): 'Hidden Rung is sealed.');
+  later(()=>{setSpeech('Four cards each…');fly(8);},CALLER_RESULT_MS);
+  later(()=>{onHand?.(staged.slice(0,9));setSpeech('And four more. Let’s play.');},CALLER_RESULT_MS+1700);
+  later(finish,CALLER_RESULT_MS+DEAL_PRESENTATION_MS);
+ }else{
+  const deal=()=>{setSpeech('Five cards each. Then we choose Rung.');fly(5);later(finish,reduced?0:DEAL_PRESENTATION_MS);};
+  if(drawDuration)later(deal,drawDuration);else deal();
+ }
+ return()=>{schedule.forEach(clearTimeout);onBusy?.(false);};
  },[v.matchId,v.phase,v.redeals,reduced,active]);
  const state=!active?'idle':event==='shuffle'?'shuffle':flights.length?'deal':v.phase==='finished'?(v.scores[localSeat%2]>v.scores[(localSeat+1)%2]?'victory':'defeat'):event==='reveal'?'reveal':event==='collection'?'collection':v.phase==='calling'?'present':'waiting';
  return <><div ref={host} className={'table-host dealer-state-'+state} data-dealer-state={state} aria-label="Decorative dealer, not a player"><img src={art('characters/dealer-seated.webp')} alt="Rung Club dealer host"/><small>{state==='deal'?'Dealing…':state==='shuffle'?'Shuffling…':state==='reveal'?'Rung revealed':state==='collection'?'Pile collected':'Dealer'}</small></div>{speech&&<div className="dealer-speech presentation-speech" role="status"><strong>{speech}</strong></div>}<div className="deal-flights" aria-hidden="true">{flights.map(f=><i key={f.id} style={{'--flight-x':f.x+'px','--flight-y':f.y+'px',animationDelay:f.delay+'ms'} as React.CSSProperties}/>)}</div>{drawing>=0&&v.opening&&<div key={drawing} className="opening-draw" role="status"><strong>{drawing===v.opening.rounds.length-1?'Highest card calls Rung':'Tied highest cards · draw again'}</strong><div>{v.opening.rounds[drawing]?.cards.map((p,index)=><span style={{animationDelay:(index*380)+'ms'} as React.CSSProperties} key={p.seat} className={'comparison-seat comparison-'+((p.seat-localSeat+4)%4)+(v.opening!.rounds[drawing].eligible.includes(p.seat)?' winner':'')}><img src={art('house/cards/'+rank(p.card.rank)+p.card.suit+'.svg')} alt={(p.seat===localSeat?'Your':(p.seat-localSeat+4)%4===2?'Partner’s':'Opponent’s')+' comparison card: '+rank(p.card.rank)+' of '+p.card.suit}/></span>)}</div><small>{v.opening.winner===localSeat?'You':(v.opening.winner-localSeat+4)%4===2?'Your partner':'Seat '+(v.opening.winner+1)} {v.opening.winner===localSeat?'select':'selects'} Rung{v.opening.rounds.length>1?' · '+v.opening.rounds.length+' draw rounds':''}</small></div>}</>;

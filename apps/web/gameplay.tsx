@@ -24,21 +24,21 @@ export function tableEvents(previous:View,current:View,seat:number,names:string[
   if(current.revealed&&current.trump)add('rung:'+current.redeals,suitNames[current.trump]+' '+SUITS[current.trump]+' is the Rung!',4);
   else add('sealed:'+current.redeals,'Hidden Rung is sealed.',3);
  }
- if(current.trick.length===1&&previous.trick.length===0&&current.trick[0].bhaag)add('bhaag:'+current.revision,'Bhaag Sar · eligible collection lead',2);
+ if(current.history.length>=4&&current.trick.length===1&&previous.trick.length===0&&current.trick[0].bhaag&&current.streak>=1&&current.streakSeat===current.trick[0].seat)add('bhaag:'+current.revision,'Another win can collect this pile.',2);
  if(current.history.length>previous.history.length){const n=current.history.length,w=current.winners.at(-1)!;
   if(current.phase==='finished')add('result',current.result||'Deal complete',6);
   else if(current.scores.some((score,i)=>score>previous.scores[i]))add('collection:'+n,w===seat?'You collected the Sars!':names[w]+' collects the Sars!',5);
   else add('senior:'+n,w===seat?"You're Senior!":names[w]+' is Senior!',2);
-  if(n===4&&current.policy.opening===5)add('fifth','Fifth Sar — first collection chance!',5);
+  if(n===4&&current.policy.opening===5)add('fifth','Fifth Sar. Play for the pile.',5);
  }
- if(current.phase==='playing'&&current.turn===seat&&(previous.turn!==seat||previous.phase!=='playing'))add('turn:'+current.revision,'YOUR TURN',1);
+ 
  return events;
 }
 export function DealerAnnouncements({v,seat,names}:{v:View;seat:number;names:string[]}){
  const previous=useRef(v),seen=useRef(new Set<string>()),[queue,setQueue]=useState<Announcement[]>([]);
- useEffect(()=>{if(previous.current.matchId!==v.matchId){previous.current=v;seen.current.clear();setQueue([]);return;}const events=tableEvents(previous.current,v,seat,names).filter(e=>!seen.current.has(e.id));previous.current=v;events.forEach(e=>seen.current.add(e.id));setQueue(q=>[...q.filter(e=>e.voiceKey!=='turn'||v.turn===seat&&v.phase==='playing'),...events].sort((a,b)=>b.priority-a.priority));},[v.matchId,v.revision]);
- useEffect(()=>{if(!queue.length)return;const t=setTimeout(()=>setQueue(q=>q.slice(1)),queue[0].priority===1?900:1800);return()=>clearTimeout(t);},[queue[0]?.id]);
- const e=queue[0];return e?<div key={e.id} className={'dealer-speech'+(e.voiceKey==='fifth'?' fifth-sar':e.voiceKey==='turn'?' turn-announcement':'')} role="status" data-voice-key={e.voiceKey}><strong>{e.text}</strong>{e.voiceKey==='fifth'&&<small>Win Sars 4 and 5; the fifth winning lead must be non-Ace and non-Rung.</small>}</div>:null;
+ useEffect(()=>{if(previous.current.matchId!==v.matchId){previous.current=v;seen.current.clear();setQueue([]);return;}const events=tableEvents(previous.current,v,seat,names).filter(e=>!seen.current.has(e.id));previous.current=v;events.forEach(e=>seen.current.add(e.id));setQueue(q=>[...q.filter(e=>!(e.voiceKey==='senior'&&events.some(n=>n.voiceKey==='senior'))),...events].sort((a,b)=>b.priority-a.priority));},[v.matchId,v.revision]);
+ useEffect(()=>{if(!queue.length)return;const t=setTimeout(()=>setQueue(q=>q.slice(1)),queue[0].priority>=4?3200:2600);return()=>clearTimeout(t);},[queue[0]?.id]);
+ const e=queue[0];return e?<div key={e.id} className={'dealer-speech'+(e.voiceKey==='fifth'?' fifth-sar':e.voiceKey==='turn'?' turn-announcement':'')} role="status" data-voice-key={e.voiceKey}><strong>{e.text}</strong></div>:null;
 }
 export function TablePreferences({settings,onChange}:{settings:any;onChange:(value:any)=>void}){const [open,setOpen]=useState(false);useEffect(()=>{if(!open)return;const close=(e:PointerEvent)=>{if(!(e.target as Element).closest('.table-tools'))setOpen(false);};document.addEventListener('pointerdown',close);return()=>document.removeEventListener('pointerdown',close);},[open]);return <><button className="icon-button" aria-label="Table settings" aria-expanded={open} onClick={()=>setOpen(!open)}>⚙</button>{open&&<section className="table-preferences" role="dialog" aria-label="Table preferences" onKeyDown={e=>{if(e.key==='Escape')setOpen(false);}}><strong>Table preferences</strong><button aria-label="Close table settings" onClick={()=>setOpen(false)}>×</button>{[['quickPlay','Double-tap quick play'],['motion','Animations'],['sound','Sound effects']].map(([key,label])=><label key={key}>{label}<input type="checkbox" checked={key==='quickPlay'?settings[key]!==false:!!settings[key]} onChange={e=>onChange({...settings,[key]:e.target.checked})}/></label>)}</section>}</>;}
 /** Hydrated cards are a baseline. Only new authoritative transitions create motion. */
