@@ -360,3 +360,6 @@ img.avatar{object-fit:cover;object-position:center top}
 /* Destructive account action keeps its red styling in the account drawer. */
 .account-info-drawer>.delete-account{background:linear-gradient(#a53737,#782525)!important;background-image:linear-gradient(#a53737,#782525)!important;color:#fff0ed!important;border:1px solid #d16a62!important;border-image:none!important;box-shadow:inset 0 1px #ffffff22,0 2px 5px #0003!important;text-shadow:none!important}
 .account-info-drawer>.delete-account:hover{background:linear-gradient(#b54141,#872b2b)!important}
+
+/* Keep destructive styling above all generic button themes, including portals. */
+body .account-info-layer .account-info-drawer button.delete-account,body .account-info-layer .account-info-drawer button.delete-account:hover,body .account-info-layer .account-info-drawer button.delete-account:focus-visible{background:#a32e32!important;background-image:linear-gradient(#b13b3e,#862529)!important;color:#fff!important;border:1px solid #e27a76!important;border-image:none!important;box-shadow:inset 0 1px #fff2,0 3px 0 #5d181b!important;filter:none!important;opacity:1!important}
