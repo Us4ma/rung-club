@@ -363,3 +363,8 @@ img.avatar{object-fit:cover;object-position:center top}
 
 /* Keep destructive styling above all generic button themes, including portals. */
 body .account-info-layer .account-info-drawer button.delete-account,body .account-info-layer .account-info-drawer button.delete-account:hover,body .account-info-layer .account-info-drawer button.delete-account:focus-visible{background:#a32e32!important;background-image:linear-gradient(#b13b3e,#862529)!important;color:#fff!important;border:1px solid #e27a76!important;border-image:none!important;box-shadow:inset 0 1px #fff2,0 3px 0 #5d181b!important;filter:none!important;opacity:1!important}
+
+/* Portalled Account Info shares the exact lobby back-button appearance. */
+.account-info-layer .account-info-drawer .back-button{display:inline-flex;align-items:center;gap:10px;min-height:44px;border:1px solid #c4a86b88!important;border-radius:24px;background:linear-gradient(#294b38,#163123)!important;box-shadow:inset 0 1px #b5c59033,0 3px 8px #0004!important;color:#f4e2bc!important;padding:7px 16px 7px 7px;font-size:12px;font-weight:650;margin-bottom:8px;font-family:inherit}
+.account-info-layer .account-info-drawer .back-chevron{display:grid;place-items:center;background:#dcc07a;color:#243523;width:28px;height:28px;border-radius:50%;flex-shrink:0}
+.account-info-layer .account-info-drawer .back-chevron svg{width:17px;height:17px}
