@@ -33,7 +33,7 @@ server.on('upgrade',(req,socket,head)=>{
  if(r&&seat>=0&&r.life?.disconnectedAt[seat]!=null&&Date.now()-r.life.disconnectedAt[seat]!>=60000){tick(code,r);socket.destroy();return;}
  if(!uid||seat<0||r?.life?.closed||req.headers.origin&&!/^http:\/\/(localhost|127\.0\.0\.1|terminal\.local)(:\d+)?$/.test(req.headers.origin)){socket.destroy();return;}
  wss.handleUpgrade(req,socket,head,ws=>{
-  sockets.set(ws,{uid,code,seat});reconnected(r!.life??=membership(),seat);save(code,r!);broadcast(code);advanceBots(code);let count=0,last=Date.now();
+  sockets.set(ws,{uid,code,seat});reconnected(r!.life??=membership(),seat);save(code,r!);broadcast(code);advanceBots(code);let count=0,last=Date.now(),lastEmote=0;
   ws.on('message',data=>{try{
    if(r!.life!.closed||r!.seats[seat]!==uid)throw Error('Seat is no longer active');if(Date.now()-last>1000){count=0;last=Date.now();}if(++count>12)throw Error('Rate limited');const c=JSON.parse(String(data));
    if(c.type==='leave'){leaveSeat(r!.life!,r!.seats,r!.game.state,seat);r!.bots[seat]=true;r!.names[seat]+=' · Bot';if(seat===r!.game.state.turn)r!.clock=undefined;if(r!.life!.closed){closeRoom(code,r!);return;}for(const [w,a]of sockets)if(a.code===code&&a.uid===uid)w.close(1000,'Seat left');}
@@ -41,7 +41,7 @@ server.on('upgrade',(req,socket,head)=>{
    else if(c.type==='continue-with-bot')continueWithBot(r!.life!,r!.game.state,seat);
    else if(c.type==='ready'){if(r!.started)throw Error('Already started');r!.ready[seat]=true;}
    else if(c.type==='start'){if(r!.seats.findIndex(Boolean)!==seat||r!.started)throw Error('Host only');if(r!.seats.some((p,i)=>p&&!r!.ready[i]))throw Error('All humans must be ready');r!.seats.forEach((p,i)=>{if(!p){r!.bots[i]=true;r!.names[i]=['Hamza','Uzair','Zain','Ali'][i]+' · Bot';}});r!.started=true;}
-   else if(c.type==='emote'){if(!isTableReaction(c.text))throw Error('Invalid emote');for(const [w,info]of sockets)if(info.code===code)w.send(JSON.stringify({type:'emote',seat,text:c.text}));return;}
+   else if(c.type==='emote'){if(!r!.started||r!.game.state.phase!=='playing'||r!.clock?.readyAt&&Date.now()<r!.clock.readyAt)return;if(Date.now()-lastEmote<5000)return;lastEmote=Date.now();if(!isTableReaction(c.text))throw Error('Invalid emote');for(const [w,info]of sockets)if(info.code===code)w.send(JSON.stringify({type:'emote',seat,text:c.text}));return;}
    else{if(!r!.started)throw Error('Not started');tick(code,r!);if(r!.life!.closed)throw Error('Table closed');if(r!.clock?.readyAt&&Date.now()<r!.clock.readyAt)throw Error('Please wait for the dealer to finish');const receipt=r!.game.apply(seat,c);ws.send(JSON.stringify({type:'ack',...receipt}));}
    save(code,r!);broadcast(code);advanceBots(code);
   }catch(e){ws.send(JSON.stringify({type:'error',message:(e as Error).message}));}});
