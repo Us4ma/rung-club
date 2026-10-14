@@ -38,7 +38,7 @@ export function DealerTable({v,motion,container,active,localSeat,hydrated=false,
   later(()=>{setFlights([]);onHand?.(staged);setSpeech('Take a look at your completed hand.');},full);
   later(()=>setSpeech('7+ Rung cards in one hand. This deal is invalid. I’m reshuffling.'),full+INVALID_HAND_MS);
   const retry=full+INVALID_HAND_MS+REDEAL_NOTICE_MS;
-  later(()=>{onHand?.([]);setSpeech('Same caller. Five fresh cards each.');fly(5);},retry);
+  later(()=>{onHand?.([]);setSpeech('Five fresh cards. The same caller chooses Rung again.');fly(5);},retry);
   later(finish,retry+DEAL_PRESENTATION_MS);
  }else if(v.phase==='playing'){
   setSpeech(v.revealed&&v.trump?({S:'Spades',H:'Hearts',D:'Diamonds',C:'Clubs'}[v.trump]+' is the Rung.'): 'Hidden Rung is sealed.');
