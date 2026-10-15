@@ -378,3 +378,15 @@ body .account-info-layer .account-info-drawer button.delete-account,body .accoun
  .screen-table .dealer-speech,.screen-table .dealer-speech.fifth-sar{left:auto;right:10px;top:48px;width:170px;max-width:calc(100% - 20px);max-height:none;transform:translateY(-100%);overflow-wrap:anywhere}
  .screen-table .dealer-speech:after{left:auto;right:79px;top:auto;bottom:-7px;transform:rotate(45deg)}
 }
+/* A compact pile in its own upper-left lane keeps mobile trick cards readable. */
+@media(max-width:600px){
+ .screen-table .center>.pile{left:24%;top:27%;width:28px;padding:0;grid-template-columns:28px;grid-template-rows:28px 14px;column-gap:0;row-gap:5px;justify-items:center}
+ .screen-table .center>.pile .pile-stack{grid-column:1;grid-row:1;width:20px;height:28px;min-width:0;flex-basis:20px}
+ .screen-table .center>.pile .pile-stack i{transform:translate(calc(var(--stack-index)*.6px),calc(var(--stack-index)*-1px))}
+ .screen-table .center>.pile>strong{grid-column:1;grid-row:2;font-size:12px;line-height:14px;text-align:center;white-space:nowrap}
+ .screen-table .center>.pile>small{display:none}
+}
+@media(max-width:600px){
+ .screen-table .table-host{width:98px;height:104px;right:46px;top:42px}
+ .screen-table .dealer-speech,.screen-table .dealer-speech.fifth-sar{top:34px}
+}
