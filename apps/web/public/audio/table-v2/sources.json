@@ -1,0 +1,93 @@
+[
+  {
+    "cue": "shuffle",
+    "pack": "casino",
+    "source": "card-shuffle.ogg",
+    "excerptStart": 0.494833,
+    "duration": 0.32
+  },
+  {
+    "cue": "deal",
+    "pack": "casino",
+    "source": "card-slide-1.ogg",
+    "excerptStart": 0.09375,
+    "duration": 0.16
+  },
+  {
+    "cue": "place",
+    "pack": "casino",
+    "source": "card-slide-5.ogg",
+    "excerptStart": 4.2e-05,
+    "duration": 0.26
+  },
+  {
+    "cue": "placeAlt",
+    "pack": "casino",
+    "source": "card-slide-6.ogg",
+    "excerptStart": 0.018625,
+    "duration": 0.26
+  },
+  {
+    "cue": "cut",
+    "pack": "casino",
+    "source": "card-place-2.ogg",
+    "excerptStart": 0.04,
+    "duration": 0.25
+  },
+  {
+    "cue": "gather",
+    "pack": "casino",
+    "source": "card-fan-1.ogg",
+    "excerptStart": 0.323292,
+    "duration": 0.27
+  },
+  {
+    "cue": "collect",
+    "pack": "casino",
+    "source": "card-shove-3.ogg",
+    "excerptStart": 0.098,
+    "duration": 0.33
+  },
+  {
+    "cue": "reveal",
+    "pack": "interface",
+    "source": "confirmation_001.ogg",
+    "excerptStart": 0.0,
+    "duration": 0.289833
+  },
+  {
+    "cue": "win",
+    "pack": "interface",
+    "source": "confirmation_002.ogg",
+    "excerptStart": 0.0,
+    "duration": 0.539
+  },
+  {
+    "cue": "lose",
+    "pack": "interface",
+    "source": "back_004.ogg",
+    "excerptStart": 0.0,
+    "duration": 0.094333
+  },
+  {
+    "cue": "kot",
+    "pack": "jingles",
+    "source": "Pizzicato jingles/jingles_PIZZI03.ogg",
+    "excerptStart": 0.00475,
+    "duration": 1.142125
+  },
+  {
+    "cue": "turn",
+    "pack": "interface",
+    "source": "select_003.ogg",
+    "excerptStart": 0.0,
+    "duration": 0.25
+  },
+  {
+    "cue": "tick",
+    "pack": "interface",
+    "source": "tick_004.ogg",
+    "excerptStart": 0.012417,
+    "duration": 0.04275
+  }
+]

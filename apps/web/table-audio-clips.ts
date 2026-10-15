@@ -1,0 +1,2 @@
+/** Kenney CC0 recordings; offsets in the preloaded table audio sprite. */
+export const TABLE_AUDIO_CLIPS = {"shuffle":[0.0,0.32],"deal":[0.36,0.16],"place":[0.56,0.26],"placeAlt":[0.86,0.26],"cut":[1.16,0.25],"gather":[1.45,0.27],"collect":[1.76,0.33],"reveal":[2.13,0.289833],"win":[2.459833,0.539],"lose":[3.038833,0.094333],"kot":[3.173167,1.142125],"turn":[4.355292,0.25],"tick":[4.645292,0.04275]} as const;
