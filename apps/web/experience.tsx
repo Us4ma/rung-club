@@ -1,3 +1,4 @@
+import {tableAudio} from './table-audio.ts';
 import {WELCOME_MS,DRAW_ROUND_MS,DEAL_PRESENTATION_MS,CALLER_RESULT_MS,INVALID_HAND_MS,REDEAL_NOTICE_MS} from '../../packages/protocol/presentation.ts';
 import React,{useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {art} from './art.tsx';
@@ -32,8 +33,8 @@ export function DealerTable({v,motion,container,active,localSeat,hydrated=false,
  const later=(fn:()=>void,ms:number)=>schedule.push(setTimeout(fn,ms));
  const initial=(!old||old.match!==v.matchId)&&v.opening;let drawDuration=0;
  onRoles?.(!initial);
- if(initial){const rounds=v.opening!.rounds,indices=rounds.length>3?[0,1,rounds.length-1]:rounds.map((_,i)=>i);setSpeech('Welcome to the table. Let’s find our Rung caller.');indices.forEach((index,n)=>later(()=>{setDrawing(index);setSpeech(n?'A tie! One more card for the tied players.':'One card each. Highest card calls Rung.');},WELCOME_MS+n*DRAW_ROUND_MS));drawDuration=WELCOME_MS+indices.length*DRAW_ROUND_MS;later(()=>{onRoles?.(true);setSpeech(v.opening!.winner===localSeat?'Your card is highest. You call Rung.':'The highest card wins. Our caller chooses Rung.');},drawDuration-1100);later(()=>setDrawing(-1),drawDuration);}
- const fly=(count:5|8)=>{setEvent('shuffle');later(()=>{if(!reduced){const ordered=[...seats].sort((a,b)=>(v.caller-Number(a.dataset.seat)+4)%4-(v.caller-Number(b.dataset.seat)+4)%4);setFlights(ordered.flatMap((el,group)=>{const target=el.getBoundingClientRect();return Array.from({length:count},(_,n)=>({x:target.left+target.width/2-bounds.left,y:target.top+target.height/2-bounds.top,id:Number(el.dataset.seat)*8+n,delay:count===5?group*210+n*55:n<4?group*180+n*55:1350+group*180+(n-4)*55}));}));}setEvent('waiting');},reduced?0:350);};
+ if(initial){later(()=>tableAudio.effect('shuffle'),0);const rounds=v.opening!.rounds,indices=rounds.length>3?[0,1,rounds.length-1]:rounds.map((_,i)=>i);setSpeech('Welcome to the table. Let’s find our Rung caller.');indices.forEach((index,n)=>later(()=>{setDrawing(index);const drawCount=v.opening!.rounds[index].cards.length;for(let c=0;c<drawCount;c++)later(()=>tableAudio.effect('place',180),c*380);setSpeech(n?'A tie! One more card for the tied players.':'One card each. Highest card calls Rung.');},WELCOME_MS+n*DRAW_ROUND_MS));drawDuration=WELCOME_MS+indices.length*DRAW_ROUND_MS;later(()=>{tableAudio.effect('reveal');onRoles?.(true);setSpeech(v.opening!.winner===localSeat?'Your card is highest. You call Rung.':'The highest card wins. Our caller chooses Rung.');},drawDuration-1100);later(()=>setDrawing(-1),drawDuration);}
+ const fly=(count:5|8)=>{setEvent('shuffle');later(()=>tableAudio.effect('shuffle',200),0);for(let group=0;group<4;group++){later(()=>tableAudio.effect('deal',150),350+group*(count===5?210:180));if(count===8)later(()=>tableAudio.effect('deal',150),1700+group*180);}later(()=>{if(!reduced){const ordered=[...seats].sort((a,b)=>(v.caller-Number(a.dataset.seat)+4)%4-(v.caller-Number(b.dataset.seat)+4)%4);setFlights(ordered.flatMap((el,group)=>{const target=el.getBoundingClientRect();return Array.from({length:count},(_,n)=>({x:target.left+target.width/2-bounds.left,y:target.top+target.height/2-bounds.top,id:Number(el.dataset.seat)*8+n,delay:count===5?group*210+n*55:n<4?group*180+n*55:1350+group*180+(n-4)*55}));}));}setEvent('waiting');},reduced?0:350);};
  const finish=()=>{setFlights([]);setSpeech('');onHand?.(null);onBusy?.(false);};
  if(invalid){
   setSpeech('Rung selected. Let’s finish dealing this hand.');
@@ -46,6 +47,7 @@ export function DealerTable({v,motion,container,active,localSeat,hydrated=false,
   later(()=>{onHand?.([]);setSpeech('Five fresh cards. The same caller chooses Rung again.');fly(5);},retry);
   later(finish,retry+DEAL_PRESENTATION_MS);
  }else if(v.phase==='playing'){
+  later(()=>tableAudio.effect('reveal',400),0);
   setSpeech(v.revealed&&v.trump?({S:'Spades',H:'Hearts',D:'Diamonds',C:'Clubs'}[v.trump]+' is the Rung.'): 'Hidden Rung is sealed.');
   later(()=>{setSpeech('Four cards each…');fly(8);},CALLER_RESULT_MS);
   later(()=>{onHand?.(staged.slice(0,9));setSpeech('And four more. Let’s play.');},CALLER_RESULT_MS+1700);
