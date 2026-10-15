@@ -20,3 +20,7 @@
 .app .coin-wallet.compact img{width:23px;height:23px}.app .coin-wallet.compact span{font-size:14px;padding:3px 7px}
 .wallet-amount{background:linear-gradient(#211b16,#141311);border-color:#c1a06433;border-radius:10px;padding:20px 12px}.wallet-amount img{width:58px;height:58px}.wallet-amount strong{font-size:28px}
 @media(max-width:600px){.app .coin-wallet{gap:3px;padding:2px}.app .coin-wallet img{width:24px;height:24px}.app .coin-wallet span{font-size:15px;padding:3px 6px}.screen-lobby .lobby-feature-space{min-height:44px!important}.app .coin-wallet.compact img{width:21px;height:21px}.app .coin-wallet.compact span{font-size:13px}}
+
+/* Preserve existing table geometry; omit the optional balance where the shared HUD row is too narrow. */
+@media(min-width:601px) and (max-width:930px){.screen-table .table-tools>.coin-wallet{display:none!important}}
+.screen-table .table-tools>.coin-wallet{max-width:100px}.screen-table .table-tools>.coin-wallet span{max-width:65px;overflow:hidden;text-overflow:ellipsis}
