@@ -9,3 +9,14 @@
 @media(max-width:600px){.app .coin-wallet{min-height:36px;padding:3px 8px 3px 3px;gap:4px}.coin-wallet img{width:27px;height:27px}.coin-wallet span{font-size:16px}.coin-wallet small{display:none}.table-wallet-hud{flex-wrap:wrap;gap:5px;margin:4px 0}.table-wallet-hud>.compact-hud{flex-basis:100%}.table-wallet-hud>.coin-wallet{margin-left:auto}.screen-lobby .lobby-feature-space{min-width:0!important;min-height:36px!important}}
 @media(max-height:550px) and (min-width:601px){.table-wallet-hud{gap:8px;margin:3px 0}.app .coin-wallet.compact{min-height:30px}.coin-wallet.compact img{width:23px;height:23px}}
 @media(max-width:600px){.app.screen-lobby>header{display:grid;grid-template-columns:minmax(0,1fr) auto 44px;gap:8px}.screen-lobby .lobby-identity,.screen-lobby .profile-pill,.screen-lobby .profile-link,.screen-lobby .player-progress{min-width:0!important;max-width:100%}.screen-lobby .lobby-identity .brand{max-width:100%}.screen-lobby .profile-link{gap:6px}.screen-lobby .player-progress strong{max-width:100%;overflow:hidden;text-overflow:ellipsis}.screen-lobby .coin-wallet{max-width:110px}.screen-lobby .coin-wallet span{overflow:hidden;text-overflow:ellipsis}}
+
+/* Compact icon-and-counter HUD: no large green button surface. */
+.app .coin-wallet,.app .coin-wallet.compact{position:relative;min-height:44px;height:44px;padding:4px 6px;gap:5px;background:transparent!important;background-image:none!important;border:0!important;border-image:none!important;border-radius:8px;box-shadow:none!important;filter:none!important;color:#fff0c7;flex-shrink:0}
+.app .coin-wallet img{position:relative;z-index:1;width:28px;height:28px;filter:drop-shadow(0 2px 2px #0006)}
+.app .coin-wallet span{font-family:system-ui,sans-serif;font-size:18px;font-weight:650;line-height:1.25;letter-spacing:.2px;padding:4px 9px;background:linear-gradient(90deg,#211b14cc,#14120fe6);border:1px solid #d1ad5d25;border-radius:5px;text-shadow:0 1px 2px #0009;min-width:34px;text-align:center}
+.app .coin-wallet small{display:none}
+.app .coin-wallet:hover span{background:#30271c;border-color:#d1ad5d66}
+.app .coin-wallet:active{transform:translateY(1px)}
+.app .coin-wallet.compact img{width:23px;height:23px}.app .coin-wallet.compact span{font-size:14px;padding:3px 7px}
+.wallet-amount{background:linear-gradient(#211b16,#141311);border-color:#c1a06433;border-radius:10px;padding:20px 12px}.wallet-amount img{width:58px;height:58px}.wallet-amount strong{font-size:28px}
+@media(max-width:600px){.app .coin-wallet{gap:3px;padding:2px}.app .coin-wallet img{width:24px;height:24px}.app .coin-wallet span{font-size:15px;padding:3px 6px}.screen-lobby .lobby-feature-space{min-height:44px!important}.app .coin-wallet.compact img{width:21px;height:21px}.app .coin-wallet.compact span{font-size:13px}}
