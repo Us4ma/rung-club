@@ -6,10 +6,11 @@ import {rank} from '../../packages/ui/config.ts';
 import type {View} from '../../packages/core/index.ts';
 export function Pointer(){return <span className="tap-pointer" aria-hidden="true"><svg viewBox="0 0 40 48"><path d="M13 25V7q0-6 6-3v17l3-7q4-3 6 2l2 4q6 0 6 7l-2 14H16L6 30q-2-6 3-6z" fill="#fff3d2" stroke="#a67f3d" strokeWidth="2"/></svg></span>;}
 export function SeatTimer({active,remaining,duration,deadline}:{active:boolean;remaining:number;duration:number;deadline?:number}){
- const [now,setNow]=useState(Date.now());
+ const [now,setNow]=useState(Date.now()),lastTick=useRef('');
  useEffect(()=>{if(!active)return;setNow(Date.now());const id=setInterval(()=>setNow(Date.now()),100);return()=>clearInterval(id);},[active,deadline]);
- if(!active)return null;
  const ms=deadline?Math.max(0,deadline-now):remaining*1000,progress=Math.max(0,Math.min(1,ms/duration)),seconds=Math.ceil(ms/1000),color=progress>.5?'#62db94':progress>.25?'#edbf57':'#f16b61';
+ useEffect(()=>{if(!active){lastTick.current='';return;}if(ms<=0||progress>.25)return;const key=String(deadline)+':'+seconds;if(lastTick.current===key)return;lastTick.current=key;tableAudio.effect('tick',120);},[active,deadline,seconds,progress<=.25]);
+ if(!active)return null;
  return <span role="timer" aria-label={seconds+' seconds remaining'} className={'seat-timer'+(progress<=.25?' urgent':'')}><svg viewBox="0 0 100 100" aria-hidden="true"><circle className="timer-track" cx="50" cy="50" r="46"/><circle className="timer-arc" cx="50" cy="50" r="46" pathLength="100" stroke={color} strokeDasharray="100" strokeDashoffset={100*(1-progress)}/></svg></span>;
 }
 export function DealerTable({v,motion,container,active,localSeat,hydrated=false,onBusy,onHand,onRoles}:{onRoles?:(ready:boolean)=>void;onBusy?:(busy:boolean)=>void;onHand?:(hand:View['hand']|null)=>void;v:View;hydrated?:boolean;motion:boolean;active:boolean;localSeat:number;container:React.RefObject<HTMLDivElement|null>}){

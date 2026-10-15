@@ -14,15 +14,18 @@ export function useTableAudio(v:View|null,active:boolean,enabled:boolean,seat:nu
   if(scope.current!==key){scope.current=key;timers.current.forEach(clearTimeout);timers.current=[];tableAudio.clear();return;}
   if(!active||!enabled||!old||!v||v.revision<=old.revision)return;
   // Missed transitions are snapshots, not a backlog of sounds to replay.
-  if(v.history.length-old.history.length>1||v.revision-old.revision>1){timers.current.forEach(clearTimeout);timers.current=[];tableAudio.clear();return;}
+  if(v.history.length-old.history.length>1){timers.current.forEach(clearTimeout);timers.current=[];tableAudio.clear();return;}
   const later=(fn:()=>void,ms:number)=>{const id=setTimeout(()=>{timers.current=timers.current.filter(t=>t!==id);fn();},ms);timers.current.push(id);};
   const completed=v.history.length===old.history.length+1;
-  const plays=completed?v.history.at(-1)!:v.trick;
-  const card=plays.at(-1);
-  if(plays.length>0&&(completed||plays.length>old.trick.length)){
-   const bestBefore=winning(plays.slice(0,-1)),bestAfter=winning(plays);
-   const cut=!!card?.trump&&bestAfter===card&&!!bestBefore&&bestBefore.seat%2!==card.seat%2;
-   tableAudio.effect(cut?'cut':'place');
+  // Compare card identities: revisions can jump when WebSocket updates are batched.
+  // A completed fourth card has already moved from trick into history.
+  const seen=new Set([...old.trick,...old.history.flat()].map(p=>p.card.id));
+  const groups=completed?[v.history.at(-1)!,v.trick]:[v.trick];
+  for(const plays of groups)for(let i=0;i<plays.length;i++){
+   const card=plays[i];if(seen.has(card.card.id))continue;seen.add(card.card.id);
+   const bestBefore=winning(plays.slice(0,i)),bestAfter=winning(plays.slice(0,i+1));
+   const cut=card.trump&&bestAfter===card&&!!bestBefore&&bestBefore.seat%2!==card.seat%2;
+   tableAudio.effect(cut?'cut':'place',700);
   }
   if(!old.revealed&&v.revealed&&v.trump)tableAudio.effect('reveal',600);
   if(completed){later(()=>tableAudio.effect('gather',200),800);
