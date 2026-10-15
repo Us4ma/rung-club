@@ -24,3 +24,12 @@
 /* Preserve existing table geometry; omit the optional balance where the shared HUD row is too narrow. */
 @media(min-width:601px) and (max-width:930px){.screen-table .table-tools>.coin-wallet{display:none!important}}
 .screen-table .table-tools>.coin-wallet{max-width:100px}.screen-table .table-tools>.coin-wallet span{max-width:65px;overflow:hidden;text-overflow:ellipsis}
+
+/* Reference-led currency counter: raised coin badge overlaps a recessed walnut bar. */
+.app .coin-wallet,.app .coin-wallet.compact{gap:0;padding:2px 4px;overflow:visible}
+.app .coin-wallet img{width:36px;height:36px;z-index:2;filter:drop-shadow(0 2px 1px #0008)}
+.app .coin-wallet span{position:relative;margin-left:-13px;min-width:65px;padding:5px 13px 5px 21px;border:2px solid #80603a;border-top-color:#ae8a52;border-bottom-color:#513820;border-radius:0 12px 12px 0;background:linear-gradient(#3e2b20,#261b15)!important;color:#fff3d5;font-size:19px;font-weight:800;line-height:1.1;letter-spacing:.1px;box-shadow:inset 0 2px 3px #0008,0 2px 0 #0a0807aa;text-shadow:0 2px 1px #0009}
+.app .coin-wallet:hover span{border-color:#c09a5c;filter:brightness(1.1)}
+.app .coin-wallet.compact img{width:28px;height:28px}
+.app .coin-wallet.compact span{min-width:46px;margin-left:-10px;padding:4px 9px 4px 16px;font-size:14px;border-radius:0 9px 9px 0}
+@media(max-width:600px){.app .coin-wallet img{width:31px;height:31px}.app .coin-wallet span{min-width:48px;margin-left:-11px;padding:4px 9px 4px 17px;font-size:16px}.app .coin-wallet.compact img{width:25px;height:25px}.app .coin-wallet.compact span{font-size:13px;min-width:40px}}
