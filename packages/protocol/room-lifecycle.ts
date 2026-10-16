@@ -2,16 +2,15 @@ import {partnerOf} from '../core/seats.ts';
 import {DEFAULT,type State} from '../core/index.ts';
 import {Session} from './index.ts';
 import {clockFor,expireTurn,decisionAt,type Clock} from './timing.ts';
-export const RESULT_PAUSE_MS=4200,RECONNECT_GRACE_MS=60000;
+export const RESULT_PAUSE_MS=4200,RECONNECT_GRACE_MS=5000;
 export type Membership={autoPlay?:boolean[];departed:boolean[];disconnectedAt:(number|null)[];pendingPartners:number[];closed:string|null;transitionAt?:number;settledDeal?:string};
 export function membership():Membership{return {departed:[false,false,false,false],disconnectedAt:[null,null,null,null],pendingPartners:[],closed:null};}
 export function leaveSeat(m:Membership,uids:(string|null)[],s:State,seat:number){
  if(!uids[seat]||m.closed)return;
  uids[seat]=null;m.departed[seat]=true;m.disconnectedAt[seat]=null;s.interrupted=true;
- const partner=partnerOf(seat);if(uids[partner]&&!m.pendingPartners.includes(partner))m.pendingPartners.push(partner);
  m.pendingPartners=m.pendingPartners.filter(i=>!!uids[i]);
  if(uids.every(u=>!u))m.closed='No human players remain.';
- else if([0,1].some(t=>m.departed[t]&&m.departed[partnerOf(t)]))m.closed='Both human players on a team have left.';
+
 }
 export function disconnected(m:Membership,seat:number,now:number){if(!m.closed&&!m.departed[seat]&&m.disconnectedAt[seat]===null)m.disconnectedAt[seat]=now;}
 export function reconnected(m:Membership,seat:number){if(m.departed[seat]||m.closed)throw Error('This seat has left the table');m.disconnectedAt[seat]=null;}
