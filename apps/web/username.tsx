@@ -1,14 +1,26 @@
 import {useRef,useState} from 'react';
 import {restoredIdentity} from './auth.ts';
-import {ONLINE_ORIGIN,cloudHost} from './deployment.ts';
+import {ONLINE_ORIGIN} from './deployment.ts';
 export async function accountProfile(name?:string,tutorialStatus?:import('../../packages/protocol/progression.ts').TutorialStatus,bandUnlockSeen?:boolean,avatar?:number,avatarSource?:'google',practiceDifficulty?:'beginner'|'intermediate'|'advanced'){
  const user=await restoredIdentity();if(!user)throw Error('Please sign in before choosing a name.');
- const token=await user.getIdToken();
- const url=import.meta.env.PROD&&!cloudHost?ONLINE_ORIGIN+'/api/identity':'/api/identity';
+ let token=await user.getIdToken();
+ // Browser requests use the same-origin proxy; packaged Android still uses the Worker.
+ const native=location.protocol==='capacitor:'||(location.protocol==='https:'&&location.hostname==='localhost');
+ const url=(native?ONLINE_ORIGIN:'')+'/api/identity';
  const legacy=Number(localStorage.getItem('avatar'));const target=url+(legacy>=1&&legacy<=5?'?legacyAvatar='+legacy:'');
  const readOnly=name===undefined&&tutorialStatus===undefined&&bandUnlockSeen===undefined&&avatar===undefined&&avatarSource===undefined&&practiceDifficulty===undefined;
- const r=await fetch(target,{method:readOnly?'GET':'PATCH',headers:{Authorization:'Bearer '+token,...(readOnly?{}:{'Content-Type':'application/json'})},...(readOnly?{}:{body:JSON.stringify({name,tutorialStatus,bandUnlockSeen,avatar,avatarSource,practiceDifficulty})})});
- const data=await r.json();if(!r.ok)throw Error(data.error||'Unable to connect. Please retry.');return data;
+ for(let attempt=0;attempt<2;attempt++){
+  let r:Response;
+  try{r=await fetch(target,{method:readOnly?'GET':'PATCH',signal:AbortSignal.timeout(10000),headers:{Authorization:'Bearer '+token,...(readOnly?{}:{'Content-Type':'application/json'})},...(readOnly?{}:{body:JSON.stringify({name,tutorialStatus,bandUnlockSeen,avatar,avatarSource,practiceDifficulty})})});}
+  catch{if(readOnly&&attempt===0)continue;throw Error('Your profile connection timed out or was interrupted. Please retry.');}
+  if(r.status===401&&attempt===0){token=await user.getIdToken(true);continue;}
+  if(readOnly&&attempt===0&&[408,429,500,502,503,504].includes(r.status))continue;
+  const data=await r.json().catch(()=>null);
+  if(!r.ok)throw Error(data?.error||'Profile service unavailable ('+r.status+'). Please retry.');
+  if(!data?.user?.uid)throw Error('The profile service returned an incomplete profile. Please retry.');
+  return data;
+ }
+ throw Error('Unable to load your profile. Please retry.');
 }
 export function UsernameForm({initial='',onSaved,onCancel,standalone=false,cancelLabel='Sign out',autoFocus=false}:{initial?:string;onSaved:(data:any)=>void;onCancel?:()=>void;standalone?:boolean;cancelLabel?:string;autoFocus?:boolean}){
  const [name,setName]=useState(initial),[busy,setBusy]=useState(false),[message,setMessage]=useState('');const pending=useRef(false);
