@@ -9,3 +9,7 @@
 .app.screen-profile .profile-drawer .profile-tabs button[aria-selected=true]{background:linear-gradient(#23583e,#113323)!important;border-color:#ddbc6c!important;color:#fff0c9!important;box-shadow:inset 0 -2px #d5b66b!important}
 .app.screen-profile .profile-drawer .avatar-choice{background:#0b2d22!important;background-image:none!important;box-shadow:none!important}
 .app.screen-profile .profile-drawer .avatar-choice[aria-pressed=true]{background:#23523b!important;border-color:#edca79!important}
+.profile-name-row{display:flex;align-items:center;gap:8px}.profile-summary .profile-name-row h2{margin:0;min-width:0;flex:0 1 auto}
+.app.screen-profile .profile-drawer .profile-name-edit{display:grid;place-items:center;flex:none;width:36px;height:44px;min-height:44px;padding:6px;background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;color:#edc674!important}
+.profile-name-edit svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 1px #0008)}
+.profile-name-editor{padding:0 0 20px;margin-bottom:20px;border-bottom:1px solid #b49a6344}.profile-drawer .profile-name-editor .username-form,.profile-drawer .profile-name-editor .local-name{margin-top:0}.name-editor-actions{display:flex;gap:8px;margin-top:12px}
