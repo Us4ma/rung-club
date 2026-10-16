@@ -1,5 +1,5 @@
 /* One intentional palette: prevent Android/browser automatic darkening. */
-:root{color-scheme:only light}html{background:#071d16;color:#f3e7cc}body{margin:0}input,select,button{color-scheme:only light}.card-face,.card-face img,.avatar,.opening-draw img{forced-color-adjust:none}
+:root{color-scheme:light dark}html{background:#071d16;color:#f3e7cc}body{margin:0}input,select,button{color-scheme:only light}.card-face,.card-face img,.avatar,.opening-draw img{forced-color-adjust:none}
 /* Waiting belongs on the felt, away from the four seat portraits. */
 .app.screen-table .table-waiting-panel{position:absolute;left:50%;top:49%;transform:translate(-50%,-50%);width:min(260px,55%);box-sizing:border-box;z-index:10;pointer-events:auto;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:7px;padding:12px 14px;border:1px solid #b29b5b66;border-radius:14px;background:#0b3028e8;text-align:center;color:#eee0bb}
 .table-waiting-panel>small,.table-waiting-panel>h2,.table-waiting-panel>p{flex-basis:100%;margin:0}.table-waiting-panel>small{font-size:9px;letter-spacing:1px;color:#bacdbd}.table-waiting-panel h2{font:600 18px/1.2 system-ui;letter-spacing:0;color:#f4dba0}.table-waiting-panel h2.room-code{font-size:23px;letter-spacing:2px}.table-waiting-panel p{font-size:11px;line-height:1.4;color:#c7d5c8}.app.screen-table .table-waiting-panel button{min-height:40px;padding:7px 12px;border:1px solid #bba26666!important;border-radius:9px;background:#234b3b!important;color:#f0e2bc!important;font-size:12px;box-shadow:none!important}.table-waiting-panel button:disabled{opacity:.5}.screen-table>.notice{position:fixed;top:10px;left:50%;transform:translateX(-50%);width:min(600px,90vw);box-sizing:border-box;z-index:80;margin:0}
@@ -87,4 +87,31 @@
  .app.screen-table .table-page{grid-template-columns:minmax(0,1fr)}
  .app.screen-table .hand{min-width:0;width:100%}
  .app.screen-table .hand>button.card-button:not(:first-child){margin-left:calc(var(--hand-card)*-0.42)!important}
+}
+
+/* Keep the original wide oval, independent of a phone's viewport height. */
+@media(max-width:600px) and (orientation:portrait){
+ .app.screen-table .table-page{min-height:660px;grid-template-rows:44px 52px 10px minmax(330px,1fr) 12px 90px 56px}
+ .app.screen-table .table-page[data-phase=waiting]{grid-template-rows:44px 52px 10px minmax(330px,1fr) 0 0 48px}
+ .app.screen-table .table{inset:auto 20px auto;top:50%;height:clamp(170px,48vw,240px);transform:translateY(-50%);border-radius:48%}
+ .app.screen-table .table-host{top:calc(50% - clamp(85px,24vw,120px) - 57px);right:30px;width:86px;height:92px}
+ .app.screen-table .dealer-speech{top:calc(50% - clamp(85px,24vw,120px) - 59px);right:8px;max-width:140px;transform:translateY(-100%)}
+ .app.screen-table .seat-1,.app.screen-table .seat-3{top:42%}
+ .app.screen-table .self-seat{bottom:-62px}
+ .app.screen-table .table-waiting-panel{top:50%;width:calc(100% - 124px);padding:6px;gap:4px}
+ .app.screen-table .table-waiting-panel>small{font-size:8px}
+ .app.screen-table .table-waiting-panel p{font-size:9px;line-height:1.25}
+ .app.screen-table .table-waiting-panel button{min-height:30px;font-size:9px;padding:4px 6px}
+ .app.screen-table .opening-draw .comparison-2{top:44%!important}.app.screen-table .opening-draw .comparison-0{top:62%!important}.app.screen-table .opening-draw .comparison-1,.app.screen-table .opening-draw .comparison-3{top:53%!important}
+}
+/* Explicit art colors: image pixels carry the cream stock and original suits. */
+.card-face,.card-face img,.opening-draw img{color-scheme:only light;forced-color-adjust:none;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+
+@media(max-width:600px) and (orientation:portrait){
+ .app.screen-table .plays{height:96px;top:53%}
+ .app.screen-table .play-0{top:54px}.app.screen-table .play-1,.app.screen-table .play-3{top:27px}
+ .app.screen-table .opening-draw{inset:auto!important;left:50%!important;top:50%!important;width:170px;height:140px;transform:translate(-50%,-50%)!important}
+ .app.screen-table .opening-draw img{width:24px;height:34px}
+ .app.screen-table .opening-draw .comparison-2{top:33%!important}.app.screen-table .opening-draw .comparison-0{top:73%!important}
+ .app.screen-table .opening-draw .comparison-1{left:77%!important;top:53%!important}.app.screen-table .opening-draw .comparison-3{left:23%!important;top:53%!important}
 }

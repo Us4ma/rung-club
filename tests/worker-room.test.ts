@@ -8,7 +8,7 @@ let xp:number,room:CardRoom,storage:Map<string,unknown>,alarms:number[],messages
 beforeEach(async()=>{xp=0;storage=new Map();alarms=[];messages=[];ctx={blockConcurrencyWhile:async(fn:()=>Promise<unknown>)=>fn(),storage:{get:async(key:string)=>storage.get(key),put:async(key:string,value:unknown)=>storage.set(key,structuredClone(value)),setAlarm:async(n:number)=>alarms.push(n),deleteAll:async()=>storage.clear()},getWebSockets:()=>[]};env={DB:{prepare:()=>({bind:()=>({first:async()=>({xp})})})}};room=new CardRoom(ctx,env);await Promise.resolve();});
 const req=(path:string,uid='new',body?:unknown)=>new Request('https://room/'+path,{method:'POST',headers:{'X-User-ID':uid},...(body?{body:JSON.stringify(body)}:{})});
 it('real room init enforces ledger Level 5 and ignores forged payload XP',async()=>{expect((await room.fetch(req('init','owner',{code:'ABCD1234',mode:'band',xp:9000}))).status).toBe(403);expect(room.data).toBeNull();xp=560;expect((await room.fetch(req('init','owner',{code:'ABCD1234',mode:'band'}))).status).toBe(200);expect(room.session?.state.mode).toBe('band');});
-it('private joins reject ineligible outsiders but permit existing valid members',async()=>{xp=560;await room.fetch(req('init','owner',{code:'ABCD1234',mode:'band'}));xp=559;expect((await room.fetch(req('join','outsider'))).status).toBe(403);expect(room.data!.uids).toEqual(['owner',null,null,null]);expect((await room.fetch(req('join','owner'))).status).toBe(200);xp=600;expect((await room.fetch(req('join','outsider'))).status).toBe(200);expect(room.data!.uids[1]).toBe('outsider');});
+it('private joins reject ineligible outsiders but permit existing valid members',async()=>{xp=560;await room.fetch(req('init','owner',{code:'ABCD1234',mode:'band'}));xp=559;expect((await room.fetch(req('join','outsider'))).status).toBe(403);expect(room.data!.uids).toEqual(['owner',null,null,null]);expect((await room.fetch(req('join','owner'))).status).toBe(200);xp=600;expect((await room.fetch(req('join','outsider'))).status).toBe(200);expect(room.data!.uids[2]).toBe('outsider');});
 it('persist and hibernation restore retain active deadline; stale alarm cannot act early',async()=>{await room.fetch(req('init','owner',{code:'ABCD1234',mode:'open'}));room.session=new Session(guidedDeal());room.data!.started=true;await room.persist();const original=room.data!.deadline;await room.persist();expect(room.data!.deadline).toBe(original);const restored=new CardRoom(ctx,env);await Promise.resolve();await Promise.resolve();expect(restored.data!.deadline).toBe(original);await restored.alarm();expect(restored.session!.state.revision).toBe(0);expect(alarms.at(-1)).toBe(original);});
 it('duplicate expired alarms resolve only once and persist the new turn',async()=>{await room.fetch(req('init','owner',{code:'ABCD1234',mode:'open'}));room.session=new Session(guidedDeal());room.data!.started=true;room.data!.clock=clockFor(room.session.state,true,undefined,Date.now()-21000);await room.alarm();expect(room.session.state.revision).toBe(1);await room.alarm();expect(room.session.state.revision).toBe(1);});
 
@@ -49,4 +49,16 @@ it('HTTP fallback validates legal commands with the existing authoritative sessi
  expect(invalid.messages.some((m:any)=>m.type==='error')).toBe(true);expect(room.session!.state.revision).toBe(v.revision);
  const legal:any=await(await room.fetch(req('http-command','a',{type:'play',card:v.legal[0],id:'valid',matchId:v.matchId,seq:1,revision:v.revision}))).json();
  expect(legal.messages.some((m:any)=>m.type==='ack')).toBe(true);expect(legal.state.view.hand).toHaveLength(v.hand.length-1);invariants(room.session!.state);
+});
+
+it('code invites seat the first friend opposite the host and preserve reconnect seats',async()=>{
+ await room.fetch(req('init','owner',{code:'ABCD1234',mode:'open'}));
+ for(const uid of ['friend','opponent-one','opponent-two'])expect((await room.fetch(req('join',uid))).status).toBe(200);
+ expect(room.data!.uids).toEqual(['owner','opponent-one','friend','opponent-two']);
+ await room.fetch(req('join','friend'));expect(room.data!.uids[2]).toBe('friend');
+});
+it('quick matchmaking keeps its order but an explicit code invite prefers the partner seat',async()=>{
+ await room.fetch(req('init','owner',{code:'ABCD1234',mode:'open',casualQuick:true}));
+ const invitation=req('join','friend');invitation.headers.set('X-Code-Invite','true');await room.fetch(invitation);
+ expect(room.data!.uids).toEqual(['owner',null,'friend',null]);
 });
