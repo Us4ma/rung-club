@@ -27,8 +27,8 @@ describe('persisted clocks and legal expiry',()=>{
  it('Band timeout sees only redacted view and conserves indicator',()=>{for(let seed=1;seed<12;seed++){const session=new Session(createMatch('band',seeded(seed)));while(session.state.phase!=='finished'){const seat=session.state.turn,c=automaticCommand(session);session.apply(seat,c);invariants(session.state);const v=view(session.state,(seat+1)%4);expect('hands' in v).toBe(false);if(!v.revealed&&v.caller!==(seat+1)%4){expect(v.trump).toBeNull();expect(v.indicator).toBeNull();}}}});
 });
 describe('progression and legacy onboarding',()=>{
- it.each([0,99,100,299,399])('rejects XP %s',xp=>expect(bandEligible(xp)).toBe(false));
- it.each([400,499,500,1000])('allows XP %s',xp=>expect(bandEligible(xp)).toBe(true));
+ it.each([0,99,100,299,399,400,559])('rejects XP %s',xp=>expect(bandEligible(xp)).toBe(false));
+ it.each([560,600,750,1000])('allows XP %s',xp=>expect(bandEligible(xp)).toBe(true));
  it('new rows start explicitly; legacy rows and terminal outcomes never restart',()=>{expect(tutorialStatus(0)).toBe('completed');expect(tutorialStatus(4)).toBe('not-started');expect(tutorialStatus(2)).toBe('in-progress');expect(tutorialTransition(1,'in-progress')).toBe(1);expect(tutorialTransition(3,'not-started')).toBe(3);expect(tutorialTransition(4,'skipped')).toBe(3);});
 });
 import {advancedLesson} from '../packages/core/tutorial.ts';

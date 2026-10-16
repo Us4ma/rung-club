@@ -1,6 +1,6 @@
 import {TUTORIAL_AVAILABLE} from '../../packages/protocol/avatars.ts';
 import {Pointer} from './experience.tsx';
-const BAND_UNLOCK_XP=400;
+import {BAND_UNLOCK_XP} from '../../packages/protocol/progression.ts';
 import {useState} from 'react';
 import {art,Icon,Dealer} from './art.tsx';
 type Mode='open'|'band';
