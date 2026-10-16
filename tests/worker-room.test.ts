@@ -31,3 +31,22 @@ it('completed authoritative state is durable before a failed D1 settlement and r
  await room.webSocketMessage(sockets[fourth.seat] as any,JSON.stringify({matchId:pending.matchId,id:'last-card',seq:1,revision:pending.revision,type:'play',card:fourth.card.id}));const saved=storage.get('room') as any;expect(saved.state.phase).toBe('finished');expect(saved.state.table.rounds).toHaveLength(1);expect(room.life.settledDeal).toBeUndefined();expect(messages.filter(m=>m.type==='error')).toEqual([]);expect(messages.filter(m=>m.type==='ack'&&m.id==='last-card')).toHaveLength(1);await room.alarm();expect(room.life.settledDeal).toBe(pending.matchId);expect(room.session!.state.table!.rounds).toHaveLength(1);expect(room.session!.state.table!.points).toEqual(finished.table!.points);await room.settle();expect(env.DB.batch).toHaveBeenCalledTimes(2);
 });
 it('queue supports a fresh-code retry for an unavailable table',async()=>{const first=await(await room.fetch(req('queue','a',{mode:'open'}))).json() as {code:string};const same=await(await room.fetch(req('queue','b',{mode:'open'}))).json() as {code:string};expect(same.code).toBe(first.code);const fresh=await(await room.fetch(req('queue','b',{mode:'open',fresh:true}))).json() as {code:string};expect(fresh.code).not.toBe(first.code);});
+
+it('HTTP fallback opens the same private table and accepts host start without a socket',async()=>{
+ await room.fetch(req('init','owner',{code:'ABCD1234',mode:'open'}));
+ const initial:any=await(await room.fetch(req('http-state','owner'))).json();
+ expect(initial.state.code).toBe('ABCD1234');expect(initial.state.started).toBe(false);
+ expect(initial.state.view.hands).toBeUndefined();expect(initial.state.view.stock).toBeUndefined();
+ const started:any=await(await room.fetch(req('http-command','owner',{type:'start'}))).json();
+ expect(started.state.started).toBe(true);expect(room.connected('owner')).toBe(true);
+ expect(room.life.disconnectedAt[0]).toBeNull();
+ expect((await room.fetch(req('http-state','outsider'))).status).toBe(409);
+});
+it('HTTP fallback validates legal commands with the existing authoritative session',async()=>{
+ await activeRoom();room.data!.clock!.readyAt=Date.now()-1;
+ const state:any=await(await room.fetch(req('http-state','a'))).json();const v=state.state.view;
+ const invalid:any=await(await room.fetch(req('http-command','a',{type:'play',card:'invalid',id:'bad',matchId:v.matchId,seq:1,revision:v.revision}))).json();
+ expect(invalid.messages.some((m:any)=>m.type==='error')).toBe(true);expect(room.session!.state.revision).toBe(v.revision);
+ const legal:any=await(await room.fetch(req('http-command','a',{type:'play',card:v.legal[0],id:'valid',matchId:v.matchId,seq:1,revision:v.revision}))).json();
+ expect(legal.messages.some((m:any)=>m.type==='ack')).toBe(true);expect(legal.state.view.hand).toHaveLength(v.hand.length-1);invariants(room.session!.state);
+});

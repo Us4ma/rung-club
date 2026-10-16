@@ -1,0 +1,90 @@
+/* One intentional palette: prevent Android/browser automatic darkening. */
+:root{color-scheme:only light}html{background:#071d16;color:#f3e7cc}body{margin:0}input,select,button{color-scheme:only light}.card-face,.card-face img,.avatar,.opening-draw img{forced-color-adjust:none}
+/* Waiting belongs on the felt, away from the four seat portraits. */
+.app.screen-table .table-waiting-panel{position:absolute;left:50%;top:49%;transform:translate(-50%,-50%);width:min(260px,55%);box-sizing:border-box;z-index:10;pointer-events:auto;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:7px;padding:12px 14px;border:1px solid #b29b5b66;border-radius:14px;background:#0b3028e8;text-align:center;color:#eee0bb}
+.table-waiting-panel>small,.table-waiting-panel>h2,.table-waiting-panel>p{flex-basis:100%;margin:0}.table-waiting-panel>small{font-size:9px;letter-spacing:1px;color:#bacdbd}.table-waiting-panel h2{font:600 18px/1.2 system-ui;letter-spacing:0;color:#f4dba0}.table-waiting-panel h2.room-code{font-size:23px;letter-spacing:2px}.table-waiting-panel p{font-size:11px;line-height:1.4;color:#c7d5c8}.app.screen-table .table-waiting-panel button{min-height:40px;padding:7px 12px;border:1px solid #bba26666!important;border-radius:9px;background:#234b3b!important;color:#f0e2bc!important;font-size:12px;box-shadow:none!important}.table-waiting-panel button:disabled{opacity:.5}.screen-table>.notice{position:fixed;top:10px;left:50%;transform:translateX(-50%);width:min(600px,90vw);box-sizing:border-box;z-index:80;margin:0}
+@media(max-width:600px){
+ .app.screen-table .table-page{height:100dvh;min-height:580px;padding:6px 10px max(6px,env(safe-area-inset-bottom));grid-template-rows:44px 56px 14px minmax(190px,1fr) 16px 110px 68px;--hand-card:clamp(40px,11vw,54px);--trick-card:36px}
+ .app.screen-table .table-scene{grid-row:4;max-height:none;min-height:0;align-self:stretch}
+ .app.screen-table .table{inset:50px 28px 48px;min-height:0}
+ .app.screen-table .seat,.app.screen-table .self-seat{--portrait-size:52px;width:76px;max-width:76px;min-height:0;padding:0;gap:2px}
+ .app.screen-table .seat-2{top:-40px;left:50%;width:76px;min-height:0;transform:translateX(-50%)}
+ .app.screen-table .seat-1{right:-20px;top:47%}.app.screen-table .seat-3{left:-20px;top:47%}
+ .app.screen-table .self-seat{left:50%;bottom:-48px;transform:translateX(-50%)}
+ .app.screen-table .seat strong,.app.screen-table .self-seat strong{font-size:10px;line-height:13px;max-width:76px;margin:2px 0 0}
+ .app.screen-table .seat small,.app.screen-table .self-seat small{font-size:9px;line-height:11px}
+ .app.screen-table .seat-2>strong,.app.screen-table .seat-2>small{position:static!important;transform:none!important;text-align:center;width:76px;max-width:76px}
+ .app.screen-table .seat .backs{top:calc(100% + 4px);left:50%;right:auto;transform:translateX(-50%)}
+ .app.screen-table .seat-2 .backs{left:auto;right:calc(100% + 3px);top:12px;transform:none}
+ .app.screen-table .backs i{width:18px;height:25px;margin-left:-11px}
+ .app.screen-table .table-host{width:76px;height:80px;top:0;right:34px}
+ .app.screen-table .dealer-speech{right:3px;top:2px;width:140px;max-width:46%;font-size:9px;padding:5px 7px;transform:translateY(-100%)}
+ .app.screen-table .dealer-speech:after{right:45px}
+ .app.screen-table .table-waiting-panel{top:44%;width:calc(100% - 130px);max-width:220px;padding:8px;gap:5px}
+ .app.screen-table .table-waiting-panel h2{font-size:14px}.app.screen-table .table-waiting-panel h2.room-code{font-size:17px;letter-spacing:1px}.app.screen-table .table-waiting-panel p{font-size:10px}.app.screen-table .table-waiting-panel button{min-height:36px;padding:5px 7px;font-size:10px}
+ .app.screen-table .hand-hint{grid-row:5}.app.screen-table .hand{grid-row:6;padding:12px 0 4px;min-height:0;align-self:stretch;align-items:center}
+ .app.screen-table .actions{grid-row:7;grid-template-rows:14px 12px 1fr;font-size:10px}.app.screen-table .actions>p{font-size:9px;line-height:12px}.app.screen-table .controls{gap:6px;min-height:40px}.app.screen-table .controls button{min-height:38px;padding:6px 8px;font-size:11px}.app.screen-table .controls>.gold{min-width:90px}.app.screen-table .controls label{font-size:10px}.app.screen-table .controls>.emote-toggle{width:38px;height:38px;min-width:38px}
+ /* Comparison cards stay in a central cross, rather than covering the seats. */
+ .app.screen-table .opening-draw{inset:0!important;width:100%;height:100%;max-width:none;padding:0;background:none;border:0;transform:none;pointer-events:none}
+ .app.screen-table .opening-draw>strong,.app.screen-table .opening-draw>small{display:none}.app.screen-table .opening-draw>div{position:absolute;inset:0;margin:0}
+ .app.screen-table .opening-draw .comparison-seat{left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:translate(-50%,-50%)}
+ .app.screen-table .opening-draw img{width:32px;height:45px;margin:0}
+ .app.screen-table .opening-draw .comparison-2{left:50%!important;top:39%!important}.app.screen-table .opening-draw .comparison-0{left:50%!important;top:68%!important}.app.screen-table .opening-draw .comparison-1{left:67%!important;top:54%!important}.app.screen-table .opening-draw .comparison-3{left:33%!important;top:54%!important}
+ .app.screen-table .plays{top:49%;transform:translate(-50%,-50%) scale(.85)}
+}
+@media(orientation:landscape) and (max-height:550px){
+ .app.screen-table .table-page{height:100dvh;min-height:320px;padding:4px max(12px,env(safe-area-inset-left)) max(4px,env(safe-area-inset-bottom));grid-template-rows:42px 12px minmax(110px,1fr) 12px 80px 48px;--hand-card:46px;--trick-card:30px}
+ .app.screen-table .table-top{grid-row:1}.app.screen-table .compact-hud{grid-row:1;width:58%;height:40px}.app.screen-table .compact-hud small{font-size:8px}.app.screen-table .compact-hud strong{font-size:16px}.app.screen-table .compact-hud>div>small:last-child:not(:first-child){font-size:7px}.app.screen-table .table-connection{grid-row:2}
+ .app.screen-table .table-scene{grid-row:3;max-height:none;align-self:stretch;min-height:0}.app.screen-table .table{inset:25px 58px 22px}
+ .app.screen-table .seat,.app.screen-table .self-seat{--portrait-size:38px;width:75px;max-width:75px;min-height:0;padding:0;gap:0}.app.screen-table .seat-2{top:-26px;left:50%;transform:translateX(-50%)}.app.screen-table .seat-1{top:45%;right:-32px}.app.screen-table .seat-3{top:45%;left:-32px}.app.screen-table .self-seat{bottom:-26px;left:50%;transform:translateX(-50%)}
+ .app.screen-table .seat strong,.app.screen-table .self-seat strong{font-size:9px;margin:0;line-height:11px}.app.screen-table .seat small,.app.screen-table .self-seat small{font-size:8px;line-height:10px}.app.screen-table .seat-2>strong{left:calc(100% + 2px);top:7px;width:80px}.app.screen-table .seat-2>small{left:calc(100% + 2px);top:19px;width:80px}
+ .app.screen-table .backs i{width:15px;height:21px;margin-left:-9px}.app.screen-table .seat-2 .backs{left:auto;right:100%;top:6px;transform:none}.app.screen-table .seat-1 .backs,.app.screen-table .seat-3 .backs{top:calc(100% + 2px)}
+ .app.screen-table .table-host{width:68px;height:58px;right:15%;top:0}.app.screen-table .dealer-speech{font-size:8px;right:3px;top:0;max-width:120px;width:120px;padding:4px 6px;transform:none}
+ .app.screen-table .hand-hint{grid-row:4;font-size:8px;line-height:10px;padding:0}.app.screen-table .hand{grid-row:5;padding:6px 0 2px}.app.screen-table .actions{grid-row:6;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:3px}.app.screen-table .actions>p{font-size:9px;margin:0;line-height:10px}.app.screen-table .controls{min-height:36px;width:100%;gap:6px;margin:0}.app.screen-table .controls button{min-height:32px;padding:4px 10px;font-size:10px}.app.screen-table .controls>.gold{min-width:110px}.app.screen-table .controls>.emote-toggle{min-width:32px;width:32px;height:32px}
+ .app.screen-table .table-waiting-panel{width:240px;max-width:54%;padding:6px 10px;gap:3px;top:48%}.app.screen-table .table-waiting-panel h2{font-size:13px}.app.screen-table .table-waiting-panel h2.room-code{font-size:17px}.app.screen-table .table-waiting-panel>small{font-size:8px}.app.screen-table .table-waiting-panel p{font-size:9px}.app.screen-table .table-waiting-panel button{min-height:30px;padding:4px 8px;font-size:10px}
+ .app.screen-table .opening-draw{inset:0!important;width:100%;height:100%;max-width:none;padding:0;transform:none;background:none;border:0}.app.screen-table .opening-draw>strong,.app.screen-table .opening-draw>small{display:none}.app.screen-table .opening-draw>div{position:absolute;inset:0;margin:0}.app.screen-table .opening-draw img{width:26px;height:36px;margin:0}.app.screen-table .opening-draw .comparison-seat{left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:translate(-50%,-50%)}.app.screen-table .opening-draw .comparison-2{left:50%!important;top:28%!important}.app.screen-table .opening-draw .comparison-0{left:50%!important;top:78%!important}.app.screen-table .opening-draw .comparison-1{left:61%!important;top:53%!important}.app.screen-table .opening-draw .comparison-3{left:39%!important;top:53%!important}
+ .app.screen-table .plays{top:48%;transform:translate(-50%,-50%) scale(.75)}.app.screen-table .rung-banner{top:50%;padding:6px;width:240px}.app.screen-table .rung-banner p{display:none}.app.screen-table .rung-banner h3{font-size:11px}.app.screen-table .rung-banner .suit-choices{gap:6px;margin:4px 0}.app.screen-table .rung-banner .suit-choices button{min-height:32px;min-width:36px;font-size:24px}
+}
+/* Reclaim the unused hand area while waiting, and keep small stages readable. */
+.app.screen-table .table-page[data-phase=waiting]{grid-template-rows:66px 20px minmax(330px,1fr) 0 0 48px}
+.app.screen-table .table-page[data-phase=waiting] .hand,.app.screen-table .table-page[data-phase=waiting] .hand-hint{display:none}
+@media(max-width:600px){
+ .app.screen-table .table-page{min-height:660px;grid-template-rows:44px 52px 10px minmax(280px,1fr) 12px 90px 56px;--hand-card:clamp(40px,11vw,48px);--trick-card:30px}
+ .app.screen-table .table-page[data-phase=waiting]{grid-template-rows:44px 52px 10px minmax(280px,1fr) 0 0 48px}
+ .app.screen-table .actions{grid-template-rows:14px 40px}.app.screen-table .actions>p{display:none}.app.screen-table .controls{grid-row:2}
+ .app.screen-table .opening-draw img{width:28px;height:40px}.app.screen-table .opening-draw .comparison-2{top:42%!important}.app.screen-table .opening-draw .comparison-0{top:60%!important}.app.screen-table .opening-draw .comparison-1,.app.screen-table .opening-draw .comparison-3{top:51%!important}
+ .app.screen-table .plays{width:116px;height:110px;min-height:0;top:52%;transform:translate(-50%,-50%)}.app.screen-table .play-2{left:42px;top:0}.app.screen-table .play-0{left:42px;top:62px}.app.screen-table .play-1{left:84px;top:31px}.app.screen-table .play-3{left:0;top:31px}
+}
+@media(orientation:landscape) and (max-height:550px){
+ .app.screen-table{overflow-y:visible}.app.screen-table .table-page{min-height:346px;grid-template-rows:42px 12px minmax(140px,1fr) 12px 80px 48px}
+ .app.screen-table .table-page[data-phase=waiting]{grid-template-rows:42px 12px minmax(190px,1fr) 0 0 42px}
+ .app.screen-table .plays{width:152px;height:42px;min-height:0;top:50%;transform:translate(-50%,-50%)}.app.screen-table .played,.app.screen-table .trick-slot{top:0!important}.app.screen-table .play-0{left:0}.app.screen-table .play-1{left:40px}.app.screen-table .play-2{left:80px}.app.screen-table .play-3{left:120px}
+}
+@media(orientation:landscape) and (max-height:550px){
+ /* Clear the old two-column landscape grid, including inherited column spans. */
+ .app.screen-table .table-page{grid-template-columns:minmax(0,1fr);column-gap:0}
+ .app.screen-table .table-top,.app.screen-table .compact-hud{grid-area:1/1}
+ .app.screen-table .table-connection{grid-area:2/1}.app.screen-table .table-scene{grid-area:3/1;width:100%;max-width:none}
+ .app.screen-table .hand-hint{grid-area:4/1}.app.screen-table .hand{grid-area:5/1}.app.screen-table .actions{grid-area:6/1}
+}
+@media(max-width:600px){
+ .app.screen-table .hand{display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;gap:0;overflow:visible;padding:12px 0 4px}
+ .app.screen-table .hand .card-button{flex:0 0 var(--hand-card);width:var(--hand-card);height:calc(var(--hand-card)*1.4);min-width:0;margin:0 0 0 calc(var(--hand-card)*-.42)}
+ .app.screen-table .hand .card-button:first-child{margin-left:0}.app.screen-table .hand .card-face{width:var(--hand-card);height:calc(var(--hand-card)*1.4)}
+ .app.screen-table .controls{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:center}.app.screen-table .controls>.gold{width:auto;flex:0 0 auto}
+ .app.screen-table .auto-play-toggle{width:auto;min-height:36px;padding:4px 6px;font-size:9px}
+}
+@media(orientation:landscape) and (max-height:550px){
+ .app.screen-table .hand{display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;gap:0;overflow:visible}
+ .app.screen-table .hand .card-button{flex:0 0 var(--hand-card);width:var(--hand-card);height:calc(var(--hand-card)*1.4);min-width:0;margin:0 0 0 -8px}.app.screen-table .hand .card-button:first-child{margin-left:0}.app.screen-table .hand .card-face{width:var(--hand-card);height:calc(var(--hand-card)*1.4)}
+ .app.screen-table .actions{display:grid;grid-template-rows:12px 36px;align-self:stretch;align-items:stretch;flex-direction:row;gap:0;padding:0;height:100%}
+ .app.screen-table .actions>p{display:none}.app.screen-table .turn-label{grid-row:1;line-height:12px;font-size:10px}
+ .app.screen-table .controls{grid-row:2;display:flex;flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:center;gap:6px;min-height:0;height:36px;margin:0;padding:0}
+ .app.screen-table .controls>.gold{width:auto;min-width:110px;margin-left:auto;flex:0 0 auto;min-height:32px;height:32px}
+ .app.screen-table .auto-play-toggle{width:auto;min-height:32px;height:32px;padding:4px 8px;font-size:10px;order:0}.app.screen-table .sort-button{order:-2;min-height:32px}.app.screen-table .controls>.emote-toggle{order:-1;min-width:32px;width:32px;height:32px;min-height:32px}
+}
+@media(max-width:600px){
+ .app.screen-table .table-page{grid-template-columns:minmax(0,1fr)}
+ .app.screen-table .hand{min-width:0;width:100%}
+ .app.screen-table .hand>button.card-button:not(:first-child){margin-left:calc(var(--hand-card)*-0.42)!important}
+}
