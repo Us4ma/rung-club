@@ -16,10 +16,10 @@ export async function identityResponse(req:Request,db:IdentityDatabase,verify:(t
  const reply=(data:unknown,status=200)=>Response.json(data,{status,headers});
  if(!identityOrigin(req,allowed))return reply({error:'Origin denied'},403);
  if(origin)headers['Access-Control-Allow-Origin']=origin;
- if(req.method==='OPTIONS'){headers['Access-Control-Allow-Methods']='GET, PATCH, DELETE';headers['Access-Control-Allow-Headers']='Authorization, Content-Type';return new Response(null,{status:204,headers});}
+ if(req.method==='OPTIONS'){headers['Access-Control-Allow-Methods']='GET, PATCH, DELETE';headers['Access-Control-Allow-Headers']='Authorization, Content-Type, X-Device-ID';return new Response(null,{status:204,headers});}
  if(!['GET','PATCH','DELETE'].includes(req.method))return reply({error:'Method not allowed'},405);
  let identity:VerifiedIdentity;
- try{const token=req.headers.get('Authorization')?.match(/^Bearer (\S+)$/)?.[1];if(!token||token.length>5000)throw Error();identity=await verify(token);if(!identity.uid||!Number.isFinite(identity.authTime))throw Error();}catch{return reply({error:'Please sign in again.'},401);}
+ try{const token=req.headers.get('Authorization')?.match(/^Bearer (\S+)$/)?.[1];if(!token||token.length>5000)throw Error();identity=await verify(token);if(!identity.uid||!Number.isFinite(identity.authTime))throw Error();}catch(e){if((e as {code?:string})?.code==='SESSION_ACTIVE')return reply({error:(e as Error).message,code:'SESSION_ACTIVE'},409);return reply({error:'Please sign in again.'},401);}
  const existing=await db.prepare('SELECT name,deleted,revoked_before,tutorial,created FROM accounts WHERE uid=?').bind(identity.uid).first<{name:string;deleted:number;revoked_before:number;tutorial:number;created:number}>();
  if(req.method==='DELETE'){
   const text=await req.text();if(text.length>4096)return reply({error:'Payload too large'},413);

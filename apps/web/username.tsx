@@ -1,3 +1,4 @@
+import {deviceHeaders} from './device-session.ts';
 import {useRef,useState} from 'react';
 import {restoredIdentity} from './auth.ts';
 import {ONLINE_ORIGIN} from './deployment.ts';
@@ -11,7 +12,7 @@ export async function accountProfile(name?:string,tutorialStatus?:import('../../
  const readOnly=name===undefined&&tutorialStatus===undefined&&bandUnlockSeen===undefined&&avatar===undefined&&avatarSource===undefined&&practiceDifficulty===undefined;
  for(let attempt=0;attempt<2;attempt++){
   let r:Response;
-  try{r=await fetch(target,{method:readOnly?'GET':'PATCH',signal:AbortSignal.timeout(10000),headers:{Authorization:'Bearer '+token,...(readOnly?{}:{'Content-Type':'application/json'})},...(readOnly?{}:{body:JSON.stringify({name,tutorialStatus,bandUnlockSeen,avatar,avatarSource,practiceDifficulty})})});}
+  try{r=await fetch(target,{method:readOnly?'GET':'PATCH',signal:AbortSignal.timeout(10000),headers:{...deviceHeaders(),Authorization:'Bearer '+token,...(readOnly?{}:{'Content-Type':'application/json'})},...(readOnly?{}:{body:JSON.stringify({name,tutorialStatus,bandUnlockSeen,avatar,avatarSource,practiceDifficulty})})});}
   catch{if(readOnly&&attempt===0)continue;throw Error('Your profile connection timed out or was interrupted. Please retry.');}
   if(r.status===401&&attempt===0){token=await user.getIdToken(true);continue;}
   if(readOnly&&attempt===0&&[408,429,500,502,503,504].includes(r.status))continue;

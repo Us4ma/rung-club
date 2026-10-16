@@ -5,8 +5,8 @@ import {Session} from '../packages/protocol/index.ts';
 import {guidedDeal} from '../packages/core/tutorial.ts';
 import {clockFor} from '../packages/protocol/timing.ts';
 let xp:number,room:CardRoom,storage:Map<string,unknown>,alarms:number[],messages:any[],ctx:any,env:any;
-beforeEach(async()=>{xp=0;storage=new Map();alarms=[];messages=[];ctx={blockConcurrencyWhile:async(fn:()=>Promise<unknown>)=>fn(),storage:{get:async(key:string)=>storage.get(key),put:async(key:string,value:unknown)=>storage.set(key,structuredClone(value)),setAlarm:async(n:number)=>alarms.push(n),deleteAll:async()=>storage.clear()},getWebSockets:()=>[]};env={DB:{prepare:()=>({bind:()=>({first:async()=>({xp})})})}};room=new CardRoom(ctx,env);await Promise.resolve();});
-const req=(path:string,uid='new',body?:unknown)=>new Request('https://room/'+path,{method:'POST',headers:{'X-User-ID':uid},...(body?{body:JSON.stringify(body)}:{})});
+beforeEach(async()=>{xp=0;storage=new Map();alarms=[];messages=[];ctx={blockConcurrencyWhile:async(fn:()=>Promise<unknown>)=>fn(),storage:{get:async(key:string)=>storage.get(key),delete:async(key:string)=>storage.delete(key),put:async(key:string,value:unknown)=>storage.set(key,structuredClone(value)),setAlarm:async(n:number)=>alarms.push(n),deleteAll:async()=>storage.clear()},getWebSockets:()=>[]};env={ROOMS:{idFromName:(name:string)=>name,get:()=>({fetch:async()=>Response.json({active:true})})},DB:{prepare:()=>({bind:()=>({first:async()=>({xp})})})}};room=new CardRoom(ctx,env);await Promise.resolve();});
+const req=(path:string,uid='new',body?:unknown)=>new Request('https://room/'+path,{method:'POST',headers:{'X-User-ID':uid,'X-Device-ID':'test-installation-1234'},...(body?{body:JSON.stringify(body)}:{})});
 it('real room init enforces ledger Level 5 and ignores forged payload XP',async()=>{expect((await room.fetch(req('init','owner',{code:'ABCD1234',mode:'band',xp:9000}))).status).toBe(403);expect(room.data).toBeNull();xp=560;expect((await room.fetch(req('init','owner',{code:'ABCD1234',mode:'band'}))).status).toBe(200);expect(room.session?.state.mode).toBe('band');});
 it('private joins reject ineligible outsiders but permit existing valid members',async()=>{xp=560;await room.fetch(req('init','owner',{code:'ABCD1234',mode:'band'}));xp=559;expect((await room.fetch(req('join','outsider'))).status).toBe(403);expect(room.data!.uids).toEqual(['owner',null,null,null]);expect((await room.fetch(req('join','owner'))).status).toBe(200);xp=600;expect((await room.fetch(req('join','outsider'))).status).toBe(200);expect(room.data!.uids[2]).toBe('outsider');});
 it('persist and hibernation restore retain active deadline; stale alarm cannot act early',async()=>{await room.fetch(req('init','owner',{code:'ABCD1234',mode:'open'}));room.session=new Session(guidedDeal());room.data!.started=true;await room.persist();const original=room.data!.deadline;await room.persist();expect(room.data!.deadline).toBe(original);ctx.getWebSockets=()=>[socket('owner',0)];const restored=new CardRoom(ctx,env);await Promise.resolve();await Promise.resolve();expect(restored.data!.deadline).toBe(original);await restored.alarm();expect(restored.session!.state.revision).toBe(0);expect(alarms.at(-1)).toBe(original);});
@@ -15,8 +15,8 @@ it('duplicate expired alarms resolve only once and persist the new turn',async()
 import {call,play,seeded,create,invariants} from '../packages/core/index.ts';
 import {automaticCommand} from '../packages/protocol/timing.ts';
 import {RESULT_PAUSE_MS,RECONNECT_GRACE_MS} from '../packages/protocol/room-lifecycle.ts';
-function socket(uid:string,seat:number){let a={uid,seat,count:0,last:Date.now()};return {deserializeAttachment:()=>a,serializeAttachment:(b:any)=>{a=b;},send:(msg:string)=>messages.push({uid,...JSON.parse(msg)}),close:vi.fn()};}
-async function activeRoom(){await room.fetch(req('init','a',{code:'ABCD1234',mode:'open'}));room.data!.uids=['a','b','c','d'];room.data!.names=['A','B','C','D'];room.data!.started=true;room.session=new Session(call(guidedDeal(),0,'H'));await room.persist();const sockets=[socket('a',0),socket('b',1),socket('c',2),socket('d',3)];ctx.getWebSockets=()=>sockets;return sockets;}
+function socket(uid:string,seat:number){let a={uid,seat,device:'test-installation-1234',count:0,last:Date.now()};return {deserializeAttachment:()=>a,serializeAttachment:(b:any)=>{a=b;},send:(msg:string)=>messages.push({uid,...JSON.parse(msg)}),close:vi.fn()};}
+async function activeRoom(){await room.fetch(req('init','a',{code:'ABCD1234',mode:'open'}));room.data!.uids=['a','b','c','d'];room.data!.names=['A','B','C','D'];room.data!.started=true;room.data!.casualQuick=true;room.session=new Session(call(guidedDeal(),0,'H'));await room.persist();const sockets=[socket('a',0),socket('b',1),socket('c',2),socket('d',3)];ctx.getWebSockets=()=>sockets;return sockets;}
 function completedDeal(){const session=new Session(create('open',seeded(8)));let count=0;while(session.state.phase!=='finished'&&count++<160)session.apply(session.state.turn,automaticCommand(session));invariants(session.state);expect(session.state.history).toHaveLength(13);return session;}
 function database(){const writes:any[]=[],batches:any[]=[];env.DB.prepare=(sql:string)=>({bind:(...args:any[])=>({sql,args,first:async()=>({xp:0})})});env.DB.batch=async(statements:any[])=>{batches.push(statements);writes.push(...statements);return [];};return {writes,batches};}
 it('intentional exit replaces only that seat and continues without a partner prompt',async()=>{const sockets=await activeRoom();database();await room.webSocketMessage(sockets[0] as any,JSON.stringify({type:'leave'}));expect(room.data!.uids).toEqual([null,'b','c','d']);expect(room.session!.state.interrupted).toBe(true);expect(room.data!.names[0]).toBe('Hamza');expect(room.life.pendingPartners).toEqual([]);expect(messages.filter(m=>m.type==='state'&&m.uid==='c').at(-1).continueWithBot).toBe(false);expect(room.data!.clock?.automatic).toBe(true);expect(room.data!.clock!.actionAt).toBeLessThanOrEqual(room.data!.clock!.deadline);while(room.session!.state.phase!=='finished')room.session!.apply(room.session!.state.turn,automaticCommand(room.session!));await room.settle();await room.persist();room.broadcast();expect(room.session!.state.table!.rounds.at(-1)?.eligible).toBe(false);expect(room.session!.state.table!.points).toEqual([0,0]);expect(messages.filter(m=>m.type==='state'&&m.uid==='c').at(-1).continueWithBot).toBe(false);room.life.transitionAt=Date.now()-1;await room.tick();expect(room.session!.state.phase).toBe('calling');expect(room.data!.uids).toEqual([null,'b','c','d']);expect(room.session!.state.interrupted).toBe(true);});
@@ -70,7 +70,22 @@ it('disconnected players receive no result or XP when a deal settles during hand
  await room.settle();expect(bindings.some(args=>args[1]==='a')).toBe(false);expect(bindings.some(args=>args[1]==='b')).toBe(true);
 });
 it('leaving a private table replaces the player immediately and lets the remaining players continue',async()=>{
- const sockets=await activeRoom();const original=room.data!.names[0];
+ const sockets=await activeRoom();room.data!.casualQuick=false;const original=room.data!.names[0];
  await room.webSocketMessage(sockets[0] as any,JSON.stringify({type:'leave'}));
  expect(room.data!.uids[0]).toBeNull();expect(room.data!.names[0]).not.toBe(original);expect(room.data!.rosterIds?.[0]).toBeTruthy();expect(room.life.pendingPartners).toEqual([]);expect(room.life.closed).toBeNull();
+});
+
+it('private tables never write results, XP, gold or roster rankings',async()=>{
+ await activeRoom();const db=database();room.data!.casualQuick=false;room.session=completedDeal();await room.settle();await room.settle();expect(db.batches).toHaveLength(0);expect(room.life.settledDeal).toBe(room.session.state.matchId);
+});
+it('one account lease rejects device B until device A releases or expires',async()=>{
+ const request=(device:string,release=false)=>req('device-lease','member',{device,release});
+ expect((await room.fetch(request('device-A'))).status).toBe(200);
+ expect((await room.fetch(request('device-B'))).status).toBe(409);
+ expect((await room.fetch(request('device-A'))).status).toBe(200);
+ expect((await room.fetch(request('device-B',true))).status).toBe(409);
+ expect((await room.fetch(request('device-A',true))).status).toBe(200);
+ expect((await room.fetch(request('device-B'))).status).toBe(200);
+ storage.set('device-lease',{device:'device-B',expires:Date.now()-1});
+ expect((await room.fetch(request('device-A'))).status).toBe(200);
 });
