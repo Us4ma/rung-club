@@ -1,4 +1,4 @@
-import {guestName,validPlayerName} from '../../packages/protocol/player-name.ts';
+import {guestName,validPlayerName,publicPlayerName} from '../../packages/protocol/player-name.ts';
 import {leaderboard} from './roster-store.ts';
 import {playerStats} from './player-stats.ts';
 import {syncGoogleProfile,publicGoogleProfile,selectGoogleAvatar} from './google-profile.ts';
@@ -55,5 +55,5 @@ export async function identityResponse(req:Request,db:IdentityDatabase,verify:(t
  const history=await db.prepare('SELECT * FROM results WHERE uid=? ORDER BY created DESC LIMIT 30').bind(identity.uid).all();
  const owned=await db.prepare('SELECT item FROM cosmetics WHERE uid=?').bind(identity.uid).all();
  const legacy=Number(new URL(req.url).searchParams.get('legacyAvatar'));const avatar=await playerAvatar(db,identity.uid,undefined,existing&&existing.created<Date.UTC(2026,9,14,4)?legacy:undefined);
- return reply({avatar,googlePhotoURL:google.googlePhotoURL,user:user?{uid:user.uid,name:google.displayName||user.name,username:user.name,photoURL:google.photoURL}:null,tutorialStatus:tutorialStatus(user?.tutorial??0),totals,stats,history:history.results,owned:owned.results,bandUnlockSeen:owned.results.some(item=>(item as {item:string}).item==='event:band-unlock-seen'),economy});
+ return reply({avatar,googlePhotoURL:google.googlePhotoURL,user:user?{uid:user.uid,name:google.displayName||publicPlayerName(user.name,user.uid),username:user.name,photoURL:google.photoURL}:null,tutorialStatus:tutorialStatus(user?.tutorial??0),totals,stats,history:history.results,owned:owned.results,bandUnlockSeen:owned.results.some(item=>(item as {item:string}).item==='event:band-unlock-seen'),economy});
 }
