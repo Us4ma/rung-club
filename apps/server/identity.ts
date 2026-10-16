@@ -1,3 +1,4 @@
+import {playerStats} from './player-stats.ts';
 import {syncGoogleProfile,publicGoogleProfile,selectGoogleAvatar} from './google-profile.ts';
 import {playerAvatar} from './avatar-profile.ts';
 import {validAvatar} from '../../packages/protocol/avatars.ts';
@@ -45,7 +46,7 @@ export async function identityResponse(req:Request,db:IdentityDatabase,verify:(t
  const google=await publicGoogleProfile(db,identity.uid);
  const user=await db.prepare('SELECT uid,name,tutorial FROM accounts WHERE uid=? AND deleted=0').bind(identity.uid).first<{uid:string;name:string;tutorial:number}>();
  const totals=await db.prepare('SELECT COALESCE(SUM(amount),0) tokens,COALESCE(SUM(xp),0) xp FROM ledger WHERE uid=?').bind(identity.uid).first();
- const stats=await db.prepare('SELECT COUNT(*) matches,COALESCE(SUM(won),0) wins FROM results WHERE uid=?').bind(identity.uid).first();
+ const stats=await playerStats(db,identity.uid);
  const history=await db.prepare('SELECT * FROM results WHERE uid=? ORDER BY created DESC LIMIT 30').bind(identity.uid).all();
  const owned=await db.prepare('SELECT item FROM cosmetics WHERE uid=?').bind(identity.uid).all();
  const legacy=Number(new URL(req.url).searchParams.get('legacyAvatar'));const avatar=await playerAvatar(db,identity.uid,undefined,existing&&existing.created<Date.UTC(2026,9,14,4)?legacy:undefined);
