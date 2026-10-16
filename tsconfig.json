@@ -23,6 +23,7 @@
   "exclude": [
     "tests/worker-room.test.ts",
     "tests/account-deletion-server.test.ts",
-    "tests/player-stats-smoke.test.ts"
+    "tests/player-stats-smoke.test.ts",
+    "tests/roster-persistence.test.ts"
   ]
 }

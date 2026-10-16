@@ -1,3 +1,4 @@
+import {leaderboard} from './roster-store.ts';
 import {playerStats} from './player-stats.ts';
 import {syncGoogleProfile,publicGoogleProfile,selectGoogleAvatar} from './google-profile.ts';
 import {playerAvatar} from './avatar-profile.ts';
@@ -34,6 +35,7 @@ export async function identityResponse(req:Request,db:IdentityDatabase,verify:(t
   return reply({deleted:true});
  }
  if(existing?.deleted||existing&&identity.authTime<=existing.revoked_before)return reply({error:'Account revoked'},401);
+ if(req.method==='GET'&&new URL(req.url).searchParams.has('leaderboard'))return reply(await leaderboard(db));
  if(req.method==='GET'&&new URL(req.url).searchParams.has('tableProfile')){const params=new URL(req.url).searchParams,code=params.get('tableProfile')||'',seat=params.get('seat')||'';if(!/^[A-F0-9]{8}$/.test(code)||! /^[0-3]$/.test(seat))return reply({error:'Invalid table or seat'},400);if(!tableProfile)return reply({error:'Player profiles are unavailable'},503);const response=await tableProfile(identity.uid,code,Number(seat));return reply(await response.json(),response.status);}
  if(req.method==='PATCH'){
   const text=await req.text();if(text.length>4096)return reply({error:'Payload too large'},413);

@@ -6,3 +6,7 @@ CREATE TABLE IF NOT EXISTS ledger(id TEXT PRIMARY KEY,uid TEXT NOT NULL REFERENC
 CREATE TABLE IF NOT EXISTS cosmetics(uid TEXT NOT NULL REFERENCES accounts(uid),item TEXT NOT NULL,PRIMARY KEY(uid,item));
 CREATE INDEX IF NOT EXISTS sessions_expiry ON sessions(expires);
 CREATE INDEX IF NOT EXISTS ledger_account ON ledger(uid);
+
+-- Persistent roster records are separate from authenticated human accounts.
+CREATE TABLE IF NOT EXISTS roster_results(match_id TEXT NOT NULL,roster_id TEXT NOT NULL,seat INTEGER NOT NULL,won INTEGER NOT NULL,sars INTEGER NOT NULL,outcome TEXT NOT NULL,points INTEGER NOT NULL,mode TEXT NOT NULL,created INTEGER NOT NULL,history TEXT NOT NULL,source TEXT NOT NULL,PRIMARY KEY(match_id,roster_id));
+CREATE INDEX IF NOT EXISTS roster_result_player ON roster_results(roster_id,created);

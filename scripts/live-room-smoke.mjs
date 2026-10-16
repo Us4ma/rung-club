@@ -27,6 +27,8 @@ try{
  if(current.view.opening?.rounds[0]?.cards.length!==4||current.view.opening.winner!==current.view.caller)throw Error('Live opening contest mismatch');
  if(current.view.dealer!==(current.view.caller+1)%4||current.view.counts.some(n=>n!==5)||'hands' in current.view||'stock' in current.view)throw Error('Initial live seat/deal/redaction check failed');
  ws.send(JSON.stringify({type:'ready'}));await waitFor(()=>current.ready[0]);ws.send(JSON.stringify({type:'start'}));await waitFor(()=>current.started);
+ async function tableProfile(seat){const response=await fetch(origin+'/api/identity?tableProfile='+code+'&seat='+seat,{headers:{Authorization:'Bearer '+await user.getIdToken(),Origin:origin}});if(!response.ok)throw Error('Live profile unavailable');return response.json();}
+ const partnerBefore=await tableProfile(2);
  for(let attempt=0;attempt<64&&current.view.phase==='calling';attempt++){await waitFor(()=>current.view.phase==='playing'||current.view.turn===0);if(current.view.phase==='playing')break;const revision=current.view.revision;await command('call','H');await waitFor(()=>current.view.revision>revision);}
  await waitFor(()=>current.view.phase==='playing');if(current.view.counts.some(n=>n!==13))throw Error('Live full deal did not allocate 13 cards each');
  await waitFor(()=>current.view.turn===0);const revision=current.view.revision,owned=current.view.hand.length;await command('play',current.view.legal[0]);await waitFor(()=>current.view.revision>revision);if(current.view.hand.length!==owned-1)throw Error('Live legal play was not accepted exactly once');
@@ -36,7 +38,7 @@ try{
  let profile;for(let n=0;n<12;n++){profile=await api('profile');if(profile.stats.matches===1)break;await new Promise(r=>setTimeout(r,250));}
  if(profile.stats.matches!==1||profile.stats.wins!==+won||profile.stats.sarsCollected!==done.scores[0]||profile.totals.xp!==expectedXP||profile.stats.kotWins!==+(won&&outcome==='kot')||profile.stats.goonKotWins!==+(won&&outcome==='goon-kot'))throw Error('Live account stats or XP reward mismatch');
  const response=await fetch(origin+'/api/identity?tableProfile='+code+'&seat=2',{headers:{Authorization:'Bearer '+await user.getIdToken(),Origin:origin}}),partner=await response.json();
- if(!response.ok||!partner.isBot||partner.stats.matches!==1||partner.stats.sarsCollected!==done.scores[0]||'uid' in partner||'totals' in partner||'history' in partner)throw Error('Live table profile mismatch');
+ if(!response.ok||!partner.isBot||partner.stats.matches!==partnerBefore.stats.matches+1||partner.stats.sarsCollected!==partnerBefore.stats.sarsCollected+done.scores[0]||'uid' in partner||'totals' in partner||!partner.persistent||!partner.history?.some(r=>r.match_id===done.matchId))throw Error('Live table profile mismatch');
  statsVerified=true;xpAwarded=profile.totals.xp;sarsCollected=profile.stats.sarsCollected;
  await waitFor(()=>current.view.matchId!==first,6000);if(current.view.table.id!==done.table.id||current.view.table.dealNumber!==2||JSON.stringify(current.view.table.points)!==JSON.stringify(done.table.points)||current.view.opening!==undefined||current.view.dealer!==(current.view.caller+1)%4)throw Error('Live successor deal lost table state');continued=true;}
  ws.send(JSON.stringify({type:'leave'}));await waitFor(()=>closed,5000);
