@@ -5,6 +5,7 @@ type AuthModule=typeof import('./auth-implementation.ts');
 let pending:Promise<AuthModule>|undefined;
 const load=()=>pending??=import('./auth-implementation.ts').catch(error=>{pending=undefined;throw error;});
 export async function restoredIdentity(){return configured?(await load()).restoredIdentity():null;}
+export async function completeRedirectLogin(){return configured?(await load()).completeRedirectLogin():null;}
 export async function guestLogin(){return configured?(await load()).guestLogin():{local:true};}
 export async function logout(){if(configured)await (await load()).logout();}
 export async function secureSession(...args:Parameters<AuthModule['secureSession']>){return (await load()).secureSession(...args);}
