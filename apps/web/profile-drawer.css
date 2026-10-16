@@ -3,3 +3,9 @@
 @keyframes profile-enter{from{transform:translateX(-100%)}to{transform:translateX(0)}}@keyframes profile-exit{to{transform:translateX(-100%)}}
 @media(max-width:600px){.app .profile-drawer{width:calc(100% - 16px);padding:20px 16px;border-radius:0 12px 12px 0}.profile-summary>.avatar{width:78px;height:78px}}
 @media(prefers-reduced-motion:reduce){.app .profile-drawer{animation:none!important}}.app.reduced .profile-drawer{animation:none!important}
+/* Override the older full-page profile grid and global button artwork. */
+.app.screen-profile .profile-drawer .avatar-roster{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.app.screen-profile .profile-drawer .profile-tabs button{background:#08261d!important;background-image:none!important;border:1px solid #a98c4e77!important;box-shadow:none!important;color:#c1c2ad!important;text-shadow:none!important}
+.app.screen-profile .profile-drawer .profile-tabs button[aria-selected=true]{background:linear-gradient(#23583e,#113323)!important;border-color:#ddbc6c!important;color:#fff0c9!important;box-shadow:inset 0 -2px #d5b66b!important}
+.app.screen-profile .profile-drawer .avatar-choice{background:#0b2d22!important;background-image:none!important;box-shadow:none!important}
+.app.screen-profile .profile-drawer .avatar-choice[aria-pressed=true]{background:#23523b!important;border-color:#edca79!important}
