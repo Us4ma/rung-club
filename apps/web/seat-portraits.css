@@ -1,4 +1,8 @@
 .app.screen-table .seat-portrait{position:relative;display:block;flex:none;width:var(--portrait-size);height:var(--portrait-size);padding:0;margin:0}
-.app.screen-table .seat-portrait>img.avatar{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;object-fit:cover!important;clip-path:none!important;mask:none!important;border-radius:50%;margin:0!important;padding:0!important}
-.app.screen-table .seat-portrait>.seat-timer{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;transform:none!important;margin:0!important;padding:0!important;border:0!important;box-sizing:border-box}
-.app.screen-table .seat-portrait>.seat-timer svg{width:100%;height:100%;display:block}
+.app.screen-table .seat-portrait img.avatar{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;object-fit:cover!important;clip-path:none!important;mask:none!important;border-radius:50%;margin:0!important;padding:0!important}
+.app.screen-table .seat-portrait .seat-timer{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;transform:none!important;margin:0!important;padding:0!important;border:0!important;box-sizing:border-box}
+.app.screen-table .seat-portrait .seat-timer svg{width:100%;height:100%;display:block}
+
+/* Profile hit targets must not introduce native button padding around the face. */
+.app.screen-table .seat-portrait>.seat-profile-button{position:absolute;inset:0;display:block;width:100%;height:100%;min-width:0;min-height:0;max-width:none;max-height:none;box-sizing:border-box;padding:0;margin:0;border:0;border-radius:50%;background:none;box-shadow:none;line-height:0;transform:none;appearance:none;overflow:visible}
+.app.screen-table .seat-portrait>.seat-profile-button:focus-visible{outline:2px solid #f4dba0;outline-offset:4px}
