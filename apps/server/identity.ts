@@ -9,7 +9,7 @@ export interface IdentityDatabase {prepare(sql:string):Statement;batch?(statemen
 export type VerifiedIdentity={uid:string;authTime:number;anonymous?:boolean;google?:boolean;name?:unknown;picture?:unknown};
 export const validUsername=(name:unknown):name is string=>typeof name==='string'&&/^[A-Za-z0-9_]{3,20}$/.test(name)&&!/^(guest|deleted)(_|$)/i.test(name);
 export function identityOrigin(req:Request,allowed:string){const origin=req.headers.get('Origin');return !origin||origin===new URL(req.url).origin||origin===allowed||origin==='https://localhost'||origin==='https://rung-club.vercel.app'||origin==='https://rung-club.sammyqamar.workers.dev';}
-export async function identityResponse(req:Request,db:IdentityDatabase,verify:(token:string)=>Promise<VerifiedIdentity>,allowed:string,economy:boolean){
+export async function identityResponse(req:Request,db:IdentityDatabase,verify:(token:string)=>Promise<VerifiedIdentity>,allowed:string,economy:boolean,tableProfile?:(viewer:string,code:string,seat:number)=>Promise<Response>){
  const origin=req.headers.get('Origin');const headers:Record<string,string>={'Cache-Control':'no-store','Vary':'Origin'};
  const reply=(data:unknown,status=200)=>Response.json(data,{status,headers});
  if(!identityOrigin(req,allowed))return reply({error:'Origin denied'},403);
@@ -34,6 +34,7 @@ export async function identityResponse(req:Request,db:IdentityDatabase,verify:(t
   return reply({deleted:true});
  }
  if(existing?.deleted||existing&&identity.authTime<=existing.revoked_before)return reply({error:'Account revoked'},401);
+ if(req.method==='GET'&&new URL(req.url).searchParams.has('tableProfile')){const params=new URL(req.url).searchParams,code=params.get('tableProfile')||'',seat=params.get('seat')||'';if(!/^[A-F0-9]{8}$/.test(code)||! /^[0-3]$/.test(seat))return reply({error:'Invalid table or seat'},400);if(!tableProfile)return reply({error:'Player profiles are unavailable'},503);const response=await tableProfile(identity.uid,code,Number(seat));return reply(await response.json(),response.status);}
  if(req.method==='PATCH'){
   const text=await req.text();if(text.length>4096)return reply({error:'Payload too large'},413);
   let name:unknown,status:unknown,unlock:unknown,avatar:unknown,avatarSource:unknown;try{const data=JSON.parse(text);name=data.name;status=data.tutorialStatus;unlock=data.bandUnlockSeen;avatar=data.avatar;avatarSource=data.avatarSource;}catch{return reply({error:'Invalid request'},400);}
