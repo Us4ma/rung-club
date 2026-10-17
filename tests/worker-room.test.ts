@@ -89,3 +89,13 @@ it('one account lease rejects device B until device A releases or expires',async
  storage.set('device-lease',{device:'device-B',expires:Date.now()-1});
  expect((await room.fetch(request('device-A'))).status).toBe(200);
 });
+
+it('session takeover releases the old table seat and pushes the session popup event',async()=>{
+ const sockets=await activeRoom();await room.fetch(req('evict-device','a',{device:'test-installation-1234'}));
+ expect(room.data!.uids[0]).toBeNull();expect(room.data!.rosterIds?.[0]).toBeTruthy();expect(messages.some(m=>m.uid==='a'&&m.type==='session-replaced')).toBe(true);expect(sockets[0].close).toHaveBeenCalled();
+});
+it('explicit takeover returns the previous room for immediate eviction',async()=>{
+ await room.fetch(req('device-lease','member',{device:'device-A',room:'ABCD1234'}));
+ const moved=await room.fetch(req('device-lease','member',{device:'device-B',takeover:true}));expect(moved.status).toBe(200);expect(await moved.json()).toMatchObject({previousDevice:'device-A',previousRoom:'ABCD1234'});
+ expect((await room.fetch(req('device-lease','member',{device:'device-A'}))).status).toBe(409);
+});

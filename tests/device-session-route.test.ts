@@ -9,7 +9,7 @@ it('validates installation ownership before table access and allows sign-out tra
  expect((await request('installation-device-A')).status).toBe(200);
  const conflict=await request('installation-device-B');expect(conflict.status).toBe(409);expect((await conflict.json() as any).code).toBe('SESSION_ACTIVE');
  expect((await request('installation-device-B','rooms',{mode:'open'})).status).toBe(409);
- expect((await request('installation-device-A','device-session',{action:'release'})).status).toBe(200);
+ expect((await request('installation-device-B','device-session',{action:'takeover'})).status).toBe(200);expect((await request('installation-device-A')).status).toBe(409);expect((await request('installation-device-A','device-session',{action:'release'})).status).toBe(409);expect((await request('installation-device-B','device-session',{action:'release'})).status).toBe(200);
  expect((await request('installation-device-B')).status).toBe(200);
  expect((await request('installation-device-A','socket-ticket',{code:'ABCD1234'})).status).toBe(409);
 });
