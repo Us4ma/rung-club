@@ -17,7 +17,7 @@ export async function accountProfile(name?:string,tutorialStatus?:import('../../
   if(r.status===401&&attempt===0){token=await user.getIdToken(true);continue;}
   if(readOnly&&attempt===0&&[408,429,500,502,503,504].includes(r.status))continue;
   const data=await r.json().catch(()=>null);
-  if(!r.ok)throw Error(data?.error||'Profile service unavailable ('+r.status+'). Please retry.');
+  if(!r.ok)throw Object.assign(Error(data?.error||'Profile service unavailable ('+r.status+'). Please retry.'),{code:data?.code});
   if(!data?.user?.uid)throw Error('The profile service returned an incomplete profile. Please retry.');
   return data;
  }

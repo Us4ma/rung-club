@@ -99,3 +99,18 @@ it('explicit takeover returns the previous room for immediate eviction',async()=
  const moved=await room.fetch(req('device-lease','member',{device:'device-B',takeover:true}));expect(moved.status).toBe(200);expect(await moved.json()).toMatchObject({previousDevice:'device-A',previousRoom:'ABCD1234'});
  expect((await room.fetch(req('device-lease','member',{device:'device-A'}))).status).toBe(409);
 });
+
+it.each([true,false])('device handoff preserves the same seat, hand and clock (public=%s)',async(publicTable)=>{
+ const sockets=await activeRoom();room.data!.casualQuick=publicTable;room.data!.manualPlays=[4,0,0,0];const state=structuredClone(room.session!.state),deadline=room.data!.deadline,sequence=[...room.session!.seq];
+ const transfer=await room.fetch(req('transfer-device','a',{previousDevice:'test-installation-1234'}));expect(transfer.status).toBe(200);expect(await transfer.json()).toMatchObject({code:'ABCD1234',seat:0});
+ expect(room.data!.uids).toEqual(['a','b','c','d']);expect(room.session!.state).toEqual(state);expect(room.session!.seq).toEqual(sequence);expect(room.data!.deadline).toBe(deadline);expect(room.data!.manualPlays?.[0]).toBe(4);expect(room.life.departed[0]).toBe(false);
+ ctx.getWebSockets=()=>sockets.slice(1);await room.webSocketClose(sockets[0] as any);expect(room.life.disconnectedAt[0]).toBeNull();expect(room.connected('a')).toBe(true);
+ const resumed:any=await(await room.fetch(req('http-state','a'))).json();expect(resumed.state.seat).toBe(0);expect(resumed.state.view.matchId).toBe(state.matchId);expect(room.data!.handoffUntil?.[0]).toBeNull();
+});
+it('a transferred device cannot send a late leave command for the new device seat',async()=>{
+ const sockets=await activeRoom();env.ROOMS.get=()=>({fetch:async()=>Response.json({code:'SESSION_ACTIVE'},{status:409})});
+ await room.webSocketMessage(sockets[0] as any,JSON.stringify({type:'leave'}));expect(room.data!.uids[0]).toBe('a');expect(messages.some(m=>m.uid==='a'&&m.type==='error')).toBe(true);
+});
+it('a stale table reference cannot restore a player who has already left',async()=>{
+ await activeRoom();expect((await room.fetch(req('transfer-device','outsider',{previousDevice:'old'}))).status).toBe(404);
+});
