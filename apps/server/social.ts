@@ -33,7 +33,7 @@ export async function socialPresence(env:SocialEnv,uid:string):Promise<Presence>
 export async function socialPlayer(env:SocialEnv,uid:string):Promise<SocialPlayer|null>{
  const account=await env.DB.prepare('SELECT name FROM accounts WHERE uid=? AND deleted=0').bind(uid).first<{name:string}>();if(!account)return null;
  const [google,avatar,total,presence]=await Promise.all([publicGoogleProfile(env.DB,uid),playerAvatar(env.DB,uid),env.DB.prepare('SELECT COALESCE(SUM(xp),0) xp FROM ledger WHERE uid=?').bind(uid).first<{xp:number}>(),socialPresence(env,uid)]);
- return {uid,name:google.displayName||publicPlayerName(account.name,uid),avatar,photoURL:google.photoURL,level:levelProgress(total?.xp||0).level,online:presence.online,playing:presence.playing};
+ return {uid,name:google.displayName||publicPlayerName(account.name,uid),avatar,photoURL:google.photoURL,level:levelProgress(total?.xp||0).level,online:presence.online,playing:presence.playing,atTable:!!presence.room};
 }
 type Edge={low_uid:string;high_uid:string;requester:string;status:string;updated:number;expires:number};
 type InviteRow={id:string;sender:string;target:string;room:string;mode:'open'|'band';status:GameInvite['status'];created:number;expires:number;changed:number;reason:string};

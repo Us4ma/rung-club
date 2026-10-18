@@ -20,3 +20,8 @@ CREATE INDEX IF NOT EXISTS friend_invite_outbox ON friend_invites(sender,changed
 CREATE TABLE IF NOT EXISTS player_reports(id TEXT PRIMARY KEY,reporter TEXT NOT NULL REFERENCES accounts(uid),target TEXT NOT NULL,target_kind TEXT NOT NULL,target_name TEXT NOT NULL,reason TEXT NOT NULL,details TEXT NOT NULL,room TEXT,match_id TEXT,created INTEGER NOT NULL,status TEXT NOT NULL DEFAULT 'open' CHECK(status IN ('open','reviewed','dismissed','action_taken')),review_notes TEXT NOT NULL DEFAULT '');
 CREATE INDEX IF NOT EXISTS player_reports_review ON player_reports(status,created);
 CREATE INDEX IF NOT EXISTS player_reports_sender ON player_reports(reporter,created);
+CREATE TABLE IF NOT EXISTS friend_messages(seq INTEGER PRIMARY KEY AUTOINCREMENT,id TEXT NOT NULL UNIQUE,sender TEXT NOT NULL REFERENCES accounts(uid),recipient TEXT NOT NULL REFERENCES accounts(uid),low_uid TEXT NOT NULL,high_uid TEXT NOT NULL,text TEXT NOT NULL,created INTEGER NOT NULL);
+CREATE INDEX IF NOT EXISTS friend_messages_thread ON friend_messages(low_uid,high_uid,seq);
+CREATE INDEX IF NOT EXISTS friend_messages_sender ON friend_messages(sender,created);
+CREATE TABLE IF NOT EXISTS friend_chat_reads(uid TEXT NOT NULL REFERENCES accounts(uid),peer TEXT NOT NULL REFERENCES accounts(uid),read_seq INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(uid,peer));
+CREATE INDEX IF NOT EXISTS friend_messages_inbox ON friend_messages(recipient,seq,sender);
