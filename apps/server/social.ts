@@ -21,7 +21,7 @@ export async function friendRelation(db:D1Database,viewer:string,target:string):
  if(viewer===target)return {status:'self'};await ensureSocialSchema(db);const [low,high]=pair(viewer,target);
  const row=await db.prepare('SELECT requester,status,updated,expires FROM friendships WHERE low_uid=? AND high_uid=?').bind(low,high).first<{requester:string;status:string;updated:number;expires:number}>();
  if(row?.status==='accepted')return {status:'friends'};
- if(row?.status==='pending'&&row.expires>Date.now())return {status:row.requester===viewer?'sent':'incoming',updated:row.updated,canResend:Date.now()-row.updated>=FRIEND_RESEND_MS};return {status:'none',canResend:!row||Date.now()-row.updated>=FRIEND_RESEND_MS};
+ if(row?.status==='pending'&&row.expires>Date.now())return {status:row.requester===viewer?'sent':'incoming',updated:row.updated,canResend:false};return {status:'none',canResend:!row||Date.now()-row.updated>=FRIEND_RESEND_MS};
 }
 type Presence={online:boolean;playing:boolean;room?:string;table?:{member?:boolean;started?:boolean;mode?:'open'|'band';phase?:string;teammateAvailable?:boolean;host?:boolean}};
 export async function socialPresence(env:SocialEnv,uid:string):Promise<Presence>{
@@ -44,7 +44,7 @@ export async function friendsState(env:SocialEnv,uid:string):Promise<FriendsStat
  const ids=new Set<string>();for(const e of edges.results)ids.add(e.low_uid===uid?e.high_uid:e.low_uid);for(const i of invites.results){ids.add(i.sender);ids.add(i.target);}
  const profiles=new Map<string,SocialPlayer>();await Promise.all([...ids].map(async id=>{const player=await socialPlayer(env,id);if(player)profiles.set(id,player);}));
  const friends:SocialPlayer[]=[],incoming:FriendsState['incoming']=[],sent:FriendsState['sent']=[];
- for(const e of edges.results){const player=profiles.get(e.low_uid===uid?e.high_uid:e.low_uid);if(!player)continue;if(e.status==='accepted')friends.push(player);else(e.requester===uid?sent:incoming).push({player,updated:e.updated,expires:e.expires,canResend:now-e.updated>=FRIEND_RESEND_MS});}
+ for(const e of edges.results){const player=profiles.get(e.low_uid===uid?e.high_uid:e.low_uid);if(!player)continue;if(e.status==='accepted')friends.push(player);else(e.requester===uid?sent:incoming).push({player,updated:e.updated,expires:e.expires,canResend:false});}
  friends.sort((a,b)=>Number(b.online)-Number(a.online)||Number(a.playing)-Number(b.playing)||a.name.localeCompare(b.name));
  return {friends,incoming,sent,invites:invites.results.flatMap(i=>{const sender=profiles.get(i.sender),target=profiles.get(i.target);return sender&&target?[{id:i.id,sender,target,mode:i.mode,status:i.status,expires:i.expires,changed:i.changed,reason:i.reason,...((i.sender===uid||i.status==='joined')?{room:i.room}:{})}]:[];}),serverNow:now};
 }
@@ -60,6 +60,9 @@ export async function socialAction(env:SocialEnv,uid:string,input:SocialAction):
   if(!await env.DB.prepare('SELECT uid FROM accounts WHERE uid=? AND deleted=0').bind(target).first())return failure('That player is unavailable.',404);
   const [low,high]=pair(uid,target);let relation=await friendRelation(env.DB,uid,target),changed=true;
   if(input.action==='request'){
+   if(relation.status==='sent'||relation.status==='friends')return Response.json({relationship:relation});
+   const recent=await env.DB.prepare('SELECT COUNT(*) n FROM friendships WHERE requester=? AND updated>?').bind(uid,now-60000).first<{n:number}>();if((recent?.n||0)>=5)return failure('Please wait before adding more players.',429);
+   const inbox=await env.DB.prepare("SELECT COUNT(*) n FROM friendships WHERE (low_uid=? OR high_uid=?) AND status IN ('accepted','pending')").bind(target,target).first<{n:number}>();if((inbox?.n||0)>=200&&relation.status!=='incoming')return failure('This player’s friends list is full.');
    const cap=await env.DB.prepare("SELECT COUNT(*) n FROM friendships WHERE (low_uid=? OR high_uid=?) AND status IN ('accepted','pending')").bind(uid,uid).first<{n:number}>();if((cap?.n||0)>=200)return failure('Your friends list is full.');
    const written=await env.DB.prepare(`INSERT INTO friendships(low_uid,high_uid,requester,status,created,updated,expires) VALUES(?,?,?,'pending',?,?,?) ON CONFLICT(low_uid,high_uid) DO UPDATE SET status=CASE WHEN friendships.status='pending' AND friendships.requester<>excluded.requester AND friendships.expires>? THEN 'accepted' ELSE 'pending' END,requester=excluded.requester,updated=excluded.updated,expires=excluded.expires WHERE friendships.status<>'accepted' AND ((friendships.status='pending' AND friendships.requester<>excluded.requester AND friendships.expires>?) OR friendships.updated<=?)`).bind(low,high,uid,now,now,now+FRIEND_REQUEST_TTL,now,now,now-FRIEND_RESEND_MS).run();changed=!!written.meta.changes;
    relation=await friendRelation(env.DB,uid,target);if(relation.status==='none')return failure('You can send another request after 24 hours.');
