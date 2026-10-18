@@ -38,6 +38,12 @@ export async function socialPlayer(env:SocialEnv,uid:string,viewerRoom?:string):
 type Edge={low_uid:string;high_uid:string;requester:string;status:string;updated:number;expires:number};
 type InviteRow={id:string;sender:string;target:string;room:string;mode:'open'|'band';status:GameInvite['status'];created:number;expires:number;changed:number;reason:string};
 async function expireSocial(db:D1Database,uid:string){const now=Date.now();await db.batch([db.prepare("UPDATE friendships SET status='expired' WHERE status='pending' AND expires<=? AND (low_uid=? OR high_uid=?)").bind(now,uid,uid),db.prepare("UPDATE friend_invites SET status='expired',changed=? WHERE status='pending' AND expires<=? AND (sender=? OR target=?)").bind(now,now,uid,uid)]);}
+/** Daily retention applies only to invitation records, never friendship or match data. */
+export async function cleanupFriendInvites(db:D1Database,now=Date.now()){
+ await ensureSocialSchema(db);
+ await db.prepare("UPDATE friend_invites SET status='expired',changed=expires WHERE status='pending' AND expires<=?").bind(now).run();
+ await db.prepare("DELETE FROM friend_invites WHERE status IN ('joined','declined','expired','cancelled','failed') AND changed<?").bind(now-7*86400000).run();
+}
 export async function friendsState(env:SocialEnv,uid:string):Promise<FriendsState>{
  await ensureSocialSchema(env.DB);await expireSocial(env.DB,uid);const now=Date.now();
  const [edges,invites]=await Promise.all([env.DB.prepare("SELECT f.* FROM friendships f JOIN accounts a ON a.uid=f.low_uid JOIN accounts b ON b.uid=f.high_uid WHERE (f.low_uid=? OR f.high_uid=?) AND f.status IN ('accepted','pending') AND a.deleted=0 AND b.deleted=0 LIMIT 300").bind(uid,uid).all<Edge>(),env.DB.prepare("SELECT i.* FROM friend_invites i JOIN accounts a ON a.uid=i.sender JOIN accounts b ON b.uid=i.target WHERE (i.sender=? OR i.target=?) AND a.deleted=0 AND b.deleted=0 AND (i.status IN ('pending','scheduled') OR i.changed>?) ORDER BY i.created DESC LIMIT 30").bind(uid,uid,now-120000).all<InviteRow>()]);
