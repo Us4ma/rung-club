@@ -19,7 +19,7 @@ export class RoomConnection {
    const socket=this.socket=new WebSocket(url);
    this.handshake=setTimeout(()=>this.useHTTP(),4000);
    socket.onopen=()=>{if(!this.fallback&&!this.closed){this.readyState=1;this.onopen?.();}};
-   socket.onmessage=event=>{if(this.fallback||this.closed)return;clearTimeout(this.handshake);this.emit(JSON.parse(event.data));};
+   socket.onmessage=event=>{if(this.fallback||this.closed)return;try{const message=JSON.parse(event.data);clearTimeout(this.handshake);this.emit(message);}catch{this.useHTTP();}};
    socket.onclose=()=>{if(!this.closed)this.useHTTP();};
    socket.onerror=()=>{if(!this.closed)this.useHTTP();};
   }catch{queueMicrotask(()=>this.useHTTP());}
