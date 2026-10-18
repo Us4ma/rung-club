@@ -30,10 +30,10 @@ export async function socialPresence(env:SocialEnv,uid:string):Promise<Presence>
  const responseRoom=await socialRPC(env,lease.room,'social-status',uid);const room=await responseRoom.json<{member?:boolean;started?:boolean;mode?:'open'|'band';phase?:string;code?:string;teammateAvailable?:boolean;host?:boolean}>();
  return {online:true,playing:!!room.member&&!!room.started,...(room.member?{room:lease.room,table:room}:{})};
 }
-export async function socialPlayer(env:SocialEnv,uid:string):Promise<SocialPlayer|null>{
+export async function socialPlayer(env:SocialEnv,uid:string,viewerRoom?:string):Promise<SocialPlayer|null>{
  const account=await env.DB.prepare('SELECT name FROM accounts WHERE uid=? AND deleted=0').bind(uid).first<{name:string}>();if(!account)return null;
  const [google,avatar,total,presence]=await Promise.all([publicGoogleProfile(env.DB,uid),playerAvatar(env.DB,uid),env.DB.prepare('SELECT COALESCE(SUM(xp),0) xp FROM ledger WHERE uid=?').bind(uid).first<{xp:number}>(),socialPresence(env,uid)]);
- return {uid,name:google.displayName||publicPlayerName(account.name,uid),avatar,photoURL:google.photoURL,level:levelProgress(total?.xp||0).level,online:presence.online,playing:presence.playing,atTable:!!presence.room};
+ return {uid,name:google.displayName||publicPlayerName(account.name,uid),avatar,photoURL:google.photoURL,level:levelProgress(total?.xp||0).level,online:presence.online,playing:presence.playing,atTable:!!presence.room,onYourTable:!!viewerRoom&&presence.room===viewerRoom};
 }
 type Edge={low_uid:string;high_uid:string;requester:string;status:string;updated:number;expires:number};
 type InviteRow={id:string;sender:string;target:string;room:string;mode:'open'|'band';status:GameInvite['status'];created:number;expires:number;changed:number;reason:string};
@@ -42,7 +42,7 @@ export async function friendsState(env:SocialEnv,uid:string):Promise<FriendsStat
  await ensureSocialSchema(env.DB);await expireSocial(env.DB,uid);const now=Date.now();
  const [edges,invites]=await Promise.all([env.DB.prepare("SELECT f.* FROM friendships f JOIN accounts a ON a.uid=f.low_uid JOIN accounts b ON b.uid=f.high_uid WHERE (f.low_uid=? OR f.high_uid=?) AND f.status IN ('accepted','pending') AND a.deleted=0 AND b.deleted=0 LIMIT 300").bind(uid,uid).all<Edge>(),env.DB.prepare("SELECT i.* FROM friend_invites i JOIN accounts a ON a.uid=i.sender JOIN accounts b ON b.uid=i.target WHERE (i.sender=? OR i.target=?) AND a.deleted=0 AND b.deleted=0 AND (i.status IN ('pending','scheduled') OR i.changed>?) ORDER BY i.created DESC LIMIT 30").bind(uid,uid,now-120000).all<InviteRow>()]);
  const ids=new Set<string>();for(const e of edges.results)ids.add(e.low_uid===uid?e.high_uid:e.low_uid);for(const i of invites.results){ids.add(i.sender);ids.add(i.target);}
- const profiles=new Map<string,SocialPlayer>();await Promise.all([...ids].map(async id=>{const player=await socialPlayer(env,id);if(player)profiles.set(id,player);}));
+ const viewer=await socialPresence(env,uid);const profiles=new Map<string,SocialPlayer>();await Promise.all([...ids].map(async id=>{const player=await socialPlayer(env,id,viewer.room);if(player)profiles.set(id,player);}));
  const friends:SocialPlayer[]=[],incoming:FriendsState['incoming']=[],sent:FriendsState['sent']=[];
  for(const e of edges.results){const player=profiles.get(e.low_uid===uid?e.high_uid:e.low_uid);if(!player)continue;if(e.status==='accepted')friends.push(player);else(e.requester===uid?sent:incoming).push({player,updated:e.updated,expires:e.expires,canResend:false});}
  friends.sort((a,b)=>Number(b.online)-Number(a.online)||Number(a.playing)-Number(b.playing)||a.name.localeCompare(b.name));
@@ -78,7 +78,7 @@ export async function socialAction(env:SocialEnv,uid:string,input:SocialAction):
   const old=await env.DB.prepare("SELECT id FROM friend_invites WHERE sender=? AND target=? AND status IN ('pending','scheduled')").bind(uid,target).first<{id:string}>();if(old)return Response.json({id:old.id,pending:true});
   if(await env.DB.prepare("SELECT id FROM friend_invites WHERE sender=? AND status IN ('pending','scheduled')").bind(uid).first())return failure('Cancel your current invitation before sending another.');
   const recent=await env.DB.prepare('SELECT COUNT(*) n FROM friend_invites WHERE sender=? AND created>?').bind(uid,now-60000).first<{n:number}>();if((recent?.n||0)>=5)return failure('Please wait before sending another invitation.',429);
-  const [from,to]=await Promise.all([socialPresence(env,uid),socialPresence(env,target)]);if(!to.online)return failure('Your friend is offline.');if(to.playing)return failure('Your friend is playing a deal. Try again when they are available.');
+  const [from,to]=await Promise.all([socialPresence(env,uid),socialPresence(env,target)]);if(from.room&&from.room===to.room)return Response.json({onYourTable:true});if(!to.online)return failure('Your friend is offline.');if(to.playing)return failure('Your friend is playing a deal. Try again when they are available.');
   const targetPending=await env.DB.prepare("SELECT id FROM friend_invites WHERE target=? AND (status='scheduled' OR (status='joined' AND changed>?))").bind(target,now-30000).first();if(targetPending)return failure('Your friend is already joining a table.');
   let code=from.room,mode: 'open'|'band'=from.table?.mode||(input.mode==='band'?'band':'open'),fresh=false;
   if(from.playing&&input.newMatch&&from.table?.phase!=='finished')return failure('A new match can be invited after this deal finishes.',409,'NEW_MATCH_AT_BOUNDARY');
@@ -104,6 +104,8 @@ export async function socialAction(env:SocialEnv,uid:string,input:SocialAction):
   await env.DB.prepare("UPDATE friend_invites SET status=?,changed=? WHERE id=? AND status='scheduled'").bind(result.status,now,invite.id).run();
   const committed=await env.DB.prepare('SELECT status FROM friend_invites WHERE id=?').bind(invite.id).first<{status:'scheduled'|'joined'}>();result.status=committed?.status||result.status;
   if(result.status==='joined'){await setRoom(env,uid,invite.room);await setRoom(env,invite.sender,invite.room);}
+  const others=await env.DB.prepare("SELECT * FROM friend_invites WHERE target=? AND id<>? AND status='pending'").bind(uid,invite.id).all<InviteRow>();
+  for(const other of others.results){await env.DB.prepare("UPDATE friend_invites SET status='cancelled',reason='Friend accepted another invitation.',changed=? WHERE id=? AND status='pending'").bind(now,other.id).run();await socialRPC(env,other.room,'friend-cancel',other.sender,{id:other.id});await notifySocial(env,other.sender);}
   await notifySocial(env,uid,invite.sender);return Response.json({status:result.status,...(result.status==='joined'?{room:invite.room}:{})});
  }
  if(!['decline-invite','cancel-invite'].includes(input.action))return failure('Unknown friends action.',400);
