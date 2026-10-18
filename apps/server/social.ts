@@ -1,4 +1,4 @@
-import {FRIEND_REQUEST_TTL,FRIEND_RESEND_MS,FRIEND_INVITE_MS,type FriendRelation,type SocialPlayer,type GameInvite,type SocialAction,type FriendsState} from '../../packages/protocol/friends.ts';
+import {FRIEND_REQUEST_TTL,FRIEND_INVITE_MS,type FriendRelation,type SocialPlayer,type GameInvite,type SocialAction,type FriendsState} from '../../packages/protocol/friends.ts';
 import {levelProgress,bandEligible} from '../../packages/protocol/progression.ts';
 import {publicPlayerName} from '../../packages/protocol/player-name.ts';
 import {publicGoogleProfile} from './google-profile.ts';
@@ -21,7 +21,7 @@ export async function friendRelation(db:D1Database,viewer:string,target:string):
  if(viewer===target)return {status:'self'};await ensureSocialSchema(db);const [low,high]=pair(viewer,target);
  const row=await db.prepare('SELECT requester,status,updated,expires FROM friendships WHERE low_uid=? AND high_uid=?').bind(low,high).first<{requester:string;status:string;updated:number;expires:number}>();
  if(row?.status==='accepted')return {status:'friends'};
- if(row?.status==='pending'&&row.expires>Date.now())return {status:row.requester===viewer?'sent':'incoming',updated:row.updated,canResend:false};return {status:'none',canResend:!row||Date.now()-row.updated>=FRIEND_RESEND_MS};
+ if(row?.status==='pending'&&row.expires>Date.now())return {status:row.requester===viewer?'sent':'incoming',updated:row.updated,canResend:false};return {status:'none',canResend:true};
 }
 type Presence={online:boolean;playing:boolean;room?:string;table?:{member?:boolean;started?:boolean;mode?:'open'|'band';phase?:string;teammateAvailable?:boolean;host?:boolean}};
 export async function socialPresence(env:SocialEnv,uid:string):Promise<Presence>{
@@ -64,8 +64,8 @@ export async function socialAction(env:SocialEnv,uid:string,input:SocialAction):
    const recent=await env.DB.prepare('SELECT COUNT(*) n FROM friendships WHERE requester=? AND updated>?').bind(uid,now-60000).first<{n:number}>();if((recent?.n||0)>=5)return failure('Please wait before adding more players.',429);
    const inbox=await env.DB.prepare("SELECT COUNT(*) n FROM friendships WHERE (low_uid=? OR high_uid=?) AND status IN ('accepted','pending')").bind(target,target).first<{n:number}>();if((inbox?.n||0)>=200&&relation.status!=='incoming')return failure('This player’s friends list is full.');
    const cap=await env.DB.prepare("SELECT COUNT(*) n FROM friendships WHERE (low_uid=? OR high_uid=?) AND status IN ('accepted','pending')").bind(uid,uid).first<{n:number}>();if((cap?.n||0)>=200)return failure('Your friends list is full.');
-   const written=await env.DB.prepare(`INSERT INTO friendships(low_uid,high_uid,requester,status,created,updated,expires) VALUES(?,?,?,'pending',?,?,?) ON CONFLICT(low_uid,high_uid) DO UPDATE SET status=CASE WHEN friendships.status='pending' AND friendships.requester<>excluded.requester AND friendships.expires>? THEN 'accepted' ELSE 'pending' END,requester=excluded.requester,updated=excluded.updated,expires=excluded.expires WHERE friendships.status<>'accepted' AND ((friendships.status='pending' AND friendships.requester<>excluded.requester AND friendships.expires>?) OR friendships.updated<=?)`).bind(low,high,uid,now,now,now+FRIEND_REQUEST_TTL,now,now,now-FRIEND_RESEND_MS).run();changed=!!written.meta.changes;
-   relation=await friendRelation(env.DB,uid,target);if(relation.status==='none')return failure('You can send another request after 24 hours.');
+   const written=await env.DB.prepare(`INSERT INTO friendships(low_uid,high_uid,requester,status,created,updated,expires) VALUES(?,?,?,'pending',?,?,?) ON CONFLICT(low_uid,high_uid) DO UPDATE SET status=CASE WHEN friendships.status='pending' AND friendships.requester<>excluded.requester AND friendships.expires>? THEN 'accepted' ELSE 'pending' END,requester=excluded.requester,updated=excluded.updated,expires=excluded.expires WHERE friendships.status<>'accepted'`).bind(low,high,uid,now,now,now+FRIEND_REQUEST_TTL,now).run();changed=!!written.meta.changes;
+   relation=await friendRelation(env.DB,uid,target);if(relation.status==='none')return failure('Unable to send this friend request. Please retry.');
   }else if(input.action==='accept-request')await env.DB.prepare("UPDATE friendships SET status='accepted',updated=? WHERE low_uid=? AND high_uid=? AND status='pending' AND requester=? AND expires>?").bind(now,low,high,target,now).run();
   else if(input.action==='decline-request')await env.DB.prepare("UPDATE friendships SET status='declined',updated=? WHERE low_uid=? AND high_uid=? AND status='pending' AND requester=?").bind(now,low,high,target).run();
   else if(input.action==='cancel-request')await env.DB.prepare("UPDATE friendships SET status='cancelled',updated=? WHERE low_uid=? AND high_uid=? AND status='pending' AND requester=?").bind(now,low,high,uid).run();

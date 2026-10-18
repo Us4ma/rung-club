@@ -24,7 +24,7 @@ try{
  await check('Sender cannot accept own outgoing request',async()=>{assert.equal((await action(a,{action:'accept-request',target:b.uid})).relationship.status,'sent');});
  await check('Accept establishes mutual friendship and survives another fetch',async()=>{assert.equal((await action(b,{action:'accept-request',target:a.uid})).relationship.status,'friends');assert((await ok(a,'friends')).friends.some(p=>p.uid===b.uid));assert((await ok(b,'friends')).friends.some(p=>p.uid===a.uid));});
  await check('Friend request identity cannot be forged',async()=>{await action(a,{action:'request',target:c.uid,sender:b.uid});assert((await ok(c,'friends')).incoming.some(r=>r.player.uid===a.uid));assert(!(await ok(c,'friends')).incoming.some(r=>r.player.uid===b.uid));});
- await check('Decline and immediate resend cooldown',async()=>{await action(c,{action:'decline-request',target:a.uid});assert.equal((await api(a,'friends/action',{action:'request',target:c.uid})).status,409);});
+ await check('Decline and immediate re-request for testing',async()=>{await action(c,{action:'decline-request',target:a.uid});assert.equal((await api(a,'friends/action',{action:'request',target:c.uid})).status,200);});
  await check('Reciprocal requests become mutual friends',async()=>{await action(b,{action:'request',target:c.uid});assert.equal((await action(c,{action:'request',target:b.uid})).relationship.status,'friends');});
  await check('Online presence comes from authenticated sessions',async()=>assert.equal((await ok(a,'friends')).friends.find(p=>p.uid===b.uid).online,true));
  await check('Nonfriend invitation rejected',async()=>assert.equal((await api(a,'friends/action',{action:'invite',target:c.uid,mode:'open'})).status,403));
