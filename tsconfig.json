@@ -25,6 +25,7 @@
     "tests/account-deletion-server.test.ts",
     "tests/player-stats-smoke.test.ts",
     "tests/roster-persistence.test.ts",
-    "tests/device-session-route.test.ts"
+    "tests/device-session-route.test.ts",
+    "tests/friends-flow.test.ts"
   ]
 }

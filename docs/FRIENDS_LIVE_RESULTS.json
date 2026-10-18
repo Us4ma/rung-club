@@ -1,0 +1,91 @@
+{
+  "at": "2026-10-18T01:51:44.315Z",
+  "results": [
+    {
+      "name": "Self request rejected",
+      "passed": true
+    },
+    {
+      "name": "Friend request persists with sent/incoming states",
+      "passed": true
+    },
+    {
+      "name": "Repeated request stays one record with unchanged timestamp",
+      "passed": true
+    },
+    {
+      "name": "Sender cannot accept own outgoing request",
+      "passed": true
+    },
+    {
+      "name": "Accept establishes mutual friendship and survives another fetch",
+      "passed": true
+    },
+    {
+      "name": "Friend request identity cannot be forged",
+      "passed": true
+    },
+    {
+      "name": "Decline and immediate resend cooldown",
+      "passed": true
+    },
+    {
+      "name": "Reciprocal requests become mutual friends",
+      "passed": true
+    },
+    {
+      "name": "Online presence comes from authenticated sessions",
+      "passed": true
+    },
+    {
+      "name": "Nonfriend invitation rejected",
+      "passed": true
+    },
+    {
+      "name": "Lobby invite delivered to recipient and protected from third-party acceptance",
+      "passed": true
+    },
+    {
+      "name": "Duplicate invite reuses pending invitation",
+      "passed": true
+    },
+    {
+      "name": "Decline invitation updates both sessions",
+      "passed": true
+    },
+    {
+      "name": "Expired invitation cannot be accepted",
+      "passed": true
+    },
+    {
+      "name": "Private-table invitation joins opposite without starting game",
+      "passed": true
+    },
+    {
+      "name": "Double acceptance is idempotent",
+      "passed": true
+    },
+    {
+      "name": "Occupied human teammate cannot be replaced",
+      "passed": true
+    },
+    {
+      "name": "Social presence remains online and playing across table transition",
+      "passed": true
+    },
+    {
+      "name": "Busy player cannot receive an invitation",
+      "passed": true
+    },
+    {
+      "name": "Other device is blocked, takeover resumes same seat",
+      "passed": true
+    }
+  ],
+  "cleanup": {
+    "created": 3,
+    "deleted": 2,
+    "remaining": 1,
+    "reason": "Closed-table 410 interrupted the second player cleanup before account deletion. Harness corrected to separate leaving from deletion; remaining guest has no awarded results or XP (private table only)."
+  }
+}
