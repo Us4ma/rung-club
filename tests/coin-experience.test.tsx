@@ -1,0 +1,12 @@
+// @vitest-environment jsdom
+import React from 'react';
+import {afterEach,it,expect,vi} from 'vitest';
+import {render,screen,fireEvent,waitFor,cleanup} from '@testing-library/react';
+const request=vi.hoisted(()=>vi.fn());
+vi.mock('../apps/web/friends.tsx',()=>({socialRequest:request}));
+import {CoinExperience} from '../apps/web/coin-experience.tsx';
+afterEach(()=>{cleanup();request.mockReset();});
+const base={wallet:10000,table:null,welcomeAvailable:false};
+it('welcome screen claims once and dismisses only after server success',async()=>{request.mockResolvedValueOnce({...base,welcomeAvailable:true}).mockResolvedValueOnce(base);const refresh=vi.fn();render(<CoinExperience uid="a" onLeave={()=>{}} onRefresh={refresh}/>);fireEvent.click(await screen.findByText('Claim 10,000 coins'));await waitFor(()=>expect(screen.queryByText('Claim 10,000 coins')).toBeNull());expect(request).toHaveBeenLastCalledWith('coins',{action:'welcome'});expect(refresh).toHaveBeenCalledOnce();});
+it('an empty wallet at a busted seat opens shop, exposes unavailable providers honestly and lets player leave',async()=>{request.mockResolvedValue({...base,wallet:0});const leave=vi.fn();render(<CoinExperience uid="a" table={{room:'ABCD1234',seat:0,started:true,coins:{stake:200,balances:[0,2500,2500,2500],waiting:[0],waitUntil:Date.now()+20000}}} onLeave={leave} onRefresh={()=>{}}/>);expect(await screen.findByRole('dialog',{name:'Coin shop'})).toBeTruthy();expect((screen.getByText('Unavailable') as HTMLButtonElement).disabled).toBe(true);fireEvent.click(screen.getByText('Leave table'));expect(leave).toHaveBeenCalledOnce();});
+it('a failed top-up retries using the same id and never sends an oversized amount',async()=>{request.mockImplementation(async(_path,body)=>{if(body.action==='state')return {...base,table:{room:'ABCD1234',balance:100}};throw Error('Connection interrupted');});render(<CoinExperience uid="a" table={{room:'ABCD1234',seat:0,started:true,coins:{stake:200,balances:[100,2500,2500,2500],waiting:[0],waitUntil:Date.now()+20000}}} onLeave={()=>{}} onRefresh={()=>{}}/>);const button=await screen.findByText('Add 2,400 coins');fireEvent.click(button);await screen.findByText('Connection interrupted');fireEvent.click(button);await waitFor(()=>expect(request.mock.calls.filter(([,b])=>b.action==='topup')).toHaveLength(2));const calls=request.mock.calls.filter(([,b])=>b.action==='topup');expect(calls[0][1].id).toBe(calls[1][1].id);expect(calls[0][1].amount).toBe(2400);});
