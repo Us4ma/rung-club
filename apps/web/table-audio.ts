@@ -1,6 +1,6 @@
 import {TABLE_AUDIO_CLIPS} from './table-audio-clips.ts';
 /** Kenney CC0 recordings share one preloaded, non-overlapping output lane. */
-export type TableCue='shuffle'|'deal'|'place'|'cut'|'gather'|'collect'|'reveal'|'win'|'lose'|'kot'|'turn'|'tick';
+export type TableCue='shuffle'|'deal'|'place'|'cut'|'gather'|'collect'|'reveal'|'win'|'lose'|'kot'|'turn'|'tick'|'coinStake'|'coinCount'|'coinPay'|'coinGift';
 type Job={cue:TableCue;until:number;epoch:number};
 export class TableAudio {
  private context:AudioContext|null=null;
@@ -9,6 +9,7 @@ export class TableAudio {
  private loading:Promise<void>|null=null;
  private enabled=false;
  private active=false;
+ private interfaceEnabled=false;
  private foreground=true;
  private epoch=0;
  private variation=0;
@@ -18,7 +19,7 @@ export class TableAudio {
  configure(active:boolean,enabled:boolean){this.active=active;this.enabled=enabled;this.preload();if(!active||!enabled)this.clear();}
  private preload(){
   if(this.bytes||this.buffer)return;
-  this.bytes=fetch('/audio/table-v2/table.mp3').then(r=>{if(!r.ok)throw Error('Table audio unavailable');return r.arrayBuffer();}).catch(error=>{this.bytes=null;throw error;});
+  this.bytes=fetch('/audio/table-v3/table.mp3').then(r=>{if(!r.ok)throw Error('Table audio unavailable');return r.arrayBuffer();}).catch(error=>{this.bytes=null;throw error;});
   // Missing audio must not block gameplay; retry on a later interaction.
   void this.bytes.catch(()=>{});
  }
@@ -29,15 +30,16 @@ export class TableAudio {
  }
  setForeground(value:boolean){this.foreground=value;if(!value)this.clear();}
  unlock(){if(!this.enabled)return;try{this.context??=new AudioContext();void this.context.resume().then(()=>this.next()).catch(()=>{});this.load();}catch{/* Unsupported device: silent fallback. */}}
- private allowed(){return this.active&&this.enabled&&this.foreground;}
- clear(){this.epoch++;this.queue=[];this.playing=false;this.source?.stop();this.source=null;}
- effect(cue:TableCue,ttl=450){if(cue==='tick'&&(this.playing||this.queue.length))return;this.enqueue({cue,until:Date.now()+ttl,epoch:this.epoch});}
+ private allowed(){return (this.active||this.interfaceEnabled)&&this.enabled&&this.foreground;}
+ clear(){this.interfaceEnabled=false;this.epoch++;this.queue=[];this.playing=false;this.source?.stop();this.source=null;}
+ interfaceEffect(cue:TableCue,enabled:boolean){if(!enabled||document.hidden)return;this.interfaceEnabled=true;this.enabled=true;this.enqueue({cue,until:Date.now()+1000,epoch:this.epoch});}
+ effect(cue:TableCue,ttl=450){if(!this.active)return;if(cue==='tick'&&(this.playing||this.queue.length))return;this.enqueue({cue,until:Date.now()+ttl,epoch:this.epoch});}
  private enqueue(job:Job){if(!this.allowed())return;this.unlock();if(this.queue.length>=8)return;this.queue.push(job);this.next();}
  private next(){
   if(this.playing||!this.allowed()||!this.context||this.context.state!=='running'||!this.buffer)return;
   let job:Job|undefined;while((job=this.queue.shift())&&(job.until<Date.now()||job.epoch!==this.epoch)){}if(!job)return;
   const epoch=this.epoch;this.playing=true;let done=false;
-  const finish=()=>{if(done||epoch!==this.epoch)return;done=true;this.source=null;this.playing=false;this.next();};
+  const finish=()=>{if(done||epoch!==this.epoch)return;done=true;this.source=null;this.playing=false;if(!this.queue.length)this.interfaceEnabled=false;this.next();};
   try{
    const clip=job.cue==='place'&&this.variation++%2?TABLE_AUDIO_CLIPS.placeAlt:TABLE_AUDIO_CLIPS[job.cue];
    const source=this.context.createBufferSource();source.buffer=this.buffer;source.connect(this.context.destination);this.source=source;

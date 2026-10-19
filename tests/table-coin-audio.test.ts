@@ -1,0 +1,5 @@
+// @vitest-environment jsdom
+import {afterEach,it,expect,vi} from 'vitest';
+import {TableAudio} from '../apps/web/table-audio.ts';
+afterEach(()=>vi.unstubAllGlobals());
+it('coin and card sounds share one output lane and mute stops playback',async()=>{const sources:any[]=[];vi.stubGlobal('fetch',vi.fn(async()=>({ok:true,arrayBuffer:async()=>new ArrayBuffer(8)})));vi.stubGlobal('AudioContext',class{state='running';destination={};resume(){return Promise.resolve();}decodeAudioData(){return Promise.resolve({});}createBufferSource(){const source={connect:vi.fn(),disconnect:vi.fn(),start:vi.fn(),stop:vi.fn(),onended:null};sources.push(source);return source;}});const audio=new TableAudio();audio.configure(true,true);audio.effect('coinStake',1000);audio.effect('place',1000);audio.effect('coinPay',1000);for(let n=0;n<12;n++)await Promise.resolve();expect(sources).toHaveLength(1);sources[0].onended();expect(sources).toHaveLength(2);sources[1].onended();expect(sources).toHaveLength(3);audio.configure(false,false);expect(sources[2].stop).toHaveBeenCalledOnce();audio.interfaceEffect('coinGift',false);expect(sources).toHaveLength(3);});

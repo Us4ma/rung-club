@@ -15,3 +15,11 @@ Automated seats act as a house counterparty; their contributions and payouts are
 The themed shop is a UI shell. Coin packages and the planned 2,500-coin rewarded ad are unavailable until real providers are integrated. No payment collection, fake ad, free ad-grant endpoint or purchase fulfillment is enabled. Private/practice access remains free. Ads must later use verified server callbacks, idempotent transaction IDs and a configurable daily cap. Price/package amounts are placeholders, not purchasable offers.
 
 Schema creation is additive and lazy; no existing accounts, ledgers, friendships, rankings or game rules are reset. Tests cover duplicate grants and top-ups, payout conservation, negative/over-limit requests, wallet/table isolation, cashout, opt-in refill, actual public/private rooms, boundary release and HTTP fallback. No full local build or automated browser/screenshot run was performed.
+
+## Coin presentation
+
+Welcome grants animate into the visible wallet only after the server confirms the idempotent grant. The table overlay renders chip banks inside the felt, a dealer tray with the four-player pot, and settlement fields supplied by the server (winner team, per-winner return and rake). Presentation never changes a balance. Hydration/reconnects suppress historical payouts; hidden tabs cancel pending flights. Reduced motion uses a brief static result. Recorded chip sounds share the existing single Web Audio queue with card sounds and honor the sound setting.
+
+The versioned table-v3 audio sprite contains the original table-v2 material followed by four excerpts from Kenney Casino Audio: chips-handle-3, chips-stack-3, chips-collide-3 and chips-handle-6, licensed CC0. Original license is in docs/third-party/kenney-casino-audio-LICENSE.txt; source metadata is next to each sprite.
+
+Wallet/bank labels abbreviate K/M/B/T amounts while retaining integer coin balances and exact accessible wallet labels. Opening draw positions are measured from the felt rather than portrait/trick positions. Chip overlays capture no input and occupy no grid space. Focused coin, sound-queue and geometry checks pass. An existing gameplay-presentation suite has four unrelated callout-text/announcement expectation failures; those announcements were not modified by this change. No automated browser or screenshot run was performed.

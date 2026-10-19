@@ -1,0 +1,30 @@
+[
+  {
+    "cue": "coinStake",
+    "source": "chips-handle-3.ogg",
+    "license": "CC0-1.0",
+    "author": "Kenney",
+    "url": "https://kenney.nl/assets/casino-audio"
+  },
+  {
+    "cue": "coinCount",
+    "source": "chips-stack-3.ogg",
+    "license": "CC0-1.0",
+    "author": "Kenney",
+    "url": "https://kenney.nl/assets/casino-audio"
+  },
+  {
+    "cue": "coinPay",
+    "source": "chips-collide-3.ogg",
+    "license": "CC0-1.0",
+    "author": "Kenney",
+    "url": "https://kenney.nl/assets/casino-audio"
+  },
+  {
+    "cue": "coinGift",
+    "source": "chips-handle-6.ogg",
+    "license": "CC0-1.0",
+    "author": "Kenney",
+    "url": "https://kenney.nl/assets/casino-audio"
+  }
+]
