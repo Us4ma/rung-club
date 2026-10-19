@@ -1,4 +1,4 @@
-import {ensureCoins} from './coins.ts';
+import {ensureCoinStandings} from './coin-schema.ts';
 import {publicPlayerName} from '../../packages/protocol/player-name.ts';
 import {safeAvatarPhoto} from '../../packages/protocol/avatars.ts';
 import {ROSTER,rosterById} from '../../packages/protocol/roster.ts';
@@ -20,7 +20,7 @@ export async function rosterProfile(db:IdentityDatabase,id:string){const p=roste
 // Credit only positive profit from real, completed coin settlements.
 export const STANDINGS_BY_TOTAL_GOLD=true;
 export function compareTotalGold(a:{totalGoldWon:number},b:{totalGoldWon:number}){return b.totalGoldWon-a.totalGoldWon;}
-export async function leaderboard(db:IdentityDatabase){await ensureRoster(db);await ensureCoins(db as D1Database);
+export async function leaderboard(db:IdentityDatabase){await ensureRoster(db);await ensureCoinStandings(db);
  const humans=(await db.prepare("SELECT a.uid,a.name,(SELECT SUBSTR(item,19) FROM cosmetics c WHERE c.uid=a.uid AND c.item LIKE 'profile:avatar-v2:%' ORDER BY item LIMIT 1) avatar,COUNT(r.match_id) played,COALESCE(SUM(r.won),0) wins,COALESCE(SUM(r.score),0) sars,COALESCE(g.totalGoldWon,0) totalGoldWon FROM accounts a JOIN results r ON r.uid=a.uid LEFT JOIN (SELECT c.uid,SUM(MAX(c.profit,0)) totalGoldWon FROM coin_results c JOIN coin_deals d ON d.id=c.deal AND d.status='settled' JOIN results completed ON completed.match_id=c.deal AND completed.uid=c.uid GROUP BY c.uid) g ON g.uid=a.uid WHERE a.deleted=0 GROUP BY a.uid ORDER BY totalGoldWon DESC,wins DESC,sars DESC,a.uid LIMIT 100").bind().all()).results as any[];
  const bots=(await db.prepare("SELECT r.roster_id,COUNT(*) played,SUM(r.won) wins,SUM(r.sars) sars,COALESCE(SUM(CASE WHEN r.mode='open' AND r.source='table' AND d.status='settled' AND rule.deal IS NOT NULL THEN MAX(COALESCE(e.amount,0)-COALESCE(rule.stake,0),0) ELSE 0 END),0) totalGoldWon FROM roster_results r LEFT JOIN coin_events e ON e.id='bot-payout:'||r.match_id||':'||r.seat AND e.kind='bot-payout' LEFT JOIN coin_deal_rules rule ON rule.deal=r.match_id LEFT JOIN coin_deals d ON d.id=r.match_id GROUP BY r.roster_id").bind().all()).results as any[];
  const profiles=(await db.prepare("SELECT uid,item FROM cosmetics WHERE item LIKE 'profile:google:%' OR item IN ('profile:google-name-default','profile:avatar-source:roster')").bind().all()).results as {uid:string;item:string}[];

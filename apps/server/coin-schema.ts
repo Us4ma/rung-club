@@ -1,0 +1,5 @@
+import type {IdentityDatabase} from './identity.ts';
+// Shared definitions keep ranking reads independent of Worker-only runtime types.
+export const COIN_STANDINGS_SCHEMA=[`CREATE TABLE IF NOT EXISTS coin_results(deal TEXT NOT NULL,uid TEXT NOT NULL,stake INTEGER NOT NULL,payout INTEGER NOT NULL,profit INTEGER NOT NULL,created INTEGER NOT NULL,PRIMARY KEY(deal,uid))`,`CREATE TABLE IF NOT EXISTS coin_deals(id TEXT PRIMARY KEY,room TEXT NOT NULL,players TEXT NOT NULL,status TEXT NOT NULL,created INTEGER NOT NULL)`,`CREATE TABLE IF NOT EXISTS coin_deal_rules(deal TEXT PRIMARY KEY,stake INTEGER NOT NULL,buy_in INTEGER NOT NULL)`,`CREATE TABLE IF NOT EXISTS coin_events(id TEXT PRIMARY KEY,room TEXT,deal TEXT,kind TEXT NOT NULL,amount INTEGER NOT NULL,created INTEGER NOT NULL)`];
+const ready=new WeakMap<object,Promise<void>>();
+export function ensureCoinStandings(db:IdentityDatabase){let pending=ready.get(db);if(!pending){pending=(async()=>{for(const sql of COIN_STANDINGS_SCHEMA)await db.prepare(sql).bind().run();})().catch(error=>{ready.delete(db);throw error;});ready.set(db,pending);}return pending;}
