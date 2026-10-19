@@ -7,3 +7,10 @@
 .dealer-chip-tray>.casino-stack{flex:none}.dealer-chip-tray strong{font:600 15px/1.2 system-ui;letter-spacing:.02em}.dealer-chip-tray small{display:none}.table-coin-layer[data-stage=count] .dealer-chip-tray small,.table-coin-layer[data-stage=pay] .dealer-chip-tray small{display:block;position:absolute;top:100%;left:50%;transform:translateX(-50%);font-size:9px;color:#e4cf99;text-shadow:0 1px 2px #000}
 @media(max-width:600px){.table-chip-bank{gap:1px;max-width:52px}.table-chip-bank>.casino-stack{transform:scale(.78);margin-right:-3px}.dealer-chip-tray strong{font-size:11px}.dealer-chip-tray{padding:1px 5px 1px 0}.table-coin-layer{--bank-0-x:73%;--bank-0-y:88%}.table-coin-layer{--bank-1-x:88%;--bank-1-y:76%}.table-coin-layer{--bank-2-x:28%;--bank-2-y:13%}.table-coin-layer{--bank-3-x:12%;--bank-3-y:76%}}
 @media(orientation:landscape) and (max-height:550px){.table-coin-layer{--bank-0-x:68%;--bank-0-y:87%}.table-coin-layer{--bank-2-x:65%;--bank-2-y:12%}.dealer-chip-tray>.casino-stack{display:inline-block;transform:scale(.65);margin-right:-8px}.dealer-chip-tray strong{font-size:10px}}
+
+/* Seat-adjacent chips stay on the felt, above the lower rail. */
+.table-coin-layer{--bank-1-x:87%;--bank-1-y:65%;--bank-3-x:13%;--bank-3-y:65%}
+.table-chip-bank>.casino-stack{transform:scale(.74);margin-right:-5px}
+.dealer-chip-tray{background:transparent;border:0;box-shadow:none;padding:0;text-shadow:0 1px 3px #001b15}
+@media(max-width:600px){.table-coin-layer{--bank-1-x:83%;--bank-1-y:65%;--bank-3-x:17%;--bank-3-y:65%}.table-chip-bank>.casino-stack{transform:scale(.65);margin-right:-6px}}
+@media(orientation:landscape) and (max-height:550px){.table-coin-layer{--bank-1-x:86%;--bank-1-y:64%;--bank-3-x:14%;--bank-3-y:64%}}
