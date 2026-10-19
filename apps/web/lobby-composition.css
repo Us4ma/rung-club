@@ -1,0 +1,115 @@
+/* The rail belongs to the mode tray, so it cannot cover the host's torso. */
+.lobby-table-surface{display:contents}
+@media (max-width:1100px), (pointer:coarse) and (max-width:1366px){
+ .app.screen-lobby .lobby.lobby{height:100%;min-height:0;padding:0 16px 12px;max-width:1100px}
+ .app.screen-lobby .lobby.lobby .house-content{height:100%;min-height:0}
+ .app.screen-lobby .lobby.lobby .lobby-arrangement{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(180px,1fr) auto;gap:0;height:100%;min-height:0;isolation:isolate}
+ .app.screen-lobby .lobby.lobby .lobby-host{grid-area:1/1;position:relative;display:block;align-self:stretch;min-height:180px;height:auto;margin:0;overflow:visible;z-index:1;pointer-events:none}
+ .app.screen-lobby .lobby.lobby .lobby-host>.dealer{inset:auto auto 0 50%;transform:translateX(-50%);width:100%;height:100%;max-width:480px;max-height:440px;object-fit:contain;object-position:center bottom}
+ .app.screen-lobby .lobby.lobby .lobby-table-surface{grid-area:2/1;display:block;position:relative;min-width:0;isolation:isolate;z-index:2}
+ .app.screen-lobby .lobby.lobby .lobby-table-front{inset:-10px -16px -12px!important;height:auto!important;z-index:-1;background-image:url('/art/lobby/lobby-tray.svg'),linear-gradient(transparent 119px,#0b3426 119px);background-size:100% 120px,100% 100%;background-repeat:no-repeat;pointer-events:none}
+ .app.screen-lobby .lobby.lobby .table-coins{left:4%;top:32px;transform:scale(.4);transform-origin:left top}
+ .app.screen-lobby .lobby.lobby .table-deck{left:22%;top:32px;transform:scale(.4);transform-origin:left top}
+ .app.screen-lobby .lobby.lobby .lobby-play-area{display:flex;flex-direction:column;gap:0;height:auto;min-height:0;padding:64px 0 0;position:relative;z-index:1}
+ .app.screen-lobby .lobby.lobby .game-menu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;flex:none;height:clamp(210px,28vw,260px);min-height:0;margin:0}
+ .app.screen-lobby .lobby.lobby .game-tile{position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;height:100%;padding:10px 10px 12px;border-radius:15px;overflow:hidden;box-sizing:border-box}
+ .app.screen-lobby .lobby.lobby .mode-tile{display:flex;flex:1;flex-direction:column;align-items:center;justify-content:center;min-height:0;overflow:visible;padding:0;gap:2px;width:100%}
+ .app.screen-lobby .lobby.lobby .lobby-mode-art{flex:0 1 auto;width:100%;height:clamp(60px,9vw,105px);min-height:0;max-height:none;margin:0;object-fit:contain}
+ .app.screen-lobby .lobby.lobby .game-tile h2{flex:none;font-size:clamp(19px,3vw,28px);line-height:1.1;margin:3px 0;white-space:nowrap;letter-spacing:-.4px}
+ .app.screen-lobby .lobby.lobby .mode-tile>p{flex:none;font-size:12px;line-height:1.2;min-height:0;margin:2px 0 6px;text-wrap:balance}
+ .app.screen-lobby .lobby.lobby .mode-description{display:none}
+ .app.screen-lobby .lobby.lobby .mode-status{display:none}
+ .app.screen-lobby .lobby.lobby .game-tile.open:has(.mode-status [role=status]) .mode-status{display:block;position:absolute;left:8px;right:8px;top:6px;min-height:0;margin:0;font-size:9px}
+ .app.screen-lobby .lobby.lobby .mode-ribbon{display:none}
+ .app.screen-lobby .lobby.lobby .band .mode-tile:before{content:'Coming soon';font:10px/1.3 system-ui;color:#bdc6c0;border:1px solid #7f9082;border-radius:20px;padding:4px 10px;white-space:nowrap;position:absolute;top:8px;left:50%;transform:translateX(-50%)}
+ .app.screen-lobby .lobby.lobby .band .mode-tile{padding-top:19px}
+ .app.screen-lobby .lobby.lobby .band .lobby-mode-art{max-height:75px}
+ .app.screen-lobby .lobby.lobby .game-tile>.mode-play{flex:none;min-height:44px;height:44px;font-size:16px;line-height:1.1;margin:4px 0 0;padding:6px 3px;border-radius:9px;white-space:normal}
+ .app.screen-lobby .lobby.lobby .game-tile.band>.mode-play{font-size:13px!important}
+ .app.screen-lobby .lobby.lobby .club-shortcuts{display:flex;justify-content:center;flex:none;margin:14px 0 0;gap:12px}
+ .app.screen-lobby .lobby.lobby .club-shortcuts>button{width:min(100%,380px);min-height:60px;padding:9px 18px;gap:12px;border-radius:12px;justify-content:flex-start}
+ .app.screen-lobby .lobby.lobby .club-shortcuts strong{font-size:17px;line-height:1.25}.app.screen-lobby .lobby.lobby .club-shortcuts small{font-size:12px;line-height:1.2}
+ .app.screen-lobby .lobby.lobby .club-shortcuts .ui-icon{width:32px;height:32px}
+ .app.screen-lobby .lobby.lobby .club-shortcuts button>span:last-child{display:block;margin-left:auto;font-size:28px}
+ .app.screen-lobby .lobby.lobby .private-room{max-height:40dvh;overflow:auto;margin:12px 0 0}
+ /* Expanded room controls scroll as one composition, rather than covering the host. */
+ .app.screen-lobby .lobby.lobby .lobby-arrangement:has(.private-room){height:auto;min-height:100%;grid-template-rows:180px auto}
+}
+@media (min-width:601px) and (max-width:1100px), (pointer:coarse) and (min-width:601px) and (max-width:1366px){
+ .app.screen-lobby>header.lobby-hud{grid-template-columns:minmax(0,1fr) 184px;grid-template-rows:48px 62px;padding:10px 24px 6px;gap:8px 16px;min-height:134px}
+ .app.screen-lobby>header.lobby-hud .lobby-identity .brand{grid-area:1/1;width:210px;height:48px;font-size:20px;padding:6px 12px;gap:10px}
+ .app.screen-lobby>header.lobby-hud .lobby-feature-space{grid-area:1/2;justify-self:end;min-height:44px}
+ .app.screen-lobby>header.lobby-hud .hud-actions{grid-area:2/2;display:flex;justify-self:end;align-items:center;gap:10px;width:auto;margin:0}
+ .app.screen-lobby>header.lobby-hud .hud-actions>.icon-button{width:48px;height:48px;min-height:48px;padding:10px;margin:0;flex:none;grid-area:auto}
+ .app.screen-lobby>header.lobby-hud .profile-pill{grid-area:2/1;width:320px;max-width:100%;padding:0}
+ .app.screen-lobby>header.lobby-hud .profile-link{min-width:0;width:100%}
+ .app.screen-lobby>header.lobby-hud .player-progress{min-width:0;flex:1;max-width:none}
+ .app.screen-lobby>header.lobby-hud .player-progress strong{font-size:15px;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+ .app.screen-lobby>header.lobby-hud .player-avatar .avatar{width:44px;height:44px}
+ .app.screen-lobby>header.lobby-hud .player-progress small,.app.screen-lobby>header.lobby-hud .xp-caption{font-size:10px}
+}
+@media (max-width:600px){
+ .app.screen-lobby>header.lobby-hud{grid-template-rows:44px 64px;min-height:136px;padding-bottom:8px;row-gap:8px}
+ .app.screen-lobby .lobby.lobby{padding:0 12px 10px}
+ .app.screen-lobby .lobby.lobby .lobby-arrangement{grid-template-rows:minmax(180px,1fr) auto}
+ .app.screen-lobby .lobby.lobby .lobby-host>.dealer{max-width:360px;max-height:340px}
+ .app.screen-lobby .lobby.lobby .lobby-table-front{inset:-8px -12px -10px!important;background-size:100% 100px,100% 100%;background-image:url('/art/lobby/lobby-tray.svg'),linear-gradient(transparent 99px,#0b3426 99px)}
+ .app.screen-lobby .lobby.lobby .table-coins{left:4%;top:26px;transform:scale(.3)}
+ .app.screen-lobby .lobby.lobby .table-deck{left:24%;top:25px;transform:scale(.3)}
+ .app.screen-lobby .lobby.lobby .lobby-play-area{padding-top:56px}
+ .app.screen-lobby .lobby.lobby .game-menu{height:clamp(162px,47vw,204px);gap:8px}
+ .app.screen-lobby .lobby.lobby .game-tile{padding:6px 5px 8px;border-radius:12px}
+ .app.screen-lobby .lobby.lobby .lobby-mode-art{height:clamp(45px,16vw,68px);max-width:100%}
+ .app.screen-lobby .lobby.lobby .game-tile h2{font-size:clamp(14px,4.5vw,22px);margin:2px 0;letter-spacing:-.5px}
+ .app.screen-lobby .lobby.lobby .mode-tile>p{font-size:9px;line-height:1.2;margin:2px 0 5px}
+ .app.screen-lobby .lobby.lobby .band .mode-tile{padding-top:17px}
+ .app.screen-lobby .lobby.lobby .band .mode-tile:before{font-size:8px;padding:3px 7px;top:6px}
+ .app.screen-lobby .lobby.lobby .band .lobby-mode-art{max-height:42px}
+ .app.screen-lobby .lobby.lobby .game-tile>.mode-play{font-size:12px;min-height:44px;height:44px;margin-top:3px}
+ .app.screen-lobby .lobby.lobby .game-tile.band>.mode-play{font-size:10px!important}
+ .app.screen-lobby .lobby.lobby .club-shortcuts{margin-top:12px}
+ .app.screen-lobby .lobby.lobby .club-shortcuts>button{width:min(100%,300px);min-height:52px;padding:7px 14px;gap:10px;border-radius:10px}
+ .app.screen-lobby .lobby.lobby .club-shortcuts strong{font-size:14px}.app.screen-lobby .lobby.lobby .club-shortcuts small{font-size:10px}
+ .app.screen-lobby .lobby.lobby .club-shortcuts .ui-icon{width:28px;height:28px}
+}
+/* Short landscape phones use the host beside the compact tray. */
+@media (orientation:landscape) and (max-height:550px) and (max-width:1100px){
+ .app.screen-lobby>header.lobby-hud{display:grid;grid-template-columns:126px minmax(120px,1fr) 120px 140px;grid-template-rows:44px;gap:8px;min-height:56px;padding:6px 12px}
+ .app.screen-lobby>header.lobby-hud .lobby-identity .brand{grid-area:1/1;width:126px;height:42px;min-height:42px;font-size:12px;gap:5px;padding:5px}
+ .app.screen-lobby>header.lobby-hud .brand .hud-brand-spade{font-size:23px}
+ .app.screen-lobby>header.lobby-hud .profile-pill{grid-area:1/2;width:100%;padding:0;min-width:0}
+ .app.screen-lobby>header.lobby-hud .profile-link{gap:6px}
+ .app.screen-lobby>header.lobby-hud .player-avatar .avatar{width:32px;height:32px}
+ .app.screen-lobby>header.lobby-hud .player-progress strong{font-size:11px}
+ .app.screen-lobby>header.lobby-hud .player-progress small,.app.screen-lobby>header.lobby-hud .xp-caption{display:none}
+ .app.screen-lobby>header.lobby-hud .xp-track{margin:5px 0;height:6px}
+ .app.screen-lobby>header.lobby-hud .lobby-feature-space{grid-area:1/3;width:auto;justify-self:end}
+ .app.screen-lobby>header.lobby-hud .coin-holder{--coin-size:30px;--bar-width:74px;--bar-height:28px;--amount-size:15px;--plus-size:22px;--edge:11px;--overlap:16px}
+ .app.screen-lobby>header.lobby-hud .hud-actions{grid-area:1/4;gap:4px;width:140px}
+ .app.screen-lobby>header.lobby-hud .hud-actions>.icon-button{width:44px;height:44px;min-height:44px;padding:9px;flex:0 0 44px;margin:0}
+ .app.screen-lobby .lobby.lobby{padding:0 12px 6px}
+ .app.screen-lobby .lobby.lobby .lobby-arrangement{grid-template-columns:minmax(150px,.7fr) minmax(0,2fr);grid-template-rows:minmax(180px,1fr);gap:12px}
+ .app.screen-lobby .lobby.lobby .lobby-host{grid-area:1/1;min-height:180px}
+ .app.screen-lobby .lobby.lobby .lobby-host>.dealer{width:100%;max-width:300px;max-height:100%;left:50%;bottom:0}
+ .app.screen-lobby .lobby.lobby .lobby-table-surface{grid-area:1/2;align-self:end}
+ .app.screen-lobby .lobby.lobby .lobby-table-front{inset:-10px -12px -6px!important}
+ .app.screen-lobby .lobby.lobby .lobby-play-area{padding-top:10px}
+ .app.screen-lobby .lobby.lobby .table-coins,.app.screen-lobby .lobby.lobby .table-deck{display:none}
+ .app.screen-lobby .lobby.lobby .game-menu{height:clamp(148px,calc(100dvh - 126px),218px);gap:8px}
+ .app.screen-lobby .lobby.lobby .game-tile{padding:6px 5px 8px;border-radius:12px}
+ .app.screen-lobby .lobby.lobby .lobby-mode-art{height:clamp(40px,calc(100dvh - 235px),78px)}
+ .app.screen-lobby .lobby.lobby .game-tile h2{font-size:18px}.app.screen-lobby .lobby.lobby .mode-tile>p{font-size:9px}
+ .app.screen-lobby .lobby.lobby .game-tile>.mode-play{font-size:12px}
+ .app.screen-lobby .lobby.lobby .band .mode-tile{padding-top:18px}.app.screen-lobby .lobby.lobby .band .lobby-mode-art{max-height:46px}
+ .app.screen-lobby .lobby.lobby .club-shortcuts{margin-top:8px}
+ .app.screen-lobby .lobby.lobby .club-shortcuts>button{width:260px;min-height:44px;height:44px;padding:5px 12px}
+ .app.screen-lobby .lobby.lobby .club-shortcuts strong{font-size:13px}.app.screen-lobby .lobby.lobby .club-shortcuts small{font-size:9px}
+ .app.screen-lobby .lobby.lobby .club-shortcuts .ui-icon{width:25px;height:25px}
+ .app.screen-lobby .lobby.lobby .lobby-arrangement:has(.private-room){grid-template-rows:minmax(180px,1fr);min-height:100%}
+}
+
+@media (max-width:600px) and (max-height:620px) and (orientation:portrait){
+ .app.screen-lobby>header.lobby-hud{grid-template-rows:44px 54px;min-height:124px;row-gap:6px;padding-top:8px;padding-bottom:8px}
+ .app.screen-lobby .lobby.lobby .lobby-arrangement{grid-template-rows:minmax(150px,1fr) auto}
+ .app.screen-lobby .lobby.lobby .lobby-host{min-height:150px}
+}
