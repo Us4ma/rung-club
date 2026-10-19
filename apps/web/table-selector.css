@@ -9,3 +9,5 @@
 .app.screen-table-selector .table-selector button:hover:not(:disabled){filter:brightness(1.12)}
 .app.screen-table-selector .table-selector button:focus-visible{outline:2px solid #d4b772!important;outline-offset:3px}
 .selector-stake-range{display:grid;gap:5px;width:100%;margin-top:6px}.selector-stake-range>span{display:flex;justify-content:center;gap:8px;align-items:baseline}.selector-stake-range b{display:inline;font-size:14px;margin:0}.selector-card-bottom{min-height:132px}
+
+.selector-card-bottom{min-height:0;padding:15px}.selector-footer{padding-top:4px}
