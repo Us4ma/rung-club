@@ -16,3 +16,7 @@
 .sound-layer .music-volume{margin:0;padding:12px 20px 18px}
 .app .settings-drawer .sound-settings-button{margin:12px 0;filter:none!important;transform:none!important;border-radius:8px}
 .app .settings-drawer .sound-settings-button::before,.app .settings-drawer .sound-settings-button::after{display:none!important;content:none!important}
+
+/* Range controls must not inherit text-field padding or borders. The native
+   track retains keyboard/touch behavior and fills to the thumb at both ends. */
+input[type="range"]{padding:0!important;border:0!important;margin-left:0;margin-right:0;box-sizing:border-box;background:transparent!important;border-radius:0;min-width:0;max-width:100%;box-shadow:none!important;accent-color:#bca165}
