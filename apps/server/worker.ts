@@ -171,6 +171,7 @@ export class CardRoom extends DurableObject<Env>{
   if(!this.data.casualQuick&&!this.data.exhibition){this.life.settledDeal=this.session.state.matchId;return;}
   if(this.data.coinDeal)await this.coinCall('settle',{deal:this.data.coinDeal,winner:this.session.state.scores[0]>this.session.state.scores[1]?0:1,outcome:this.session.state.table?.rounds.at(-1)?.outcome,refund:false});
   if(this.data.coinDeal){const outcome=this.session.state.table?.rounds.at(-1)?.outcome,profit=outcome==='kot'?75:outcome==='goon-kot'?90:50;this.data.coinResult={id:this.data.coinDeal,at:Date.now(),winner:this.session.state.scores[0]>this.session.state.scores[1]?0:1,payout:COINS.stake+COINS.stake*profit/100,rake:2*COINS.stake*(100-profit)/100};}
+  if(this.data.coinDeal){const balances=await this.coinCall('restore',{deal:this.data.coinDeal,players:this.data.uids});this.data.coinBalances=balances.balances;this.data.coinWallets=balances.wallets;}
   const s=this.session.state,now=Date.now(),statements:D1PreparedStatement[]=[];const competitive=s.table?.rounds.at(-1)?.eligible??!s.interrupted;
   const outcome=s.table?.rounds.at(-1)?.outcome??'',day=new Date(now).toISOString().slice(0,10);
   this.data.uids.forEach((uid,i)=>{if(uid&&this.life.disconnectedAt[i]===null&&!this.life.departed[i]){const active=competitive&&(this.data!.manualPlays?.[i]||0)>=8&&this.connected(uid),won=s.scores[i%2]>s.scores[(i+1)%2];
