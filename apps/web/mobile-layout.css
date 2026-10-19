@@ -1,22 +1,22 @@
-/* Mobile stage: dedicated portrait and landscape geometry, independent of desktop. */
+/* Mobile composition. Header specificity also protects against lazy screen styles. */
 @media (max-width:600px){
- .app.screen-lobby>header{grid-template-columns:minmax(0,1fr) auto 44px;grid-template-rows:44px 72px;gap:10px 10px;padding:10px 12px 6px}
- .app.screen-lobby>header .lobby-identity .brand{grid-area:1/1;width:max-content;max-width:100%;height:44px;white-space:nowrap;padding:6px 8px;font-size:13px;letter-spacing:.2px;gap:6px}
- .app.screen-lobby>header .brand .hud-brand-spade{font-size:25px;flex:none}
- .app.screen-lobby>header .lobby-feature-space{grid-area:1/2;justify-self:center}
- .app.screen-lobby>header .hud-actions{display:contents}
- .app.screen-lobby>header .hud-actions>.icon-button{width:44px;height:44px;min-height:44px;padding:9px;margin:0;align-self:center}
- .app.screen-lobby>header .hud-actions>[aria-label=Settings]{grid-area:1/3}
- .app.screen-lobby>header .hud-actions>.standings-hud{grid-area:2/2/3/4;justify-self:end;margin-right:52px}
- .app.screen-lobby>header .hud-actions>.friends-hud{grid-area:2/3;justify-self:end}
- .app.screen-lobby>header .profile-pill{grid-area:2/1/3/4;width:calc(100% - 108px);max-width:280px;padding:0;justify-self:start}
- .app.screen-lobby .profile-link{width:100%;gap:10px}
- .app.screen-lobby .player-avatar{flex:none}.app.screen-lobby .player-avatar .avatar{width:44px;height:44px}
- .app.screen-lobby .player-progress{min-width:0;flex:1;max-width:none}.app.screen-lobby .player-progress strong{display:block;font-size:14px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
- .app.screen-lobby .player-progress small,.app.screen-lobby .xp-caption{font-size:10px}.app.screen-lobby .xp-track{height:7px;margin:4px 0}
+ .app.screen-lobby>header.lobby-hud{display:grid;grid-template-columns:minmax(0,1fr) 140px;grid-template-rows:44px 76px;gap:10px 12px;padding:10px 12px 14px;height:auto;min-height:154px;flex:none;position:relative}
+ .app.screen-lobby>header.lobby-hud .lobby-identity{display:contents}
+ .app.screen-lobby>header.lobby-hud .lobby-identity .brand{grid-area:1/1;width:138px;max-width:100%;min-width:0;height:44px;white-space:nowrap;overflow:hidden;padding:6px 8px;font-size:13px;letter-spacing:.2px;gap:6px;box-sizing:border-box}
+ .app.screen-lobby>header.lobby-hud .brand .hud-brand-spade{font-size:25px;flex:none}
+ .app.screen-lobby>header.lobby-hud .lobby-feature-space{grid-area:1/2;justify-self:end;width:140px;min-width:0;display:flex;justify-content:flex-end}
+ .app.screen-lobby>header.lobby-hud .coin-holder{--bar-width:86px;--coin-size:34px;--amount-size:16px;max-width:140px}
+ .app.screen-lobby>header.lobby-hud .hud-actions{grid-area:2/2;display:flex;gap:4px;justify-self:end;align-self:center;width:140px;align-items:center}
+ .app.screen-lobby>header.lobby-hud .hud-actions>.icon-button{width:44px;height:44px;min-height:44px;padding:9px;margin:0;flex:0 0 44px;grid-area:auto}
+ .app.screen-lobby>header.lobby-hud .profile-pill{grid-area:2/1;width:100%;max-width:100%;min-width:0;padding:0;margin:0;justify-self:start}
+ .app.screen-lobby>header.lobby-hud .profile-link{width:100%;min-width:0;gap:8px;padding:0}
+ .app.screen-lobby>header.lobby-hud .player-avatar{flex:none}.app.screen-lobby>header.lobby-hud .player-avatar .avatar{width:40px;height:40px}
+ .app.screen-lobby>header.lobby-hud .player-progress{min-width:0;width:auto;flex:1;max-width:100%}.app.screen-lobby>header.lobby-hud .player-progress strong{display:block;font-size:12px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .app.screen-lobby>header.lobby-hud .player-progress small,.app.screen-lobby>header.lobby-hud .xp-caption{font-size:9px}.app.screen-lobby>header.lobby-hud .xp-track{height:7px;margin:4px 0}
+ .app.screen-lobby .lobby .lobby-host{overflow:hidden;margin-top:0}
+ .app.screen-lobby .lobby .lobby-host>.dealer{top:0;bottom:auto;height:100%;max-height:100%;object-position:center bottom}
  .app.screen-lobby .lobby .game-tile>.mode-play{font-size:14px;min-height:48px;padding:6px}
 }
-@media (max-width:360px){.app.screen-lobby>header{padding-inline:8px;column-gap:6px}.app.screen-lobby>header .lobby-identity .brand{font-size:11px;padding-inline:4px;gap:3px}}
 @media (max-width:1024px) and (orientation:portrait), (max-height:550px) and (orientation:landscape){
  .app.screen-table{overflow-x:clip;padding:0}
  .app.screen-table .table-page{box-sizing:border-box;max-width:none;grid-template-columns:minmax(0,1fr);gap:0;--trick-card:32px}
@@ -25,7 +25,8 @@
  .app.screen-table .back-button{min-height:44px;padding:5px 10px 5px 5px;font-size:11px}
  .app.screen-table .table-tools{gap:8px;align-items:center}
  .app.screen-table .table-tools>.icon-button,.app.screen-table .table-preferences>button{width:44px;height:44px;min-height:44px;padding:8px}
- .app.screen-table .table-preferences>button svg{width:26px;height:26px}
+ .app.screen-table .table-tools>.icon-button .ui-icon{width:26px;height:26px}
+ .app.screen-table .table-tools>[aria-label="Table settings"]{background:linear-gradient(#164430,#071e15);border:2px solid #dcb96b;box-shadow:inset 0 0 0 3px #061810,0 4px 14px #0007;border-radius:50%}
  .app.screen-table .compact-hud{height:46px;width:100%;margin:0;border-radius:12px;align-self:center}
  .app.screen-table .compact-hud>div{padding:4px 3px;text-align:center}
  .app.screen-table .compact-hud small{font-size:9px;letter-spacing:.25px}.app.screen-table .compact-hud strong{font-size:19px;line-height:1.2}.app.screen-table .compact-hud strong span{font-size:10px}
@@ -39,8 +40,9 @@
  .app.screen-table .backs i{width:16px;height:23px;margin-left:-9px}.app.screen-table .backs i:first-child{margin-left:0}
  .app.screen-table .seat .backs{top:calc(100% + 5px);left:50%;right:auto;transform:translateX(-50%)}
  .app.screen-table .seat-2 .backs{top:8px;right:calc(100% + 5px);left:auto;transform:none}
- .app.screen-table .center>.pile{left:25%;top:25%;width:26px;padding:0;grid-template-columns:26px;grid-template-rows:30px 12px;gap:3px;transform:translate(-50%,-50%)}
+ .app.screen-table .center>.pile{left:20%;top:38%;width:26px;padding:0;grid-template-columns:26px;grid-template-rows:30px 12px;gap:3px;transform:translate(-50%,-50%)}
  .app.screen-table .pile-stack{width:22px;height:30px;min-width:0;flex-basis:22px}.app.screen-table .pile-stack img{width:22px;height:30px}.app.screen-table .center>.pile>small{display:none}.app.screen-table .center>.pile>b{font-size:11px;line-height:12px}
+ .app.screen-table .table-coin-layer{--mobile-pot-x:75%;--mobile-pot-y:25%;--bank-2-x:36%;--bank-2-y:18%;--bank-3-x:24%;--bank-3-y:70%;--bank-1-x:76%;--bank-1-y:70%;--bank-0-x:72%;--bank-0-y:83%}
  .app.screen-table .table-chip-bank{max-width:60px;gap:2px;white-space:nowrap}.app.screen-table .table-chip-bank>strong{font-size:10px}.app.screen-table .table-chip-bank>.casino-stack{transform:scale(.64);margin-right:-7px}
  .app.screen-table .dealer-chip-tray strong{font-size:11px}.app.screen-table .dealer-chip-tray>.casino-stack{transform:scale(.7);margin-right:-5px}
  .app.screen-table .controls{display:flex;flex-wrap:nowrap;align-items:center;justify-content:center;gap:6px;width:100%;height:44px;min-height:44px;margin:0;padding:0}
@@ -60,7 +62,7 @@
  .app.screen-table .emote-picker{position:absolute;bottom:54px;left:0;right:auto;width:min(300px,calc(100vw - 24px));max-height:220px}
 }
 @media (max-width:1024px) and (orientation:portrait){
- .app.screen-table .table-page,.app.screen-table .table-page[data-phase=waiting]{--hand-card:clamp(43px,12vw,64px);--mobile-table-height:clamp(216px,64vw,320px);height:100dvh;min-height:620px;padding:6px 10px max(6px,env(safe-area-inset-bottom));grid-template-rows:44px 48px 4px minmax(338px,1fr) 16px 88px 64px}
+ .app.screen-table .table-page,.app.screen-table .table-page[data-phase=waiting]{--hand-card:clamp(40px,11.5vw,64px);--mobile-table-height:clamp(216px,64vw,320px);height:100dvh;min-height:620px;padding:6px 10px max(6px,env(safe-area-inset-bottom));grid-template-rows:44px 48px 4px minmax(338px,1fr) 16px 88px 64px}
  .app.screen-table .table-page[data-phase=waiting]{grid-template-rows:44px 48px 4px minmax(338px,1fr) 0 0 16px}
  .app.screen-table .table-top{grid-area:1/1}.app.screen-table .compact-hud{grid-area:2/1}.app.screen-table .table-scene{grid-area:4/1;max-width:580px}
  .app.screen-table .table{inset:auto 20px;top:50%;height:var(--mobile-table-height);min-height:0;transform:translateY(-50%);border-radius:46%}
@@ -80,12 +82,12 @@
 }
 /* Short-wide screens use a bounded table and a separate right-hand control rail. */
 @media (orientation:landscape) and (max-height:550px){
- .app.screen-table .table-page,.app.screen-table .table-page[data-phase=waiting]{--hand-card:clamp(42px,12dvh,56px);--trick-card:30px;height:100dvh;min-height:300px;padding:4px max(10px,env(safe-area-inset-right)) 4px max(10px,env(safe-area-inset-left));grid-template-columns:minmax(0,1fr) 136px;grid-template-rows:46px minmax(156px,1fr) 82px;column-gap:12px}
+ .app.screen-table .table-page,.app.screen-table .table-page[data-phase=waiting]{--hand-card:clamp(38px,11dvh,48px);--trick-card:26px;height:100dvh;min-height:300px;padding:4px max(10px,env(safe-area-inset-right)) 4px max(10px,env(safe-area-inset-left));grid-template-columns:minmax(0,1fr) 136px;grid-template-rows:46px minmax(180px,1fr) 64px;column-gap:12px}
  .app.screen-table .table-top{grid-area:1/1/2/3}.app.screen-table .compact-hud{grid-area:1/1;width:calc(100% - 112px);max-width:520px;justify-self:end;margin-left:112px;height:42px}
  .app.screen-table .compact-hud small{font-size:8px}.app.screen-table .compact-hud strong{font-size:17px}
  .app.screen-table .table-tools>.coin-holder{display:none!important}
- .app.screen-table .table-scene{grid-area:2/1;max-width:640px;min-height:0}
- .app.screen-table .table{inset:38px 30px 22px;transform:none;height:auto;min-height:96px;border-radius:45%}
+ .app.screen-table .table-scene{--felt-height:clamp(124px,calc(100dvh - 174px),300px);--felt-width:min(calc(100% - 76px),calc(var(--felt-height)*2.15));grid-area:2/1;max-width:720px;min-height:0}
+ .app.screen-table .table{inset:32px auto auto 50%;width:var(--felt-width);height:var(--felt-height);transform:translateX(-50%);min-height:0;border-radius:44%}
  .app.screen-table .table:before{inset:11px;border-radius:45%}
  .app.screen-table .seat,.app.screen-table .self-seat{--portrait-size:44px;width:70px;max-width:70px;gap:0}
  .app.screen-table .seat-2{left:50%;top:-38px;transform:translateX(-50%)}.app.screen-table .seat-2 strong{position:absolute!important;left:calc(100% + 4px);top:7px;width:88px;text-align:left}
@@ -93,14 +95,14 @@
  .app.screen-table .seat-1{right:-28px;top:48%;transform:translateY(-50%)}.app.screen-table .seat-3{left:-28px;top:48%;transform:translateY(-50%)}
  .app.screen-table .self-seat{left:50%;bottom:-27px;transform:translateX(-50%)}.app.screen-table .self-seat strong{position:absolute!important;left:calc(100% + 4px);top:16px;width:92px;text-align:left}.app.screen-table .self-seat small{display:none}
  .app.screen-table .seat-1 small,.app.screen-table .seat-3 small{display:none}.app.screen-table .seat .backs{top:calc(100% + 3px)}
- .app.screen-table .table-host{top:2px;right:26px;width:64px;height:66px}
+ .app.screen-table .table-host{top:0;right:calc(50% - var(--felt-width)/2 + 10px);width:58px;height:60px}
  .app.screen-table .dealer-speech,.app.screen-table .dealer-speech.fifth-sar{top:7px;right:2px;left:auto;transform:none;width:130px;max-width:130px;padding:7px;font-size:10px;line-height:1.3}
  .app.screen-table .table-scene>.dealer-speech{right:-148px}
  .app.screen-table .dealer-speech:after{left:-7px;right:auto;top:18px;bottom:auto;transform:rotate(135deg)}
- .app.screen-table .plays{width:146px;height:44px;top:50%;transform:translate(-50%,-50%);min-height:0}
- .app.screen-table .played,.app.screen-table .trick-slot{top:0!important}.app.screen-table .play-0{left:0}.app.screen-table .play-1{left:38px}.app.screen-table .play-2{left:76px}.app.screen-table .play-3{left:114px}
- .app.screen-table .center>.pile{left:24%;top:25%;transform:translate(-50%,-50%) scale(.8)}
- .app.screen-table .hand-hint{display:none}.app.screen-table .hand{grid-area:3/1;align-self:center;padding:8px 0 0;height:82px}
+ .app.screen-table .plays{width:94px;height:88px;top:51%;transform:translate(-50%,-50%);min-height:0}
+ .app.screen-table .play-2{left:34px;top:0}.app.screen-table .play-0{left:34px;top:52px}.app.screen-table .play-1{left:68px;top:26px}.app.screen-table .play-3{left:0;top:26px}
+ .app.screen-table .center>.pile{left:18%;top:42%;transform:translate(-50%,-50%) scale(.8)}
+ .app.screen-table .hand-hint{display:none}.app.screen-table .hand{grid-area:3/1;align-self:center;padding:0;height:64px}
  .app.screen-table .hand>button.card-button:not(:first-child){margin-left:calc(var(--hand-card)*-.28)!important}
  .app.screen-table .actions{grid-area:2/2/4/3;display:flex;flex-direction:column;justify-content:flex-end;align-items:stretch;gap:5px;padding:0 0 2px;align-self:stretch;min-height:0}
  .app.screen-table .turn-label{line-height:15px;font-size:10px;min-height:15px}
@@ -115,14 +117,11 @@
 @media (max-width:1024px) and (orientation:portrait){
  .app.screen-table .dealer-speech,.app.screen-table .dealer-speech.fifth-sar{top:calc(50% - var(--mobile-table-height)/2 - 52px)}
 }
-@media (orientation:landscape) and (max-height:550px){
- .app.screen-table .table{--landscape-table-width:min(calc(100% - 60px),clamp(330px,calc((100dvh - 196px)*2.8),560px));left:50%;right:auto;width:var(--landscape-table-width);transform:translateX(-50%)}
-}
 /* Selection gets its own space instead of covering player portraits. */
 @media (max-width:1024px) and (orientation:portrait){
- .app.screen-table .table-page:has(.rung-banner.choosing-stake){--mobile-table-height:160px;grid-template-rows:44px 48px 4px minmax(220px,1fr) 0 0 280px}
+ .app.screen-table .table-page:has(.rung-banner.choosing-stake){--mobile-table-height:160px;grid-template-rows:44px 48px 4px minmax(200px,1fr) 0 0 304px}
  .app.screen-table .table-page:has(.rung-banner.choosing-stake) .hand,.app.screen-table .table-page:has(.rung-banner.choosing-stake) .hand-hint,.app.screen-table .table-page:has(.rung-banner.choosing-stake) .actions{display:none}
- .app.screen-table .rung-banner.choosing-stake{position:fixed;left:10px;right:10px;top:auto;bottom:max(8px,env(safe-area-inset-bottom));transform:none;width:auto;min-width:0;max-width:560px;max-height:272px;margin:0 auto;z-index:30;background:#0b3028}
+ .app.screen-table .rung-banner.choosing-stake{position:fixed;left:10px;right:10px;top:auto;bottom:max(8px,env(safe-area-inset-bottom));transform:none;width:auto;min-width:0;max-width:560px;max-height:296px;overflow-y:auto;margin:0 auto;z-index:30;background:#0b3028}
  .app.screen-table .table-page:has(.rung-banner.choosing-stake) .table-host{width:60px;height:66px;top:calc(50% - var(--mobile-table-height)/2 - 34px)}
  .app.screen-table .table-page:has(.rung-banner.choosing-stake) .dealer-speech{display:none}
  .app.screen-table .rung-banner.choosing-stake .suit-choices small{display:block;font-size:9px}.app.screen-table .rung-banner.choosing-stake .suit-choices b{font-size:20px;line-height:22px}
@@ -134,7 +133,7 @@
  .app.screen-table .table-page:has(.rung-banner.choosing-stake) .compact-hud{grid-area:1/1/2/3;width:calc(100% - 240px);max-width:520px;justify-self:center;margin:0}
  .app.screen-table .table-page:has(.rung-banner.choosing-stake) .hand,.app.screen-table .table-page:has(.rung-banner.choosing-stake) .actions,.app.screen-table .table-page:has(.rung-banner.choosing-stake) .dealer-speech{display:none}
  .app.screen-table .rung-banner.choosing-stake{position:fixed;left:auto;right:max(10px,env(safe-area-inset-right));top:54px;bottom:8px;width:min(300px,44vw);max-width:none;min-width:0;max-height:none;margin:0;transform:none;box-sizing:border-box;background:#0b3028;z-index:30;overflow-y:auto}
- .app.screen-table .table-page:has(.rung-banner.choosing-stake) .table{width:calc(100% - 60px);inset:42px auto 40px;left:50%;transform:translateX(-50%);min-height:0}
+ .app.screen-table .table-page:has(.rung-banner.choosing-stake) .table{width:calc(100% - 60px);inset:42px auto 40px;height:auto;left:50%;transform:translateX(-50%);min-height:0}
  .app.screen-table .rung-banner.choosing-stake h3{font-size:12px;margin:2px 0}.app.screen-table .rung-banner.choosing-stake .caller-hand-preview{margin:4px 0}.app.screen-table .rung-banner.choosing-stake .caller-hand-preview img{width:26px;height:37px}
  .app.screen-table .rung-banner.choosing-stake .suit-choices button{height:42px;min-height:42px}.app.screen-table .rung-banner.choosing-stake .suit-choices small{font-size:9px}.app.screen-table .rung-banner.choosing-stake .suit-choices b{font-size:20px;line-height:22px}
  .app.screen-table .rung-banner.choosing-stake .caller-stakes button{min-height:40px}.app.screen-table .rung-banner.choosing-stake .caller-stakes{margin-top:3px;padding-top:3px}
@@ -142,9 +141,57 @@
 /* Keep the partner's fan above the felt and the local stack clear of their portrait. */
 @media (orientation:landscape) and (max-height:550px){
  .app.screen-table .seat.seat-2 .backs{top:6px;right:calc(100% + 4px);left:auto;transform:none}
- .app.screen-table .table-coin-layer{--bank-0-x:74%;--bank-0-y:85%;--bank-1-x:78%;--bank-1-y:55%;--bank-3-x:22%;--bank-3-y:55%}
+ .app.screen-table .table-coin-layer{--bank-0-x:72%;--bank-0-y:82%;--bank-1-x:78%;--bank-1-y:64%;--bank-3-x:22%;--bank-3-y:64%;--bank-2-x:32%;--bank-2-y:14%;--mobile-pot-x:75%;--mobile-pot-y:25%}
 }
 @media (orientation:landscape) and (max-height:550px){
  .app.screen-table .table-page[data-phase=waiting] .table-scene{grid-area:2/1/4/2}
- .app.screen-table .table-page[data-phase=waiting] .table{top:44px;bottom:50px;width:min(calc(100% - 60px),560px)}
+ .app.screen-table .table-page[data-phase=waiting] .table{top:44px;bottom:50px;height:auto;width:min(calc(100% - 60px),460px)}
+}
+
+/* Browser chrome leaves some phones less than 300 CSS pixels in landscape. */
+@media (orientation:landscape) and (max-height:329px){
+ .app.screen-table .table-page,.app.screen-table .table-page[data-phase=waiting]{min-height:270px;--hand-card:34px;--trick-card:24px;grid-template-rows:44px minmax(160px,1fr) 58px}
+ .app.screen-table .table-scene{--felt-height:110px;--felt-width:min(calc(100% - 90px),275px)}
+ .app.screen-table .table{top:30px}
+ .app.screen-table .seat,.app.screen-table .self-seat{--portrait-size:36px}
+ .app.screen-table .seat-2{top:-28px}.app.screen-table .self-seat{bottom:-22px}
+ .app.screen-table .self-seat strong{top:8px}
+ .app.screen-table .plays{width:88px;height:78px;top:50%}
+ .app.screen-table .play-2{left:32px;top:0}.app.screen-table .play-0{left:32px;top:44px}.app.screen-table .play-1{left:64px;top:22px}.app.screen-table .play-3{left:0;top:22px}
+ .app.screen-table .table-coin-layer{--bank-2-x:32%;--bank-2-y:14%;--mobile-pot-x:78%;--bank-0-x:68%;--bank-0-y:84%;--bank-1-x:78%;--bank-1-y:56%}
+ .app.screen-table .center>.pile{left:18%;top:30%}
+ .app.screen-table .table-chip-bank>strong,.app.screen-table .dealer-chip-tray strong{font-size:9px}
+ .app.screen-table .table-host{width:48px;height:50px;top:0}
+ .app.screen-table .hand{height:58px}
+ .app.screen-table .table-page:has(.rung-banner.choosing-stake) .table{top:34px;bottom:30px}
+}
+@media (max-width:1024px) and (orientation:portrait), (orientation:landscape) and (max-height:550px){
+ .app.screen-table .rung-banner.choosing-stake [role=timer]{font-size:11px;line-height:14px;display:block;margin:2px 0}
+ .app.screen-table .rung-banner.choosing-stake h3{font-size:12px;line-height:16px;margin:2px 0}
+ .app.screen-table .center>.pile>strong{font-size:11px;line-height:12px;grid-column:1;grid-row:2}
+ .app.screen-table .center>.pile .pile-stack{grid-column:1;grid-row:1}
+}
+
+@media (max-width:1024px) and (orientation:portrait){
+ .app.screen-table .table-page:has(.rung-banner.choosing-stake) .table-coin-layer{--bank-3-x:30%;--bank-3-y:65%;--bank-1-x:70%;--bank-1-y:65%;--bank-0-x:72%;--bank-0-y:88%}
+}
+@media (orientation:landscape) and (max-height:550px){
+ .app.screen-table .self-seat .caller-coin,.app.screen-table .self-seat .dealer-coin{top:22px}
+}
+@media (orientation:landscape) and (max-height:329px){
+ .app.screen-table .self-seat .caller-coin,.app.screen-table .self-seat .dealer-coin{top:16px}
+ .app.screen-table .rung-banner.choosing-stake{top:50px;bottom:6px}
+ .app.screen-table .rung-banner.choosing-stake h3{font-size:10px;text-align:left;padding-right:80px;white-space:nowrap}
+ .app.screen-table .rung-banner.choosing-stake [role=timer]{position:absolute;right:8px;top:7px;font-size:10px;margin:0}
+ .app.screen-table .rung-banner.choosing-stake .caller-hand-preview{margin:3px 0}.app.screen-table .rung-banner.choosing-stake .caller-hand-preview img{width:22px;height:31px}
+ .app.screen-table .rung-banner.choosing-stake .suit-choices{margin:3px 0;gap:4px}.app.screen-table .rung-banner.choosing-stake .suit-choices button{height:40px;min-height:40px}
+ .app.screen-table .rung-banner.choosing-stake .caller-stakes{gap:3px;margin-top:2px;padding-top:3px}.app.screen-table .rung-banner.choosing-stake .caller-stakes label{font-size:10px;line-height:14px}
+ .app.screen-table .rung-banner.choosing-stake .caller-stakes small{font-size:9px;line-height:12px}.app.screen-table .rung-banner.choosing-stake .caller-stakes button{min-height:36px;height:36px;padding:4px}
+}
+
+@media (orientation:landscape) and (max-height:329px){
+ .app.screen-table .rung-banner.choosing-stake{padding:5px}
+ .app.screen-table .rung-banner.choosing-stake h3{margin:0;line-height:14px}
+ .app.screen-table .rung-banner.choosing-stake .caller-stakes output{font-size:14px;line-height:16px}
+ .app.screen-table .rung-banner.choosing-stake .confirm-rung-stake{margin-top:2px!important}
 }

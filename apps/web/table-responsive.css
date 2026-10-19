@@ -58,7 +58,7 @@
 @media(orientation:landscape) and (max-height:550px){
  .app.screen-table{overflow-y:visible}.app.screen-table .table-page{min-height:346px;grid-template-rows:42px 12px minmax(140px,1fr) 12px 80px 48px}
  .app.screen-table .table-page[data-phase=waiting]{grid-template-rows:42px 12px minmax(190px,1fr) 0 0 42px}
- .app.screen-table .plays{width:152px;height:42px;min-height:0;top:50%;transform:translate(-50%,-50%)}.app.screen-table .played,.app.screen-table .trick-slot{top:0!important}.app.screen-table .play-0{left:0}.app.screen-table .play-1{left:40px}.app.screen-table .play-2{left:80px}.app.screen-table .play-3{left:120px}
+ .app.screen-table .plays{width:152px;height:42px;min-height:0;top:50%;transform:translate(-50%,-50%)}.app.screen-table .play-0{left:0}.app.screen-table .play-1{left:40px}.app.screen-table .play-2{left:80px}.app.screen-table .play-3{left:120px}
 }
 @media(orientation:landscape) and (max-height:550px){
  /* Clear the old two-column landscape grid, including inherited column spans. */
