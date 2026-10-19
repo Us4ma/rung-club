@@ -7,7 +7,11 @@ export class LobbyMusic {
  constructor(private create:()=>HTMLAudioElement=()=>new Audio('/audio/lobby-midnight.mp3')){}
  configure(enabled:boolean,volume:number){this.enabled=enabled;this.volume=Number.isFinite(volume)?Math.max(0,Math.min(1,volume)):.35;this.sync();}
  setForeground(active:boolean){this.foreground=active;this.sync();}
- resume(){this.sync();}
+ resume(){
+  // A failed network/media load leaves an Audio element unusable until reloaded.
+  if(this.track?.error){this.track.pause();this.track.removeAttribute('src');this.track.load();this.track=null;}
+  this.sync();
+ }
  private sync(){
   if(!this.enabled||!this.foreground){this.track?.pause();return;}
   if(!this.track){this.track=this.create();this.track.loop=true;this.track.preload='none';}

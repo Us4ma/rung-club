@@ -9,13 +9,16 @@ export function initialSoundSettings(){
 }
 export function useLobbyAudio({active,enabled,volume}:{active:boolean;enabled:boolean;volume:number}){
  const player=useRef<LobbyMusic|null>(null);
+ const current=useRef({active,enabled,volume});current.current={active,enabled,volume};
  useEffect(()=>{const music=new LobbyMusic();player.current=music;
   const visibility=()=>music.setForeground(!document.hidden);
   const hide=()=>music.setForeground(false);
   const native=(e:Event)=>music.setForeground((e as CustomEvent).detail?.active===true&&!document.hidden);
-  const retry=()=>music.resume();visibility();
-  document.addEventListener('visibilitychange',visibility);window.addEventListener('pagehide',hide);window.addEventListener('pageshow',visibility);window.addEventListener('rung-app-state',native);document.addEventListener('pointerdown',retry);document.addEventListener('keydown',retry);
-  return()=>{music.dispose();player.current=null;document.removeEventListener('visibilitychange',visibility);window.removeEventListener('pagehide',hide);window.removeEventListener('pageshow',visibility);window.removeEventListener('rung-app-state',native);document.removeEventListener('pointerdown',retry);document.removeEventListener('keydown',retry);};
+  const retry=()=>{const state=current.current;music.configure(state.active&&state.enabled,state.volume);music.resume();};
+  // Touch browsers may grant audio permission only once the finger is lifted.
+  const gestures=['pointerdown','pointerup','touchend','click','keydown'] as const;visibility();
+  document.addEventListener('visibilitychange',visibility);window.addEventListener('pagehide',hide);window.addEventListener('pageshow',visibility);window.addEventListener('rung-app-state',native);gestures.forEach(type=>document.addEventListener(type,retry,{capture:true,passive:true}));
+  return()=>{music.dispose();player.current=null;document.removeEventListener('visibilitychange',visibility);window.removeEventListener('pagehide',hide);window.removeEventListener('pageshow',visibility);window.removeEventListener('rung-app-state',native);gestures.forEach(type=>document.removeEventListener(type,retry,true));};
  },[]);
  useEffect(()=>player.current?.configure(active&&enabled,volume),[active,enabled,volume]);
 }
