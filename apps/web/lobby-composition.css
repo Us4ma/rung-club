@@ -146,3 +146,11 @@
  .app.screen-lobby>header.lobby-hud .player-progress{flex:0 1 130px;width:130px;max-width:130px;min-width:0}
  .app.screen-lobby>header.lobby-hud .xp-track{width:100%;max-width:120px;height:5px;margin-top:5px}
 }
+
+/* Dealer stands behind the rail, with raised hands clear of its upper edge. */
+@media (orientation:landscape) and (max-height:550px) and (max-width:1100px){
+ .app.screen-lobby .lobby.lobby .lobby-host{z-index:1}
+ .app.screen-lobby .lobby.lobby .lobby-host>.dealer{bottom:80px}
+ .app.screen-lobby .lobby.lobby .lobby-table-front{z-index:2}
+ .app.screen-lobby .lobby.lobby .lobby-play-area{z-index:4}
+}
