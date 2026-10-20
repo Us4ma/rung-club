@@ -48,3 +48,33 @@ body .app.screen-leaderboard:not(.screen-login):not(.screen-table){background:li
 @media(orientation:landscape) and (max-height:600px){.app .weekly-standings .table-player-card{width:min(620px,100%);padding:13px}.weekly-standings .table-player-identity{margin-bottom:9px}.weekly-standings .table-player-identity>.avatar{width:44px;height:44px}.weekly-standings .table-player-stats>div{padding:7px}.weekly-standings .table-player-stats strong{font-size:20px}}
 @media(min-width:651px) and (min-height:601px){.league-row{grid-template-columns:28px minmax(80px,1fr) 135px 54px}.league-outcome.outcome-provisional{font-size:8px}}
 @media(max-width:650px) and (orientation:portrait){.league-row{grid-template-columns:21px minmax(60px,1fr) 90px 37px}.league-outcome.outcome-provisional{font-size:6px}}
+
+/* Fit the complete top three into the sidebar instead of scrolling one card away. */
+@media(min-width:651px), (orientation:landscape){
+ .weekly-standings .league-podium{display:grid;grid-template-rows:auto repeat(3,minmax(0,1fr));align-content:start;align-self:start;height:100%;max-height:310px;min-height:0;gap:7px;padding:0;overflow:hidden;box-sizing:border-box;container-type:size}
+ .weekly-standings .league-top-title{font-size:20px;line-height:1.2;margin:0 3px 2px}
+ .weekly-standings .league-podium-place{grid-template-columns:28px minmax(0,44px) minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:2px 8px;min-height:0;padding:12px 8px 6px;box-sizing:border-box}
+ .weekly-standings .league-podium-place>.league-avatar-button{width:clamp(24px,15cqh,44px)!important;height:clamp(24px,15cqh,44px)!important;min-width:0!important;min-height:0!important;justify-self:center}
+ .weekly-standings .league-podium-place .avatar{width:100%;height:100%;min-width:0;min-height:0;object-fit:cover}
+ .weekly-standings .league-podium-place strong,.weekly-standings .league-podium-place>.league-coins{font-size:12px;line-height:1.2}
+ .weekly-standings .league-podium-place .league-rank-medal{width:26px;height:29px;font-size:20px}
+ .weekly-standings .league-podium-place>.league-outcome{top:3px;right:6px}
+}
+@media(orientation:landscape) and (max-height:600px){
+ .weekly-standings .league-top-title{font-size:15px}
+ .weekly-standings .league-podium{gap:4px}
+ .weekly-standings .league-podium-place{grid-template-columns:22px 30px minmax(0,1fr);gap:1px 5px;padding:8px 5px 3px}
+ .weekly-standings .league-podium-place>.league-avatar-button{width:clamp(20px,18cqh,30px)!important;height:clamp(20px,18cqh,30px)!important}
+ .weekly-standings .league-podium-place strong,.weekly-standings .league-podium-place>.league-coins{font-size:10px}
+ .weekly-standings .league-podium-place .league-rank-medal{width:21px;height:23px;font-size:16px}
+}
+/* Rank, portrait and name occupy separate rows on phones; no medal/avatar overlap. */
+@media(max-width:650px) and (orientation:portrait){
+ .weekly-standings .league-podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:6px;overflow:visible}
+ .weekly-standings .league-podium-place,.weekly-standings .league-podium-place.place-1{display:flex;flex-direction:column;justify-content:flex-start;align-items:center;gap:5px;padding:7px 4px 8px;min-width:0;order:initial}
+ .weekly-standings .league-podium-place .league-rank-medal{position:static;flex:none;width:22px;height:25px;font-size:17px;margin:0;line-height:1}
+ .weekly-standings .league-podium-place>.league-avatar-button{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important}
+ .weekly-standings .league-podium-place .avatar,.weekly-standings .league-podium-place.place-1 .avatar{width:44px;height:44px;object-fit:cover}
+ .weekly-standings .league-podium-place strong{display:block;flex:none;max-width:100%;margin:0;line-height:1.3}
+ .weekly-standings .league-podium-place>.league-coins{flex:none;line-height:1.2}
+}
