@@ -133,3 +133,16 @@
  .app.screen-lobby .lobby.lobby .lobby-table-surface{position:static;isolation:auto}
  .app.screen-lobby .lobby.lobby .lobby-table-front{inset:auto -12px -6px!important;top:calc(100% - 110px)!important;height:auto!important;background:url('/art/lobby/lobby-tray.svg') center top/100% 100% no-repeat!important;border:0!important;border-radius:0!important;box-shadow:none!important;z-index:-1}
 }
+
+/* Landscape: full dealer silhouette in front of the rail and compact profile HUD. */
+@media (orientation:landscape) and (max-height:550px) and (max-width:1100px){
+ .app.screen-lobby .lobby.lobby .lobby-host{z-index:3;overflow:visible}
+ .app.screen-lobby .lobby.lobby .lobby-host>.dealer{top:auto;bottom:36px;left:50%;width:100%;height:calc(100% - 40px);max-width:300px;max-height:none;object-fit:contain;object-position:center bottom;transform:translateX(-50%)}
+ .app.screen-lobby>header.lobby-hud .profile-pill{max-width:200px}
+ .app.screen-lobby>header.lobby-hud .profile-link{gap:10px}
+ .app.screen-lobby>header.lobby-hud .player-avatar{display:block;position:relative;width:42px;height:42px;flex:0 0 42px}
+ .app.screen-lobby>header.lobby-hud .player-avatar .avatar{width:42px;height:42px}
+ .app.screen-lobby>header.lobby-hud .player-avatar .level-badge{position:absolute;right:-3px;bottom:-1px;width:18px;min-width:18px;height:20px;font-size:11px;z-index:1}
+ .app.screen-lobby>header.lobby-hud .player-progress{flex:0 1 130px;width:130px;max-width:130px;min-width:0}
+ .app.screen-lobby>header.lobby-hud .xp-track{width:100%;max-width:120px;height:5px;margin-top:5px}
+}
