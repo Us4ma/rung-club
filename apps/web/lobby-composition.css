@@ -154,3 +154,45 @@
  .app.screen-lobby .lobby.lobby .lobby-table-front{z-index:2}
  .app.screen-lobby .lobby.lobby .lobby-play-area{z-index:4}
 }
+
+/* Browser bars can leave under 380px of landscape height: budget the actual viewport. */
+@media (orientation:landscape) and (max-height:380px) and (max-width:1100px){
+ .app.screen-lobby{display:flex;flex-direction:column;height:100dvh;min-height:0;padding-bottom:env(safe-area-inset-bottom);overflow:hidden}
+ .app.screen-lobby>header.lobby-hud{flex:0 0 54px;min-height:54px;height:54px;margin:0;width:100%;grid-template-rows:44px;grid-template-columns:116px minmax(0,1fr) 112px 140px;gap:6px;padding-top:5px;padding-bottom:5px;overflow:visible;z-index:5}
+ .app.screen-lobby>header.lobby-hud .lobby-identity .brand{width:116px;height:40px;min-height:40px;font-size:11px;letter-spacing:.6px}
+ .app.screen-lobby>header.lobby-hud .profile-pill{max-width:180px}
+ .app.screen-lobby>header.lobby-hud .player-avatar{width:38px;height:38px;flex-basis:38px}
+ .app.screen-lobby>header.lobby-hud .player-avatar .avatar{width:38px;height:38px}
+ .app.screen-lobby>header.lobby-hud .player-progress{width:115px;max-width:115px;flex-basis:115px}
+ .app.screen-lobby>header.lobby-hud .player-progress strong{font-size:10px}
+ .app.screen-lobby>header.lobby-hud .xp-track{max-width:105px}
+ .app.screen-lobby>header.lobby-hud .hud-actions>.icon-button{width:44px;height:44px;min-height:44px;min-width:44px;padding:0!important;overflow:hidden;border-radius:50%!important;box-shadow:inset 0 0 0 2px #061810!important;filter:none!important;background:linear-gradient(#164430,#071e15)!important}
+ .app.screen-lobby>header.lobby-hud .hud-actions>.icon-button::before,.app.screen-lobby>header.lobby-hud .hud-actions>.icon-button::after{display:none!important}
+ .app.screen-lobby>header.lobby-hud .hud-actions>.icon-button>.ui-icon,.app.screen-lobby>header.lobby-hud .hud-actions>.icon-button>.social-icon{width:21px;height:21px;min-width:21px;max-width:21px;max-height:21px;filter:none;transform:none}
+ .app.screen-lobby>.lobby-background{flex:1;min-height:0;overflow-x:hidden;overflow-y:auto}
+ .app.screen-lobby .lobby.lobby{height:100%;min-height:0;padding:4px 12px 6px}
+ .app.screen-lobby .lobby.lobby .house-content{height:100%;min-height:0}
+ .app.screen-lobby .lobby.lobby .lobby-arrangement{height:100%;min-height:190px;grid-template-columns:minmax(130px,.65fr) minmax(0,2fr);grid-template-rows:minmax(0,1fr);gap:10px}
+ .app.screen-lobby .lobby.lobby .lobby-host{height:100%;min-height:0;overflow:hidden;align-self:stretch;z-index:1}
+ .app.screen-lobby .lobby.lobby .lobby-host>.dealer{top:auto;bottom:24px;height:calc(100% - 24px);max-height:calc(100% - 24px);width:100%;max-width:260px;object-fit:contain;object-position:center bottom}
+ .app.screen-lobby .lobby.lobby .lobby-table-front{top:calc(100% - 64px)!important}
+ .app.screen-lobby .lobby.lobby .lobby-table-surface{align-self:stretch;min-height:0}
+ .app.screen-lobby .lobby.lobby .lobby-play-area{height:100%;min-height:0;padding:0;justify-content:flex-end}
+ .app.screen-lobby .lobby.lobby .game-menu{flex:1;min-height:140px;height:auto;max-height:220px;gap:7px}
+ .app.screen-lobby .lobby.lobby .game-tile{min-height:0;height:100%;padding:5px 5px 6px;overflow:hidden}
+ .app.screen-lobby .lobby.lobby .mode-tile{flex:1;min-height:0;height:auto;gap:2px;overflow:hidden}
+ .app.screen-lobby .lobby.lobby .lobby-mode-art{flex:0 1 32px;height:32px;max-height:32px;min-height:0;margin:0}
+ .app.screen-lobby .lobby.lobby .game-tile h2{font-size:18px;line-height:1.1;margin:2px 0}
+ .app.screen-lobby .lobby.lobby .mode-tile>p{font-size:9px;line-height:1.2;min-height:0;margin:2px 0}
+ .app.screen-lobby .lobby.lobby .band .lobby-mode-art{display:none}
+ .app.screen-lobby .lobby.lobby .band .mode-tile{padding-top:22px}
+ .app.screen-lobby .lobby.lobby .band .mode-tile::before{top:5px;font-size:8px;padding:3px 8px}
+ .app.screen-lobby .lobby.lobby .game-tile>.mode-play{flex:none;height:44px;min-height:44px;margin-top:4px;font-size:12px;padding:5px 3px}
+ .app.screen-lobby .lobby.lobby .club-shortcuts{flex:none;margin-top:6px}
+ .app.screen-lobby .lobby.lobby .club-shortcuts>button{height:44px;min-height:44px;padding:4px 12px;width:240px}
+ .app.screen-lobby .lobby.lobby .club-shortcuts strong{font-size:12px}
+ .app.screen-lobby .lobby.lobby .club-shortcuts small{font-size:8px}
+ .app.screen-lobby .lobby.lobby .club-shortcuts .ui-icon{width:22px;height:22px}
+ .app.screen-lobby .lobby.lobby .lobby-arrangement:has(.private-room){height:auto;min-height:100%;grid-template-rows:minmax(190px,1fr)}
+ .app.screen-lobby .lobby.lobby .lobby-arrangement:has(.private-room) .lobby-host{min-height:190px}
+}
