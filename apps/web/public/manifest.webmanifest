@@ -1,1 +1,1 @@
-{"name":"Rung Club","short_name":"Rung","start_url":"/","display":"standalone","background_color":"#092e26","theme_color":"#092e26","icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]}
+{"name":"Rung Club","short_name":"Rung","start_url":"/","display":"standalone","orientation":"portrait","background_color":"#092e26","theme_color":"#092e26","icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]}

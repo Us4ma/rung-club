@@ -1,0 +1,7 @@
+.portrait-gate{position:fixed;inset:0;width:100dvw;height:100dvh;max-width:none;max-height:none;margin:0;border:0;padding:16px max(20px,env(safe-area-inset-right)) 16px max(20px,env(safe-area-inset-left));box-sizing:border-box;color:#e6c77e;background:radial-gradient(ellipse at center,#164632,#061e16 75%);outline:none}
+.portrait-gate::backdrop{background:#061e16}
+.portrait-gate[open]{display:grid;place-items:center}
+.portrait-gate-content{text-align:center;max-width:440px}
+.portrait-gate-content svg{display:block;margin:0 auto 12px;width:44px;height:55px}
+.portrait-gate-content h1{font:26px/1.2 Georgia,serif;margin:0 0 8px;color:#f0dca4}
+.portrait-gate-content p{font:13px/1.5 system-ui,sans-serif;color:#c1d0bf;margin:0}
