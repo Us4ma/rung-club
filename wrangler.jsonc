@@ -40,6 +40,6 @@
     ]
   },
   "account_id": "8e638895a04cfa485556e2764db878db",
-  "triggers": {"crons": ["0 6 * * *"]},
+  "triggers": {"crons": ["0 6 * * *", "0 0 * * 1"]},
   "workers_dev": true
 }
