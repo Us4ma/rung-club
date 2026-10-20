@@ -13,3 +13,4 @@
 .app.screen-profile .profile-drawer .profile-name-edit{display:grid;place-items:center;flex:none;width:36px;height:44px;min-height:44px;padding:6px;background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;color:#edc674!important}
 .profile-name-edit svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 1px #0008)}
 .profile-name-editor{padding:0 0 20px;margin-bottom:20px;border-bottom:1px solid #b49a6344}.profile-drawer .profile-name-editor .username-form,.profile-drawer .profile-name-editor .local-name{margin-top:0}.name-editor-actions{display:flex;gap:8px;margin-top:12px}
+.profile-stats-grid .stats-gold-icon{width:21px;height:21px;margin-right:6px;vertical-align:baseline}.profile-stats-grid strong{overflow-wrap:anywhere}

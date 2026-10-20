@@ -36,3 +36,15 @@ body .app.screen-leaderboard:not(.screen-login):not(.screen-table){background:li
 
 /* Plain top-three portraits: no decorative avatar rings on any screen size. */
 .weekly-standings .league-podium-place .avatar{border:0!important;box-shadow:none!important;outline:0;background:transparent!important}
+/* Stats float over this standings surface; its rows remain visible behind them. */
+.weekly-standings>.table-player-layer{position:absolute;inset:0;z-index:100;padding:16px;border-radius:inherit;overflow:hidden}
+.app .weekly-standings .table-player-backdrop,.app .weekly-standings .table-player-backdrop:hover{background:#00140d66!important;background-image:none!important;backdrop-filter:blur(1px);border:0!important;border-radius:inherit!important;box-shadow:none!important}
+.app .weekly-standings .table-player-card{width:min(420px,100%);max-height:100%;padding:22px 18px 16px;background:#09281eee;box-shadow:0 12px 35px #0008;border:1px solid #b49b60}
+.app .weekly-standings .table-player-card .table-player-close{background:transparent!important;border:0!important;box-shadow:none!important;min-height:36px;width:36px;height:36px;font-size:25px}
+.weekly-standings .table-player-identity{gap:12px;margin-bottom:15px}.weekly-standings .table-player-identity>.avatar{width:58px;height:58px}
+.weekly-standings .table-player-identity h2{font-size:18px}.weekly-standings .table-player-stats>div{padding:9px 11px}.weekly-standings .table-player-stats strong{font-size:23px;margin-top:5px;overflow-wrap:anywhere}.weekly-standings .table-player-stats small{font-size:10px}
+.league-outcome.outcome-provisional{font-size:7px}
+@media(max-width:650px) and (orientation:portrait){.weekly-standings>.table-player-layer{padding:10px}.app .weekly-standings .table-player-card{padding:20px 13px 14px}.league-outcome.outcome-provisional{font-size:5px}}
+@media(orientation:landscape) and (max-height:600px){.app .weekly-standings .table-player-card{width:min(620px,100%);padding:13px}.weekly-standings .table-player-identity{margin-bottom:9px}.weekly-standings .table-player-identity>.avatar{width:44px;height:44px}.weekly-standings .table-player-stats>div{padding:7px}.weekly-standings .table-player-stats strong{font-size:20px}}
+@media(min-width:651px) and (min-height:601px){.league-row{grid-template-columns:28px minmax(80px,1fr) 135px 54px}.league-outcome.outcome-provisional{font-size:8px}}
+@media(max-width:650px) and (orientation:portrait){.league-row{grid-template-columns:21px minmax(60px,1fr) 90px 37px}.league-outcome.outcome-provisional{font-size:6px}}

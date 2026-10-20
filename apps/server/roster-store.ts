@@ -1,3 +1,4 @@
+import {totalGoldWon} from './coin-earnings.ts';
 import {ensureCoinStandings} from './coin-schema.ts';
 import {publicPlayerName} from '../../packages/protocol/player-name.ts';
 import {safeAvatarPhoto} from '../../packages/protocol/avatars.ts';
@@ -14,7 +15,7 @@ export function rosterStatements(db:IdentityDatabase,s:State,ids:(string|null)[]
 }
 export async function rosterProfile(db:IdentityDatabase,id:string){const p=rosterById(id);if(!p)return null;await ensureRoster(db);
  const rows=(await db.prepare('SELECT match_id,won,sars,outcome,points,mode,created,source FROM roster_results WHERE roster_id=? ORDER BY created,match_id').bind(id).all()).results as any[];
- const stats=rows.reduce((s,r)=>addDeal(s,!!r.won,r.sars,r.outcome),emptyStats());
+ const stats={...rows.reduce((s,r)=>addDeal(s,!!r.won,r.sars,r.outcome),emptyStats()),totalGoldWon:await totalGoldWon(db,id,true)};
  return {...p,isBot:true,persistent:true,stats,losses:stats.matches-stats.wins,points:rows.reduce((n,r)=>n+r.points,0),history:rows.slice(-30).reverse()};
 }
 // Credit only positive profit from real, completed coin settlements.
