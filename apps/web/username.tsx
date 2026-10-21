@@ -1,3 +1,4 @@
+import {withRequestTimeout} from './request-timeout.ts';
 import {deviceHeaders} from './device-session.ts';
 import {useRef,useState} from 'react';
 import {restoredIdentity} from './auth.ts';
@@ -10,13 +11,22 @@ export async function accountProfile(name?:string,tutorialStatus?:import('../../
  const url=(native?ONLINE_ORIGIN:'')+'/api/identity';
  const legacy=Number(localStorage.getItem('avatar'));const target=url+(legacy>=1&&legacy<=5?'?legacyAvatar='+legacy:'');
  const readOnly=name===undefined&&tutorialStatus===undefined&&bandUnlockSeen===undefined&&avatar===undefined&&avatarSource===undefined&&practiceDifficulty===undefined;
- for(let attempt=0;attempt<2;attempt++){
-  let r:Response;
-  try{r=await fetch(target,{method:readOnly?'GET':'PATCH',signal:AbortSignal.timeout(10000),headers:{...deviceHeaders(),Authorization:'Bearer '+token,...(readOnly?{}:{'Content-Type':'application/json'})},...(readOnly?{}:{body:JSON.stringify({name,tutorialStatus,bandUnlockSeen,avatar,avatarSource,practiceDifficulty})})});}
-  catch{if(readOnly&&attempt===0)continue;throw Error('Your profile connection timed out or was interrupted. Please retry.');}
+ for(let attempt=0;attempt<3;attempt++){
+  let r:Response;let data:any;
+  try{
+   ({r,data}=await withRequestTimeout(async signal=>{
+    const r=await fetch(target,{method:readOnly?'GET':'PATCH',signal,headers:{...deviceHeaders(),Authorization:'Bearer '+token,...(readOnly?{}:{'Content-Type':'application/json'})},...(readOnly?{}:{body:JSON.stringify({name,tutorialStatus,bandUnlockSeen,avatar,avatarSource,practiceDifficulty})})});
+    const data=await r.json();
+    return {r,data};
+   },30000));
+  }catch{
+   if(readOnly&&attempt<2){await new Promise(resolve=>setTimeout(resolve,750*(attempt+1)));continue;}
+   throw Error('The profile service could not be reached. Check your connection and tap Reconnect; your account is safe.');
+  }
   if(r.status===401&&attempt===0){token=await user.getIdToken(true);continue;}
-  if(readOnly&&attempt===0&&[408,429,500,502,503,504].includes(r.status))continue;
-  const data=await r.json().catch(()=>null);
+  if(readOnly&&attempt<2&&[408,429,500,502,503,504].includes(r.status)){
+   await new Promise(resolve=>setTimeout(resolve,750*(attempt+1)));continue;
+  }
   if(!r.ok)throw Object.assign(Error(data?.error||'Profile service unavailable ('+r.status+'). Please retry.'),{code:data?.code});
   if(!data?.user?.uid)throw Error('The profile service returned an incomplete profile. Please retry.');
   return data;
