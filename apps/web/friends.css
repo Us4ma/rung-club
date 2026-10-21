@@ -16,3 +16,22 @@
 .app .table-player-card .profile-friend-control button.user-plus .social-icon{width:25px;height:25px}.profile-friend-control .unavailable{opacity:.5;cursor:default}
 .app .friends-layer button:focus-visible,.app .profile-friend-control button:focus-visible,.app .friends-hud:focus-visible{outline:2px solid #ead19a;outline-offset:3px}
 @media(max-width:600px){.app .table-tools>.friends-hud{width:34px;height:34px;min-width:34px;min-height:34px;padding:6px;border-width:1px!important}.app .table-tools>.friends-hud .social-icon{width:20px;height:20px}}
+
+/* Friends and Settings share the same filled circular control, including portrait. */
+.app.screen-table .table-page .table-tools>.icon-button:is(.friends-hud,[aria-label="Table settings"]){
+ display:grid;place-items:center;box-sizing:border-box;flex:none;width:44px;height:44px;min-width:44px;min-height:44px;aspect-ratio:1;padding:0!important;border:1px solid #927b4e!important;border-image:none!important;border-radius:50%!important;background:#0b241e!important;background-image:none!important;background-clip:border-box!important;box-shadow:inset 0 1px #fff2!important;color:#ead19a!important;filter:none!important;line-height:1
+}
+.app.screen-table .table-page .table-tools>.icon-button:is(.friends-hud,[aria-label="Table settings"])::before,
+.app.screen-table .table-page .table-tools>.icon-button:is(.friends-hud,[aria-label="Table settings"])::after{content:none!important;display:none!important}
+.app.screen-table .table-page .table-tools>.icon-button:is(.friends-hud,[aria-label="Table settings"]) :is(.social-icon,.ui-icon){display:block;width:24px;height:24px;min-width:24px;max-width:24px;max-height:24px;margin:0;object-fit:contain}
+.app.screen-lobby>header.lobby-hud .hud-actions>.friends-hud{border:2px solid #dcb96b!important;background:linear-gradient(#164430,#071e15)!important;background-clip:border-box!important;box-shadow:inset 0 1px #fff2!important}
+.app.screen-lobby>header.lobby-hud .hud-actions>.friends-hud .social-icon{width:26px;height:26px}
+@media(max-width:600px) and (orientation:portrait){
+ .app.screen-table .table-page .table-tools>.icon-button:is(.friends-hud,[aria-label="Table settings"]){width:40px;height:40px;min-width:40px;min-height:40px}
+ .app.screen-table .table-page .table-tools>.icon-button:is(.friends-hud,[aria-label="Table settings"]) :is(.social-icon,.ui-icon){width:23px;height:23px;min-width:23px;max-width:23px;max-height:23px}
+ .app.screen-lobby>header.lobby-hud .hud-actions>.friends-hud .social-icon{width:23px;height:23px}
+}
+@media(orientation:landscape) and (max-height:550px) and (max-width:1100px){
+ .app.screen-table .table-page .table-tools>.icon-button:is(.friends-hud,[aria-label="Table settings"]){width:36px;height:36px;min-width:36px;min-height:36px}
+ .app.screen-table .table-page .table-tools>.icon-button:is(.friends-hud,[aria-label="Table settings"]) :is(.social-icon,.ui-icon){width:21px;height:21px;min-width:21px;max-width:21px;max-height:21px}
+}
