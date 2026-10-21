@@ -3,7 +3,7 @@ import React,{useEffect,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
 import {socialRequest} from './friends.tsx';
 import './coin-experience.css';
-type TableCoins={buyIn?:number;tier?:number;stake:number;balances:number[];wallet?:number;waiting:number[];waitUntil?:number};
+type TableCoins={reserveRequired?:boolean;buyIn?:number;tier?:number;stake:number;balances:number[];wallet?:number;waiting:number[];waitUntil?:number};
 export function CoinExperience({uid,table,onLeave,onRefresh,motion=true,sound=true}:{motion?:boolean;sound?:boolean;uid?:string;table?:{room:string;seat:number;started:boolean;coins:TableCoins|null};onLeave:()=>void;onRefresh:()=>void}){
  const [gift,setGift]=useState<{x:number;y:number}|null>(null);
  const [state,setState]=useState<any>(null),[page,setPage]=useState<'welcome'|'shop'|'refill'|'buyin'|null>(null),[amount,setAmount]=useState(2500),[auto,setAuto]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState(''),[now,setNow]=useState(Date.now());const panel=useRef<HTMLElement>(null),lock=useRef(false),seen=useRef(''),version=useRef(0),topup=useRef({key:'',id:''});
