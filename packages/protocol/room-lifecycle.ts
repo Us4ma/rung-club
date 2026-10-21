@@ -22,7 +22,7 @@ export function expireRoomTurn(session:Session,clock:Clock|undefined,m:Membershi
  if(m.disconnectedAt[session.state.turn]!==null)session.state.interrupted=true;
  const seat=session.state.turn;const moved=expireTurn(session,clock,now);if(moved&&!clock.automatic){m.autoPlay??=[false,false,false,false];m.autoPlay[seat]=true;}return moved;
 }
-export function prepareTransition(m:Membership,s:State,now:number){if(s.phase==='finished'&&!m.closed)m.transitionAt??=now+RESULT_PAUSE_MS;}
+export function prepareTransition(m:Membership,s:State,now:number,pause=RESULT_PAUSE_MS){if(s.phase==='finished'&&!m.closed)m.transitionAt??=now+pause;}
 export function advanceTable(session:Session,m:Membership,now:number){
  if(m.closed||m.pendingPartners.length||session.state.phase!=='finished'||!m.transitionAt||now<m.transitionAt)return false;
  const id=session.state.matchId;if(!session.advance(id))return false;session.state.interrupted=m.departed.some(Boolean);m.transitionAt=undefined;m.settledDeal=undefined;return true;

@@ -19,13 +19,13 @@ export function TableCoinMotion({coins,seat,motion,sound,hydrated,serverNow}:{co
  useLayoutEffect(()=>{const el=root.current;if(!el)return;const update=()=>{const bounds=el.getBoundingClientRect(),host=el.closest('.table-scene')?.querySelector('.table-host')?.getBoundingClientRect();if(!bounds.width||!bounds.height)return;setPositions(chipBankPositions(bounds.width));if(!host)return;setDealer({x:Math.max(62,Math.min(82,(host.left+host.width/2-bounds.left)/bounds.width*100)),y:Math.max(12,Math.min(24,(host.bottom-bounds.top)/bounds.height*100+8))});};update();const observer=new ResizeObserver(update);observer.observe(el);return()=>observer.disconnect();},[!!coins]);
  useEffect(()=>{if(!coins){timers.current.forEach(clearTimeout);timers.current=[];seen.current={deal:'',result:''};initialized.current=false;setStage('idle');return;}const schedule=(fn:()=>void,ms:number)=>timers.current.push(setTimeout(fn,ms));if(!initialized.current){initialized.current=true;if(hydrated){seen.current={deal:coins.deal||'',result:coins.settlement?.id||''};if(coins.settlement?.id===coins.deal)setResult(coins.settlement??null);return;}}
   if(coins.deal&&coins.deal!==seen.current.deal){timers.current.forEach(clearTimeout);timers.current=[];seen.current.deal=coins.deal;setResult(null);if(!document.hidden){setStage('stake');tableAudio.effect('coinStake',1000);schedule(()=>setStage('idle'),reduced?160:850);}}
-  const settled=coins.settlement;if(settled&&settled.id===coins.deal&&settled.id!==seen.current.result){seen.current.result=settled.id;const age=Math.max(0,serverNow-settled.at);if(age>4100||document.hidden)return;timers.current.forEach(clearTimeout);timers.current=[];setResult(settled);if(reduced){setStage('pay');tableAudio.effect('coinPay',1100);schedule(()=>setStage('pay-low'),650);schedule(()=>setStage('idle'),1300);}else{
+  const settled=coins.settlement;if(settled&&settled.id===coins.deal&&settled.id!==seen.current.result){seen.current.result=settled.id;const age=Math.max(0,serverNow-settled.at);if(age>6200||document.hidden)return;timers.current.forEach(clearTimeout);timers.current=[];setResult(settled);if(reduced){setStage('pay');tableAudio.effect('coinPay',1100);schedule(()=>setStage('pay-low'),650);schedule(()=>setStage('idle'),1300);}else{
    setStage('settled');
-   if(settled.extra)schedule(()=>{setStage('extra');tableAudio.effect('coinStake',650);},Math.max(0,1450-age));
-   schedule(()=>{setStage('count');tableAudio.effect('coinCount',500);},Math.max(0,2150-age));
-   schedule(()=>{setStage('pay');tableAudio.effect('coinPay',750);},Math.max(0,2500-age));
-   schedule(()=>{setStage('pay-low');if(settled.payouts?.some((n,i)=>i%2!==settled.winner&&n>0))tableAudio.effect('coinPay',750);},Math.max(0,3300-age));
-   schedule(()=>setStage('idle'),Math.max(0,4100-age));
+   if(settled.extra)schedule(()=>{setStage('extra');tableAudio.effect('coinStake',650);},Math.max(0,1700-age));
+   schedule(()=>{setStage('count');tableAudio.effect('coinCount',500);},Math.max(0,2700-age));
+   schedule(()=>{setStage('pay');tableAudio.effect('coinPay',750);},Math.max(0,3900-age));
+   schedule(()=>{setStage('pay-low');if(settled.payouts?.some((n,i)=>i%2!==settled.winner&&n>0))tableAudio.effect('coinPay',750);},Math.max(0,5000-age));
+   schedule(()=>setStage('idle'),Math.max(0,6200-age));
   }}
  },[coins?.deal,coins?.settlement?.id,hydrated,reduced]);
  useEffect(()=>{const cancel=()=>{if(document.hidden){timers.current.forEach(clearTimeout);timers.current=[];setStage('idle');}};document.addEventListener('visibilitychange',cancel);return()=>{document.removeEventListener('visibilitychange',cancel);timers.current.forEach(clearTimeout);};},[]);

@@ -1,7 +1,7 @@
 /** Server-authoritative coin arithmetic shared with settlement presentation. */
-export function dealSettlement(stake:number,winner:number,outcome:string|undefined,scores?:number[],refund=false,goonSupplement=true){
+export function dealSettlement(stake:number,winner:number,outcome:string|undefined,scores?:number[],refund=false,goonSupplement:number|boolean=true){
  if(!Number.isSafeInteger(stake)||stake<=0||stake%2)throw Error('Invalid deal stake');
- const extra=goonSupplement&&!refund&&outcome==='goon-kot'&&[0,1].includes(winner)?stake/2:0;
+ const extra=goonSupplement&&!refund&&outcome==='goon-kot'&&[0,1].includes(winner)?(typeof goonSupplement==='number'?Math.min(stake,goonSupplement):stake):0;
  const contributions=[0,1,2,3].map(seat=>stake+(seat%2!==winner?extra:0));
  const pot=contributions.reduce((a,b)=>a+b,0);
  let payouts:number[]=[0,0,0,0];
