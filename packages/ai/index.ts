@@ -91,9 +91,18 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
    const chance=info.reliability(p,c.suit,opponents);
    // Under eligible-senior rules only a non-Ace, non-trump lead can collect.
    const eligible=v.policy.collectionLead==='any'||p.bhaag;
-   strongest=Math.max(strongest,chance*(eligible?1:.25));
+   strongest=Math.max(strongest,eligible?chance:0);
   }
   return strongest;
+ };
+ // Planning the next eligible lead is crucial before the opening collection,
+ // and whenever control of a growing Double Sar pile is at stake.
+ const setupWeight=v.history.length+2>=v.policy.opening
+  ?(v.history.length+2===v.policy.opening?115:48+pile*5):12;
+ const followThrough=(c:Card,chance:number,collect:boolean)=>{
+  if(collect||v.history.length>=12)return 0;
+  const run=continuation(c);
+  return chance*run*setupWeight*(skill==='advanced'?1:.8);
  };
  const score=(c:Card)=>{
   const p=asPlay(v,seat,c,leading),lead=v.trick[0]??p;
@@ -104,7 +113,7 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
    const chance=info.reliability(p,c.suit,opponents);
    const collect=canCollect(v,seat,p);
    value+=chance*(urgency+(collect?65+pile*9:0));
-   if(skill==='advanced')value+=chance*continuation(c)*(collect?7:12+pile);
+   value+=followThrough(c,chance,collect);
    if(p.effective===2&&c.rank===14)value-=22;
    // Do not pull our team's remaining trumps without a collection/control reason.
    if(p.trump&&!collect)value-=style==='attacking'?2:6;
@@ -118,7 +127,7 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
      // Overtaking a partner is justified only by meaningful protection of the Sar.
      value-=partnerSafe*(style==='partnership'?36:28);
     }
-    if(skill==='advanced'&&!collect)value+=chance*continuation(c)*(8+pile);
+    value+=followThrough(c,chance,collect);
    }else if(style==='partnership')value+=2;
   }else{
    // Blocking an opponent's immediate collection is worth more than an ordinary Sar.

@@ -22,3 +22,8 @@ export function dealSettlement(stake:number,winner:number,outcome:string|undefin
  }
  return {winner,payout:payouts[winner]??0,payouts,extra,contributions,pot,rake:pot-payouts.reduce((a,b)=>a+b,0)};
 }
+
+/** Only the calling partnership can lose through Goon Kot. */
+export function seatStakeRequirement(stake:number,seat:number,caller?:number){
+ return stake*(Number.isInteger(caller)&&caller!>=0&&caller!<4&&seat%2===caller!%2?2:1);
+}
