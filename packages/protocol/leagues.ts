@@ -6,7 +6,7 @@ export const LEAGUES=[
  {name:'Champions',color:'#69c6ae',prizes:[6000,3600,2400,900]},
  {name:'World Champions',color:'#bd98dc',prizes:[10000,6000,4000,1500]},
 ] as const;
-export const LEAGUE_RULES={includeRoster:true,capacity:40,minMembers:8,minActive:8,maxPairDealsPerDay:3,maxDealsPerDay:20};
+export const LEAGUE_RULES={includeRoster:true,capacity:40,minMembers:8,minActive:8};
 export const WEEK_MS=7*86400000;
 export function leagueWeek(now=Date.now()){const monday=Date.UTC(1970,0,5);return Math.floor((now-monday)/WEEK_MS)*WEEK_MS+monday;}
 export type LeagueOutcome='promote'|'retain'|'demote'|'elite'|'provisional';
