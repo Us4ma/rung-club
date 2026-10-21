@@ -56,3 +56,8 @@
 }
 .app .coin-holder .coin-wallet .coin-amount-long{font-size:calc(var(--amount-size) * .86);letter-spacing:0}
 .app .coin-holder .coin-wallet{flex-shrink:0}
+
+/* The plus is anchored to the holder, so the holder must include the full counter width. */
+.app .coin-holder,.app .coin-holder.compact{
+ width:max-content;max-width:none!important;flex:0 0 auto;
+}
