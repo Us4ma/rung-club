@@ -14,3 +14,5 @@
 .dealer-chip-tray{background:transparent;border:0;box-shadow:none;padding:0;text-shadow:0 1px 3px #001b15}
 @media(max-width:600px){.table-chip-bank>.casino-stack{transform:scale(.65);margin-right:-6px}}
 @media(orientation:landscape) and (max-height:550px){}
+
+.table-coin-layer[data-stage=pay-low] .dealer-chip-tray small{display:block;position:absolute;top:100%;left:50%;transform:translateX(-50%);font-size:9px;color:#e4cf99;text-shadow:0 1px 2px #000}.flight-stake strong{color:#f4d991;font:700 11px system-ui;text-shadow:0 2px 3px #000}
