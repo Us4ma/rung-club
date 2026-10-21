@@ -47,3 +47,12 @@
 .screen-table .table-tools>.coin-holder{max-width:100px}
 @media(min-width:601px) and (max-width:930px){.screen-table .table-tools>.coin-holder{display:none!important}}
 @media(max-width:360px){.app .coin-holder:not(.compact){--bar-width:70px}.app.screen-lobby>header .lobby-identity .brand{font-size:10px;letter-spacing:0;padding:4px;gap:3px}.app.screen-lobby>header .brand .hud-brand-spade{font-size:18px}}
+
+/* Keep six-character balances readable between the raised coin and shop button. */
+.app .coin-holder .coin-wallet .coin-amount{
+ flex:0 0 auto;max-width:none;overflow:visible;text-overflow:clip;
+ padding-left:calc(var(--overlap) + 4px);padding-right:calc(var(--edge) + 5px);
+ min-width:var(--bar-width);white-space:nowrap;font-variant-numeric:tabular-nums;
+}
+.app .coin-holder .coin-wallet .coin-amount-long{font-size:calc(var(--amount-size) * .86);letter-spacing:0}
+.app .coin-holder .coin-wallet{flex-shrink:0}
