@@ -2,7 +2,7 @@ import {deviceHeaders} from './device-session.ts';
 import {restoredIdentity} from './auth.ts';
 import {ONLINE_ORIGIN} from './deployment.ts';
 import type {LeagueSnapshot} from '../../packages/protocol/leagues.ts';
-export const MATCHMAKING_NOTICE='Weekly league standings count net winnings and losses from verified Open Rung Kot and Goon Kot results. Ordinary split-pot deals do not affect league earnings. Private rooms, invited tables, practice, gifts and purchases do not add league earnings.';
+export const MATCHMAKING_NOTICE='Weekly league standings count the winning team’s verified Open Rung net gold earnings, including split-pot wins, Kot and Goon Kot. The losing team’s returned pot share is not league earnings. Existing qualifying net-loss rules apply. Private rooms, invited tables, practice, gifts and purchases do not add league earnings.';
 let cached:LeagueSnapshot|null=null,loadedAt=0,owner='';
 const pending=new Map<string,Promise<LeagueSnapshot>>();
 export async function leagueRequest(body?:object,tier?:number,group?:string){

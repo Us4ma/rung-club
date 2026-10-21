@@ -42,7 +42,7 @@ export async function coinAction(db:D1Database,uid:string,body:any){await ensure
    else statements.push(db.prepare('INSERT OR IGNORE INTO ledger VALUES(?,?,?,0,?,?)').bind('settlement:'+body.deal+':'+player,player,credit,body.refund?'deal-refund':'deal-payout',Date.now()));
   }
   if(plan.extra)statements.push(db.prepare('INSERT OR IGNORE INTO coin_events VALUES(?,?,?,?,?,?)').bind('goon-extra:'+body.deal,body.room,body.deal,'goon-kot-extra',2*plan.extra,Date.now()));
-  statements.push(...await leagueSettlement(db,{deal:body.deal,eligible:body.leagueEligible===true&&!body.refund&&(body.outcome==='kot'||body.outcome==='goon-kot'),players:players.map((uid,seat)=>uid??body.leagueRosterIds?.[seat]??null),profits:players.map((_,seat)=>{const net=plan.payouts[seat]-plan.contributions[seat];return seat%2===body.winner?net:Math.min(0,net);}),winner:body.winner}));
+  statements.push(...await leagueSettlement(db,{deal:body.deal,eligible:body.leagueEligible===true&&!body.refund,players:players.map((uid,seat)=>uid??body.leagueRosterIds?.[seat]??null),profits:players.map((_,seat)=>{const net=plan.payouts[seat]-plan.contributions[seat];return seat%2===body.winner?net:Math.min(0,net);}),winner:body.winner}));
 
   statements.push(db.prepare("UPDATE coin_deals SET status='settled' WHERE id=?").bind(body.deal),db.prepare('INSERT OR IGNORE INTO coin_events VALUES(?,?,?,?,?,?)').bind('rake:'+body.deal,body.room,body.deal,body.refund?'refund':'rake',plan.rake,Date.now()));await db.batch(statements);return Response.json({ok:true,...plan});
  }
