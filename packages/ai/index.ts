@@ -1,4 +1,4 @@
-import {deck,winning,play,view,seeded,type State,type View,type Card,type Play,type Suit} from '../core/index.ts';
+import {deck,winning,play,view,seeded,legal as legalCards,canReveal,reveal,type State,type View,type Card,type Play,type Suit} from '../core/index.ts';
 export type Skill='beginner'|'intermediate'|'advanced';
 export type PlayingStyle='balanced'|'conservative'|'attacking'|'partnership';
 const clamp=(n:number)=>Math.max(0,Math.min(1,n));
@@ -162,46 +162,113 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
  };
  // Score once per legal card. Equal-strength decisions conserve the cheaper card.
  const ranked=cards.map(c=>({card:c,value:score(c)})).sort((a,b)=>b.value-a.value||cost(a.card)-cost(b.card)||a.card.id.localeCompare(b.card.id));
- if(skill==='advanced'&&v.revealed&&Math.max(...v.counts)<=3){
-  const planned=endgame(v,seat,ranked.map(x=>x.card),info,style);
+ const end=Math.max(...v.counts)<=3;
+ // Leads shape the opening collection and the resources left for later Sars.
+ // Also compare responses when a large uncollected pile is at risk.
+ const strategic=leading||v.history.length>=3&&v.pile>=3;
+ if(skill==='advanced'&&(end&&v.revealed||!end&&strategic)){
+  const candidates=end?ranked.map(x=>x.card):ranked.slice(0,3).map(x=>x.card);
+  if(!end&&leading)for(const suit of ['S','H','D','C']){
+   const alternative=ranked.find(x=>x.card.suit===suit)?.card;
+   if(alternative&&!candidates.some(c=>c.id===alternative.id))candidates.push(alternative);
+  }
+  const planned=planContinuations(v,seat,candidates,info,style);
   if(planned)return planned;
  }
  return ranked[0].card.id;
 }
-/** Sample only public-information-consistent hands; never read a real opponent hand. */
-function endgame(v:View,seat:number,candidates:Card[],info:ReturnType<typeof knowledge>,style:PlayingStyle){
+/** Compare continuations on public-information-consistent deals, never real hidden hands.
+ * Early/middle candidates must beat the heuristic across most sampled worlds.
+ * The existing endgame search retains its complete legal candidate set.
+ */
+function planContinuations(v:View,seat:number,candidates:Card[],info:ReturnType<typeof knowledge>,style:PlayingStyle){
+ const end=Math.max(...v.counts)<=3;
  let hash=2166136261;
  for(const c of [...v.hand,...v.history.flat().map(p=>p.card),...v.trick.map(p=>p.card)])for(const char of c.id)hash=Math.imul(hash^char.charCodeAt(0),16777619);
- const random=seeded(hash>>>0),values=new Map(candidates.map(c=>[c.id,0]));
+ const random=seeded(hash>>>0),values=new Map(candidates.map(c=>[c.id,0])),better=new Map(candidates.map(c=>[c.id,0]));
  let samples=0;
- for(let attempt=0;attempt<48&&samples<8;attempt++){
+ for(let attempt=0;attempt<64&&samples<8;attempt++){
   const hands:Card[][]=[[],[],[],[]];hands[seat]=[...v.hand];
   const remaining=info.unseen.map(c=>({card:c,seats:[0,1,2,3].filter(s=>s!==seat&&!info.voids[s].has(c.suit)&&v.counts[s]>0),tie:random()})).sort((a,b)=>a.seats.length-b.seats.length||a.tie-b.tie);
   let valid=true;
   for(const {card,seats} of remaining){
-   const available=seats.filter(s=>hands[s].length<v.counts[s]);
-   const capacity=available.reduce((sum,s)=>sum+v.counts[s]-hands[s].length,0);
+   const count=(s:number)=>v.counts[s]-(v.indicator&&s===v.caller?1:0);
+   const available=seats.filter(s=>hands[s].length<count(s));
+   const capacity=available.reduce((sum,s)=>sum+count(s)-hands[s].length,0);
    if(!capacity){valid=false;break;}
    let pick=random()*capacity,target=available[available.length-1];
-   for(const s of available){pick-=v.counts[s]-hands[s].length;if(pick<0){target=s;break;}}
+   for(const s of available){pick-=count(s)-hands[s].length;if(pick<0){target=s;break;}}
    hands[target].push(card);
   }
-  if(!valid||hands.some((h,s)=>h.length!==v.counts[s]))continue;
-  const state={...v,hands,stock:[[],[],[],[]],indicator:null} as State;
+  if(!valid||hands.some((h,s)=>h.length!==v.counts[s]-(v.indicator&&s===v.caller?1:0)))continue;
+  // For Band Rung, the caller knows their own sealed card; other seats sample
+  // a possible sealed card rather than obtaining the actual hidden trump.
+  let indicator=v.indicator;
+  if(!v.revealed&&!indicator){indicator=hands[v.caller].splice(Math.floor(random()*hands[v.caller].length),1)[0];}
+  // Past deal summaries and opening animations cannot affect this deal's rules.
+  // Keep them out of disposable rollouts, especially on long-running tables.
+  const state={...v,hands,stock:[[],[],[],[]],indicator,trump:v.trump??indicator?.suit??null,table:undefined,opening:undefined,collections:[]} as State;
   samples++;
-  for(const candidate of candidates){
+  let baselineValue=0;
+  for(const [index,candidate] of candidates.entries()){
    let s=play(state,seat,candidate.id);
    while(s.phase==='playing'){
-    const next=view(s,s.turn);
-    s=play(s,s.turn,choose(next,s.turn,'intermediate',random,s.turn%2===seat%2?style:'balanced'));
+    let next=end?view(s,s.turn):rolloutView(s,s.turn);
+    if(next.canReveal){s=reveal(s,s.turn);next=end?view(s,s.turn):rolloutView(s,s.turn);}
+    s=play(s,s.turn,end?choose(next,s.turn,'intermediate',random,s.turn%2===seat%2?style:'balanced'):rolloutChoice(next,s.turn));
    }
    const ours=s.scores[seat%2],theirs=s.scores[1-seat%2];
-   values.set(candidate.id,values.get(candidate.id)!+ours-theirs+(ours>theirs?8:-8)+(ours===13?6:theirs===13?-6:0));
+   const value=ours-theirs+(ours>theirs?8:-8)+(ours===13?6:theirs===13?-6:0);
+   if(index===0)baselineValue=value;
+   if(value>baselineValue)better.set(candidate.id,better.get(candidate.id)!+1);
+   values.set(candidate.id,values.get(candidate.id)!+value);
   }
  }
  // Sparse or inconsistent public evidence falls back to the normal heuristic.
  if(samples<4)return null;
- return candidates.reduce((best,c)=>values.get(c.id)!>values.get(best.id)!?c:best).id;
+ const best=candidates.reduce((best,c)=>values.get(c.id)!>values.get(best.id)!?c:best);
+ if(!end&&(better.get(best.id)!<Math.ceil(samples*.625)||values.get(best.id)!-values.get(candidates[0].id)!<samples))return candidates[0].id;
+ return best.id;
+}
+/** Read-only redaction for disposable simulated states; avoids deep-copying twice. */
+function rolloutView(s:State,seat:number):View{
+ const {hands,stock,indicator,trump,invalidDeal,...rest}=s;
+ return {...rest,hand:hands[seat],counts:hands.map((h,i)=>h.length+(indicator&&i===s.caller?1:0)),trump:s.revealed||seat===s.caller?trump:null,indicator:seat===s.caller?indicator:null,legal:legalCards(s,seat).map(c=>c.id),canReveal:canReveal(s,seat)};
+}
+/** Cheap public-view policy for early/mid-deal counterfactual continuations. */
+function rolloutChoice(v:View,seat:number){
+ const legal=v.hand.filter(c=>v.legal.includes(c.id));
+ const cost=(c:Card)=>c.rank+(v.revealed&&c.suit===v.trump?9:0);
+ legal.sort((a,b)=>cost(a)-cost(b)||a.id.localeCompare(b.id));
+ const best=winning(v.trick);
+ if(best){
+  if(partner(best.seat,seat))return legal[0].id;
+  const beating=legal.filter(c=>winning([...v.trick,asPlay(v,seat,c,false)])!.seat===seat);
+  // Before the opening setup, do not spend an expensive trump on empty control.
+  if(v.history.length+2<v.policy.opening&&beating[0]&&cost(beating[0])-cost(legal[0])>9)return legal[0].id;
+  return (beating[0]??legal[0]).id;
+ }
+ const known=new Set([...v.hand,...v.history.flat().map(p=>p.card)].map(c=>c.id));
+ const unseen=deck().filter(c=>!known.has(c.id));
+ const score=(c:Card)=>{
+  const p=asPlay(v,seat,c,true),suit=v.hand.filter(x=>x.suit===c.suit);
+  const higher=unseen.filter(x=>x.suit===c.suit&&x.rank>p.effective).length;
+  const strength=14-higher*4;
+  const eligible=v.policy.collectionLead==='any'||p.bhaag;
+  let value=-cost(c)*.5;
+  if(v.history.length+2>=v.policy.opening){
+   value+=strength*(eligible&&v.streakSeat===seat?4:1.5);
+   if(c.rank===14&&suit.some(x=>x.rank===13))value+=10;
+  }else{
+   if(c.rank>=12&&suit.some(x=>x.id!==c.id&&x.rank>=12))value-=20;
+   value+=suit.length===1&&c.rank<11?4:0;
+   if(c.suit===v.trump&&suit.length>=5)value+=12;
+  }
+  if(p.effective===2&&c.rank===14)value-=40;
+  if(p.trump&&v.streakSeat===seat)value-=10;
+  return value;
+ };
+ return legal.map(c=>({c,value:score(c)})).sort((a,b)=>b.value-a.value)[0].c.id;
 }
 /** Prefer suit length and honours, using only the caller's opening cards. */
 export function chooseTrump(v:View):string{
