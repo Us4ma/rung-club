@@ -117,3 +117,16 @@
 @media (max-width:600px) and (orientation:portrait){
  .app.screen-table .table-page:has(.rung-banner.choosing-stake) .table-coin-layer{--bank-2-x:34%;--bank-2-y:36%}
 }
+
+/* Keep seat reactions inside the mobile stage and give color emoji ink room. */
+@media (max-width:600px) and (orientation:portrait), (max-width:950px) and (max-height:550px) and (orientation:landscape){
+ .app.screen-table .table-page .seat-reaction{left:calc(100% + 4px);right:auto;overflow:visible;padding:3px;box-sizing:content-box}
+ .app.screen-table .table-page .seat-1 .seat-reaction,.app.screen-table .table-page .seat-2 .seat-reaction{left:auto;right:calc(100% + 4px)}
+ .app.screen-table .table-page .self-seat .seat-reaction{left:calc(100% + 4px);right:auto}
+ .app.screen-table .table-page .seat-reaction>.reaction-emoji{
+  display:flex;align-items:center;justify-content:center;flex:none;box-sizing:border-box;
+  width:34px;height:34px;padding:3px;font-size:26px;line-height:1.2;overflow:visible
+ }
+ .app.screen-table .table-page .controls .emote-picker{position:fixed;left:auto;right:max(12px,env(safe-area-inset-right));bottom:max(76px,calc(env(safe-area-inset-bottom) + 64px));width:min(260px,calc(100vw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right)));box-sizing:border-box}
+ .app.screen-table .table-page .controls .emote-picker>div{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
