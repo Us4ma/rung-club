@@ -1,3 +1,4 @@
+import {rosterById} from '../../packages/protocol/roster.ts';
 import {FRIEND_REQUEST_TTL,FRIEND_INVITE_MS,type FriendRelation,type SocialPlayer,type GameInvite,type SocialAction,type FriendsState} from '../../packages/protocol/friends.ts';
 import {levelProgress,bandEligible} from '../../packages/protocol/progression.ts';
 import {publicPlayerName} from '../../packages/protocol/player-name.ts';
@@ -5,6 +6,8 @@ import {publicGoogleProfile} from './google-profile.ts';
 import {playerAvatar} from './avatar-profile.ts';
 export type SocialEnv={DB:D1Database;ROOMS:DurableObjectNamespace};
 const schema=[
+ `CREATE TABLE IF NOT EXISTS roster_friend_requests(requester TEXT NOT NULL REFERENCES accounts(uid),target TEXT NOT NULL,created INTEGER NOT NULL,updated INTEGER NOT NULL,expires INTEGER NOT NULL,status TEXT NOT NULL CHECK(status IN ('pending','cancelled','expired')),PRIMARY KEY(requester,target))`,
+ `CREATE INDEX IF NOT EXISTS roster_friend_pending ON roster_friend_requests(requester,status,expires)`,
  `CREATE TABLE IF NOT EXISTS friendships(low_uid TEXT NOT NULL REFERENCES accounts(uid),high_uid TEXT NOT NULL REFERENCES accounts(uid),requester TEXT NOT NULL,status TEXT NOT NULL CHECK(status IN ('pending','accepted','declined','cancelled','expired')),created INTEGER NOT NULL,updated INTEGER NOT NULL,expires INTEGER NOT NULL,PRIMARY KEY(low_uid,high_uid),CHECK(low_uid<high_uid))`,
  `CREATE INDEX IF NOT EXISTS friendships_high ON friendships(high_uid,status)`,
  `CREATE TABLE IF NOT EXISTS friend_invites(id TEXT PRIMARY KEY,sender TEXT NOT NULL REFERENCES accounts(uid),target TEXT NOT NULL REFERENCES accounts(uid),room TEXT NOT NULL,mode TEXT NOT NULL,status TEXT NOT NULL CHECK(status IN ('pending','scheduled','joined','declined','expired','cancelled','failed')),created INTEGER NOT NULL,expires INTEGER NOT NULL,changed INTEGER NOT NULL,reason TEXT NOT NULL DEFAULT '')`,
@@ -18,7 +21,8 @@ export async function socialRPC(env:SocialEnv,key:string,path:string,uid:string,
 export async function notifySocial(env:SocialEnv,...uids:string[]){await Promise.all([...new Set(uids)].map(uid=>socialRPC(env,'__device:'+uid,'social-notify',uid).catch(()=>null)));}
 const pair=(a:string,b:string)=>a<b?[a,b]:[b,a];
 export async function friendRelation(db:D1Database,viewer:string,target:string):Promise<FriendRelation>{
- if(viewer===target)return {status:'self'};await ensureSocialSchema(db);const [low,high]=pair(viewer,target);
+ if(viewer===target)return {status:'self'};await ensureSocialSchema(db);
+ if(rosterById(target)){const r=await db.prepare("SELECT updated,expires FROM roster_friend_requests WHERE requester=? AND target=? AND status='pending' AND expires>?").bind(viewer,target,Date.now()).first<{updated:number;expires:number}>();return r?{status:'sent',updated:r.updated,canResend:false}:{status:'none'};}const [low,high]=pair(viewer,target);
  const row=await db.prepare('SELECT requester,status,updated,expires FROM friendships WHERE low_uid=? AND high_uid=?').bind(low,high).first<{requester:string;status:string;updated:number;expires:number}>();
  if(row?.status==='accepted')return {status:'friends'};
  if(row?.status==='pending'&&row.expires>Date.now())return {status:row.requester===viewer?'sent':'incoming',updated:row.updated,canResend:false};return {status:'none',canResend:true};
@@ -31,13 +35,14 @@ export async function socialPresence(env:SocialEnv,uid:string):Promise<Presence>
  return {online:true,playing:!!room.member&&!!room.started,...(room.member?{room:lease.room,table:room}:{})};
 }
 export async function socialPlayer(env:SocialEnv,uid:string,viewerRoom?:string):Promise<SocialPlayer|null>{
+ const roster=rosterById(uid);if(roster)return {uid,name:roster.name,avatar:roster.avatar,level:1,online:false,playing:false,atTable:false,onYourTable:false};
  const account=await env.DB.prepare('SELECT name FROM accounts WHERE uid=? AND deleted=0').bind(uid).first<{name:string}>();if(!account)return null;
  const [google,avatar,total,presence]=await Promise.all([publicGoogleProfile(env.DB,uid),playerAvatar(env.DB,uid),env.DB.prepare('SELECT COALESCE(SUM(xp),0) xp FROM ledger WHERE uid=?').bind(uid).first<{xp:number}>(),socialPresence(env,uid)]);
  return {uid,name:google.displayName||publicPlayerName(account.name,uid),avatar,photoURL:google.photoURL,level:levelProgress(total?.xp||0).level,online:presence.online,playing:presence.playing,atTable:!!presence.room,onYourTable:!!viewerRoom&&presence.room===viewerRoom};
 }
 type Edge={low_uid:string;high_uid:string;requester:string;status:string;updated:number;expires:number};
 type InviteRow={id:string;sender:string;target:string;room:string;mode:'open'|'band';status:GameInvite['status'];created:number;expires:number;changed:number;reason:string};
-async function expireSocial(db:D1Database,uid:string){const now=Date.now();await db.batch([db.prepare("UPDATE friendships SET status='expired' WHERE status='pending' AND expires<=? AND (low_uid=? OR high_uid=?)").bind(now,uid,uid),db.prepare("UPDATE friend_invites SET status='expired',changed=? WHERE status='pending' AND expires<=? AND (sender=? OR target=?)").bind(now,now,uid,uid)]);}
+async function expireSocial(db:D1Database,uid:string){const now=Date.now();await db.batch([db.prepare("UPDATE roster_friend_requests SET status='expired' WHERE requester=? AND status='pending' AND expires<=?").bind(uid,now),db.prepare("UPDATE friendships SET status='expired' WHERE status='pending' AND expires<=? AND (low_uid=? OR high_uid=?)").bind(now,uid,uid),db.prepare("UPDATE friend_invites SET status='expired',changed=? WHERE status='pending' AND expires<=? AND (sender=? OR target=?)").bind(now,now,uid,uid)]);}
 /** Daily retention applies only to invitation records, never friendship or match data. */
 export async function cleanupFriendInvites(db:D1Database,now=Date.now()){
  await ensureSocialSchema(db);
@@ -48,9 +53,12 @@ export async function friendsState(env:SocialEnv,uid:string):Promise<FriendsStat
  await ensureSocialSchema(env.DB);await expireSocial(env.DB,uid);const now=Date.now();
  const [edges,invites]=await Promise.all([env.DB.prepare("SELECT f.* FROM friendships f JOIN accounts a ON a.uid=f.low_uid JOIN accounts b ON b.uid=f.high_uid WHERE (f.low_uid=? OR f.high_uid=?) AND f.status IN ('accepted','pending') AND a.deleted=0 AND b.deleted=0 LIMIT 300").bind(uid,uid).all<Edge>(),env.DB.prepare("SELECT i.* FROM friend_invites i JOIN accounts a ON a.uid=i.sender JOIN accounts b ON b.uid=i.target WHERE (i.sender=? OR i.target=?) AND a.deleted=0 AND b.deleted=0 AND (i.status IN ('pending','scheduled') OR i.changed>?) ORDER BY i.created DESC LIMIT 30").bind(uid,uid,now-120000).all<InviteRow>()]);
  const ids=new Set<string>();for(const e of edges.results)ids.add(e.low_uid===uid?e.high_uid:e.low_uid);for(const i of invites.results){ids.add(i.sender);ids.add(i.target);}
+ const rosterRequests=await env.DB.prepare("SELECT target,updated,expires FROM roster_friend_requests WHERE requester=? AND status='pending' AND expires>? ORDER BY updated DESC LIMIT 200").bind(uid,now).all<{target:string;updated:number;expires:number}>();
+ for(const r of rosterRequests.results)ids.add(r.target);
  const viewer=await socialPresence(env,uid);const profiles=new Map<string,SocialPlayer>();await Promise.all([...ids].map(async id=>{const player=await socialPlayer(env,id,viewer.room);if(player)profiles.set(id,player);}));
  const friends:SocialPlayer[]=[],incoming:FriendsState['incoming']=[],sent:FriendsState['sent']=[];
  for(const e of edges.results){const player=profiles.get(e.low_uid===uid?e.high_uid:e.low_uid);if(!player)continue;if(e.status==='accepted')friends.push(player);else(e.requester===uid?sent:incoming).push({player,updated:e.updated,expires:e.expires,canResend:false});}
+ for(const r of rosterRequests.results){const player=profiles.get(r.target);if(player)sent.push({player,updated:r.updated,expires:r.expires,canResend:false});}
  friends.sort((a,b)=>Number(b.online)-Number(a.online)||Number(a.playing)-Number(b.playing)||a.name.localeCompare(b.name));
  return {friends,incoming,sent,invites:invites.results.flatMap(i=>{const sender=profiles.get(i.sender),target=profiles.get(i.target);return sender&&target?[{id:i.id,sender,target,mode:i.mode,status:i.status,expires:i.expires,changed:i.changed,reason:i.reason,...((i.sender===uid||i.status==='joined')?{room:i.room}:{})}]:[];}),serverNow:now};
 }
@@ -63,6 +71,19 @@ export async function socialAction(env:SocialEnv,uid:string,input:SocialAction):
  await ensureSocialSchema(env.DB);await expireSocial(env.DB,uid);const now=Date.now();
  if(['request','accept-request','decline-request','cancel-request','remove-friend'].includes(input.action)){
   const target=String(input.target||'');if(!target||target.length>128||target===uid)return failure('Choose another player.',400);
+  if(rosterById(target)){
+   if(!['request','cancel-request'].includes(input.action))return failure('This request is awaiting a response.');
+   const relation=await friendRelation(env.DB,uid,target);
+   if(input.action==='request'){
+    if(relation.status==='sent')return Response.json({relationship:relation});
+    const recent=await env.DB.prepare('SELECT (SELECT COUNT(*) FROM friendships WHERE requester=? AND updated>?)+(SELECT COUNT(*) FROM roster_friend_requests WHERE requester=? AND updated>?) n').bind(uid,now-60000,uid,now-60000).first<{n:number}>();
+    if((recent?.n||0)>=5)return failure('Please wait before adding more players.',429);
+    const cap=await env.DB.prepare("SELECT (SELECT COUNT(*) FROM friendships WHERE (low_uid=? OR high_uid=?) AND status IN ('accepted','pending'))+(SELECT COUNT(*) FROM roster_friend_requests WHERE requester=? AND status='pending' AND expires>?) n").bind(uid,uid,uid,now).first<{n:number}>();
+    if((cap?.n||0)>=200)return failure('Your friends list is full.');
+    await env.DB.prepare("INSERT INTO roster_friend_requests(requester,target,created,updated,expires,status) VALUES(?,?,?,?,?,'pending') ON CONFLICT(requester,target) DO UPDATE SET updated=excluded.updated,expires=excluded.expires,status='pending'").bind(uid,target,now,now,now+FRIEND_REQUEST_TTL).run();
+   }else await env.DB.prepare("UPDATE roster_friend_requests SET status='cancelled',updated=? WHERE requester=? AND target=? AND status='pending'").bind(now,uid,target).run();
+   await notifySocial(env,uid);return Response.json({relationship:await friendRelation(env.DB,uid,target)});
+  }
   if(!await env.DB.prepare('SELECT uid FROM accounts WHERE uid=? AND deleted=0').bind(target).first())return failure('That player is unavailable.',404);
   const [low,high]=pair(uid,target);let relation=await friendRelation(env.DB,uid,target),changed=true;
   if(input.action==='request'){
