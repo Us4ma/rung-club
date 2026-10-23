@@ -2,13 +2,13 @@
    Fan transforms compose with HandMotion's independent translate animation. */
 .app.screen-table .table-page .hand{
  --fan-space:calc(min(100vw,1440px) - 80px);
- --fan-exposure:.86;display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;
+ --fan-exposure:.56;display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;
  gap:0;isolation:isolate;overflow:visible
 }
 .app.screen-table .table-page .hand>button.card-button{
  --fan-step:min(calc(var(--hand-card)*var(--fan-exposure)),calc((var(--fan-space) - var(--hand-card))/max(1,calc(var(--fan-count) - 1))));
  flex:0 0 var(--hand-card);width:var(--hand-card);max-width:none;height:calc(var(--hand-card)*1.4);
- margin-left:0!important;transform:translateY(var(--fan-drop,0px)) rotate(var(--fan-angle,0deg));
+ margin-left:0!important;transform:translateY(var(--fan-drop,0px)) rotate(calc(var(--fan-angle,0deg)*.8));
  transform-origin:50% 85%;z-index:var(--fan-index,0);outline:0;
  transition:transform 160ms ease-out,filter 160ms ease-out
 }
@@ -22,7 +22,7 @@
 }
 @media(hover:hover) and (pointer:fine){
  .app.screen-table .table-page .hand>button.card-button:not(.selected):not(:disabled):hover{
-  transform:translateY(calc(var(--fan-drop,0px) - 8px)) rotate(var(--fan-angle,0deg));z-index:80
+  transform:translateY(calc(var(--fan-drop,0px) - 8px)) rotate(calc(var(--fan-angle,0deg)*.8));z-index:80
  }
 }
 @media(max-width:600px) and (orientation:portrait){
@@ -43,7 +43,7 @@
 }
 @media(max-width:950px) and (max-height:550px) and (orientation:landscape){
  .app.screen-table .table-page .hand{--fan-space:calc(100vw - 350px);--fan-exposure:.58}
- .app.screen-table .table-page .hand>button.card-button{transform:translateY(calc(var(--fan-drop,0px)*.35)) rotate(var(--fan-angle,0deg))}
+ .app.screen-table .table-page .hand>button.card-button{transform:translateY(calc(var(--fan-drop,0px)*.35)) rotate(calc(var(--fan-angle,0deg)*.8))}
  .app.screen-table .table-page .hand>button.card-button.selected{transform:translateY(-10px) rotate(0deg);z-index:100}
 }
 @media(prefers-reduced-motion:reduce){
