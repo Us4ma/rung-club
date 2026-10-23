@@ -192,3 +192,6 @@
  .app.screen-lobby>header .lobby-identity .brand{height:36px;min-height:36px;width:210px;padding:4px 10px;font-size:18px}
  .app.screen-lobby>header .profile-pill{width:260px}
 }
+
+/* Center mode CTA labels independently of shared button layouts. */
+.screen-lobby .lobby .game-tile>.mode-play{display:flex;align-items:center;justify-content:center;text-align:center;gap:0}

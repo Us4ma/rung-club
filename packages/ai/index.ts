@@ -72,6 +72,19 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
  const remainingSeats=Array.from({length:3-v.trick.length},(_,i)=>(seat-i-1+8)%4);
  const opponentsAfter=remainingSeats.filter(s=>!partner(s,seat));
  const pile=v.pile+1,late=v.hand.length<=3,urgency=v.history.length===12?145:16+pile*2;
+ // Bank side-suit control until it can set up the opening collection.
+ // Evaluate the whole holding, not just trump strength or the card's printed rank.
+ const reserveValue=(c:Card)=>{
+  if(v.history.length+2>=v.policy.opening||late||!v.revealed||c.suit===v.trump)return 0;
+  const suit=v.hand.filter(x=>x.suit===c.suit).sort((a,b)=>b.rank-a.rank);
+  if(suit.length<2||!suit.slice(0,2).some(x=>x.id===c.id))return 0;
+  const setup={...v,senior:seat,lastAce:false};
+  const first=asPlay(setup,seat,suit[0],true);
+  const second=asPlay({...setup,lastAce:suit[0].rank===14},seat,suit[1],true);
+  if(v.policy.collectionLead!=='any'&&!second.bhaag)return 0;
+  const control=info.reliability(first,c.suit,opponents)*info.reliability(second,c.suit,opponents);
+  return control*(skill==='advanced'?48:32);
+ };
  const cost=(c:Card)=>{
   const trump=v.revealed&&c.suit===v.trump;
   let value=(c.rank-2)*.65+(c.rank>=11?(c.rank-10)*1.35:0);
@@ -80,7 +93,7 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
   // Preserve a long-suit winner; prefer discarding low cards from a short side suit.
   const length=v.hand.filter(x=>x.suit===c.suit).length;
   if(!trump&&length===1&&c.rank<11)value-=2;
-  return value*(late?.55:1);
+  return value*(late?.55:1)+reserveValue(c);
  };
  const continuation=(played:Card)=>{
   const next={...v,senior:seat,lastAce:played.rank===14};
