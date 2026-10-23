@@ -1,12 +1,11 @@
-# Interface sound feedback
+# Interface audio
 
-Non-gameplay buttons use the same locally hosted Kenney CC0 Interface Sounds recordings already bundled in the table sprite. No new network audio dependency or paid service is introduced. Source and original license: https://kenney.nl/assets/interface-sounds and docs/third-party/kenney-interface-audio-LICENSE.txt.
+Lobby and drawer navigation use a dedicated 15 KB mono MP3 sprite at /audio/interface-v2/ui.mp3. Table recordings and event mapping are unchanged.
 
-- Tap / checkbox / radio: tick_004, existing tick excerpt.
-- Open panel / tab / profile: select_003, existing turn excerpt.
-- Back / close / cancel / decline: back_004, existing lose excerpt.
-- Primary action / submit: confirmation_001, existing reveal excerpt.
+Source: Kenney UI Audio, https://kenney.nl/assets/ui-audio
+Download: https://kenney.nl/media/pages/assets/ui-audio/490d233f68-1677590494/kenney_ui-audio.zip
+License: CC0; original license shipped beside the sprite.
 
-Interface effects play at 55% of the existing sprite level. They share the existing single output lane, are dropped while it is busy, and expire after 300 ms rather than accumulating. Rapid duplicate clicks are suppressed. Sound Effects remains opt-in under the existing settings. Browser gesture and foreground protections remain in force.
+Mapping: tap = click3; open = switch6; back = reversed switch6; confirm = switch12. Clips are high-pass filtered at 180 Hz, low-pass filtered at 4.6 kHz, softened with short fades and loudness processing, then encoded at 96 kbps. Inter-clip silence prevents bleed.
 
-One delegated click/change observer covers normal screens and portal drawers, including keyboard-generated button activation. Disabled controls, text inputs, range dragging, already-selected tabs, and card/turn controls do not receive extra sounds. Table-toolbar navigation can make UI feedback, but the table's confirmed-event cues, timing and card interactions are unchanged. Muting uses the existing lane clear behavior.
+UI sounds share the existing single audio lane, respect the Sound effects setting and foreground state, and drop while busy instead of overlapping or accumulating. Card controls retain their existing table effects. There are no hover sounds. Browser gesture unlock and silent fallback remain in place.
