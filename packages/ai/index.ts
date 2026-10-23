@@ -72,6 +72,13 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
  const remainingSeats=Array.from({length:3-v.trick.length},(_,i)=>(seat-i-1+8)%4);
  const opponentsAfter=remainingSeats.filter(s=>!partner(s,seat));
  const pile=v.pile+1,late=v.hand.length<=3,urgency=v.history.length===12?145:16+pile*2;
+ const ourTeam=seat%2,otherTeam=1-ourTeam;
+ // A first collection breaks a potential Kot/Goon Kot. Once our team has
+ // collected, protecting the opponents' zero keeps the sweep alive.
+ const collectionValue=(team:number)=>65+pile*9+
+  (v.scores[team]===0&&v.scores[1-team]>0?45:0)+
+  (v.scores[team]>0&&v.scores[1-team]===0?20:0);
+ const sweepPressure=v.scores[ourTeam]===0&&v.scores[otherTeam]>0?18:0;
  // Bank side-suit control until it can set up the opening collection.
  // Evaluate the whole holding, not just trump strength or the card's printed rank.
  const reserveValue=(c:Card)=>{
@@ -115,7 +122,7 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
  const followThrough=(c:Card,chance:number,collect:boolean)=>{
   if(collect||v.history.length>=12)return 0;
   const run=continuation(c);
-  return chance*run*setupWeight*(skill==='advanced'?1:.8);
+  return chance*run*(setupWeight+sweepPressure)*(skill==='advanced'?1:.8);
  };
  const score=(c:Card)=>{
   const p=asPlay(v,seat,c,leading),lead=v.trick[0]??p;
@@ -125,7 +132,7 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
   if(leading){
    const chance=info.reliability(p,c.suit,opponents);
    const collect=canCollect(v,seat,p);
-   value+=chance*(urgency+(collect?65+pile*9:0));
+   value+=chance*(urgency+(collect?collectionValue(ourTeam):0));
    value+=followThrough(c,chance,collect);
    if(p.effective===2&&c.rank===14)value-=22;
    // Do not pull our team's remaining trumps without a collection/control reason.
@@ -133,18 +140,22 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
   }else if(ours){
    const chance=info.reliability(winner,lead.card.suit,opponentsAfter);
    const collect=canCollect(v,winner.seat,lead);
-   value+=chance*(urgency+(collect?65+pile*9:0));
+   value+=chance*(urgency+(collect?collectionValue(ourTeam):0));
    if(winner.seat===seat){
     if(best&&partner(best.seat,seat)){
      const partnerSafe=info.reliability(best,lead.card.suit,opponentsAfter);
      // Overtaking a partner is justified only by meaningful protection of the Sar.
-     value-=partnerSafe*(style==='partnership'?36:28);
+     value-=partnerSafe*(style==='partnership'?48:40);
+     // Do not trade a partner's secure Sar (or immediate collection) for
+     // our speculative next lead. The partner also retains useful control.
+     value-=partnerSafe*followThrough(c,chance,collect);
+     if(canCollect(v,best.seat,lead))value-=partnerSafe*collectionValue(ourTeam);
     }
     value+=followThrough(c,chance,collect);
    }else if(style==='partnership')value+=2;
   }else{
    // Blocking an opponent's immediate collection is worth more than an ordinary Sar.
-   if(canCollect(v,winner.seat,lead))value-=65+pile*9;
+   if(canCollect(v,winner.seat,lead))value-=collectionValue(otherTeam);
   }
   if(style==='attacking'&&winner.seat===seat)value+=4;
   return value;
@@ -160,3 +171,4 @@ export function chooseTrump(v:View):string{
  if(v.mode==='band')return [...v.hand].filter(c=>c.suit===suit).sort((a,b)=>a.rank-b.rank)[0].id;
  return suit;
 }
+
