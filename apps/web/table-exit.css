@@ -17,3 +17,21 @@
 .table-exit-dialog .table-exit-stay{background:linear-gradient(#28513f,#163a2c);color:#f1dfb3;border:1px solid #baa06a}
 .table-exit-dialog button:focus-visible{outline:2px solid #f1d590;outline-offset:3px}
 @media(max-width:380px){.table-exit-dialog{padding:20px}.table-exit-dialog h2{font-size:23px}.table-exit-dialog .table-exit-actions button{font-size:12px}}
+
+/* Override the legacy high-specificity glossy action style in this dialog only. */
+.app .table-exit-dialog .table-exit-actions button{
+ background-image:none!important;border-image:none!important;
+ box-shadow:inset 0 1px #ffffff12!important;text-shadow:none!important;
+ color:#e9dfc3!important;filter:none!important;font-weight:650!important
+}
+.app .table-exit-dialog .table-exit-actions .table-exit-stay{
+ background:linear-gradient(#234536,#123127)!important;
+ border:1px solid #a28c5866!important;color:#e9dfc3!important
+}
+.app .table-exit-dialog .table-exit-actions .table-exit-leave{
+ background:linear-gradient(#65332d,#432521)!important;
+ border:1px solid #a56855!important;color:#f0d2c5!important
+}
+.app .table-exit-dialog .table-exit-actions button:active{
+ transform:translateY(1px)!important;box-shadow:inset 0 1px 3px #0004!important
+}
