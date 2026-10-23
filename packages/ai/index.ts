@@ -1,4 +1,4 @@
-import {deck,winning,type View,type Card,type Play,type Suit} from '../core/index.ts';
+import {deck,winning,play,view,seeded,type State,type View,type Card,type Play,type Suit} from '../core/index.ts';
 export type Skill='beginner'|'intermediate'|'advanced';
 export type PlayingStyle='balanced'|'conservative'|'attacking'|'partnership';
 const clamp=(n:number)=>Math.max(0,Math.min(1,n));
@@ -51,7 +51,7 @@ function knowledge(v:View,seat:number){
   }
   return clamp(safe);
  };
- return {reliability};
+ return {reliability,unseen,voids};
 }
 function asPlay(v:View,seat:number,c:Card,leading:boolean,lastAce=v.lastAce):Play{
  return {seat,card:c,effective:leading&&v.policy.aceChain&&lastAce&&v.senior===seat&&c.rank===14?2:c.rank,
@@ -161,7 +161,47 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
   return value;
  };
  // Score once per legal card. Equal-strength decisions conserve the cheaper card.
- return cards.map(c=>({card:c,value:score(c)})).sort((a,b)=>b.value-a.value||cost(a.card)-cost(b.card)||a.card.id.localeCompare(b.card.id))[0].card.id;
+ const ranked=cards.map(c=>({card:c,value:score(c)})).sort((a,b)=>b.value-a.value||cost(a.card)-cost(b.card)||a.card.id.localeCompare(b.card.id));
+ if(skill==='advanced'&&v.revealed&&Math.max(...v.counts)<=3){
+  const planned=endgame(v,seat,ranked.map(x=>x.card),info,style);
+  if(planned)return planned;
+ }
+ return ranked[0].card.id;
+}
+/** Sample only public-information-consistent hands; never read a real opponent hand. */
+function endgame(v:View,seat:number,candidates:Card[],info:ReturnType<typeof knowledge>,style:PlayingStyle){
+ let hash=2166136261;
+ for(const c of [...v.hand,...v.history.flat().map(p=>p.card),...v.trick.map(p=>p.card)])for(const char of c.id)hash=Math.imul(hash^char.charCodeAt(0),16777619);
+ const random=seeded(hash>>>0),values=new Map(candidates.map(c=>[c.id,0]));
+ let samples=0;
+ for(let attempt=0;attempt<48&&samples<8;attempt++){
+  const hands:Card[][]=[[],[],[],[]];hands[seat]=[...v.hand];
+  const remaining=info.unseen.map(c=>({card:c,seats:[0,1,2,3].filter(s=>s!==seat&&!info.voids[s].has(c.suit)&&v.counts[s]>0),tie:random()})).sort((a,b)=>a.seats.length-b.seats.length||a.tie-b.tie);
+  let valid=true;
+  for(const {card,seats} of remaining){
+   const available=seats.filter(s=>hands[s].length<v.counts[s]);
+   const capacity=available.reduce((sum,s)=>sum+v.counts[s]-hands[s].length,0);
+   if(!capacity){valid=false;break;}
+   let pick=random()*capacity,target=available[available.length-1];
+   for(const s of available){pick-=v.counts[s]-hands[s].length;if(pick<0){target=s;break;}}
+   hands[target].push(card);
+  }
+  if(!valid||hands.some((h,s)=>h.length!==v.counts[s]))continue;
+  const state={...v,hands,stock:[[],[],[],[]],indicator:null} as State;
+  samples++;
+  for(const candidate of candidates){
+   let s=play(state,seat,candidate.id);
+   while(s.phase==='playing'){
+    const next=view(s,s.turn);
+    s=play(s,s.turn,choose(next,s.turn,'intermediate',random,s.turn%2===seat%2?style:'balanced'));
+   }
+   const ours=s.scores[seat%2],theirs=s.scores[1-seat%2];
+   values.set(candidate.id,values.get(candidate.id)!+ours-theirs+(ours>theirs?8:-8)+(ours===13?6:theirs===13?-6:0));
+  }
+ }
+ // Sparse or inconsistent public evidence falls back to the normal heuristic.
+ if(samples<4)return null;
+ return candidates.reduce((best,c)=>values.get(c.id)!>values.get(best.id)!?c:best).id;
 }
 /** Prefer suit length and honours, using only the caller's opening cards. */
 export function chooseTrump(v:View):string{
