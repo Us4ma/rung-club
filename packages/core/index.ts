@@ -53,7 +53,7 @@ export function settleDeal(s:State):DealSummary{
  const existing=s.table.rounds.find(r=>r.id===s.matchId);if(existing)return existing;
  const winnerTeam=s.scores[0]>s.scores[1]?0:1,calling=winnerTeam===teamOf(s.caller),all=s.scores[winnerTeam]===13;
  const outcome:DealOutcome=all?(calling?'kot':'goon-kot'):(calling?'normal-caller':'normal-opponents');
- const summary:DealSummary={id:s.matchId,number:s.table.dealNumber,caller:s.caller,dealer:s.dealer??rightOf(s.caller),winnerTeam,sars:[...s.scores],outcome,points:s.interrupted?0:all?(calling?13:26):0,eligible:!s.interrupted,winners:[...s.winners]};
+ const summary:DealSummary={id:s.matchId,number:s.table.dealNumber,caller:s.caller,dealer:s.dealer??rightOf(s.caller),winnerTeam,sars:[...s.scores],outcome,points:s.interrupted?0:all?(calling?13:52):0,eligible:!s.interrupted,winners:[...s.winners]};
  s.table.points[winnerTeam]+=summary.points;s.table.dealsWon[winnerTeam]++;s.table.rounds.push(summary);return summary;
 }
 export function nextDeal(s:State,random=secureRandom):State{
