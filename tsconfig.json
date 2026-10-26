@@ -27,6 +27,7 @@
     "tests/roster-persistence.test.ts",
     "tests/device-session-route.test.ts",
     "tests/friends-flow.test.ts",
-    "tests/coins.test.ts"
+    "tests/coins.test.ts",
+    "tests/goon-coins.test.ts"
   ]
 }
