@@ -55,7 +55,7 @@ export function DealerAnnouncements({v,seat,names,notice,settlement,serverNow,bu
   const extra=settlement.extra;
   const timer=setTimeout(()=>{
    seen.current.add(id);
-   const event={id,text:'Goon Kot! Collecting '+extra.toLocaleString('en-US')+' extra coins from each calling-team player ('+(extra*2).toLocaleString('en-US')+' total).',priority:8,voiceKey:'goon-kot'};
+   const event={id,text:'Goon Kot! Collecting '+extra.toLocaleString('en-US')+' extra coins from each calling-team player ('+(extra*2).toLocaleString('en-US')+' extra total). Each contributes '+(extra+extra/3).toLocaleString('en-US')+' coins in total.',priority:8,voiceKey:'goon-kot'};
    setQueue(q=>[event,...q.filter(e=>e.voiceKey!=='result'&&e.id!==id)]);
   },Math.max(0,800-age));
   return()=>clearTimeout(timer);
