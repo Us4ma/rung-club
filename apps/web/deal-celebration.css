@@ -1,0 +1,25 @@
+.deal-celebration{position:absolute;z-index:35;left:50%;top:50%;transform:translate(-50%,-50%);box-sizing:border-box;width:min(350px,76%);max-width:calc(100vw - 32px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px));padding:16px 22px;display:flex;flex-direction:column;align-items:center;gap:6px;overflow:hidden;isolation:isolate;pointer-events:none;text-align:center;border:1px solid #a38c546e;border-radius:14px;background:linear-gradient(145deg,#102b24f5,#141b18fa);color:#eee4cc;box-shadow:0 8px 26px #0006;animation:deal-banner var(--celebration-duration) ease both}
+.deal-celebration>*{position:relative;z-index:1}
+.deal-celebration .celebration-title{font:700 clamp(21px,2.4vw,29px)/1.1 Georgia,serif;color:#ead19b;letter-spacing:.02em}
+.celebration-description{font-size:13px;line-height:1.35}
+.celebration-score{font-size:23px;font-weight:650;color:#f0dbab;line-height:1.2}
+.celebration-score>span{color:#928771;margin:0 6px}
+.celebration-score small{display:block;font-size:13px;margin-top:5px;color:#e5c77e}
+.celebration-next{font-size:11px;color:#bcbca5;line-height:1.4}
+.celebration-kot,.celebration-gooh{width:min(380px,78%);padding:20px 24px;background:linear-gradient(145deg,#242117fa,#0c100ffa);border-color:#c3a15d}
+.celebration-kot .celebration-title,.celebration-gooh .celebration-title{font-size:clamp(28px,3.4vw,40px);letter-spacing:.09em}
+.celebration-gooh{border-bottom-color:#a15d59;background:linear-gradient(145deg,#30201ffa,#10100ffa)}
+.deal-celebration .celebration-sweep{position:absolute;inset:-30% -70%;z-index:0;background:linear-gradient(110deg,transparent 42%,#e2bd6526 50%,transparent 58%);animation:deal-sweep 1500ms ease-out both}
+.celebration-gooh .celebration-sweep{background:linear-gradient(110deg,transparent 42%,#e2bd6540 50%,transparent 58%)}
+.celebration-sparks{position:absolute!important;inset:5px 0 auto;color:#dbbd70;font-size:16px;letter-spacing:26px;opacity:.6;animation:deal-sparks 1800ms ease-out both}
+.table-scene[data-celebration-kind="gooh"]{--result-glow:0 0 0 2px #dfbd7280,0 0 20px #d3ab5e66}
+.table-scene[data-celebration-kind="kot"]{--result-glow:0 0 0 2px #d6ba7666,0 0 17px #c7a75a55}
+.table-scene[data-celebrating-team="0"] [data-seat="0"] .seat-profile-button,.table-scene[data-celebrating-team="0"] [data-seat="2"] .seat-profile-button,.table-scene[data-celebrating-team="1"] [data-seat="1"] .seat-profile-button,.table-scene[data-celebrating-team="1"] [data-seat="3"] .seat-profile-button{box-shadow:var(--result-glow,0 0 12px #c7a75a30);transition:box-shadow .25s}
+@keyframes deal-banner{0%{opacity:0;transform:translate(-50%,calc(-50% + 9px))}12%,84%{opacity:1;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,calc(-50% - 4px))}}
+@keyframes deal-sweep{from{transform:translateX(-35%)}to{transform:translateX(35%)}}
+@keyframes deal-sparks{0%{opacity:0;transform:translateY(5px)}30%{opacity:.6}100%{opacity:0;transform:translateY(-5px)}}
+@media(max-width:700px){.deal-celebration{width:min(300px,72%);padding:12px 10px;gap:4px;border-radius:12px}.deal-celebration .celebration-title{font-size:21px}.celebration-kot .celebration-title,.celebration-gooh .celebration-title{font-size:27px}.celebration-description{font-size:11px}.celebration-score{font-size:20px}.celebration-score small,.celebration-next{font-size:10px}}
+@media(orientation:landscape) and (max-height:550px){.deal-celebration{width:min(380px,65%);padding:9px 14px;gap:3px}.deal-celebration .celebration-title{font-size:21px}.celebration-description{font-size:11px}.celebration-score{font-size:18px}.celebration-score small{display:inline;margin-left:12px;font-size:11px}.celebration-next{font-size:10px}.celebration-sparks{display:none}}
+@media(prefers-reduced-motion:reduce){.deal-celebration,.celebration-sweep,.celebration-sparks{animation:none!important}.celebration-sweep,.celebration-sparks{display:none}.table-scene .seat-profile-button{transition:none!important}}
+.celebration-still,.app.reduced .deal-celebration{animation:none}
+.celebration-still .celebration-sweep,.celebration-still .celebration-sparks,.app.reduced .celebration-sweep,.app.reduced .celebration-sparks{display:none}
