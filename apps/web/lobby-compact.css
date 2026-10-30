@@ -90,3 +90,11 @@
 }
 @media(prefers-reduced-motion:reduce){.app.screen-lobby .lobby.lobby.compact-lobby .compact-mode,.app.screen-lobby .lobby.lobby.compact-lobby .compact-mode-action{transition:none;transform:none}}
 
+
+/* Inline room panel: compact close glyph, full touch target, no overlay over other modes. */
+.app.screen-lobby .lobby.lobby.compact-lobby .private-room{position:relative;padding-right:58px}
+.app.screen-lobby .lobby.lobby.compact-lobby .private-room .private-room-dismiss{position:absolute;top:3px;right:3px;display:grid;place-items:center;width:44px;height:44px;min-width:44px;min-height:44px;padding:0;background:transparent!important;border:0!important;box-shadow:none!important;color:#e2cea2!important;text-shadow:none!important;border-radius:9px;cursor:pointer;line-height:1}
+.app.screen-lobby .lobby.lobby.compact-lobby .private-room-dismiss span{display:grid;place-items:center;width:26px;height:26px;border:1px solid #b69e6766;border-radius:50%;background:#13372d;font:22px/1 system-ui;pointer-events:none}
+.app.screen-lobby .lobby.lobby.compact-lobby .private-room .private-room-dismiss:hover span{background:#2b5140;border-color:#dac38a}
+.app.screen-lobby .lobby.lobby.compact-lobby .private-room .private-room-dismiss:focus-visible{outline:2px solid #e9d39d;outline-offset:-3px}
+@media(max-width:760px){.app.screen-lobby .lobby.lobby.compact-lobby .private-room{padding-right:16px;padding-top:48px}}
