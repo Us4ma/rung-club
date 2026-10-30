@@ -45,9 +45,9 @@
 }
 @media(max-width:760px){
  .app.screen-lobby .lobby.lobby.compact-lobby .lobby-play-area{padding-top:42px;padding-bottom:6px}
- .app.screen-lobby .lobby.lobby.compact-lobby .game-menu{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:190px 170px;height:auto;min-height:0;gap:12px}
+ .app.screen-lobby .lobby.lobby.compact-lobby .game-menu{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:minmax(0,1fr);height:clamp(290px,78vw,350px);min-height:0;gap:10px}
  .app.screen-lobby .lobby.lobby.compact-lobby .game-tile{padding:8px;border-radius:12px}
- .app.screen-lobby .lobby.lobby.compact-lobby .game-tile h2{font-size:22px;margin:2px 0}
+ .app.screen-lobby .lobby.lobby.compact-lobby .game-tile h2{font-size:clamp(16px,4.4vw,22px);margin:2px 0}
  .app.screen-lobby .lobby.lobby.compact-lobby .game-tile p{font-size:10px;margin:2px 0}
  .app.screen-lobby .lobby.lobby.compact-lobby .lobby-mode-art{height:76px;max-height:76px;width:100%}
  .app.screen-lobby .lobby.lobby.compact-lobby .mode-tile{gap:2px}
@@ -55,22 +55,22 @@
  .app.screen-lobby .lobby.lobby.compact-lobby .mode-ribbon:empty{display:none}
  .app.screen-lobby .lobby.lobby.compact-lobby .game-tile>.mode-play{height:44px;min-height:44px;margin-top:5px;font-size:14px}
  .app.screen-lobby .lobby.lobby.compact-lobby .game-tile.band>.mode-play{font-size:12px!important}
- .app.screen-lobby .lobby.lobby.compact-lobby .lobby-side-modes{grid-column:1/-1;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(0,1fr);gap:12px}
- .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode{flex-direction:column;gap:2px;padding:7px 9px;text-align:center}
+ .app.screen-lobby .lobby.lobby.compact-lobby .lobby-side-modes{grid-column:auto;grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(2,minmax(0,1fr));gap:10px}
+ .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode{flex-direction:column;gap:2px;padding:6px 5px;text-align:center}
  .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode-copy{flex:1;align-items:center;width:100%}
- .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode h2{font-size:17px}
+ .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode h2{font-size:clamp(14px,3.7vw,18px)}
  .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode p{font-size:9px}
  .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode .lobby-mode-art,
- .app.screen-lobby .lobby.lobby.compact-lobby .lobby-private-art{height:58px;max-height:58px;flex:0 0 58px;width:90px}
- .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode-action{font-size:11px;margin-top:auto;padding:5px 7px;min-height:44px}
+ .app.screen-lobby .lobby.lobby.compact-lobby .lobby-private-art{height:44px;max-height:44px;flex:0 0 44px;width:100%}
+ .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode-action{font-size:11px;margin-top:auto;padding:5px 3px;min-height:44px}
 }
 @media(max-width:360px){
- .app.screen-lobby .lobby.lobby.compact-lobby .game-menu{gap:10px;grid-template-rows:180px 160px}
+ .app.screen-lobby .lobby.lobby.compact-lobby .game-menu{gap:8px;grid-template-rows:minmax(0,1fr);height:290px}
  .app.screen-lobby .lobby.lobby.compact-lobby .lobby-side-modes{gap:10px}
  .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode h2{font-size:15px}
  .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode p{font-size:9px}
  .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode .lobby-mode-art,
- .app.screen-lobby .lobby.lobby.compact-lobby .lobby-private-art{height:48px;max-height:48px;flex-basis:48px}
+ .app.screen-lobby .lobby.lobby.compact-lobby .lobby-private-art{height:38px;max-height:38px;flex-basis:38px}
 }
 @media(orientation:landscape) and (max-height:550px) and (min-width:601px){
  .app.screen-lobby .lobby.lobby.compact-lobby .lobby-arrangement{grid-template-rows:minmax(180px,1fr)}
@@ -98,3 +98,12 @@
 .app.screen-lobby .lobby.lobby.compact-lobby .private-room .private-room-dismiss:hover span{background:#2b5140;border-color:#dac38a}
 .app.screen-lobby .lobby.lobby.compact-lobby .private-room .private-room-dismiss:focus-visible{outline:2px solid #e9d39d;outline-offset:-3px}
 @media(max-width:760px){.app.screen-lobby .lobby.lobby.compact-lobby .private-room{padding-right:16px;padding-top:48px}}
+
+.app.screen-lobby .lobby.lobby.compact-lobby .private-action-short{display:none}
+@media(max-width:760px){
+ .app.screen-lobby .lobby.lobby.compact-lobby .private-action-full{display:none}
+ .app.screen-lobby .lobby.lobby.compact-lobby .private-action-short{display:inline}
+ .app.screen-lobby .lobby.lobby.compact-lobby .game-tile>.mode-play{font-size:12px;padding-inline:2px}
+ .app.screen-lobby .lobby.lobby.compact-lobby .mode-ribbon{font-size:8px;padding-inline:4px}
+ .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode p{font-size:9px;text-wrap:balance}
+}
