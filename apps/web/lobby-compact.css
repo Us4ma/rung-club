@@ -22,8 +22,8 @@
 .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode h2{font-size:23px;font-weight:700;text-shadow:0 1px 2px #0008}
 .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode p{font-size:11px;color:#d9d8c9}
 .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode-action{box-sizing:border-box;display:flex;align-items:center;justify-content:center;text-align:center;min-height:44px;width:100%;max-width:190px;margin:12px 0 0;padding:7px 10px;border:1px solid #bda773;border-radius:10px;background:linear-gradient(#193f43,#0b292e);color:#f2e1b4;font:650 12px/1.25 system-ui;letter-spacing:0;text-shadow:0 1px #0006;box-shadow:inset 0 1px #ffffff16,0 3px 6px #0003;cursor:pointer;transition:background 160ms ease,box-shadow 160ms ease,transform 160ms ease;white-space:normal}
-.app.screen-lobby .lobby.lobby.compact-lobby .practice .compact-mode-action{background:linear-gradient(#d0bf92,#b29a66)!important;color:#232a25!important;border-color:#e0ce9f!important;text-shadow:none!important;box-shadow:inset 0 1px #fff0c845,0 3px 7px #0004!important}
-.app.screen-lobby .lobby.lobby.compact-lobby .private .compact-mode-action{background:linear-gradient(#d4b98f,#af8d60)!important;color:#30222b!important;border-color:#e0c59b!important;text-shadow:none!important;box-shadow:inset 0 1px #fff1d240,0 3px 7px #0004!important}
+.app.screen-lobby .lobby.lobby.compact-lobby .practice .compact-mode-action{background:linear-gradient(#ffe5a2,#edc05f 48%,#dda337 52%,#efbb50)!important;color:#352407!important;border-color:#ffe7ab!important;text-shadow:none!important;box-shadow:inset 0 1px #fff0c845,0 3px 7px #0004!important}
+.app.screen-lobby .lobby.lobby.compact-lobby .private .compact-mode-action{background:linear-gradient(#ffe1a0,#eab958 48%,#d89d35 52%,#edb64c)!important;color:#352407!important;border-color:#ffe3a4!important;text-shadow:none!important;box-shadow:inset 0 1px #fff1d240,0 3px 7px #0004!important}
 @media(hover:hover){
  .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode:hover{transform:translateY(-2px);border-color:#d4bf8b;box-shadow:inset 0 0 0 2px #d3b47118,0 9px 18px #0006}
  .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode-action:hover{filter:brightness(1.1);box-shadow:inset 0 1px #ffffff40,0 4px 10px #0005!important}
@@ -45,7 +45,7 @@
 }
 @media(max-width:760px){
  .app.screen-lobby .lobby.lobby.compact-lobby .lobby-play-area{padding-top:42px;padding-bottom:6px}
- .app.screen-lobby .lobby.lobby.compact-lobby .game-menu{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:minmax(0,1fr);height:clamp(290px,78vw,350px);min-height:0;gap:10px}
+ .app.screen-lobby .lobby.lobby.compact-lobby .game-menu{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:minmax(0,1fr);height:clamp(196px,55vw,260px);min-height:0;gap:10px}
  .app.screen-lobby .lobby.lobby.compact-lobby .game-tile{padding:8px;border-radius:12px}
  .app.screen-lobby .lobby.lobby.compact-lobby .game-tile h2{font-size:clamp(16px,4.4vw,22px);margin:2px 0}
  .app.screen-lobby .lobby.lobby.compact-lobby .game-tile p{font-size:10px;margin:2px 0}
@@ -65,7 +65,7 @@
  .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode-action{font-size:11px;margin-top:auto;padding:5px 3px;min-height:44px}
 }
 @media(max-width:360px){
- .app.screen-lobby .lobby.lobby.compact-lobby .game-menu{gap:8px;grid-template-rows:minmax(0,1fr);height:290px}
+ .app.screen-lobby .lobby.lobby.compact-lobby .game-menu{gap:8px;grid-template-rows:minmax(0,1fr);height:196px}
  .app.screen-lobby .lobby.lobby.compact-lobby .lobby-side-modes{gap:10px}
  .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode h2{font-size:15px}
  .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode p{font-size:9px}
@@ -112,4 +112,19 @@
  .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode p{display:none}
  .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode .lobby-mode-art,
  .app.screen-lobby .lobby.lobby.compact-lobby .lobby-private-art{height:36px;max-height:36px;flex-basis:36px}
+}
+
+/* Phone tiles follow their width: no tall empty columns or undersized touch targets. */
+@media(max-width:760px) and (orientation:portrait){
+ .app.screen-lobby .lobby.lobby.compact-lobby .game-tile{padding:6px;border-radius:12px}
+ .app.screen-lobby .lobby.lobby.compact-lobby .mode-tile{justify-content:center;gap:2px}
+ .app.screen-lobby .lobby.lobby.compact-lobby .lobby-mode-art{height:60px;max-height:60px}
+ .app.screen-lobby .lobby.lobby.compact-lobby .game-tile h2{font-size:clamp(15px,4.1vw,23px);line-height:1.1}
+ .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode{display:grid;grid-template-columns:minmax(20px,.7fr) minmax(0,1.3fr);grid-template-rows:minmax(24px,1fr) 44px;gap:3px 4px;padding:6px;align-items:center}
+ .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode-copy{display:contents}
+ .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode .lobby-mode-art,
+ .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode .lobby-private-art{grid-column:1;grid-row:1;width:100%;height:34px;max-height:34px;min-height:0;margin:0;object-fit:contain}
+ .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode h2{grid-column:2;grid-row:1;font-size:clamp(11px,3vw,17px);line-height:1.1;text-align:left;margin:0;overflow-wrap:normal}
+ .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode p{display:none}
+ .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode-action{grid-column:1/-1;grid-row:2;margin:0;width:100%;height:44px;min-height:44px;font-size:clamp(10px,2.6vw,12px);padding:4px 2px;border-radius:8px}
 }
