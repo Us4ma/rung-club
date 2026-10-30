@@ -22,11 +22,11 @@
 .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode h2{font-size:23px;font-weight:700;text-shadow:0 1px 2px #0008}
 .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode p{font-size:11px;color:#d9d8c9}
 .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode-action{box-sizing:border-box;display:flex;align-items:center;justify-content:center;text-align:center;min-height:44px;width:100%;max-width:190px;margin:12px 0 0;padding:7px 10px;border:1px solid #bda773;border-radius:10px;background:linear-gradient(#193f43,#0b292e);color:#f2e1b4;font:650 12px/1.25 system-ui;letter-spacing:0;text-shadow:0 1px #0006;box-shadow:inset 0 1px #ffffff16,0 3px 6px #0003;cursor:pointer;transition:background 160ms ease,box-shadow 160ms ease,transform 160ms ease;white-space:normal}
-.app.screen-lobby .lobby.lobby.compact-lobby .practice .compact-mode-action{background:linear-gradient(#d4c189,#ae9256);color:#172f30;border-color:#e0cc94;text-shadow:none;box-shadow:inset 0 1px #fff4c950,0 3px 6px #0003}
-.app.screen-lobby .lobby.lobby.compact-lobby .private .compact-mode-action{background:linear-gradient(#563547,#352331);color:#f3dfb2;border-color:#bd9c6e}
+.app.screen-lobby .lobby.lobby.compact-lobby .practice .compact-mode-action{background:linear-gradient(#d0bf92,#b29a66)!important;color:#232a25!important;border-color:#e0ce9f!important;text-shadow:none!important;box-shadow:inset 0 1px #fff0c845,0 3px 7px #0004!important}
+.app.screen-lobby .lobby.lobby.compact-lobby .private .compact-mode-action{background:linear-gradient(#d4b98f,#af8d60)!important;color:#30222b!important;border-color:#e0c59b!important;text-shadow:none!important;box-shadow:inset 0 1px #fff1d240,0 3px 7px #0004!important}
 @media(hover:hover){
  .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode:hover{transform:translateY(-2px);border-color:#d4bf8b;box-shadow:inset 0 0 0 2px #d3b47118,0 9px 18px #0006}
- .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode-action:hover{filter:brightness(1.1);box-shadow:inset 0 1px #ffffff30,0 3px 9px #0005}
+ .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode-action:hover{filter:brightness(1.1);box-shadow:inset 0 1px #ffffff40,0 4px 10px #0005!important}
 }
 .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode-action:focus-visible{outline:2px solid #fff1b3;outline-offset:3px}
 .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode-action:active{transform:translateY(1px);filter:brightness(.95)}
