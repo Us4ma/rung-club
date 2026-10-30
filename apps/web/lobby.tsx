@@ -5,7 +5,28 @@ import './lobby-compact.css';
 import {useState} from 'react';
 import {art,Icon,Dealer} from './art.tsx';
 type Mode='open'|'band';
-function PrivateTableArt(){return <svg className="lobby-private-art" viewBox="0 0 180 112" aria-hidden="true"><ellipse cx="90" cy="70" rx="76" ry="32" fill="#302318" stroke="#b79556" strokeWidth="4"/><ellipse cx="90" cy="66" rx="68" ry="26" fill="#164e3d" stroke="#d6ba76" strokeWidth="1.5"/><ellipse cx="90" cy="66" rx="59" ry="19" fill="none" stroke="#8eac8670"/><g fill="#fff4d8" stroke="#bc9b58" strokeWidth="1.5"><rect x="57" y="34" width="28" height="39" rx="3" transform="rotate(-15 71 54)"/><rect x="83" y="30" width="28" height="39" rx="3" transform="rotate(10 97 50)"/></g><text x="64" y="57" fill="#163d2e" fontSize="24">♠</text><text x="90" y="55" fill="#9e3036" fontSize="24">♥</text><circle cx="130" cy="78" r="17" fill="#d4b76c" stroke="#f4dea0" strokeWidth="2"/><path d="M121 73h18v12h-18zm0 0 9 7 9-7" fill="none" stroke="#5c4828" strokeWidth="1.8" strokeLinejoin="round"/></svg>;}
+function PrivateTableArt(){return <svg className="lobby-private-art" viewBox="0 0 220 180" aria-hidden="true" focusable="false">
+ <defs>
+  <linearGradient id="private-wall" x2="0" y2="1"><stop stopColor="#523249"/><stop offset="1" stopColor="#211821"/></linearGradient>
+  <linearGradient id="private-wood" x2="0" y2="1"><stop stopColor="#a37a44"/><stop offset=".45" stopColor="#533722"/><stop offset="1" stopColor="#302019"/></linearGradient>
+  <radialGradient id="private-lamplight"><stop stopColor="#f4cf84" stopOpacity=".4"/><stop offset="1" stopColor="#c68947" stopOpacity="0"/></radialGradient>
+  <radialGradient id="private-felt"><stop stopColor="#305647"/><stop offset="1" stopColor="#102c26"/></radialGradient>
+ </defs>
+ <path d="M29 130V49C29 8 191 8 191 49v81Z" fill="url(#private-wall)" stroke="#a78957" strokeWidth="1.5"/>
+ <path d="M40 123V51C40 21 180 21 180 51v72" fill="none" stroke="#b090612e"/>
+ <path d="M55 44v66m110-66v66" stroke="#d0b681" strokeOpacity=".15"/>
+ <ellipse cx="48" cy="71" rx="38" ry="55" fill="url(#private-lamplight)"/><ellipse cx="172" cy="71" rx="38" ry="55" fill="url(#private-lamplight)"/>
+ <g fill="#e5bd75" stroke="#795833" strokeWidth="1.2"><path d="M39 49h18l-4 16H43Z"/><path d="M163 49h18l-4 16h-10Z"/></g>
+ <path d="M48 65v15m124-15v15" stroke="#af8954" strokeWidth="2"/>
+ <path d="M62 131v28m96-28v28" stroke="#483020" strokeWidth="8"/>
+ <ellipse cx="110" cy="130" rx="96" ry="33" fill="url(#private-wood)" stroke="#c2a16b" strokeWidth="2"/>
+ <ellipse cx="110" cy="123" rx="88" ry="27" fill="url(#private-felt)" stroke="#d1b57b" strokeWidth="1.5"/>
+ <ellipse cx="110" cy="123" rx="76" ry="20" fill="none" stroke="#b59d653b"/>
+ <g transform="rotate(-14 90 98)"><image href={art('house/cards/AH.webp')} x="67" y="65" width="44" height="62" preserveAspectRatio="xMidYMid meet"/></g>
+ <g transform="rotate(12 125 94)"><image href={art('house/cards/AS.webp')} x="103" y="61" width="44" height="62" preserveAspectRatio="xMidYMid meet"/></g>
+ <g fill="#c5a063" stroke="#e0c48d"><ellipse cx="161" cy="127" rx="9" ry="3.5"/><ellipse cx="161" cy="124" rx="9" ry="3.5"/><ellipse cx="161" cy="121" rx="9" ry="3.5"/></g>
+ </svg>;}
+
 function ModeArt({mode}:{mode:Mode|'practice'}){if(mode==='open')return <img className="lobby-mode-art" src={art('lobby/open-simple.svg')} alt="" draggable={false}/>;return <img className="lobby-mode-art" src={art(`lobby/${mode}-640.webp`)} srcSet={`${art(`lobby/${mode}-320.webp`)} 320w, ${art(`lobby/${mode}-640.webp`)} 640w`} sizes="(max-width:600px) 30vw, (max-height:550px) 22vw, 25vw" alt="" draggable={false} decoding="async"/>;}
 export function Lobby({mode,setMode,play,practice,learn,setScreen,profile,join,setJoin,intro=false,onIntro,matchmakingBusy=false}:{intro?:boolean;onIntro?:()=>void;matchmakingBusy?:boolean;mode:Mode;setMode:(m:Mode)=>void;play:(action:'quick'|'create'|'join',m?:Mode)=>void;practice:()=>void;learn:()=>void;setScreen:(s:string)=>void;profile:{name:string;xp:number};avatar:number;join:string;setJoin:(s:string)=>void}){
  const [rooms,setRooms]=useState(!!join),[locked,setLocked]=useState(false);const unlocked=false,progress=Math.min(BAND_UNLOCK_XP,Math.max(0,profile.xp));
@@ -18,10 +39,14 @@ export function Lobby({mode,setMode,play,practice,learn,setScreen,profile,join,s
 
  <div className="mode-status">{m==='band'&&!unlocked?<><small>Hidden trump tables are on their way.</small></>:m==='open'&&matchmakingBusy?<small role="status">Finding an open table and preparing players…</small>:<span aria-hidden="true"/>}</div>
  <button className={'mode-play '+(m==='band'&&!unlocked?'locked':'gold')} disabled={m==='open'&&matchmakingBusy} aria-label={m==='open'?(matchmakingBusy?'Finding your table':'Select an Open Rung table'):unlocked?'Play Band Rung':'Band Rung coming soon'} onClick={()=>m==='band'&&!unlocked?setLocked(true):play('quick',m)}>{m==='band'&&!unlocked?'Coming soon':matchmakingBusy&&m==='open'?'Finding table…':m==='open'?'Select a table':'Play'}</button>
- </article>)}<div className="lobby-side-modes"><button className="game-tile practice compact-mode" onClick={practice} aria-label="Play Practice"><ModeArt mode="practice"/><span className="compact-mode-copy"><h2>Practice</h2><p>Build your card skills</p><span className="compact-mode-action">Play</span></span></button><button className={'game-tile private compact-mode'+(rooms?' chosen':'')} aria-expanded={rooms} aria-controls="lobby-private-room" onClick={()=>setRooms(!rooms)}><PrivateTableArt/><span className="compact-mode-copy"><h2>Private Table</h2><p>Play with friends</p><span className="compact-mode-action">{rooms?'Close':'Create / Join'}</span></span></button></div></div>
+ </article>)}<div className="lobby-side-modes">
+ <article className="game-tile practice compact-mode" aria-labelledby="lobby-practice-title"><ModeArt mode="practice"/><div className="compact-mode-copy"><h2 id="lobby-practice-title">Practice</h2><p>Build your card skills</p><button type="button" className="compact-mode-action" onClick={practice}>Play</button></div></article>
+ <article className={'game-tile private compact-mode'+(rooms?' chosen':'')} aria-labelledby="lobby-private-title"><PrivateTableArt/><div className="compact-mode-copy"><h2 id="lobby-private-title">Private Table</h2><p>Play with friends</p><button type="button" className="compact-mode-action" aria-expanded={rooms} aria-controls="lobby-private-room" onClick={()=>setRooms(!rooms)}>{rooms?'Close Private Table':'Create / Join Private Table'}</button></div></article>
+ </div></div>
  {TUTORIAL_AVAILABLE&&<div className="club-shortcuts"><button onClick={learn} aria-label="Learn the art of Rung"><Icon name="question"/><span><strong>Learn Rung</strong><small>Tutorial & rules</small></span></button></div>}
  {rooms&&<section id="lobby-private-room" className="private-room" aria-label="Private room"><div><h3>Your friends. Your table.</h3><p>{mode==='open'?'Open Rung':'Band Rung'} · share an invite code</p></div><button onClick={()=>play('create')}>Create Private Room</button><div className="join"><input aria-label="Room code" value={join} maxLength={8} onChange={e=>setJoin(e.target.value.toUpperCase())} placeholder="Invite code"/><button onClick={()=>play('join')}>Join</button></div></section>}
  </section></div></div></div>
  {locked&&<div className="unlock-modal" role="dialog" aria-label="Band Rung locked"><section><span className="eyebrow">THE HIDDEN TRUMP CHALLENGE</span><h2>Coming soon</h2><p>Band Rung is temporarily unavailable. Open Rung and Practice are ready to play.</p><button className="gold" onClick={()=>setLocked(false)}>Back to the lobby</button></section></div>}
  </main>;
 }
+
