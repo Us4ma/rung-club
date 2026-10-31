@@ -114,7 +114,7 @@ function startAdvanced(kind:AdvancedLesson){ws.current?.close();ws.current=null;
 const pending=useRef<{id:string;card?:string;revision:number}|null>(null);const [submitting,setSubmitting]=useState(false);
 useEffect(()=>{if(pending.current&&v&&v.revision>pending.current.revision){pending.current=null;setSubmitting(false);}if(selected&&v&&!v.legal.includes(selected)){setSelected('');}},[v?.revision,v?.matchId]);
 const [presentationEpoch,setPresentationEpoch]=useState(0);
-useInterfaceAudio(!!settings.sound);
+useInterfaceAudio(!!settings.sound,settings.musicVolume??.35);
 useTableAudio(v,screen==='table'&&started,!!settings.sound,seat,presentationEpoch);
 useEffect(()=>{if(!emotesOpen)return;const close=(e:PointerEvent)=>{if(!(e.target as Element).closest('.emote-picker,.emote-toggle'))setEmotesOpen(false);};const key=(e:KeyboardEvent)=>{if(e.key==='Escape'){setEmotesOpen(false);document.querySelector<HTMLButtonElement>('.emote-toggle')?.focus();}};document.addEventListener('pointerdown',close);document.addEventListener('keydown',key);return()=>{document.removeEventListener('pointerdown',close);document.removeEventListener('keydown',key);};},[emotesOpen]);
 const cardInput=useCardInput(v,seat,settings.quickPlay!==false,id=>command('play',id),setSelected,settings.doubleTapMs||320);

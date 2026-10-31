@@ -5,7 +5,8 @@ type Cue='tap'|'open'|'back'|'confirm';
 /** One delegated listener covers drawers/portals as well as lobby navigation.
  * Card interactions and the table's existing confirmed-event sounds stay separate.
  */
-export function useInterfaceAudio(enabled:boolean){
+export function useInterfaceAudio(enabled:boolean,volume=.35){
+ useEffect(()=>{tableAudio.setVolume(volume);},[volume]);
  const current=useRef(enabled);current.current=enabled;
  useEffect(()=>{
   let last=0;
