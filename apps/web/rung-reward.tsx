@@ -1,0 +1,10 @@
+import {useEffect,useRef,useState} from 'react';
+import {createPortal} from 'react-dom';
+import {art} from './art.tsx';
+export function RungReward(){
+ const [rewardOpen,setRewardOpen]=useState(false);
+ const rewardTrigger=useRef<HTMLButtonElement>(null),rewardPanel=useRef<HTMLElement>(null);
+ useEffect(()=>{if(!rewardOpen)return;const panel=rewardPanel.current;panel?.focus();function keys(event:KeyboardEvent){if(event.key==='Escape'){event.preventDefault();setRewardOpen(false);}if(event.key==='Tab'&&panel){const buttons=[...panel.querySelectorAll<HTMLButtonElement>('button')];const first=buttons[0],last=buttons[buttons.length-1];if(event.shiftKey&&(document.activeElement===first||document.activeElement===panel)){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}}}document.addEventListener('keydown',keys);return()=>{document.removeEventListener('keydown',keys);rewardTrigger.current?.focus();};},[rewardOpen]);
+
+ return <><button type="button" ref={rewardTrigger} className="rung-reward-entry" aria-label="Rung Reward" aria-haspopup="dialog" aria-expanded={rewardOpen} onClick={()=>setRewardOpen(true)}><img src={art('lobby/rung-reward-clean.webp')} alt="" draggable={false}/><span>Rung Reward</span></button>{rewardOpen&&createPortal(<div className="unlock-modal rung-reward-layer" onPointerDown={e=>{if(e.target===e.currentTarget)setRewardOpen(false);}}><section ref={rewardPanel} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="rung-reward-heading" aria-describedby="rung-reward-description"><button type="button" className="reward-teaser-close" aria-label="Close Rung Reward" onClick={()=>setRewardOpen(false)}>×</button><img src={art('lobby/rung-reward-clean.webp')} alt="" className="reward-teaser-art"/><h2 id="rung-reward-heading">Rung Reward</h2><span className="eyebrow">Coming soon</span><p id="rung-reward-description">Daily missions and level rewards are on their way.</p><button type="button" className="reward-teaser-back" onClick={()=>setRewardOpen(false)}>Back to lobby</button></section></div>,document.body)}</>;
+}
