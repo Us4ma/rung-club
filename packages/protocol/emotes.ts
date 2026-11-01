@@ -6,5 +6,8 @@ export const TABLE_REACTIONS=[
  {text:'Haha!',asset:'laughing'},
  {text:'Thinking…',asset:'thinking'},
  {text:'Love it',asset:'love'},
+ {text:'Ace Salute',asset:'ace-salute',reward:'emote:ace-salute'},
+ {text:'Royal Applause',asset:'royal-applause',reward:'emote:royal-applause'},
 ];
 export function isTableReaction(text:unknown):text is string{return typeof text==='string'&&TABLE_REACTIONS.some(r=>r.text===text);}
+
