@@ -7,3 +7,5 @@
 
 .app.screen-lobby>header.lobby-hud.lobby-hud .rung-reward-entry{gap:4px;padding-inline:6px!important;font-size:16px!important}
 @media(max-width:600px){.app.screen-lobby>header.lobby-hud.lobby-hud .rung-reward-entry{gap:3px;padding-inline:4px!important;font-size:12px!important}}
+
+.exclusive-reward-emoji{font-size:68px;line-height:1;display:inline-block}

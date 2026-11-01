@@ -1,7 +1,7 @@
 import {xpForNextLevel} from './progression.ts';
 export const MILESTONES=[
  {level:50,item:'frame:emerald-ace',name:'Emerald Ace',kind:'frame',symbol:'♠'},
- {level:100,item:'emote:ace-salute',name:'Ace Salute',kind:'emote',symbol:'♠'},
+ {level:100,item:'emote:cheeky-devil',name:'Cheeky Devil',kind:'emote',symbol:'😈'},
  {level:150,item:'emote:royal-applause',name:'Royal Applause',kind:'emote',symbol:'👏'},
  {level:200,item:'frame:royal-crown',name:'Royal Crown',kind:'frame',symbol:'♛'},
 ] as const;
