@@ -98,3 +98,8 @@
  .rung-rewards-page .level-reward-card>.reward-claim{height:30px;min-height:30px;max-height:30px;padding:4px;font-size:12px}
  .rung-rewards-page .rewards-footer{width:min(720px,90%);margin:0;padding:6px 18px max(6px,env(safe-area-inset-bottom))}
 }
+
+/* Native momentum scrolling, without forced snap corrections during a swipe. */
+.rung-rewards-page .rewards-carousel{scroll-snap-type:x proximity;scroll-behavior:smooth;touch-action:pan-x pan-y;overflow-anchor:none}
+.rung-rewards-page .level-reward-card{scroll-snap-stop:normal}
+@media(prefers-reduced-motion:reduce){.rung-rewards-page .rewards-carousel{scroll-behavior:auto!important}}
