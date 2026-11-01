@@ -1,3 +1,4 @@
+import {CloseButton} from './art.tsx';
 import {compactCoins} from './coin-format.ts';
 import {LeagueProfileHonors} from './league-ui.tsx';
 import {levelProgress} from '../../packages/protocol/progression.ts';
@@ -9,7 +10,7 @@ export function ProfileDrawer({name,avatar,photo,frame,xp,stats,closing,onClose,
  const [editing,setEditing]=useState(false),pencil=useRef<HTMLButtonElement>(null);const closeEditor=()=>{setEditing(false);pencil.current?.focus();};
  const [tab,setTab]=useState<'customization'|'stats'>('customization'),s={...emptyStats(),...stats},progress=levelProgress(xp),level=progress.level;
  return <section className={'profile-drawer'+(closing?' closing':'')} role="dialog" aria-modal="true" aria-label="Player profile" tabIndex={-1}>
- <div className="profile-drawer-title"><h1>Player profile</h1><button className="quiet" aria-label="Close profile" onClick={onClose}>×</button></div>
+ <div className="profile-drawer-title"><h1>Player profile</h1><CloseButton label="Close profile" onClick={onClose}/></div>
  <div className="profile-summary"><Avatar index={avatar} photo={photo} frame={frame}/><div><div className="profile-name-row"><h2>{/^Guest-/i.test(name)?'Guest':name}</h2>{tab==='customization'&&<button ref={pencil} className="profile-name-edit" aria-label="Edit name" aria-expanded={editing} aria-controls="profile-name-editor" onClick={()=>setEditing(!editing)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m16 3 5 5M3 21l5-1L21 7a2.8 2.8 0 0 0-4-4L4 16l-1 5Z"/></svg></button>}</div><span>Level {level}</span><div className="xp-track" role="progressbar" aria-label="Level progress" aria-valuenow={progress.current} aria-valuemin={0} aria-valuemax={progress.required}><i style={{width:progress.percent+'%'}}/></div><small>{progress.current} / {progress.required} XP</small></div></div>
  {editing&&tab==='customization'&&<div id="profile-name-editor" className="profile-name-editor">{nameEditor(closeEditor)}</div>}
  <div className="profile-tabs" role="tablist" aria-label="Profile sections">{(['customization','stats'] as const).map(t=><button key={t} id={'profile-tab-'+t} role="tab" aria-selected={tab===t} aria-controls={'profile-panel-'+t} tabIndex={tab===t?0:-1} onClick={()=>setTab(t)} onKeyDown={e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const next=e.key==='Home'?'customization':e.key==='End'?'stats':t==='stats'?'customization':'stats';setTab(next);document.getElementById('profile-tab-'+next)?.focus();}}}>{t==='stats'?'Stats':'Customization'}</button>)}</div>

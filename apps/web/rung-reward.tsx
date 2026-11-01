@@ -1,6 +1,6 @@
 import {useEffect,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
-import {art,BackButton} from './art.tsx';
+import {art,BackButton,HelpButton,CloseButton} from './art.tsx';
 import {socialRequest} from './friends.tsx';
 import {levelProgress} from '../../packages/protocol/progression.ts';
 import {MILESTONES,rewardCoins,type RewardState} from '../../packages/protocol/level-rewards.ts';
@@ -30,11 +30,11 @@ export function RungReward({uid,xp=0}:{uid?:string;xp?:number}){
   {open&&createPortal(
    <div className="rung-rewards-overlay">
     <section className={'rung-rewards-page'+(faq?' showing-faq':'')} ref={panel} role="dialog" aria-modal="true" aria-labelledby="rewards-title" tabIndex={-1}>
-     <div className="rewards-room-art" aria-hidden="true"><img className="rewards-host" src={art('characters/dealer-female.webp')} alt=""/><div className="rewards-table-rail"/></div>
+     
      <header className="rewards-heading">
       <div className="rewards-header-left"><BackButton label={faq?'Rewards':'Lobby'} onClick={()=>faq?setFAQ(false):setOpen(false)}/>{data&&<span className="rewards-wallet"><img src="/art/currency/coin.svg" alt="Coins"/>{data.wallet.toLocaleString()}</span>}</div>
       <h1 id="rewards-title">{faq?'Rewards FAQ':'Rung Rewards'}</h1>
-      <div className="rewards-header-actions"><button className="rewards-icon-button" aria-label="Rewards FAQ" aria-pressed={faq} onClick={()=>setFAQ(!faq)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 8a3 3 0 0 1 6 0c0 2-3 2-3 5M12 17h.01"/></svg></button><button className="rewards-icon-button" aria-label="Close rewards" onClick={()=>setOpen(false)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+      <div className="rewards-header-actions"><HelpButton label="Rewards FAQ" aria-pressed={faq} onClick={()=>setFAQ(!faq)}/><CloseButton label="Close rewards" onClick={()=>setOpen(false)}/></div>
      </header>
      {faq?<div className="rewards-faq">{FAQ.map(([q,a])=><details key={q}><summary>{q}</summary><p>{a}</p></details>)}</div>:!uid?<div className="rewards-empty"><p>Sign in to earn and claim account rewards.</p><small>Local practice does not unlock rewards.</small></div>:!data?<div className="rewards-empty" role="status"><p>{error||'Opening your rewards…'}</p><button className="reward-claim" onClick={()=>void refresh()}>Retry</button></div>:<>
       <div className="rewards-stage">

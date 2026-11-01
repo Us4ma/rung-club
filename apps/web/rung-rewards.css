@@ -14,3 +14,87 @@
 @media(prefers-reduced-motion:reduce){.rung-rewards-page *{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
 .app.screen-lobby>header.lobby-hud.lobby-hud .rung-reward-entry{gap:4px;padding-inline:6px!important;font-size:16px!important}
 @media(max-width:600px){.app.screen-lobby>header.lobby-hud.lobby-hud .rung-reward-entry{gap:3px;padding-inline:4px!important;font-size:12px!important}}
+
+/* Bound each prize to its own grid cell: SVG intrinsic sizing must never size the card. */
+.rung-rewards-page .level-reward-card{display:grid;grid-template-rows:24px minmax(0,1fr) 58px 42px;align-items:stretch;justify-items:stretch;flex-basis:210px;width:210px;min-width:210px;max-width:210px;height:360px;min-height:0;padding:15px 15px 32px;gap:9px}
+.rung-rewards-page .reward-prize{display:grid;grid-template-rows:minmax(0,1fr) 34px 18px;align-items:center;justify-items:center;flex:none;min-width:0;min-height:0;gap:5px;overflow:hidden}
+.rung-rewards-page .reward-coins-art{position:relative;display:block;align-self:center;justify-self:center;flex:none;width:112px;height:112px;min-width:0;min-height:0;max-width:100%;max-height:100%;overflow:hidden;contain:layout paint}
+.rung-rewards-page .reward-coins-art>img{position:absolute;inset:0;display:block;width:100%;height:100%;min-width:0;min-height:0;max-width:100%;max-height:100%;object-fit:contain;transform:none;margin:0}
+.rung-rewards-page .reward-prize>strong{display:block;margin:0;font-size:28px;line-height:34px;white-space:nowrap;z-index:1}
+.rung-rewards-page .reward-prize>span{display:block;font-size:12px;line-height:18px;z-index:1}
+.rung-rewards-page .reward-bonus,.rung-rewards-page .reward-card-flourish{height:58px;min-height:0;max-height:58px;margin:0;overflow:hidden}
+.rung-rewards-page .level-reward-card>.reward-claim{position:relative;z-index:2;align-self:stretch;min-width:0;min-height:42px;max-height:42px;height:42px;margin:0;padding:8px 10px;line-height:20px}
+.rung-rewards-page .rewards-heading h1{font-size:34px}
+.rung-rewards-page .rewards-host{width:min(27vw,380px)}
+@media(max-width:600px){
+ .rung-rewards-page .level-reward-card{flex-basis:220px;width:220px;min-width:220px;max-width:220px;height:340px;grid-template-rows:22px minmax(0,1fr) 54px 42px;padding:14px 15px 30px;gap:8px}
+ .rung-rewards-page .rewards-carousel{padding-inline:max(10px,calc((100% - 220px)/2))}
+ .rung-rewards-page .reward-bonus,.rung-rewards-page .reward-card-flourish{height:54px;max-height:54px}
+ .rung-rewards-page .rewards-heading h1{font-size:28px}
+}
+@media(max-width:600px) and (max-height:730px){
+ .rung-rewards-page .level-reward-card{height:290px;grid-template-rows:18px minmax(0,1fr) 46px 38px;padding:10px 14px 28px;gap:5px}
+ .rung-rewards-page .reward-coins-art{width:82px;height:82px}
+ .rung-rewards-page .reward-prize{grid-template-rows:minmax(0,1fr) 28px 16px;gap:2px}
+ .rung-rewards-page .reward-prize>strong{font-size:25px;line-height:28px}
+ .rung-rewards-page .reward-prize>span{font-size:11px;line-height:16px}
+ .rung-rewards-page .reward-bonus,.rung-rewards-page .reward-card-flourish{height:46px;max-height:46px}
+ .rung-rewards-page .level-reward-card>.reward-claim{height:38px;min-height:38px;max-height:38px;padding:7px}
+}
+@media(orientation:landscape) and (max-height:550px){
+ .rung-rewards-page .level-reward-card{flex-basis:170px;width:170px;min-width:170px;max-width:170px;height:230px;grid-template-rows:17px minmax(0,1fr) 34px 30px;padding:9px 12px 23px;gap:3px}
+ .rung-rewards-page .reward-prize{grid-template-rows:minmax(0,1fr) 25px 13px;gap:1px}
+ .rung-rewards-page .reward-coins-art{width:65px;height:65px}
+ .rung-rewards-page .reward-prize>strong{font-size:23px;line-height:25px}
+ .rung-rewards-page .reward-prize>span{font-size:10px;line-height:13px}
+ .rung-rewards-page .reward-bonus,.rung-rewards-page .reward-card-flourish{display:flex;align-items:center;justify-content:center;height:34px;max-height:34px}
+ .rung-rewards-page .level-reward-card>.reward-claim{height:30px;min-height:30px;max-height:30px;padding:5px;font-size:12px}
+ .rung-rewards-page .rewards-heading h1{font-size:26px}
+}
+@media(orientation:landscape) and (max-height:360px){
+ .rung-rewards-page{overflow-y:auto;grid-template-rows:58px minmax(260px,1fr) auto}
+}
+
+/* Rewards are a separate room, with compact cards and no gameplay scenery. */
+.rung-rewards-page{background:#171713 url('/art/backgrounds/rewards-wall.svg') center/cover no-repeat}
+.rung-rewards-page:before{background:radial-gradient(ellipse at 50% 45%,transparent 15%,#070b0ac0 100%)}
+.rung-rewards-page .rewards-stage{margin:0;width:min(1180px,96%);justify-self:center;padding:12px 0;align-items:center}
+.rung-rewards-page .rewards-footer{width:min(720px,90%);justify-self:center;margin:0 0 max(24px,env(safe-area-inset-bottom));background:linear-gradient(90deg,transparent,#15291ee8 15%,#15291ee8 85%,transparent);padding:16px 20px}
+.rung-rewards-page .level-reward-card{flex-basis:180px;width:180px;min-width:180px;max-width:180px;height:300px;grid-template-rows:18px minmax(0,1fr) 44px 36px;padding:12px 12px 28px;gap:7px;border-radius:12px}
+.rung-rewards-page .reward-coins-art{width:78px;height:78px}
+.rung-rewards-page .reward-prize{grid-template-rows:minmax(0,1fr) 29px 16px;gap:3px}
+.rung-rewards-page .reward-prize>strong{font-size:26px;line-height:29px}
+.rung-rewards-page .reward-prize>span{font-size:11px;line-height:16px}
+.rung-rewards-page .reward-bonus,.rung-rewards-page .reward-card-flourish{height:44px;max-height:44px}
+.rung-rewards-page .reward-bonus{gap:5px;padding:4px 0}
+.rung-rewards-page .reward-bonus .reward-special-art{width:30px;height:32px}
+.rung-rewards-page .reward-bonus .reward-frame-preview{width:24px;height:24px;font-size:16px}
+.rung-rewards-page .reward-bonus .exclusive-reward-emoji{font-size:27px}
+.rung-rewards-page .reward-bonus strong{font-size:10px}
+.rung-rewards-page .reward-bonus small{font-size:7px}
+.rung-rewards-page .reward-bonus>div:last-child>span{font-size:9px}
+.rung-rewards-page .level-reward-card>.reward-claim{height:36px;min-height:36px;max-height:36px;font-size:13px;padding:7px 8px}
+.rung-rewards-page .reward-number{height:38px;min-width:41px;font-size:18px;bottom:-19px}
+.rung-rewards-page .rewards-heading h1{font-size:30px}
+.rung-rewards-page .rewards-heading{min-height:76px}
+@media(max-width:600px){
+ .rung-rewards-page .rewards-stage{width:100%;padding:10px 4px}
+ .rung-rewards-page .level-reward-card{flex-basis:192px;width:192px;min-width:192px;max-width:192px;height:300px}
+ .rung-rewards-page .rewards-carousel{padding-inline:max(10px,calc((100% - 192px)/2))}
+ .rung-rewards-page .rewards-footer{width:100%;margin:0 0 env(safe-area-inset-bottom);padding:13px 20px;background:linear-gradient(#12251eee,#071710)}
+ .rung-rewards-page .rewards-heading{min-height:100px}
+ .rung-rewards-page .rewards-heading h1{font-size:27px}
+}
+@media(orientation:landscape) and (max-height:550px){
+ .rung-rewards-page .rewards-heading{min-height:58px}
+ .rung-rewards-page .rewards-heading h1{font-size:25px}
+ .rung-rewards-page .rewards-stage{width:min(1000px,96%);padding:0}
+ .rung-rewards-page .level-reward-card{flex-basis:160px;width:160px;min-width:160px;max-width:160px;height:220px;grid-template-rows:15px minmax(0,1fr) 30px 30px;padding:8px 10px 22px;gap:3px}
+ .rung-rewards-page .reward-coins-art{width:55px;height:55px}
+ .rung-rewards-page .reward-prize{grid-template-rows:minmax(0,1fr) 23px 12px;gap:1px}
+ .rung-rewards-page .reward-prize>strong{font-size:21px;line-height:23px}
+ .rung-rewards-page .reward-prize>span{font-size:10px;line-height:12px}
+ .rung-rewards-page .reward-bonus,.rung-rewards-page .reward-card-flourish{height:30px;max-height:30px}
+ .rung-rewards-page .level-reward-card>.reward-claim{height:30px;min-height:30px;max-height:30px;padding:4px;font-size:12px}
+ .rung-rewards-page .rewards-footer{width:min(720px,90%);margin:0;padding:6px 18px max(6px,env(safe-area-inset-bottom))}
+}
