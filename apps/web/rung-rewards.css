@@ -103,3 +103,6 @@
 .rung-rewards-page .rewards-carousel{scroll-snap-type:x proximity;scroll-behavior:smooth;touch-action:pan-x pan-y;overflow-anchor:none}
 .rung-rewards-page .level-reward-card{scroll-snap-stop:normal}
 @media(prefers-reduced-motion:reduce){.rung-rewards-page .rewards-carousel{scroll-behavior:auto!important}}
+
+@media(hover:hover) and (pointer:fine){.rung-rewards-page .rewards-carousel{cursor:grab}.rung-rewards-page .rewards-carousel.is-dragging,.rung-rewards-page .rewards-carousel.is-dragging *{cursor:grabbing!important}}
+.rung-rewards-page .rewards-carousel{user-select:none;-webkit-user-select:none}.rung-rewards-page .rewards-carousel img{-webkit-user-drag:none;pointer-events:none}
