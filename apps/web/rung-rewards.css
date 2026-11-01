@@ -106,3 +106,15 @@
 
 @media(hover:hover) and (pointer:fine){.rung-rewards-page .rewards-carousel{cursor:grab}.rung-rewards-page .rewards-carousel.is-dragging,.rung-rewards-page .rewards-carousel.is-dragging *{cursor:grabbing!important}}
 .rung-rewards-page .rewards-carousel{user-select:none;-webkit-user-select:none}.rung-rewards-page .rewards-carousel img{-webkit-user-drag:none;pointer-events:none}
+
+.rung-rewards-page{background-image:linear-gradient(#06130d22,#06130d55),url('/art/backgrounds/rewards-lounge.webp')}
+.rung-rewards-page .rewards-wallet{position:relative;display:flex!important;min-width:0}
+.rewards-wallet>span{font-variant-numeric:tabular-nums}
+.reward-wallet-added{position:absolute;top:100%;left:28px;color:#ffe49b;white-space:nowrap;font-size:15px;text-shadow:0 2px 5px #000;animation:reward-wallet-credit 1.1s ease-out both;pointer-events:none}
+.coins-arrived>img{animation:reward-wallet-pulse .35s ease-out}
+.reward-coin-flight{position:fixed;z-index:1600;width:0;height:0;pointer-events:none}
+.reward-coin-flight>img{position:absolute;width:26px;height:26px;max-width:none;max-height:none;left:-13px;top:-13px;opacity:0;filter:drop-shadow(0 2px 3px #0005);animation:reward-coin-delivery .7s cubic-bezier(.3,.05,.28,1) var(--coin-delay) both;will-change:transform,opacity}
+@keyframes reward-coin-delivery{0%{opacity:0;transform:translate(var(--coin-spread),0) scale(.65)}12%{opacity:1}30%{transform:translate(var(--coin-spread),-28px) scale(1)}90%{opacity:1}100%{opacity:0;transform:translate(var(--reward-fly-x),var(--reward-fly-y)) scale(.45)}}
+@keyframes reward-wallet-credit{0%{opacity:0;transform:translateY(4px)}20%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translateY(-14px)}}
+@keyframes reward-wallet-pulse{0%,100%{transform:scale(1)}45%{transform:scale(1.18)}}
+@media(prefers-reduced-motion:reduce){.reward-coin-flight{display:none}.reward-wallet-added{animation:reward-wallet-credit .8s linear both!important}.coins-arrived>img{animation:none}}
