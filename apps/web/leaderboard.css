@@ -106,3 +106,6 @@ body .app.screen-leaderboard:not(.screen-login):not(.screen-table){background:li
  .weekly-standings .league-podium .league-podium-place .league-rank-medal{position:static;width:24px;height:24px;min-width:24px;min-height:24px;max-width:24px;max-height:24px;font-size:14px}
 }
 @media(orientation:landscape) and (max-height:600px){.weekly-standings .league-podium .league-podium-place .league-rank-medal{width:22px;height:22px;min-width:22px;min-height:22px;max-width:22px;max-height:22px;font-size:13px}}
+
+.app .weekly-standings .league-heading button:is(.house-nav-back,.house-nav-icon){background:linear-gradient(#294b38,#163123)!important;background-image:linear-gradient(#294b38,#163123)!important;border-color:#c4a86b!important;color:#f4e2bc!important;box-shadow:inset 0 1px #b5c59033,0 3px 8px #0004!important;font-weight:650!important}
+.app .weekly-standings .league-heading button:is(.house-nav-back,.house-nav-icon):hover{background:linear-gradient(#345b44,#1c3d2d)!important;filter:brightness(1.08)!important}
