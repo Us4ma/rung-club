@@ -12,16 +12,17 @@ button.house-nav-icon.house-nav-icon:disabled,button.house-nav-back.house-nav-ba
 @media(max-width:600px),(max-height:550px){button.house-nav-icon.house-nav-icon{width:40px!important;height:40px!important;min-width:40px!important;max-width:40px!important;min-height:40px!important;max-height:40px!important;padding:8px!important}button.house-nav-back.house-nav-back{min-height:40px!important;padding:5px 12px 5px 5px!important;font-size:12px!important}button.house-nav-back.house-nav-back .back-chevron{width:28px!important;height:28px!important}}
 @media(prefers-reduced-motion:reduce){button.house-nav-icon.house-nav-icon,button.house-nav-back.house-nav-back{transition:none!important}}
 
-/* Table headers share one compact Lobby pill in every game mode. */
-.app.screen-table .table-page .table-top>button.house-nav-back.house-nav-back{display:inline-flex!important;position:relative;flex:0 0 auto;width:auto!important;min-width:0!important;max-width:none!important;margin:0!important;gap:6px!important;min-height:40px!important;height:40px!important;padding:5px 10px 5px 5px!important;white-space:nowrap;overflow:visible}
-.app.screen-table .table-page .table-top>button.house-nav-back.house-nav-back>span{position:static!important;display:inline-block!important;width:auto!important;height:auto!important;transform:none!important;line-height:1.2}
-.app.screen-table .table-page .table-top>button.house-nav-back.house-nav-back>.back-chevron{display:grid!important;place-items:center!important;flex:0 0 28px!important;width:28px!important;height:28px!important;background:#dcc07a!important;color:#243523!important;border-radius:50%!important}
-.app.screen-table .table-page .table-top>button.house-nav-back.house-nav-back>span:last-child{font:650 12px/1.2 system-ui!important;color:#f4e2bc!important}
-@media(max-width:600px){.app.screen-table .table-page .table-top>button.house-nav-back.house-nav-back{gap:4px!important;padding-right:7px!important}.app.screen-table .table-page .table-top>button.house-nav-back.house-nav-back>.back-chevron{flex-basis:24px!important;width:24px!important;height:24px!important}}
-/* Destructive-colored hover for dismiss actions only, never Help or Back. */
+/* Only visible dismiss controls get the Leave hover palette. Backdrops stay transparent. */
 :root body button.house-nav-close.house-nav-close:hover:not(:disabled),
-:root body button[aria-label*="close" i]:hover:not(:disabled),
-:root body button[class*="dismiss"]:hover:not(:disabled),
-:root body button[class*="-close"]:hover:not(:disabled){background:linear-gradient(#65332d,#432521)!important;background-image:linear-gradient(#65332d,#432521)!important;border-color:#cf8874!important;color:#f0d2c5!important;box-shadow:inset 0 1px #ffffff20,0 0 10px #b13e3b33,0 3px 8px #0004!important;filter:none!important}
+:root body button[class*="-close"]:not([class*="backdrop"]):not([class*="overlay"]):hover:not(:disabled),
+:root body button[class*="dismiss"]:not([class*="backdrop"]):not([class*="overlay"]):hover:not(:disabled){background:linear-gradient(#65332d,#432521)!important;background-image:linear-gradient(#65332d,#432521)!important;border-color:#cf8874!important;color:#f0d2c5!important;box-shadow:inset 0 1px #ffffff20,0 0 10px #b13e3b33,0 3px 8px #0004!important;filter:none!important}
 
-.app.screen-table .table-page .table-top>button.house-nav-back.house-nav-back{background:linear-gradient(#294b38,#163123)!important;background-image:linear-gradient(#294b38,#163123)!important;border:1px solid #c4a86b!important;border-radius:26px!important;color:#f4e2bc!important;box-shadow:inset 0 1px #b5c59033,0 3px 8px #0004!important}
+/* Self-contained table navigation: unaffected by legacy generic BackButton rules. */
+.app.screen-table .table-page .table-top>button.table-lobby-button{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:5px;grid-area:1/1;flex:0 0 auto;width:90px!important;min-width:0!important;max-width:90px!important;height:40px!important;min-height:40px!important;margin:0!important;padding:5px!important;overflow:hidden;border:1px solid #c4a86b!important;border-radius:24px!important;background:linear-gradient(#294b38,#163123)!important;color:#f4e2bc!important;box-shadow:inset 0 1px #b5c59033,0 3px 8px #0004!important;font:650 12px/1 system-ui!important;text-shadow:none!important;white-space:nowrap;cursor:pointer}
+.app.screen-table .table-page .table-top>button.table-lobby-button>i{box-sizing:border-box;position:static;display:grid;place-items:center;flex:0 0 24px;width:24px;height:24px;margin:0;padding:0;border:0;border-radius:50%;background:#dcc07a;color:#243523;transform:none}
+.app.screen-table .table-page .table-top>button.table-lobby-button svg{display:block;width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.app.screen-table .table-page .table-top>button.table-lobby-button>b{position:static;display:block;width:auto;height:auto;margin:0;padding:0;background:none;font:inherit;color:inherit;transform:none}
+.app.screen-table .table-page .table-top>button.table-lobby-button:before,.app.screen-table .table-page .table-top>button.table-lobby-button:after{content:none!important}
+.app.screen-table .table-page .table-top>button.table-lobby-button:hover{filter:brightness(1.12)}
+.app.screen-table .table-page .table-top>button.table-lobby-button:focus-visible{outline:2px solid #ffe5a1;outline-offset:2px}
+@media(max-width:600px),(max-height:550px){.app.screen-table .table-page .table-top>button.table-lobby-button{width:78px!important;max-width:78px!important;font-size:11px!important}}
