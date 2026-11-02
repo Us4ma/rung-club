@@ -5,7 +5,7 @@ export const MILESTONES=[
  {level:150,item:'emote:royal-applause',name:'Royal Applause',kind:'emote',symbol:'👏'},
  {level:200,item:'frame:royal-crown',name:'Royal Crown',kind:'frame',symbol:'♛'},
 ] as const;
-export const rewardCoins=(level:number)=>Math.min(1000,100+Math.floor(level/5)*50)+(level%50===0?2500:0);
+export const rewardCoins=(level:number)=>Math.min(1000,100+(Math.max(1,level)-1)*10)+(level%5===0?100:0)+(level%50===0?2500:0);
 export function rewardXP(level:number){let xp=0;for(let i=1;i<level;i++)xp+=xpForNextLevel(i);return xp;}
 export const rewardID=(uid:string,level:number)=>`level-reward:v1:${uid}:${level}`;
 export type RewardState={level:number;xp:number;claimed:number[];owned:string[];equipped:string;wallet:number};

@@ -118,3 +118,22 @@
 @keyframes reward-wallet-credit{0%{opacity:0;transform:translateY(4px)}20%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translateY(-14px)}}
 @keyframes reward-wallet-pulse{0%,100%{transform:scale(1)}45%{transform:scale(1.18)}}
 @media(prefers-reduced-motion:reduce){.reward-coin-flight{display:none}.reward-wallet-added{animation:reward-wallet-credit .8s linear both!important}.coins-arrived>img{animation:none}}
+
+/* Tap a card for a readable contents list; claim remains a separate action. */
+.rung-rewards-page .level-reward-card{cursor:pointer}
+.reward-card-front{display:contents}
+.level-reward-card.is-flipped .reward-card-front{display:none}
+.reward-card-back{grid-row:1/-1;grid-column:1;display:flex;flex-direction:column;justify-content:center;gap:14px;min-height:0;overflow:auto;animation:reward-detail-in .22s ease-out}
+.reward-card-back h2{font:700 22px/1.2 Georgia;margin:0;color:#f6e5b8}
+.reward-card-back dl{margin:0;width:100%;font-size:12px}
+.reward-card-back dl>div{padding:12px 0;border-bottom:1px solid #b99a5644}
+.reward-card-back dt{color:#bac9ba;font-size:11px}
+.reward-card-back dd{margin:6px 0 0;color:#ffe1a1;font-weight:750;line-height:1.4}
+.reward-card-back p{font-size:11px;line-height:1.5;margin:0;color:#d2dccb}
+.reward-card-back small{font-size:10px;color:#b9c5b5}
+.level-reward-card:focus-visible{outline:2px solid #ffe5a1;outline-offset:4px}
+@keyframes reward-detail-in{from{opacity:0;transform:rotateY(25deg)}to{opacity:1;transform:rotateY(0)}}
+@media(orientation:landscape) and (max-height:550px){.reward-card-back{gap:6px}.reward-card-back h2{font-size:18px}.reward-card-back dl>div{padding:6px 0}}
+
+.rung-rewards-page .reward-card-front>.reward-claim{position:relative;z-index:2;align-self:stretch;min-width:0;height:36px;min-height:36px;max-height:36px;margin:0;padding:7px 8px;font-size:13px;line-height:20px}
+@media(orientation:landscape) and (max-height:550px){.rung-rewards-page .reward-card-front>.reward-claim{height:30px;min-height:30px;max-height:30px;padding:4px;font-size:12px}}

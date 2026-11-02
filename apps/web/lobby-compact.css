@@ -180,3 +180,8 @@
  .app.screen-lobby>header.lobby-hud.lobby-hud .rung-reward-entry img{width:36px}
 }
 @media(prefers-reduced-motion:reduce){.app.screen-lobby>header.lobby-hud.lobby-hud button.rung-reward-entry{transition:none;transform:none}}
+
+.app.screen-lobby .lobby.compact-lobby .compact-mode[role=button]{cursor:pointer}
+.app.screen-lobby .lobby.compact-lobby .compact-mode[role=button]:focus-visible{outline:2px solid #ffe5a1;outline-offset:3px}
+.app.screen-lobby .lobby.compact-lobby button.private-join-link{display:block;min-height:24px;height:auto;width:auto;margin:4px auto 0;padding:2px 4px;background:transparent!important;border:0!important;box-shadow:none!important;color:#f2ddb3!important;font:600 11px/1.2 system-ui;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:600px){.app.screen-lobby .lobby.compact-lobby button.private-join-link{font-size:10px;min-height:22px;margin-top:2px}}
