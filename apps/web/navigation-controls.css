@@ -11,3 +11,17 @@ button.house-nav-icon.house-nav-icon:focus-visible,button.house-nav-back.house-n
 button.house-nav-icon.house-nav-icon:disabled,button.house-nav-back.house-nav-back:disabled{opacity:.45;cursor:default}
 @media(max-width:600px),(max-height:550px){button.house-nav-icon.house-nav-icon{width:40px!important;height:40px!important;min-width:40px!important;max-width:40px!important;min-height:40px!important;max-height:40px!important;padding:8px!important}button.house-nav-back.house-nav-back{min-height:40px!important;padding:5px 12px 5px 5px!important;font-size:12px!important}button.house-nav-back.house-nav-back .back-chevron{width:28px!important;height:28px!important}}
 @media(prefers-reduced-motion:reduce){button.house-nav-icon.house-nav-icon,button.house-nav-back.house-nav-back{transition:none!important}}
+
+/* Table headers share one compact Lobby pill in every game mode. */
+.app.screen-table .table-page .table-top>button.house-nav-back.house-nav-back{display:inline-flex!important;position:relative;flex:0 0 auto;width:auto!important;min-width:0!important;max-width:none!important;margin:0!important;gap:6px!important;min-height:40px!important;height:40px!important;padding:5px 10px 5px 5px!important;white-space:nowrap;overflow:visible}
+.app.screen-table .table-page .table-top>button.house-nav-back.house-nav-back>span{position:static!important;display:inline-block!important;width:auto!important;height:auto!important;transform:none!important;line-height:1.2}
+.app.screen-table .table-page .table-top>button.house-nav-back.house-nav-back>.back-chevron{display:grid!important;place-items:center!important;flex:0 0 28px!important;width:28px!important;height:28px!important;background:#dcc07a!important;color:#243523!important;border-radius:50%!important}
+.app.screen-table .table-page .table-top>button.house-nav-back.house-nav-back>span:last-child{font:650 12px/1.2 system-ui!important;color:#f4e2bc!important}
+@media(max-width:600px){.app.screen-table .table-page .table-top>button.house-nav-back.house-nav-back{gap:4px!important;padding-right:7px!important}.app.screen-table .table-page .table-top>button.house-nav-back.house-nav-back>.back-chevron{flex-basis:24px!important;width:24px!important;height:24px!important}}
+/* Destructive-colored hover for dismiss actions only, never Help or Back. */
+:root body button.house-nav-close.house-nav-close:hover:not(:disabled),
+:root body button[aria-label*="close" i]:hover:not(:disabled),
+:root body button[class*="dismiss"]:hover:not(:disabled),
+:root body button[class*="-close"]:hover:not(:disabled){background:linear-gradient(#65332d,#432521)!important;background-image:linear-gradient(#65332d,#432521)!important;border-color:#cf8874!important;color:#f0d2c5!important;box-shadow:inset 0 1px #ffffff20,0 0 10px #b13e3b33,0 3px 8px #0004!important;filter:none!important}
+
+.app.screen-table .table-page .table-top>button.house-nav-back.house-nav-back{background:linear-gradient(#294b38,#163123)!important;background-image:linear-gradient(#294b38,#163123)!important;border:1px solid #c4a86b!important;border-radius:26px!important;color:#f4e2bc!important;box-shadow:inset 0 1px #b5c59033,0 3px 8px #0004!important}

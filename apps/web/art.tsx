@@ -21,4 +21,4 @@ export function randomBotAvatar(){const n=new Uint32Array(1);crypto.getRandomVal
 
 
 export function HelpButton({label='Help',className='',...props}:{label?:string}&React.ButtonHTMLAttributes<HTMLButtonElement>){return <button {...props} type="button" className={'quiet icon-button house-nav-icon '+className} aria-label={label}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 8a3 3 0 0 1 6 0c0 2-3 2-3 5M12 17h.01"/></svg></button>;}
-export function CloseButton({label='Close',className='',...props}:{label?:string}&React.ButtonHTMLAttributes<HTMLButtonElement>){return <button {...props} type="button" className={'quiet icon-button house-nav-icon '+className} aria-label={label}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>;}
+export function CloseButton({label='Close',className='',...props}:{label?:string}&React.ButtonHTMLAttributes<HTMLButtonElement>){return <button {...props} type="button" className={'quiet icon-button house-nav-icon house-nav-close '+className} aria-label={label}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>;}

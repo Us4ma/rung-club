@@ -185,3 +185,20 @@
 .app.screen-lobby .lobby.compact-lobby .compact-mode[role=button]:focus-visible{outline:2px solid #ffe5a1;outline-offset:3px}
 .app.screen-lobby .lobby.compact-lobby button.private-join-link{display:block;min-height:24px;height:auto;width:auto;margin:4px auto 0;padding:2px 4px;background:transparent!important;border:0!important;box-shadow:none!important;color:#f2ddb3!important;font:600 11px/1.2 system-ui;text-decoration:underline;text-underline-offset:3px}
 @media(max-width:600px){.app.screen-lobby .lobby.compact-lobby button.private-join-link{font-size:10px;min-height:22px;margin-top:2px}}
+
+/* Keep joining outside the compact mode tiles, so portrait rows never overflow. */
+.app.screen-lobby .lobby.lobby.compact-lobby .lobby-join-shortcut{display:flex;justify-content:flex-end;width:100%;max-width:920px;align-self:center;min-height:32px;margin-top:8px}
+.app.screen-lobby .lobby.lobby.compact-lobby .lobby-join-shortcut .private-join-link{margin:0;min-height:32px;padding:5px 10px;font-size:12px}
+.app.screen-lobby .lobby.lobby.compact-lobby .private-room{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;padding:16px;align-items:center}
+.app.screen-lobby .lobby.lobby.compact-lobby .private-room-heading{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;position:static;padding:0;margin:0;min-height:42px;background:none;border:0}
+.private-room-heading h3{margin:0 0 5px}
+.private-room-heading p{margin:0}
+.app.screen-lobby .lobby.lobby.compact-lobby .private-room .join{display:flex;min-width:0;gap:8px}
+.app.screen-lobby .lobby.lobby.compact-lobby .private-room .join input{min-width:0;flex:1;width:auto}
+@media(max-width:760px){
+.app.screen-lobby .lobby.lobby.compact-lobby .private-room{grid-template-columns:minmax(0,1fr);padding:12px;gap:10px}
+.app.screen-lobby .lobby.lobby.compact-lobby .private-room-heading h3{font-size:18px}
+.app.screen-lobby .lobby.lobby.compact-lobby .private-room-heading p{font-size:11px}
+.app.screen-lobby .lobby.lobby.compact-lobby .private-room .join{width:100%}
+.app.screen-lobby .lobby.lobby.compact-lobby .lobby-join-shortcut{margin-top:6px}
+}
