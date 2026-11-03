@@ -159,3 +159,14 @@
 .app.screen-lobby>header.lobby-hud.lobby-hud .lobby-reward-shortcuts button.rung-reward-entry span{font:600 10px/1 system-ui}
 .app.screen-lobby>header.lobby-hud.lobby-hud .lobby-reward-shortcuts img,.app.screen-lobby>header.lobby-hud.lobby-hud .lobby-reward-shortcuts svg{width:14px;height:14px}
 }
+
+.mobile-club-menu{display:none!important}
+@media(max-width:760px),(pointer:coarse) and (max-width:1100px){
+.app.screen-lobby .hud-actions>.lobby-reward-shortcuts{display:none}
+.app.screen-lobby .hud-actions>.mobile-club-menu{display:grid!important;place-items:center;position:fixed;left:max(10px,env(safe-area-inset-left));bottom:max(10px,env(safe-area-inset-bottom));z-index:40;width:44px;height:44px;padding:0;border:1px solid #c4a86b!important;border-radius:50%;background:#12382b!important;color:#f6e5b8!important}
+}
+.mobile-club-drawer{position:fixed;inset:auto auto max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));margin:0}
+.club-drawer-links{display:grid;gap:10px;clear:both}
+.club-drawer-links button{display:flex;align-items:center;gap:10px;min-height:48px;padding:7px 12px;border:1px solid #b99a58;border-radius:9px;background:#173c30;color:#f6e5b8;font:700 16px Georgia;text-align:left}
+.club-drawer-links img,.club-drawer-links svg{width:28px;height:28px;object-fit:contain}
+.club-drawer-links .shortcut-short{display:none}
