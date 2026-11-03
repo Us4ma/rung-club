@@ -168,7 +168,7 @@
 /* One coordinated layout: reserve space for larger portraits, labels and the trick. */
 .screen-table .table{top:90px;bottom:50px}
 .screen-table .table-host{top:50px}
-.screen-table .dealer-speech,.screen-table .dealer-speech.fifth-sar{right:0;top:0;width:240px;max-width:240px;padding:9px 12px;background:#092a22ed;color:#eedfb8;line-height:1.35;font-size:12px;max-height:72px}
+.screen-table .dealer-speech,.screen-table .dealer-speech.fifth-sar{right:0;top:0;width:240px;max-width:240px;padding:9px 12px;background:#092a22ed;color:#eedfb8;line-height:1.35;font-size:12px;overflow-wrap:anywhere}
 .screen-table .seat{width:108px}.screen-table .self-seat{width:96px;bottom:-38px}
 .screen-table .seat .avatar{width:88px;height:88px}.screen-table .self-seat .avatar{width:76px;height:76px}
 .screen-table .seat-2{top:-64px}.screen-table .seat-2 strong,.screen-table .seat-2 small{position:absolute;left:calc(100% + 12px);top:22px;text-align:left;max-width:130px;overflow:visible}.screen-table .seat-2 small{top:44px}
@@ -370,8 +370,8 @@ body .account-info-layer .account-info-drawer button.delete-account,body .accoun
 .account-info-layer .account-info-drawer .back-chevron svg{width:17px;height:17px}
 
 /* Keep callouts next to the host on tablets, and directly above her on phones. */
-@media(min-width:601px) and (max-width:1366px){
- .screen-table .dealer-speech,.screen-table .dealer-speech.fifth-sar{left:auto;right:max(0px,calc(20% - 168px));top:0;width:160px;max-width:160px;max-height:none;overflow-wrap:anywhere}
+@media(min-width:601px) and (min-height:551px){
+ .screen-table .dealer-speech,.screen-table .dealer-speech.fifth-sar{left:auto;right:0;top:0;width:calc(20% - 8px);max-width:200px;max-height:none;overflow-wrap:anywhere}
  .screen-table .dealer-speech:after{left:-7px;right:auto;top:18px;bottom:auto;transform:rotate(135deg)}
 }
 @media(max-width:600px){
