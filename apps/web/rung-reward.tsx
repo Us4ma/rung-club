@@ -19,12 +19,25 @@ export function RungReward({uid,xp=0,sound=false}:{uid?:string;xp?:number;sound?
  useEffect(()=>{if(!flight)setVisibleWallet(data?.wallet??null);},[data?.wallet,!!flight]);
  const shortcutDrawer=useRef<HTMLDialogElement>(null);
  const [missions,setMissions]=useState<{day:string;resetsAt:number;credited:number;goals:{id:string;title:string;target:number;progress:number;coins:number;claimed:boolean}[]}|null>(null),[missionError,setMissionError]=useState(''),[missionBusy,setMissionBusy]=useState(false);
+ const [missionFlight,setMissionFlight]=useState<typeof flight>(null);
  const missionLock=useRef(false);
  const missionCoins=missions?.goals.reduce((sum,g)=>sum+(!g.claimed&&g.progress>=g.target?g.coins:0),0)??0;
- async function loadMissions(claim=false){
+ async function loadMissions(claim=false,origin?:HTMLElement){
+  const from=origin?.getBoundingClientRect();
   if(!uid||missionLock.current)return;
   missionLock.current=true;setMissionBusy(true);setMissionError('');
-  try{const result=await socialRequest('rewards',claim?{action:'claim-missions',day:missions?.day}:{action:'missions'});if(scope.current!==uid)return;setMissions(result);if(result.credited>0){window.dispatchEvent(new Event('rung:rewards-changed'));tableAudio.interfaceEffect('coinGift',sound);void refresh();}}
+  try{const result=await socialRequest('rewards',claim?{action:'claim-missions',day:missions?.day}:{action:'missions'});if(scope.current!==uid)return;setMissions(result);if(result.credited>0){
+   const target=document.querySelector('.lobby-hud .coin-wallet img')?.getBoundingClientRect();
+   if(from&&target&&missionDialog.current?.open&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    missionDialog.current.close();
+    const x=from.left+from.width/2,y=from.top+from.height/2;
+    setMissionFlight({x,y,dx:target.left+target.width/2-x,dy:target.top+target.height/2-y,id:Date.now()});
+    await new Promise<void>(resolve=>setTimeout(resolve,950));
+    if(live.current)setMissionFlight(null);
+   }
+   window.dispatchEvent(new Event('rung:rewards-changed'));
+   if(live.current&&scope.current===uid){tableAudio.interfaceEffect('coinGift',sound);void refresh();}
+  }}
   catch(e){if(scope.current===uid)setMissionError((e as Error).message);}
   finally{missionLock.current=false;setMissionBusy(false);}
  }
@@ -57,6 +70,7 @@ export function RungReward({uid,xp=0,sound=false}:{uid?:string;xp?:number;sound?
   }catch(e){if(live.current&&scope.current===account)setError((e as Error).message);}finally{pending.current=false;if(live.current)setBusy(false);}
  }
 
+ const coinFlight=(flight:NonNullable<typeof missionFlight>)=><div key={flight.id} className="reward-coin-flight" aria-hidden="true" style={{left:flight.x,top:flight.y,'--reward-fly-x':flight.dx+'px','--reward-fly-y':flight.dy+'px'} as React.CSSProperties}>{Array.from({length:9},(_,i)=><img key={i} src="/art/currency/coin.svg" alt="" style={{'--coin-delay':i*28+'ms','--coin-spread':(i%3-1)*18+'px'} as React.CSSProperties}/>)}</div>;
  const shortcuts=(mobile:boolean)=><><button type="button" ref={mobile?undefined:trigger} className="rung-reward-entry" aria-label={'Rung Rewards'+(ready.length?`, ${ready.length} unclaimed rewards`:'')} aria-haspopup="dialog" aria-expanded={open} onClick={()=>{if(mobile)shortcutDrawer.current?.close();setFAQ(false);setOpen(true);}}>
    <img src={art('lobby/rung-reward-clean.webp')} alt="" draggable={false}/><span className="shortcut-full">Rung Rewards</span><span className="shortcut-short" aria-hidden="true">Rewards</span>{ready.length>0&&<i className="reward-notification" aria-hidden="true"/>}
   </button>
@@ -70,8 +84,9 @@ export function RungReward({uid,xp=0,sound=false}:{uid?:string;xp?:number;sound?
    <p className="mission-note">Finish eligible Open Rung deals to make progress. Resets at midnight UTC.</p>
    {missions?.goals.map((g,i)=><section className="mission-goal" key={g.id}><div><small>{['Easy','Tough','Toughest'][i]}</small><strong>{g.title}</strong></div><b>+{g.coins} coins</b><progress aria-label={g.title} value={g.progress} max={g.target}/><small>{g.progress} / {g.target}{g.claimed?' · Claimed':g.progress>=g.target?' · Ready to claim':''}</small></section>)}
    <p role="status">{missionError||(!missions&&missionBusy?'Loading missions…':missions?.credited?missions.credited+' coins added to your wallet.':'')}</p>
-   {missionError?<button className="mission-claim" disabled={missionBusy} onClick={()=>void loadMissions()}>Refresh missions</button>:<button className="mission-claim" disabled={!missionCoins||missionBusy} onClick={()=>void loadMissions(true)}>{missionBusy?'Please wait…':missionCoins?'Claim all · '+missionCoins+' coins':'No rewards to claim'}</button>}
+   {missionError?<button className="mission-claim" disabled={missionBusy} onClick={()=>void loadMissions()}>Refresh missions</button>:<button className="mission-claim" disabled={!missionCoins||missionBusy} onClick={e=>void loadMissions(true,e.currentTarget)}>{missionBusy?'Please wait…':missionCoins?'Claim all · '+missionCoins+' coins':'No rewards to claim'}</button>}
   </>}</dialog>,document.body)}
+  {missionFlight&&createPortal(coinFlight(missionFlight),document.body)}
   {open&&createPortal(
    <div className="rung-rewards-overlay">
     <section className={'rung-rewards-page'+(faq?' showing-faq':'')} ref={panel} role="dialog" aria-modal="true" aria-labelledby="rewards-title" tabIndex={-1}>
@@ -104,7 +119,7 @@ export function RungReward({uid,xp=0,sound=false}:{uid?:string;xp?:number;sound?
       </div>
       <footer className="rewards-footer"><div className="rewards-footer-copy"><strong>{ready.length?`${ready.length} reward${ready.length===1?'':'s'} ready`:'You’re all caught up'}</strong><small>{ready.length?'Collect your coins and any extra rewards.':'Your next reward unlocks as you play.'}</small></div><button className="reward-claim reward-claim-all" disabled={!ready.length||busy} onClick={e=>void act({action:'claim-all'},e.currentTarget)}>{busy?'Collecting…':'Claim All'}</button><p className="rewards-feedback" role={error?'alert':'status'}>{error||message}</p></footer>
      </>}
-     {flight&&<div key={flight.id} className="reward-coin-flight" aria-hidden="true" style={{left:flight.x,top:flight.y,'--reward-fly-x':flight.dx+'px','--reward-fly-y':flight.dy+'px'} as React.CSSProperties}>{Array.from({length:9},(_,i)=><img key={i} src="/art/currency/coin.svg" alt="" style={{'--coin-delay':i*28+'ms','--coin-spread':(i%3-1)*18+'px'} as React.CSSProperties}/>)}</div>}
+     {flight&&coinFlight(flight)}
     </section>
    </div>,document.body
   )}
