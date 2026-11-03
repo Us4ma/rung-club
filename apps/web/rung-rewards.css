@@ -137,3 +137,12 @@
 
 .rung-rewards-page .reward-card-front>.reward-claim{position:relative;z-index:2;align-self:stretch;min-width:0;height:36px;min-height:36px;max-height:36px;margin:0;padding:7px 8px;font-size:13px;line-height:20px}
 @media(orientation:landscape) and (max-height:550px){.rung-rewards-page .reward-card-front>.reward-claim{height:30px;min-height:30px;max-height:30px;padding:4px;font-size:12px}}
+
+.app.screen-lobby .hud-actions>.lobby-reward-shortcuts{flex:0 0 100%;display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:6px;width:calc(200% + 6px);min-width:calc(200% + 6px);margin-left:calc(-100% - 6px)}
+.daily-mission-entry svg{flex:none;color:#e9cc83}
+@media(max-width:1100px),(pointer:coarse) and (max-width:1366px){.app.screen-lobby .hud-actions>.lobby-reward-shortcuts{width:100%;min-width:0;margin-left:0;grid-template-columns:minmax(0,1fr)}.app.screen-lobby>header.lobby-hud.lobby-hud{grid-template-rows:auto minmax(144px,auto)}}
+.daily-mission-preview{box-sizing:border-box;width:min(360px,calc(100% - 32px));padding:20px 22px;border:1px solid #c4a86b;border-radius:16px;background:#102f24;color:#f6e5b8}
+.daily-mission-preview::backdrop{background:#0008}
+.daily-mission-preview .house-nav-close{float:right}
+.daily-mission-preview h2{font:700 25px Georgia;margin:8px 0 12px}
+.daily-mission-preview p{margin:0}

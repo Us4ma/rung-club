@@ -17,6 +17,7 @@ export function RungReward({uid,xp=0,sound=false}:{uid?:string;xp?:number;sound?
  const walletTarget=useRef<HTMLSpanElement>(null),live=useRef(true);
  useEffect(()=>{live.current=true;return()=>{live.current=false;};},[]);
  useEffect(()=>{if(!flight)setVisibleWallet(data?.wallet??null);},[data?.wallet,!!flight]);
+ const missionDialog=useRef<HTMLDialogElement>(null);
  const trigger=useRef<HTMLButtonElement>(null),panel=useRef<HTMLElement>(null),carousel=useRef<HTMLDivElement>(null),scope=useRef(uid),request=useRef(0),pending=useRef(false),navigationTarget=useRef<number|null>(null),edgeFrame=useRef(0),drag=useRef<{id:number;x:number;scroll:number;lastX:number;at:number;velocity:number;active:boolean}|null>(null),ignoreClickUntil=useRef(0);scope.current=uid;
  async function refresh(){if(!uid||pending.current)return;const account=uid,id=++request.current;pending.current=true;try{const result=await socialRequest('rewards');if(scope.current===account&&id===request.current){setData(result);setError('');}}catch(e){if(scope.current===account)setError((e as Error).message);}finally{pending.current=false;}}
  useEffect(()=>{setData(null);setError('');request.current++;pending.current=false;setBusy(false);void refresh();},[uid]);
@@ -46,9 +47,11 @@ export function RungReward({uid,xp=0,sound=false}:{uid?:string;xp?:number;sound?
  }
 
  return <>
-  <button type="button" ref={trigger} className="rung-reward-entry" aria-label={'Rung Rewards'+(ready.length?`, ${ready.length} unclaimed rewards`:'')} aria-haspopup="dialog" aria-expanded={open} onClick={()=>{setFAQ(false);setOpen(true);}}>
+  <div className="lobby-reward-shortcuts"><button type="button" ref={trigger} className="rung-reward-entry" aria-label={'Rung Rewards'+(ready.length?`, ${ready.length} unclaimed rewards`:'')} aria-haspopup="dialog" aria-expanded={open} onClick={()=>{setFAQ(false);setOpen(true);}}>
    <img src={art('lobby/rung-reward-clean.webp')} alt="" draggable={false}/><span>Rung Rewards</span>{ready.length>0&&<i className="reward-notification" aria-hidden="true"/>}
   </button>
+  <button type="button" className="rung-reward-entry daily-mission-entry" aria-haspopup="dialog" onClick={()=>missionDialog.current?.showModal()}><svg viewBox="0 0 32 32" aria-hidden="true" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 6H8a2 2 0 0 0-2 2v19a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-4"/><rect x="12" y="3" width="8" height="6" rx="2"/><path d="m11 16 2 2 4-4m-6 9 2 2 4-4m3-4h2m-2 7h2"/></svg><span>Daily Missions</span></button></div>
+  {createPortal(<dialog ref={missionDialog} className="daily-mission-preview" aria-labelledby="daily-mission-title"><CloseButton label="Close Daily Missions" onClick={()=>missionDialog.current?.close()}/><h2 id="daily-mission-title">Daily Missions</h2><p>Coming soon</p></dialog>,document.body)}
   {open&&createPortal(
    <div className="rung-rewards-overlay">
     <section className={'rung-rewards-page'+(faq?' showing-faq':'')} ref={panel} role="dialog" aria-modal="true" aria-labelledby="rewards-title" tabIndex={-1}>
