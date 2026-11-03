@@ -17,3 +17,10 @@
 .friends-stats-layer .table-player-identity>.avatar{width:48px;height:48px}
 .friends-stats-layer .table-player-stats>div{padding:8px}
 .friends-stats-layer .table-player-stats strong{font-size:20px;margin-top:4px}
+
+.app .friends-drawer .friends-stats-layer button.table-player-backdrop{
+ appearance:none;background:transparent!important;background-image:none!important;
+ border:0!important;border-image:none!important;box-shadow:none!important;
+}
+.app .friends-drawer .friends-stats-layer button.table-player-backdrop::before,
+.app .friends-drawer .friends-stats-layer button.table-player-backdrop::after{content:none!important}
