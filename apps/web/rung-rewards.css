@@ -140,9 +140,22 @@
 
 .app.screen-lobby .hud-actions>.lobby-reward-shortcuts{flex:0 0 100%;display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:6px;width:calc(200% + 6px);min-width:calc(200% + 6px);margin-left:calc(-100% - 6px)}
 .daily-mission-entry svg{flex:none;color:#e9cc83}
-@media(max-width:1100px),(pointer:coarse) and (max-width:1366px){.app.screen-lobby .hud-actions>.lobby-reward-shortcuts{width:100%;min-width:0;margin-left:0;grid-template-columns:minmax(0,1fr)}.app.screen-lobby>header.lobby-hud.lobby-hud{grid-template-rows:auto minmax(144px,auto)}}
+
 .daily-mission-preview{box-sizing:border-box;width:min(360px,calc(100% - 32px));padding:20px 22px;border:1px solid #c4a86b;border-radius:16px;background:#102f24;color:#f6e5b8}
 .daily-mission-preview::backdrop{background:#0008}
 .daily-mission-preview .house-nav-close{float:right}
 .daily-mission-preview h2{font:700 25px Georgia;margin:8px 0 12px}
 .daily-mission-preview p{margin:0}
+
+.app.screen-lobby>header.lobby-hud.lobby-hud .lobby-reward-shortcuts button.rung-reward-entry{min-width:0;height:44px;gap:5px;white-space:nowrap}
+.app.screen-lobby>header.lobby-hud.lobby-hud .lobby-reward-shortcuts button.rung-reward-entry span{font-size:14px}
+.app.screen-lobby>header.lobby-hud.lobby-hud .lobby-reward-shortcuts img,.app.screen-lobby>header.lobby-hud.lobby-hud .lobby-reward-shortcuts svg{width:24px;height:24px;object-fit:contain}
+.lobby-reward-shortcuts .shortcut-short{display:none}
+@media(max-width:1100px),(pointer:coarse) and (max-width:1366px){
+.app.screen-lobby .hud-actions>.lobby-reward-shortcuts{width:100%;min-width:0;margin-left:0;gap:4px}
+.lobby-reward-shortcuts .shortcut-full{display:none}
+.lobby-reward-shortcuts .shortcut-short{display:inline}
+.app.screen-lobby>header.lobby-hud.lobby-hud .lobby-reward-shortcuts button.rung-reward-entry{padding-inline:2px!important;gap:2px}
+.app.screen-lobby>header.lobby-hud.lobby-hud .lobby-reward-shortcuts button.rung-reward-entry span{font:600 10px/1 system-ui}
+.app.screen-lobby>header.lobby-hud.lobby-hud .lobby-reward-shortcuts img,.app.screen-lobby>header.lobby-hud.lobby-hud .lobby-reward-shortcuts svg{width:14px;height:14px}
+}
