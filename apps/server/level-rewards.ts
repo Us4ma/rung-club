@@ -11,8 +11,8 @@ export async function levelRewards(db:D1Database,uid:string,input:any){
  const action=input?.action||'state';
  if(!['state','claim','claim-all','equip'].includes(action))return Response.json({error:'Unknown rewards action.'},{status:400});
  if(action==='claim'||action==='claim-all'){
-  if(action==='claim'&&(!Number.isInteger(input.level)||input.level<1||input.level>level))return Response.json({error:'Reach this level before claiming its reward.'},{status:409});
-  const levels=action==='claim'?[input.level]:Array.from({length:level},(_,i)=>i+1);
+  if(action==='claim'&&(!Number.isInteger(input.level)||input.level<2||input.level>level))return Response.json({error:'Reach this level before claiming its reward.'},{status:409});
+  const levels=action==='claim'?[input.level]:Array.from({length:Math.max(0,level-1)},(_,i)=>i+2);
   const statements:D1PreparedStatement[]=[];
   for(const n of levels){const id=rewardID(uid,n);statements.push(db.prepare("INSERT OR IGNORE INTO ledger(id,uid,amount,xp,kind,created) SELECT ?,?,?,0,'level-reward',? WHERE EXISTS(SELECT 1 FROM accounts WHERE uid=? AND deleted=0) AND (SELECT COALESCE(SUM(xp),0) FROM ledger WHERE uid=?)>=?").bind(id,uid,rewardCoins(n),Date.now(),uid,uid,rewardXP(n)));
    const special=MILESTONES.find(m=>m.level===n);if(special)statements.push(db.prepare('INSERT OR IGNORE INTO cosmetics(uid,item) SELECT ?,? WHERE EXISTS(SELECT 1 FROM ledger WHERE id=? AND uid=?)').bind(uid,special.item,id,uid));
