@@ -213,3 +213,11 @@
 .app.screen-lobby .lobby.lobby.compact-lobby .compact-mode.private h2{font-size:clamp(11px,3vw,17px)}
 }
 @media(orientation:landscape) and (max-height:550px){.app.screen-lobby .lobby.lobby.compact-lobby .private-card-actions{margin-top:3px}.app.screen-lobby .lobby.lobby.compact-lobby .private-card-actions>.compact-mode-action{height:30px;min-height:30px}.app.screen-lobby .lobby.lobby.compact-lobby .private-card-actions>.private-join-link{height:22px;min-height:22px;font-size:10px}}
+
+.first-deal-dialog{box-sizing:border-box;width:min(360px,calc(100% - 32px));max-height:calc(100dvh - 24px);margin:auto;padding:20px;text-align:center;color:#fff0cc;background:linear-gradient(145deg,#245039,#09251c);border:3px double #d5b775;border-radius:17px}
+.first-deal-dialog::backdrop{background:#020c0899}
+.first-deal-dialog small{color:#e9cc8b;letter-spacing:.12em}
+.first-deal-dialog h2{font:26px Georgia;margin:8px 0}
+.first-deal-dialog button{display:block;width:100%;min-height:44px}
+.app .first-deal-dialog .first-deal-skip{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important}
+@media(max-width:600px){.first-deal-dialog{margin-block:auto max(16px,env(safe-area-inset-bottom))}}

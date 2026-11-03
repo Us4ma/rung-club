@@ -10,6 +10,6 @@ export const BAND_UNLOCK_XP=Array.from({length:4},(_,i)=>xpForNextLevel(i+1)).re
 export const bandEligible=(xp:number)=>level(xp)>=5;
 export type TutorialStatus='not-started'|'in-progress'|'completed'|'skipped';
 // Existing account rows (0) predate this onboarding. New accounts explicitly begin at 4.
-export const tutorialStatus=(code:number):TutorialStatus=>code===4?'not-started':code===2?'in-progress':code===3?'skipped':'completed';
-export const tutorialCode={ 'not-started':4,'in-progress':2,completed:1,skipped:3 } as const;
+export const tutorialStatus=(code:number):TutorialStatus=>code===5?'not-started':code===6?'in-progress':code===3?'skipped':'completed';
+export const tutorialCode={ 'not-started':5,'in-progress':6,completed:1,skipped:3 } as const;
 export function tutorialTransition(old:number,next:TutorialStatus){return old===0||old===1||old===3?old:tutorialCode[next];}
