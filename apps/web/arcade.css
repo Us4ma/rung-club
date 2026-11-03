@@ -24,7 +24,8 @@
 .screen-profile .panel{max-width:880px;padding:28px;margin:24px auto 40px}
 .screen-profile .panel h1{font:800 clamp(25px,4vw,34px)/1.15 system-ui,sans-serif;margin:18px 0 26px}
 .profile-heading{display:flex;align-items:center;gap:18px;margin-bottom:24px}.profile-heading>.avatar{width:88px;height:88px}.profile-heading h3{font:750 22px system-ui;margin:0}.profile-heading p{font-size:12px;margin:5px 0}
-.avatar{clip-path:ellipse(49% 44% at 50% 44%)}
+.avatar{clip-path:ellipse(49% 44% at 50% 44%);border-color:transparent!important}
+.avatar:is(.reward-frame-emerald-ace,.reward-frame-royal-crown){clip-path:none;border-radius:50%}
 .screen-profile .avatar-roster{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin:18px 0 28px}
 .app .avatar-roster button.avatar-choice{position:relative;min-width:0;min-height:0;aspect-ratio:auto;padding:8px 4px 10px;background:#0c2b22;border:1px solid #47654d;border-radius:12px;box-shadow:none;text-shadow:none;display:flex;align-items:center;flex-direction:column;gap:2px;overflow:visible}
 .app .avatar-roster button.avatar-choice[aria-pressed=true]{border:2px solid #efca75;background:#294431;padding:7px 3px 9px;box-shadow:0 0 0 2px #efca7522}

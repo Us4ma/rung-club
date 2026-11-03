@@ -45,6 +45,14 @@ if(url.pathname==='/api/rewards'&&['GET','POST'].includes(req.method))return soc
 if(url.pathname==='/api/leagues'&&['GET','POST'].includes(req.method)){const body=req.method==='POST'?await req.json<any>():{action:'state',tier:url.searchParams.has('tier')?Number(url.searchParams.get('tier')):undefined,group:url.searchParams.get('group')||undefined};if(!['state','ack','honors','profile'].includes(body.action))return json({error:'Invalid league action'},400);return socialRPC(env,'__coins','league-action',user.uid,body);}
 if(url.pathname==='/api/coins'&&req.method==='POST'){const input=await req.json<{action:string;room?:string;amount?:number;autoTopup?:boolean}>();if(!['state','welcome','topup'].includes(input.action))return json({error:'Unsupported wallet action'},400);if(input.action==='topup'){if(!input.room||!(/^[A-F0-9]{8}$/).test(input.room))return json({error:'Invalid table'},400);return socialRPC(env,input.room,'coin-topup',user.uid,input);}return socialRPC(env,'__coins','coin-action',user.uid,input);}
 if(url.pathname==='/api/player-reports'&&req.method==='POST')return socialRPC(env,'__social-coordinator','player-report',user.uid,await req.json());
+if(url.pathname==='/api/friends/profile'&&req.method==='GET'){
+ const target=url.searchParams.get('target');
+ if(!target||target.length>128)return json({error:'Invalid player'},400);
+ const friendship=await friendRelation(env.DB,user.uid,target);
+ if(!['friends','incoming','sent'].includes(friendship.status))return json({error:'Player profile unavailable'},404);
+ const profile=await publicPlayerProfile(env.DB,target);
+ return profile?json({...profile,uid:target,friendship,reportTarget:friendship.status==='friends'?target:undefined}):json({error:'Player profile unavailable'},404);
+}
 if(url.pathname==='/api/friends'&&req.method==='GET'){const state=await friendsState(env,user.uid);return json({...state,chatUnread:await chatUnread(env,user.uid)});}
 if(['/api/friends/chat/messages','/api/friends/chat/send','/api/friends/chat/read'].includes(url.pathname)&&req.method==='POST')return socialRPC(env,'__social-coordinator','chat-'+url.pathname.split('/').at(-1),user.uid,await req.json());
 if(url.pathname==='/api/friends/action'&&req.method==='POST'){const input=await req.json();return socialRPC(env,'__social-coordinator','social-action',user.uid,input);}
