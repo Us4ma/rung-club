@@ -199,6 +199,7 @@ export class CardRoom extends DurableObject<Env>{
   this.data.uids.forEach((uid,i)=>{if(uid&&this.life.disconnectedAt[i]===null&&!this.life.departed[i]){const active=competitive&&(this.data!.manualPlays?.[i]||0)>=8&&this.connected(uid),won=s.scores[i%2]>s.scores[(i+1)%2];
    statements.push(this.env.DB.prepare('INSERT OR IGNORE INTO results SELECT ?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM accounts WHERE uid=? AND deleted=0)').bind(s.matchId,uid,i%2,+won,s.scores[i%2],now,uid));
    statements.push(this.env.DB.prepare('INSERT OR IGNORE INTO ledger SELECT ?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM accounts WHERE uid=? AND deleted=0)').bind('match:'+s.matchId+':'+uid,uid,0,active?dealXP(won,outcome):0,'match:'+outcome,now,uid));
+   if(active&&leagueEligible)statements.push(this.env.DB.prepare("INSERT OR IGNORE INTO ledger(id,uid,amount,xp,kind,created) SELECT ?,?,0,0,'mission-deal',? WHERE EXISTS(SELECT 1 FROM accounts WHERE uid=? AND deleted=0)").bind('mission-deal:'+s.matchId+':'+uid,uid,now,uid));
    if(active&&won)statements.push(this.env.DB.prepare('INSERT OR IGNORE INTO ledger SELECT ?,?,0,30,?,? WHERE EXISTS(SELECT 1 FROM accounts WHERE uid=? AND deleted=0) AND EXISTS(SELECT 1 FROM ledger WHERE id=? AND created=? AND xp>0)').bind('first-win:'+uid+':'+day,uid,'first-win',now,uid,'match:'+s.matchId+':'+uid,now));
   }});
   const rosterIds=this.data.dealRosterIds;

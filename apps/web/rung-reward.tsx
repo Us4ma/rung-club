@@ -18,6 +18,16 @@ export function RungReward({uid,xp=0,sound=false}:{uid?:string;xp?:number;sound?
  useEffect(()=>{live.current=true;return()=>{live.current=false;};},[]);
  useEffect(()=>{if(!flight)setVisibleWallet(data?.wallet??null);},[data?.wallet,!!flight]);
  const shortcutDrawer=useRef<HTMLDialogElement>(null);
+ const [missions,setMissions]=useState<{day:string;resetsAt:number;credited:number;goals:{id:string;title:string;target:number;progress:number;coins:number;claimed:boolean}[]}|null>(null),[missionError,setMissionError]=useState(''),[missionBusy,setMissionBusy]=useState(false);
+ const missionLock=useRef(false);
+ const missionCoins=missions?.goals.reduce((sum,g)=>sum+(!g.claimed&&g.progress>=g.target?g.coins:0),0)??0;
+ async function loadMissions(claim=false){
+  if(!uid||missionLock.current)return;
+  missionLock.current=true;setMissionBusy(true);setMissionError('');
+  try{const result=await socialRequest('rewards',claim?{action:'claim-missions',day:missions?.day}:{action:'missions'});if(scope.current!==uid)return;setMissions(result);if(result.credited>0){window.dispatchEvent(new Event('rung:rewards-changed'));tableAudio.interfaceEffect('coinGift',sound);void refresh();}}
+  catch(e){if(scope.current===uid)setMissionError((e as Error).message);}
+  finally{missionLock.current=false;setMissionBusy(false);}
+ }
  const missionDialog=useRef<HTMLDialogElement>(null);
  const trigger=useRef<HTMLButtonElement>(null),panel=useRef<HTMLElement>(null),carousel=useRef<HTMLDivElement>(null),scope=useRef(uid),request=useRef(0),pending=useRef(false),navigationTarget=useRef<number|null>(null),edgeFrame=useRef(0),drag=useRef<{id:number;x:number;scroll:number;lastX:number;at:number;velocity:number;active:boolean}|null>(null),ignoreClickUntil=useRef(0);scope.current=uid;
  async function refresh(){if(!uid||pending.current)return;const account=uid,id=++request.current;pending.current=true;try{const result=await socialRequest('rewards');if(scope.current===account&&id===request.current){setData(result);setError('');}}catch(e){if(scope.current===account)setError((e as Error).message);}finally{pending.current=false;}}
@@ -50,12 +60,18 @@ export function RungReward({uid,xp=0,sound=false}:{uid?:string;xp?:number;sound?
  const shortcuts=(mobile:boolean)=><><button type="button" ref={mobile?undefined:trigger} className="rung-reward-entry" aria-label={'Rung Rewards'+(ready.length?`, ${ready.length} unclaimed rewards`:'')} aria-haspopup="dialog" aria-expanded={open} onClick={()=>{if(mobile)shortcutDrawer.current?.close();setFAQ(false);setOpen(true);}}>
    <img src={art('lobby/rung-reward-clean.webp')} alt="" draggable={false}/><span className="shortcut-full">Rung Rewards</span><span className="shortcut-short" aria-hidden="true">Rewards</span>{ready.length>0&&<i className="reward-notification" aria-hidden="true"/>}
   </button>
-  <button type="button" className="rung-reward-entry daily-mission-entry" aria-label="Daily Missions" aria-haspopup="dialog" onClick={()=>{if(mobile)shortcutDrawer.current?.close();missionDialog.current?.showModal();}}><svg viewBox="0 0 32 32" aria-hidden="true" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 6H8a2 2 0 0 0-2 2v19a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-4"/><rect x="12" y="3" width="8" height="6" rx="2"/><path d="m16 12 6 7-6 7-6-7Z" fill="currentColor" stroke="none"/></svg><span className="shortcut-full">Daily Missions</span><span className="shortcut-short" aria-hidden="true">Missions</span></button></>;
+  <button type="button" className="rung-reward-entry daily-mission-entry" aria-label="Daily Missions" aria-haspopup="dialog" onClick={()=>{if(mobile)shortcutDrawer.current?.close();missionDialog.current?.showModal();void loadMissions();}}><svg viewBox="0 0 32 32" aria-hidden="true" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 6H8a2 2 0 0 0-2 2v19a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-4"/><rect x="12" y="3" width="8" height="6" rx="2"/><path d="m16 12 6 7-6 7-6-7Z" fill="currentColor" stroke="none"/></svg><span className="shortcut-full">Daily Missions</span><span className="shortcut-short" aria-hidden="true">Missions</span></button></>;
  return <>
   <div className="lobby-reward-shortcuts">{shortcuts(false)}</div>
   <button type="button" className="mobile-club-menu" aria-label="Rewards and missions menu" aria-haspopup="dialog" onClick={()=>shortcutDrawer.current?.showModal()}><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>{ready.length>0&&<i className="reward-notification" aria-hidden="true"/>}</button>
   {createPortal(<dialog ref={shortcutDrawer} className="daily-mission-preview mobile-club-drawer" aria-labelledby="mobile-club-title"><CloseButton label="Close club menu" onClick={()=>shortcutDrawer.current?.close()}/><h2 id="mobile-club-title">Club menu</h2><div className="club-drawer-links">{shortcuts(true)}</div></dialog>,document.body)}
-  {createPortal(<dialog ref={missionDialog} className="daily-mission-preview" aria-labelledby="daily-mission-title"><CloseButton label="Close Daily Missions" onClick={()=>missionDialog.current?.close()}/><h2 id="daily-mission-title">Daily Missions</h2><p>Coming soon</p></dialog>,document.body)}
+  {createPortal(<dialog ref={missionDialog} className="daily-mission-preview daily-mission-board" aria-labelledby="daily-mission-title"><CloseButton label="Close Daily Missions" onClick={()=>missionDialog.current?.close()}/><h2 id="daily-mission-title">Daily Missions</h2>
+  {!uid?<p>Sign in to earn daily rewards.</p>:<>
+   <p className="mission-note">Finish eligible Open Rung deals to make progress. Resets at midnight UTC.</p>
+   {missions?.goals.map((g,i)=><section className="mission-goal" key={g.id}><div><small>{['Easy','Tough','Toughest'][i]}</small><strong>{g.title}</strong></div><b>+{g.coins} coins</b><progress aria-label={g.title} value={g.progress} max={g.target}/><small>{g.progress} / {g.target}{g.claimed?' · Claimed':g.progress>=g.target?' · Ready to claim':''}</small></section>)}
+   <p role="status">{missionError||(!missions&&missionBusy?'Loading missions…':missions?.credited?missions.credited+' coins added to your wallet.':'')}</p>
+   {missionError?<button className="mission-claim" disabled={missionBusy} onClick={()=>void loadMissions()}>Refresh missions</button>:<button className="mission-claim" disabled={!missionCoins||missionBusy} onClick={()=>void loadMissions(true)}>{missionBusy?'Please wait…':missionCoins?'Claim all · '+missionCoins+' coins':'No rewards to claim'}</button>}
+  </>}</dialog>,document.body)}
   {open&&createPortal(
    <div className="rung-rewards-overlay">
     <section className={'rung-rewards-page'+(faq?' showing-faq':'')} ref={panel} role="dialog" aria-modal="true" aria-labelledby="rewards-title" tabIndex={-1}>

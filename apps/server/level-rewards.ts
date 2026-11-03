@@ -1,9 +1,11 @@
+import {dailyMissions} from './daily-missions.ts';
 import {levelProgress} from '../../packages/protocol/progression.ts';
 import {MILESTONES,rewardCoins,rewardID,rewardXP} from '../../packages/protocol/level-rewards.ts';
 /** Runs in the existing serialized economy coordinator; ledger IDs also enforce idempotency. */
 export async function levelRewards(db:D1Database,uid:string,input:any){
  const account=await db.prepare('SELECT uid FROM accounts WHERE uid=? AND deleted=0').bind(uid).first();
  if(!account)return Response.json({error:'Account unavailable.'},{status:403});
+ if(input?.action==='missions'||input?.action==='claim-missions')return dailyMissions(db,uid,input);
  const totals=await db.prepare('SELECT COALESCE(SUM(xp),0) xp FROM ledger WHERE uid=?').bind(uid).first<{xp:number}>();
  const xp=Number(totals?.xp||0),level=levelProgress(xp).level;
  const action=input?.action||'state';
