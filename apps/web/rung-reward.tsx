@@ -82,7 +82,7 @@ export function RungReward({uid,xp=0,sound=false}:{uid?:string;xp?:number;sound?
   {createPortal(<dialog ref={missionDialog} className="daily-mission-preview daily-mission-board" aria-labelledby="daily-mission-title"><CloseButton label="Close Daily Missions" onClick={()=>missionDialog.current?.close()}/><h2 id="daily-mission-title">Daily Missions</h2>
   {!uid?<p>Sign in to earn daily rewards.</p>:<>
    <p className="mission-note">Finish eligible Open Rung deals to make progress. Resets at midnight UTC.</p>
-   {missions?.goals.map((g,i)=><section className="mission-goal" key={g.id}><div><small>{['Easy','Tough','Toughest'][i]}</small><strong>{g.title}</strong></div><b>+{g.coins} coins</b><progress aria-label={g.title} value={g.progress} max={g.target}/><small>{g.progress} / {g.target}{g.claimed?' · Claimed':g.progress>=g.target?' · Ready to claim':''}</small></section>)}
+   {missions?.goals.map(g=><section className="mission-goal" key={g.id}><div><strong>{g.title}</strong></div><b>+{g.coins} coins</b><progress aria-label={g.title} value={g.progress} max={g.target}/><small>{g.progress} / {g.target}{g.claimed?' · Claimed':g.progress>=g.target?' · Ready to claim':''}</small></section>)}
    <p role="status">{missionError||(!missions&&missionBusy?'Loading missions…':missions?.credited?missions.credited+' coins added to your wallet.':'')}</p>
    {missionError?<button className="mission-claim" disabled={missionBusy} onClick={()=>void loadMissions()}>Refresh missions</button>:<button className="mission-claim" disabled={!missionCoins||missionBusy} onClick={e=>void loadMissions(true,e.currentTarget)}>{missionBusy?'Please wait…':missionCoins?'Claim all · '+missionCoins+' coins':'No rewards to claim'}</button>}
   </>}</dialog>,document.body)}

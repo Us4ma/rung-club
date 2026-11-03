@@ -200,6 +200,12 @@ export class CardRoom extends DurableObject<Env>{
    statements.push(this.env.DB.prepare('INSERT OR IGNORE INTO results SELECT ?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM accounts WHERE uid=? AND deleted=0)').bind(s.matchId,uid,i%2,+won,s.scores[i%2],now,uid));
    statements.push(this.env.DB.prepare('INSERT OR IGNORE INTO ledger SELECT ?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM accounts WHERE uid=? AND deleted=0)').bind('match:'+s.matchId+':'+uid,uid,0,active?dealXP(won,outcome):0,'match:'+outcome,now,uid));
    if(active&&leagueEligible)statements.push(this.env.DB.prepare("INSERT OR IGNORE INTO ledger(id,uid,amount,xp,kind,created) SELECT ?,?,0,0,'mission-deal',? WHERE EXISTS(SELECT 1 FROM accounts WHERE uid=? AND deleted=0)").bind('mission-deal:'+s.matchId+':'+uid,uid,now,uid));
+   if(active&&leagueEligible){
+    const cards=s.history.flatMap((trick,j)=>s.winners[j]===i?trick.filter(play=>play.seat===i).map(play=>play.card):[]);
+    for(const [kind,qualified] of [['spades',cards.some(c=>c.suit==='S')],['ace',cards.some(c=>c.rank===14)]] as const){
+     if(qualified)statements.push(this.env.DB.prepare("INSERT OR IGNORE INTO ledger(id,uid,amount,xp,kind,created) SELECT ?,?,0,0,'mission-card',? WHERE EXISTS(SELECT 1 FROM accounts WHERE uid=? AND deleted=0)").bind('mission-'+kind+':'+s.matchId+':'+uid,uid,now,uid));
+    }
+   }
    if(active&&won)statements.push(this.env.DB.prepare('INSERT OR IGNORE INTO ledger SELECT ?,?,0,30,?,? WHERE EXISTS(SELECT 1 FROM accounts WHERE uid=? AND deleted=0) AND EXISTS(SELECT 1 FROM ledger WHERE id=? AND created=? AND xp>0)').bind('first-win:'+uid+':'+day,uid,'first-win',now,uid,'match:'+s.matchId+':'+uid,now));
   }});
   const rosterIds=this.data.dealRosterIds;

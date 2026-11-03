@@ -1,32 +1,22 @@
 export async function dailyMissions(db:D1Database,uid:string,input:{action:string;day?:string}){
  const now=Date.now(),day=new Date(now).toISOString().slice(0,10),start=Date.parse(day+'T00:00:00Z'),end=start+86400000;
  if(input.action==='claim-missions'&&input.day!==day)return Response.json({error:'A new mission day has started. Reopen Daily Missions to refresh.'},{status:409});
- const rows=await db.prepare("SELECT COUNT(*) deals,COALESCE(SUM(r.score),0) sars,COALESCE(SUM(r.won),0) wins,COALESCE(SUM(CASE WHEN r.score>=4 THEN 1 ELSE 0 END),0) competitive,CASE WHEN r.created>=? THEN 1 ELSE 0 END today FROM results r JOIN ledger l ON l.id='mission-deal:'||r.match_id||':'||r.uid WHERE r.uid=? AND r.created>=? AND r.created<? GROUP BY today").bind(start,uid,start-14*86400000,end).all<{deals:number;sars:number;wins:number;competitive:number;today:number}>();
- const empty={deals:0,sars:0,wins:0,competitive:0},past=rows.results.find(r=>!r.today)??empty,today=rows.results.find(r=>r.today)??empty;
+ const rows=await db.prepare("SELECT COUNT(*) deals,COALESCE(SUM(r.score),0) sars,COALESCE(SUM(r.won),0) wins,COUNT(sp.id) spades,COUNT(ac.id) aces,COALESCE(SUM(CASE WHEN r.score>=4 THEN 1 ELSE 0 END),0) competitive,CASE WHEN r.created>=? THEN 1 ELSE 0 END today FROM results r JOIN ledger l ON l.id='mission-deal:'||r.match_id||':'||r.uid LEFT JOIN ledger sp ON sp.id='mission-spades:'||r.match_id||':'||r.uid LEFT JOIN ledger ac ON ac.id='mission-ace:'||r.match_id||':'||r.uid WHERE r.uid=? AND r.created>=? AND r.created<? GROUP BY today").bind(start,uid,start-14*86400000,end).all<{deals:number;sars:number;wins:number;competitive:number;spades:number;aces:number;today:number}>();
+ const empty={deals:0,sars:0,wins:0,competitive:0,spades:0,aces:0},past=rows.results.find(r=>!r.today)??empty,today=rows.results.find(r=>r.today)??empty;
  const experienced=past.deals>=20&&past.wins/past.deals>=.55;
- let goals=[
-  {id:'easy',title:'Finish an Open Rung deal',target:1,progress:today.deals,coins:75},
-  {id:'tough',title:'Collect Sars with your team',target:past.deals<8?5:experienced?14:10,progress:today.sars,coins:125},
-  {id:'toughest',title:past.deals<8?'Finish 3 Open Rung deals':experienced?'Win 3 Open Rung deals':'Win 2 Open Rung deals',target:past.deals<8?3:experienced?3:2,progress:past.deals<8?today.deals:today.wins,coins:200}
+ let seed=2166136261;
+ for(const ch of uid)seed=Math.imul(seed^ch.charCodeAt(0),16777619);
+ const order=(seed&1)?[0,1,2]:[0,2,1];
+ const variant=order[(Math.floor(start/86400000)+(seed>>>0)%3)%3];
+ const card=(ace:boolean,target:number)=>({title:'Win a Sar with '+(ace?'an ace':'a spade')+' in '+target+' '+(target===1?'deal':'different deals'),target,progress:ace?today.aces:today.spades});
+ const deals=(target:number)=>({title:target===1?'Finish an Open Rung deal':'Finish '+target+' Open Rung deals',target,progress:today.deals});
+ const hardest=experienced?4:3;
+ const boards=[
+  [deals(1),card(false,2),card(true,hardest)],
+  [card(true,1),deals(2),card(false,hardest)],
+  [card(false,1),card(true,2),deals(experienced?5:4)]
  ];
- // Preserve the existing board on rollout day. Each account cycles through a shuffled pool.
- if(day>='2026-11-04'){
-  let seed=2166136261;
-  for(const ch of uid)seed=Math.imul(seed^ch.charCodeAt(0),16777619);
-  const order=(seed&1)?[0,1,2]:[0,2,1];
-  const variant=order[(Math.floor(start/86400000)+(seed>>>0)%3)%3];
-  const sar=(target:number)=>({title:'Collect '+target+' Sars with your team',target,progress:today.sars});
-  const deals=(target:number)=>({title:target===1?'Finish an Open Rung deal':'Finish '+target+' Open Rung deals',target,progress:today.deals});
-  const close=(target:number)=>({title:target===1?'Finish a deal with at least 4 team Sars':'Finish '+target+' deals with at least 4 team Sars each',target,progress:today.competitive});
-  const wins=(target:number)=>({title:'Win '+target+' Open Rung deals',target,progress:today.wins});
-  const fresh=past.deals<8;
-  const boards=[
-   [deals(1),sar(fresh?5:experienced?14:10),fresh?close(3):wins(experienced?3:2)],
-   [sar(3),close(2),deals(experienced?5:4)],
-   [close(1),deals(2),sar(fresh?16:experienced?24:20)]
-  ];
-  goals=goals.map((g,i)=>({...g,...boards[variant][i]}));
- }
+ const goals=boards[variant].map((goal,i)=>({...goal,id:['easy','tough','toughest'][i],coins:[75,125,200][i]}));
  const key=(id:string)=>'daily-mission:'+uid+':'+day+':'+id;
  let credited=0;
  if(input.action==='claim-missions'){
