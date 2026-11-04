@@ -27,8 +27,26 @@ function PrivateTableArt(){return <svg className="lobby-private-art" viewBox="0 
  </svg>;}
 
 function ModeArt({mode}:{mode:Mode|'practice'}){if(mode==='open')return <img className="lobby-mode-art" src={art('lobby/open-simple.svg')} alt="" draggable={false}/>;return <img className="lobby-mode-art" src={art(`lobby/${mode}-640.webp`)} srcSet={`${art(`lobby/${mode}-320.webp`)} 320w, ${art(`lobby/${mode}-640.webp`)} 640w`} sizes="(max-width:600px) 30vw, (max-height:550px) 22vw, 25vw" alt="" draggable={false} decoding="async"/>;}
-export function Lobby({mode,setMode,play,practice,learn,setScreen,profile,join,setJoin,intro=false,onIntro,matchmakingBusy=false,firstDealNudge=false}:{firstDealNudge?:boolean;intro?:boolean;onIntro?:()=>void;matchmakingBusy?:boolean;mode:Mode;setMode:(m:Mode)=>void;play:(action:'quick'|'select'|'create'|'join',m?:Mode)=>void;practice:()=>void;learn:()=>void;setScreen:(s:string)=>void;profile:{name:string;xp:number};avatar:number;join:string;setJoin:(s:string)=>void}){
+export function Lobby({mode,setMode,play,practice,learn,setScreen,profile,join,setJoin,intro=false,onIntro,matchmakingBusy=false,firstDealNudge=false,idleNudgeEnabled=false}:{idleNudgeEnabled?:boolean;firstDealNudge?:boolean;intro?:boolean;onIntro?:()=>void;matchmakingBusy?:boolean;mode:Mode;setMode:(m:Mode)=>void;play:(action:'quick'|'select'|'create'|'join',m?:Mode)=>void;practice:()=>void;learn:()=>void;setScreen:(s:string)=>void;profile:{name:string;xp:number};avatar:number;join:string;setJoin:(s:string)=>void}){
  const [rooms,setRooms]=useState(!!join),[locked,setLocked]=useState(false);const unlocked=false,progress=Math.min(BAND_UNLOCK_XP,Math.max(0,profile.xp));
+ const [idleNudge,setIdleNudge]=useState(false);
+ useEffect(()=>{
+  setIdleNudge(false);
+  if(!idleNudgeEnabled||intro||rooms||locked||matchmakingBusy||firstDealNudge)return;
+  let timer:ReturnType<typeof setTimeout>;
+  const reset=()=>{
+   clearTimeout(timer);
+   setIdleNudge(false);
+   if(document.hidden)return;
+   timer=setTimeout(()=>{
+    if(!document.querySelector('dialog[open], [role="dialog"][aria-modal="true"]'))setIdleNudge(true);
+   },8000);
+  };
+  const events=['pointermove','pointerdown','keydown','wheel','focusin','visibilitychange'] as const;
+  events.forEach(event=>document.addEventListener(event,reset,{passive:true}));
+  reset();
+  return()=>{clearTimeout(timer);events.forEach(event=>document.removeEventListener(event,reset));};
+ },[idleNudgeEnabled,intro,rooms,locked,matchmakingBusy,firstDealNudge]);
  const roomPanel=useRef<HTMLElement>(null),roomToggle=useRef<HTMLButtonElement>(null);
  function closeRooms(){setRooms(false);roomToggle.current?.focus();}
  useEffect(()=>{if(!rooms)return;function outside(event:PointerEvent){const target=event.target as Node|null;if(target&&!roomPanel.current?.contains(target)&&!roomToggle.current?.contains(target))setRooms(false);}function escape(event:KeyboardEvent){if(event.key==='Escape'){setRooms(false);roomToggle.current?.focus();}}document.addEventListener('pointerdown',outside);document.addEventListener('keydown',escape);return()=>{document.removeEventListener('pointerdown',outside);document.removeEventListener('keydown',escape);};},[rooms]);
@@ -36,7 +54,7 @@ export function Lobby({mode,setMode,play,practice,learn,setScreen,profile,join,s
  return <main className="lobby compact-lobby"><div className="house-content"><div className="lobby-arrangement"><aside className="lobby-host"><Dealer/></aside><div className="lobby-table-surface"><div className="lobby-table-front" aria-hidden="true"><div className="table-coins"><i/><i/><i/><i/></div><div className="table-deck"><img src={art('house/cards/AS.webp')} alt=""/><img src={art('house/cards/7H.webp')} alt=""/></div></div><section className="lobby-play-area" aria-label="Rung Club game modes">
  <div className="game-menu" aria-label="Choose your table">{(['open','band'] as const).map(m=><article key={m} className={'game-tile '+m+(mode===m?' chosen':'')}>
  <div className="mode-ribbon">{m==='band'&&!unlocked?<><Icon name="lock"/>Coming soon</>:null}</div>
- <button className={'mode-tile '+m+(firstDealNudge&&m==='open'?' first-deal-nudge':'')} aria-pressed={mode===m} disabled={m==='open'&&matchmakingBusy} aria-label={m==='open'?'Play at your highest affordable Open Rung table':'Select Band Rung'} onClick={()=>select(m)}><ModeArt mode={m}/><h2>{m==='open'?'Open Rung':'Band Rung'}</h2><p>{m==='open'?'5-Sar Double Rung':'Hidden trump'}</p></button>
+ <button className={'mode-tile '+m+((firstDealNudge||idleNudge)&&m==='open'?' first-deal-nudge':'')} aria-pressed={mode===m} disabled={m==='open'&&matchmakingBusy} aria-label={m==='open'?'Play at your highest affordable Open Rung table':'Select Band Rung'} onClick={()=>select(m)}><ModeArt mode={m}/><h2>{m==='open'?'Open Rung':'Band Rung'}</h2><p>{m==='open'?'5-Sar Double Rung':'Hidden trump'}</p></button>
 
  <div className="mode-status">{m==='band'&&!unlocked?<><small>Hidden trump tables are on their way.</small></>:m==='open'&&matchmakingBusy?<small role="status">Finding an open table and preparing players…</small>:<span aria-hidden="true"/>}</div>
  <button className={'mode-play '+(m==='band'&&!unlocked?'locked':'gold')} disabled={m==='open'&&matchmakingBusy} aria-label={m==='open'?(matchmakingBusy?'Finding your table':'Select an Open Rung table'):unlocked?'Play Band Rung':'Band Rung coming soon'} onClick={()=>m==='band'&&!unlocked?setLocked(true):play('select',m)}>{m==='band'&&!unlocked?'Coming soon':matchmakingBusy&&m==='open'?'Finding table…':m==='open'?'Play now':'Play'}</button>
