@@ -249,6 +249,55 @@
 }
 
 @media (orientation:landscape) and (max-height:550px){
- .app.screen-table .table-page .rung-banner.choosing-stake{top:76px;bottom:52px;max-height:calc(100dvh - 128px);overflow-y:auto;overscroll-behavior:contain}
- .app.screen-table .table-page:has(.rung-banner.choosing-stake) .table-scene .dealer-speech{left:0;right:auto;z-index:31;pointer-events:none}
+ .app.screen-table .table-page .table-scene .table-host{top:0;left:0;right:auto}
+ .app.screen-table .table-page .table-scene .dealer-speech{
+  top:0;left:66px;right:auto;width:min(27vw,180px);max-width:none;
+  max-height:none;overflow:visible;transform:none;z-index:31;pointer-events:none;
+ }
+ .app.screen-table .table-page .table-scene .dealer-speech:after{display:none}
+ .app.screen-table .table-page .rung-banner{
+  position:fixed;inset:76px max(10px,env(safe-area-inset-right)) 8px auto;
+  width:min(300px,44vw);min-width:0;max-width:none;max-height:calc(100dvh - 84px);
+  box-sizing:border-box;margin:0;transform:none;overflow-y:auto;overscroll-behavior:contain;z-index:30;
+ }
+}
+
+@media (max-width:1024px) and (orientation:portrait){
+ .app.screen-table .table-page .table{
+  top:calc(50% + 16px);
+  height:calc(var(--mobile-table-height) - 32px);
+ }
+ .app.screen-table .table-page .table-scene .table-host{top:4px;right:12px}
+ .app.screen-table .table-page .table-scene .dealer-speech{
+  box-sizing:border-box;top:4px;left:4px;right:94px;transform:none;
+  width:auto;max-width:300px;max-height:none;overflow:visible;
+  font-size:11px;line-height:1.35;z-index:31;pointer-events:none;
+ }
+ .app.screen-table .table-page .table-scene .dealer-speech:after{display:none}
+ .app.screen-table .table-page .rung-banner{
+  position:fixed;inset:auto 10px max(8px,env(safe-area-inset-bottom));
+  width:auto;min-width:0;max-width:560px;box-sizing:border-box;
+  max-height:min(300px,calc(100dvh - 220px));margin:0 auto;
+  transform:none;overflow-y:auto;overscroll-behavior:contain;z-index:30;
+ }
+}
+@media (max-width:1024px) and (orientation:portrait), (orientation:landscape) and (max-height:550px){
+ .app.screen-table .table-page:has(.rung-banner) .controls{visibility:hidden}
+}
+
+@media (max-width:600px) and (orientation:portrait){
+ .app.screen-table .table-page .table{
+  top:calc((100% - var(--portrait-felt-height))/2 + 48px);
+  height:calc(var(--portrait-felt-height) - 28px);
+ }
+}
+
+@media (max-width:1024px) and (orientation:portrait), (orientation:landscape) and (max-height:550px){
+ .app.screen-table .table-page .table-coin-layer{
+  --bank-0-x:61%;--bank-0-y:70%;
+  --bank-1-x:73%;--bank-1-y:55%;
+  --bank-2-x:38%;--bank-2-y:31%;
+  --bank-3-x:27%;--bank-3-y:55%;
+  --mobile-pot-x:65%;--mobile-pot-y:31%;
+ }
 }

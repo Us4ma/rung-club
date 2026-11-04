@@ -207,7 +207,3 @@
  .dealer-mobile-message{display:inline}
  .app.screen-table .table-scene .played{animation:none}
 }
-@media (max-width:1024px) and (orientation:portrait){
- .app.screen-table .table-page:has(.rung-banner.choosing-stake) .dealer-speech{top:0;transform:none;z-index:31;pointer-events:none}
- .app.screen-table .rung-banner.choosing-stake{max-height:min(296px,calc(100dvh - 200px))}
-}
