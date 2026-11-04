@@ -353,7 +353,7 @@
 }
 
 @media (max-width:1024px) and (orientation:portrait), (orientation:landscape) and (max-height:550px){
- .app.screen-table .table-page:has(.rung-banner) :is(.hand,.hand-hint,.turn-label){
+ .app.screen-table .table-page:has(.rung-banner) :is(.hand,.hand-hint,.turn-label,.actions){
   visibility:hidden;pointer-events:none;
  }
  .app.screen-table .table-page:has(.rung-banner) .hand *{
