@@ -301,3 +301,53 @@
   --mobile-pot-x:65%;--mobile-pot-y:31%;
  }
 }
+
+/* Portrait felt coordinates are shared by the trick, seat banks, and pot. */
+@media (max-width:1024px) and (orientation:portrait){
+ .app.screen-table .table-page .table-scene{
+  --felt-top:78px;
+  --felt-height:calc(100% - 98px);
+ }
+ .app.screen-table .table-page .table{
+  inset:var(--felt-top) 16px auto;
+  width:auto;height:var(--felt-height);min-height:0;transform:none;
+ }
+ .app.screen-table .table-page .table-scene .table-host{
+  top:calc(var(--felt-top) + var(--felt-height)*.12 - 55px);
+  right:12%;width:68px;height:64px;z-index:4;
+ }
+ .app.screen-table .table-page .table-scene .dealer-speech{
+  top:2px;left:auto;right:34%;width:max-content;max-width:min(64%,280px);
+ }
+ .app.screen-table .table-page .table .seat-2{
+  top:calc(4px - var(--portrait-size)/2);left:50%;right:auto;transform:translateX(-50%);
+ }
+ .app.screen-table .table-page .table :is(.seat-1,.seat-3){
+  top:calc(50% - var(--portrait-size)/2);transform:none;
+ }
+ .app.screen-table .table-page .table .seat-1{right:4px;transform:translateX(50%)}
+ .app.screen-table .table-page .table .seat-3{left:4px;transform:translateX(-50%)}
+ .app.screen-table .table-page .table .self-seat{
+  top:calc(100% - 4px - var(--portrait-size)/2);bottom:auto;left:50%;transform:translateX(-50%);
+ }
+ .app.screen-table .table-page .table .plays{inset:0;width:auto;height:auto;transform:none}
+ .app.screen-table .table-page .table .plays :is(.played,.trick-slot){
+  left:var(--trick-x);top:var(--trick-y);right:auto;bottom:auto;translate:none;
+  transform:translate(-50%,-50%);
+ }
+ .app.screen-table .table-page .table .plays .play-0{--trick-x:50%;--trick-y:70%}
+ .app.screen-table .table-page .table .plays .play-1{--trick-x:69%;--trick-y:53%}
+ .app.screen-table .table-page .table .plays .play-2{--trick-x:50%;--trick-y:36%}
+ .app.screen-table .table-page .table .plays .play-3{--trick-x:31%;--trick-y:53%}
+ .app.screen-table .table-page .table .center>.pile{left:31%;top:14%}
+ .app.screen-table .table-page .table-coin-layer{
+  --bank-0-x:31%;--bank-0-y:81%;
+  --bank-1-x:72%;--bank-1-y:81%;
+  --bank-2-x:69%;--bank-2-y:29%;
+  --bank-3-x:31%;--bank-3-y:29%;
+  --mobile-pot-x:69%;--mobile-pot-y:14%;
+ }
+ .app.screen-table .table-page .dealer-chip-tray{
+  border:0;background:none;box-shadow:none;padding:0;
+ }
+}
