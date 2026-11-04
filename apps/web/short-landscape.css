@@ -364,7 +364,9 @@
 }
 @media (max-width:1024px) and (orientation:portrait){
  .app.screen-table .table-page .table-scene .table-host{
-  top:max(60px,calc(var(--felt-top) + var(--felt-height)*.20 - 62px));right:9%;
+  --dealer-rail:calc(var(--felt-top) + var(--felt-height)*.13);
+  top:max(60px,calc(var(--dealer-rail) - 61px));right:9%;
+  height:min(64px,calc(var(--dealer-rail) - 57px));
  }
  .app.screen-table .table-page .table .plays{
   --trick-card:clamp(26px,8vw,32px);
