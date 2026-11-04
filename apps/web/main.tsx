@@ -100,15 +100,15 @@ const [soundOpen,setSoundOpen]=useState(false);
 const [accountInfoOpen,setAccountInfoOpen]=useState(false);const [deviceId]=useState(()=>{let id=localStorage.getItem('rung:device-id');if(!id){id=crypto.randomUUID();localStorage.setItem('rung:device-id',id);}return id;});
 useEffect(()=>{if(screen!=='settings')setAccountInfoOpen(false);},[screen]);
 const [avatar,setAvatar]=useState(()=>savedLocalAvatar()),[cardBack,setCardBack]=useState(()=>localStorage.getItem('cardBack')||'emerald'),[emotesOpen,setEmotesOpen]=useState(false),[handGrouped,setHandGrouped]=useState(false);useEffect(()=>{if(cloudProfile)localStorage.setItem('avatar:'+cloudProfile.user.uid,String(avatar));else if(screen==='lobby'||screen==='profile'||screen==='table')localStorage.setItem('avatar:local',String(avatar));},[avatar,cloudProfile]);useEffect(()=>{localStorage.setItem('cardBack',cardBack);},[cardBack]);useEffect(()=>{if(screen==='account-loading'&&!error)return;const ready=()=>window.dispatchEvent(new Event('rung:ready'));if(window.requestAnimationFrame){const frame=window.requestAnimationFrame(ready);return()=>window.cancelAnimationFrame(frame);}const timer=setTimeout(ready,0);return()=>clearTimeout(timer);},[screen,error]);
-const [deadline,setDeadline]=useState(0),[remaining,setRemaining]=useState(20),[turnDuration,setTurnDuration]=useState(20000);const pendingTable=useRef<View|null>(null);const ws=useRef<RoomConnection|null>(null),seq=useRef(0),canvas=useRef<HTMLDivElement|null>(null),phaser=useRef<any>(null),timers=useRef<ReturnType<typeof setTimeout>[]>([]),roomRef=useRef('');const v=remote||(game?view(game,0):screen==='table'?pendingTable.current:null);const baseTutorialSpeech=tutorial>=0&&v?(tutorial===0?'I’ll draw four cards. The highest card becomes Senior and calls Rung.':v.phase==='calling'?'Your ace of spades won the draw. From your first five cards, choose spades for Rung, then pick a stake.':v.phase==='finished'?'Kot! Your team collected all 13 Sars. Keep sharpening your game in Practice.':v.turn!==seat?(v.trick.length===0&&v.history.length>0?identities[v.turn]+' won the last Sar and is now Senior. The winner leads the next Sar.':'Watch the cards played before your turn.'):[
+const [deadline,setDeadline]=useState(0),[remaining,setRemaining]=useState(20),[turnDuration,setTurnDuration]=useState(20000);const pendingTable=useRef<View|null>(null);const ws=useRef<RoomConnection|null>(null),seq=useRef(0),canvas=useRef<HTMLDivElement|null>(null),phaser=useRef<any>(null),timers=useRef<ReturnType<typeof setTimeout>[]>([]),roomRef=useRef('');const v=remote||(game?view(game,0):screen==='table'?pendingTable.current:null);const baseTutorialSpeech=tutorial>=0&&v?(tutorial===0?'I’ll draw four cards. The highest card becomes Senior and calls Rung.':v.phase==='calling'?'Your ace of spades won the draw. From your first five cards, choose spades for Rung, then pick a stake.':v.phase==='finished'?'Kot! Your team collected all 13 Sars. Keep sharpening your game in Practice.':v.turn!==seat?(v.trick.length===0&&v.history.length>0?(game?.winners.at(-1)===v.senior?identities[v.senior!]+' won the last Sar and became Senior.':identities[v.turn]+' is Senior and leads this Sar.'):'Watch the cards played before your turn.'):[
  'You lead first. Tap the highlighted 10 of hearts twice to play it, or select it and press Play.',
- 'Clubs were led, so follow suit. Tap the highlighted jack of clubs twice to play it.',
+ 'Hearts were led. Discard J♣ as badd rungi.',
  'Hearts were led, but you have no hearts left. Play the highlighted 2 of spades to cut with Rung. That’s badd rungi, and it can win even against the ace of hearts.',
- 'Cut the ace of hearts with 2♠ to take Senior.',
- 'You became Senior by cutting with Rung. Bhaag is active. Lead the king of diamonds to collect the pile if it holds.',
+ 'You became Senior. Lead A♦ to build toward collecting the pile.',
+ 'Bhaag is active. Lead the king of diamonds to collect the pile if it holds.',
  ][v.history.length]??(v.history.length===12?'Play your last Rung card, the ace of spades, to win the final Sar.':'Play the highlighted card and watch who becomes Senior.')):undefined;
 const cutSar=v?.history.length;
-const cutLessonKey=tutorial>=0&&v?.phase==='playing'&&(cutSar===2||cutSar===3||cutSar===8)&&v.turn===seat&&!presenting?v.matchId+':'+cutSar:null;
+const cutLessonKey=tutorial>=0&&v?.phase==='playing'&&(cutSar===1||cutSar===2||cutSar===8)&&v.turn===seat&&!presenting?v.matchId+':'+cutSar:null;
 const [explainedCut,setExplainedCut]=useState<string|null>(null);
 const [secondLine,setSecondLine]=useState<string|null>(null);
 const [tutorialPaidAt,setTutorialPaidAt]=useState(0);
@@ -118,9 +118,9 @@ const tutorialPot=tutorialStake*4;
 const tutorialPayout=Math.floor((tutorialPot-Math.ceil(tutorialStake*2/4))/2);
 const tutorialRake=tutorialPot-tutorialPayout*2;
 const tutorialSpeech=cutLessonKey
- ?secondLine===cutLessonKey?(cutSar===2?'Tap 10♦ twice to discard it. That’s badd rungi.':cutSar===3?'Tap 2♠ twice. Even the lowest Rung beats A♥, so you become Senior.':'Tap K♠ twice to cut the Bhaag and take Senior.')
+ ?secondLine===cutLessonKey?(cutSar===1?'Tap J♣ twice to discard it. That’s badd rungi.':cutSar===2?'Tap 2♠ twice. Even the lowest Rung beats A♥, so you become Senior.':'Tap K♠ twice to cut the Bhaag and take Senior.')
  :explainedCut===cutLessonKey?undefined
- :cutSar===2?identities[v!.senior!]+' is Senior. You have no hearts, so you can discard a different suit.':cutSar===3?'The opponent led A♥. You’re out of hearts, so you can cut with Rung.':'The opponent led a Bhaag in clubs. You have no clubs, so you can cut with Rung.'
+ :cutSar===1?identities[v!.senior!]+' is Senior. You have no hearts, so you can discard a different suit.':cutSar===2?'The opponent led A♥. You’re out of hearts, so you can cut with Rung.':'The opponent led a Bhaag in clubs. You have no clubs, so you can cut with Rung.'
  :tutorialFinished&&tutorialPaidAt&&secondLine===v?.matchId?'For more about Rung, open Settings → Help and Matchmaking.':baseTutorialSpeech;
 useEffect(()=>{if(!tutorialFinished||!v)return;const id=v.matchId;const timer=setTimeout(()=>setSecondLine(id),4800);return()=>clearTimeout(timer);},[tutorialFinished,v?.matchId]);
 useEffect(()=>{if(!cutLessonKey)return;const pause=setTimeout(()=>setExplainedCut(cutLessonKey),2800);const next=setTimeout(()=>setSecondLine(cutLessonKey),3800);return()=>{clearTimeout(pause);clearTimeout(next);};},[cutLessonKey]);
