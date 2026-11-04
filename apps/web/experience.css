@@ -45,3 +45,12 @@
 .guided-open-rung .caller-hand-preview img:not([alt$="of spades"]){opacity:.45}
 .guided-open-rung .caller-hand-preview img[alt$="of spades"],
 .guided-open-rung .suit-choices button:not(:disabled){outline:2px solid #eac574;outline-offset:2px}
+
+.app.screen-table .guided-open-rung .hand .tutorial-card{z-index:30!important;overflow:visible}
+.guided-open-rung .tutorial-card .tap-pointer{
+ position:absolute;top:-30px;bottom:auto;left:50%;right:auto;width:26px;height:32px;
+ transform:translateX(-50%) rotate(180deg);animation:none;opacity:1;
+ filter:drop-shadow(0 2px 2px #000);
+}
+.guided-open-rung .tutorial-card .tap-pointer svg{width:100%;height:100%}
+.guided-open-rung .tutorial-card .tap-pointer path{fill:#ffe39a;stroke:#201508;stroke-width:3}
