@@ -306,7 +306,7 @@
 @media (max-width:1024px) and (orientation:portrait){
  .app.screen-table .table-page .table-scene{
   --felt-top:78px;
-  --felt-height:calc(100% - 98px);
+  --felt-height:calc(100% - 114px);
  }
  .app.screen-table .table-page .table{
   inset:var(--felt-top) 16px auto;
@@ -373,10 +373,22 @@
  .app.screen-table .table-page .table .plays .play-3{--trick-x:36%}
  .app.screen-table .table-page .table .center>.pile{left:23%;top:25%}
  .app.screen-table .table-page .table-coin-layer{
-  --bank-0-x:34%;--bank-0-y:78%;
-  --bank-1-x:69%;--bank-1-y:78%;
-  --bank-2-x:67%;--bank-2-y:32%;
-  --bank-3-x:34%;--bank-3-y:32%;
+  --bank-0-x:50%;--bank-0-y:86%;
+  --bank-1-x:85%;--bank-1-y:52%;
+  --bank-2-x:50%;--bank-2-y:24%;
+  --bank-3-x:15%;--bank-3-y:52%;
   --mobile-pot-x:77%;--mobile-pot-y:25%;
  }
+}
+
+@media (min-width:601px) and (max-width:1024px) and (orientation:portrait){
+ .app.screen-table .table-page[data-phase=waiting]{
+  grid-template-rows:44px 48px 4px minmax(338px,1fr) 16px 88px 64px;
+ }
+}
+
+@media (max-width:1024px) and (orientation:portrait){
+ .app.screen-table .table-page .hand-hint{visibility:hidden}
+ .app.screen-table .table-page:has(.rung-banner) .rung-banner{z-index:90}
+ .app.screen-table .table-page:has(.rung-banner) .table-scene .dealer-speech{z-index:91}
 }
