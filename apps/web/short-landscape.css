@@ -317,7 +317,9 @@
   right:12%;width:68px;height:64px;z-index:4;
  }
  .app.screen-table .table-page .table-scene .dealer-speech{
-  top:2px;left:auto;right:34%;width:max-content;max-width:min(64%,280px);
+  top:2px;left:4px;right:4px;width:auto;max-width:none;
+  max-height:56px;overflow-y:auto;overscroll-behavior:contain;pointer-events:auto;
+  padding:5px 9px;line-height:14px;
  }
  .app.screen-table .table-page .table .seat-2{
   top:calc(4px - var(--portrait-size)/2);left:50%;right:auto;transform:translateX(-50%);
@@ -362,7 +364,7 @@
 }
 @media (max-width:1024px) and (orientation:portrait){
  .app.screen-table .table-page .table-scene .table-host{
-  top:calc(var(--felt-top) + var(--felt-height)*.20 - 62px);right:9%;
+  top:max(60px,calc(var(--felt-top) + var(--felt-height)*.20 - 62px));right:9%;
  }
  .app.screen-table .table-page .table .plays{
   --trick-card:clamp(26px,8vw,32px);
