@@ -104,11 +104,11 @@ const [deadline,setDeadline]=useState(0),[remaining,setRemaining]=useState(20),[
  'You lead first. Tap the highlighted 10 of hearts twice to play it, or select it and press Play.',
  'Clubs were led, so follow suit. Tap the highlighted jack of clubs twice to play it.',
  'Hearts were led, but you have no hearts left. Play the highlighted 2 of spades to cut with Rung. That’s badd rungi, and it can win even against the ace of hearts.',
- 'You cut with Rung and became Senior. Now lead A♦ to build toward collecting the pile.',
- 'Bhaag is active. Lead the king of diamonds to collect the pile if it holds.',
+ 'Cut the ace of hearts with 2♠ to take Senior.',
+ 'You became Senior by cutting with Rung. Bhaag is active. Lead the king of diamonds to collect the pile if it holds.',
  ][v.history.length]??(v.history.length===12?'Play your last Rung card, the ace of spades, to win the final Sar.':'Play the highlighted card and watch who becomes Senior.')):undefined;
 const cutSar=v?.history.length;
-const cutLessonKey=tutorial>=0&&v?.phase==='playing'&&(cutSar===2||cutSar===8)&&v.turn===seat&&!presenting?v.matchId+':'+cutSar:null;
+const cutLessonKey=tutorial>=0&&v?.phase==='playing'&&(cutSar===2||cutSar===3||cutSar===8)&&v.turn===seat&&!presenting?v.matchId+':'+cutSar:null;
 const [explainedCut,setExplainedCut]=useState<string|null>(null);
 const [secondLine,setSecondLine]=useState<string|null>(null);
 const [tutorialPaidAt,setTutorialPaidAt]=useState(0);
@@ -118,9 +118,9 @@ const tutorialPot=tutorialStake*4;
 const tutorialPayout=Math.floor((tutorialPot-Math.ceil(tutorialStake*2/4))/2);
 const tutorialRake=tutorialPot-tutorialPayout*2;
 const tutorialSpeech=cutLessonKey
- ?secondLine===cutLessonKey?(cutSar===2?'Tap 2♠ twice to cut with Rung and become Senior.':'Tap K♠ twice to cut the Bhaag and take Senior.')
+ ?secondLine===cutLessonKey?(cutSar===2?'Tap 10♦ twice to discard it. That’s badd rungi.':cutSar===3?'Tap 2♠ twice. Even the lowest Rung beats A♥, so you become Senior.':'Tap K♠ twice to cut the Bhaag and take Senior.')
  :explainedCut===cutLessonKey?undefined
- :cutSar===2?identities[v!.senior!]+' is Senior. You have no hearts, so you can cut with Rung.':'The opponent led a Bhaag in clubs. You have no clubs, so you can cut with Rung.'
+ :cutSar===2?identities[v!.senior!]+' is Senior. You have no hearts, so you can discard a different suit.':cutSar===3?'The opponent led A♥. You’re out of hearts, so you can cut with Rung.':'The opponent led a Bhaag in clubs. You have no clubs, so you can cut with Rung.'
  :tutorialFinished&&tutorialPaidAt&&secondLine===v?.matchId?'For more about Rung, open Settings → Help and Matchmaking.':baseTutorialSpeech;
 useEffect(()=>{if(!tutorialFinished||!v)return;const id=v.matchId;const timer=setTimeout(()=>setSecondLine(id),4800);return()=>clearTimeout(timer);},[tutorialFinished,v?.matchId]);
 useEffect(()=>{if(!cutLessonKey)return;const pause=setTimeout(()=>setExplainedCut(cutLessonKey),2800);const next=setTimeout(()=>setSecondLine(cutLessonKey),3800);return()=>{clearTimeout(pause);clearTimeout(next);};},[cutLessonKey]);
