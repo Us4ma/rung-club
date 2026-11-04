@@ -19,18 +19,24 @@ it('central stack updates after the gather and restoration starts from authorita
 it('reduced motion keeps new authoritative cards visible with no flight or gather animation',()=>{const {animate}=motionMock();vi.stubGlobal('matchMedia',()=>({matches:true}));const state=call(guidedDeal(),0,'H'),ui=render(frame(view(state,0)));ui.rerender(frame(view(play(state,0,'C13'),0)));expect(ui.container.querySelectorAll('[data-play]')).toHaveLength(1);expect(animate).not.toHaveBeenCalled();});
 
 import {DealerTable} from '../apps/web/experience.tsx';
+import {openingDrawMs,DEAL_PRESENTATION_MS} from '../packages/protocol/presentation.ts';
+function mockResizeObserver(){vi.stubGlobal("ResizeObserver",class {observe(){} disconnect(){}});}
 import {createMatch} from '../packages/core/opening.ts';
 import {seeded} from '../packages/core/index.ts';
 it('opening comparison stays readable, completes dealing before input, and never replays on hydration',()=>{
+ mockResizeObserver();
  vi.useFakeTimers();const state=createMatch('open',seeded(8)),v=view(state,0),busy=vi.fn(),container=React.createRef<HTMLDivElement>();
- const ui=render(<div ref={container}><DealerTable v={v} motion active localSeat={0} container={container} onBusy={busy}/></div>);
- expect(ui.container.querySelector('.opening-draw')).toBeTruthy();expect(busy).toHaveBeenLastCalledWith(true);
- act(()=>vi.advanceTimersByTime(2399));expect(ui.container.querySelector('.opening-draw')).toBeTruthy();
- act(()=>vi.advanceTimersByTime(Math.min(3,v.opening!.rounds.length)*2400-2399));expect(ui.container.querySelector('.opening-draw')).toBeNull();expect(busy).toHaveBeenLastCalledWith(true);
- act(()=>vi.advanceTimersByTime(1600));expect(busy).toHaveBeenLastCalledWith(false);ui.unmount();busy.mockClear();
- const restored=render(<div ref={container}><DealerTable v={v} motion active hydrated localSeat={0} container={container} onBusy={busy}/></div>);expect(restored.container.querySelector('.opening-draw')).toBeNull();expect(restored.container.querySelectorAll('.deal-flights i')).toHaveLength(0);expect(busy).toHaveBeenLastCalledWith(false);
+ const ui=render(<div className="table-scene" ref={container}><DealerTable v={v} motion active localSeat={0} container={container} onBusy={busy}/></div>);
+ expect(ui.getByText('Welcome to the table.')).toBeTruthy();expect(busy).toHaveBeenLastCalledWith(true);
+ act(()=>vi.advanceTimersByTime(1999));expect(ui.getByText('Welcome to the table.')).toBeTruthy();expect(ui.container.querySelector('.opening-draw')).toBeNull();
+ act(()=>vi.advanceTimersByTime(1));expect(ui.getByText('I’ll draw four cards. The highest card calls Rung.')).toBeTruthy();
+ act(()=>vi.advanceTimersByTime(800));expect(ui.container.querySelector('.opening-draw')).toBeTruthy();
+ act(()=>vi.advanceTimersByTime(openingDrawMs(v.opening!.rounds.length)-2800));expect(ui.container.querySelector('.opening-draw')).toBeNull();expect(busy).toHaveBeenLastCalledWith(true);
+ act(()=>vi.advanceTimersByTime(DEAL_PRESENTATION_MS));expect(busy).toHaveBeenLastCalledWith(false);ui.unmount();busy.mockClear();
+ const restored=render(<div className="table-scene" ref={container}><DealerTable v={v} motion active hydrated localSeat={0} container={container} onBusy={busy}/></div>);expect(restored.container.querySelector('.opening-draw')).toBeNull();expect(restored.container.querySelectorAll('.deal-flights i')).toHaveLength(0);expect(busy).toHaveBeenLastCalledWith(false);
 });
 it('reduced motion retains the comparison reading time without flying cards',()=>{
- vi.useFakeTimers();const v=view(createMatch('open',seeded(8)),0),busy=vi.fn(),container=React.createRef<HTMLDivElement>();const ui=render(<div ref={container}><DealerTable v={v} motion={false} active localSeat={0} container={container} onBusy={busy}/></div>);
- act(()=>vi.advanceTimersByTime(1200));expect(ui.container.querySelector('.opening-draw')).toBeTruthy();expect(ui.container.querySelectorAll('.deal-flights i')).toHaveLength(0);act(()=>vi.runAllTimers());expect(busy).toHaveBeenLastCalledWith(false);
+ mockResizeObserver();
+ vi.useFakeTimers();const v=view(createMatch('open',seeded(8)),0),busy=vi.fn(),container=React.createRef<HTMLDivElement>();const ui=render(<div className="table-scene" ref={container}><DealerTable v={v} motion={false} active localSeat={0} container={container} onBusy={busy}/></div>);
+ act(()=>vi.advanceTimersByTime(2800));expect(ui.container.querySelector('.opening-draw')).toBeTruthy();expect(ui.container.querySelectorAll('.deal-flights i')).toHaveLength(0);act(()=>vi.runAllTimers());expect(busy).toHaveBeenLastCalledWith(false);
 });
