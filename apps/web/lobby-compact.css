@@ -221,3 +221,5 @@
 .first-deal-dialog button{display:block;width:100%;min-height:44px}
 .app .first-deal-dialog .first-deal-skip{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important}
 @media(max-width:600px){.first-deal-dialog{margin-block:auto max(16px,env(safe-area-inset-bottom))}}
+
+.app .standings-hud:disabled{filter:grayscale(1);opacity:.55;cursor:default}
