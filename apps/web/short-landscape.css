@@ -351,3 +351,32 @@
   border:0;background:none;box-shadow:none;padding:0;
  }
 }
+
+@media (max-width:1024px) and (orientation:portrait), (orientation:landscape) and (max-height:550px){
+ .app.screen-table .table-page:has(.rung-banner) :is(.hand,.hand-hint,.turn-label){
+  visibility:hidden;pointer-events:none;
+ }
+ .app.screen-table .table-page:has(.rung-banner) .hand *{
+  visibility:hidden;pointer-events:none;
+ }
+}
+@media (max-width:1024px) and (orientation:portrait){
+ .app.screen-table .table-page .table-scene .table-host{
+  top:calc(var(--felt-top) + var(--felt-height)*.12 - 62px);
+ }
+ .app.screen-table .table-page .table .plays{
+  --trick-card:clamp(24px,7.5vw,30px);
+ }
+ .app.screen-table .table-page .table .plays .play-0{--trick-y:65%}
+ .app.screen-table .table-page .table .plays .play-1{--trick-x:64%}
+ .app.screen-table .table-page .table .plays .play-2{--trick-y:41%}
+ .app.screen-table .table-page .table .plays .play-3{--trick-x:36%}
+ .app.screen-table .table-page .table .center>.pile{left:23%;top:25%}
+ .app.screen-table .table-page .table-coin-layer{
+  --bank-0-x:34%;--bank-0-y:78%;
+  --bank-1-x:69%;--bank-1-y:78%;
+  --bank-2-x:67%;--bank-2-y:32%;
+  --bank-3-x:34%;--bank-3-y:32%;
+  --mobile-pot-x:77%;--mobile-pot-y:25%;
+ }
+}
