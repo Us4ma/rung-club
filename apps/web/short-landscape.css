@@ -362,10 +362,10 @@
 }
 @media (max-width:1024px) and (orientation:portrait){
  .app.screen-table .table-page .table-scene .table-host{
-  top:calc(var(--felt-top) + var(--felt-height)*.12 - 62px);
+  top:calc(var(--felt-top) + var(--felt-height)*.20 - 62px);right:9%;
  }
  .app.screen-table .table-page .table .plays{
-  --trick-card:clamp(24px,7.5vw,30px);
+  --trick-card:clamp(26px,8vw,32px);
  }
  .app.screen-table .table-page .table .plays .play-0{--trick-y:65%}
  .app.screen-table .table-page .table .plays .play-1{--trick-x:64%}
@@ -373,11 +373,11 @@
  .app.screen-table .table-page .table .plays .play-3{--trick-x:36%}
  .app.screen-table .table-page .table .center>.pile{left:23%;top:25%}
  .app.screen-table .table-page .table-coin-layer{
-  --bank-0-x:50%;--bank-0-y:86%;
-  --bank-1-x:85%;--bank-1-y:52%;
-  --bank-2-x:50%;--bank-2-y:24%;
-  --bank-3-x:15%;--bank-3-y:52%;
-  --mobile-pot-x:77%;--mobile-pot-y:25%;
+  --bank-0-x:34%;--bank-0-y:86%;
+  --bank-1-x:81%;--bank-1-y:75%;
+  --bank-2-x:64%;--bank-2-y:21%;
+  --bank-3-x:17%;--bank-3-y:38%;
+  --mobile-pot-x:79%;--mobile-pot-y:35%;
  }
 }
 
