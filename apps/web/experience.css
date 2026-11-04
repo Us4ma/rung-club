@@ -42,6 +42,6 @@
 .tutorial-seat-coins{display:block;color:#f5d182;font-weight:700}
 @media(prefers-reduced-motion:no-preference){.first-deal-nudge{animation:first-deal-nudge .7s ease-in-out 3}}
 @keyframes first-deal-nudge{25%{transform:rotate(-1.5deg)}75%{transform:rotate(1.5deg)}}
-.teaching .caller-hand-preview img:not([alt$="of spades"]){opacity:.45}
-.teaching .caller-hand-preview img[alt$="of spades"],
-.teaching .suit-choices button:not(:disabled){outline:2px solid #eac574;outline-offset:2px}
+.guided-open-rung .caller-hand-preview img:not([alt$="of spades"]){opacity:.45}
+.guided-open-rung .caller-hand-preview img[alt$="of spades"],
+.guided-open-rung .suit-choices button:not(:disabled){outline:2px solid #eac574;outline-offset:2px}
