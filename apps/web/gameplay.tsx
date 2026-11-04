@@ -26,7 +26,7 @@ export function RungBanner({v,seat,seconds,timed,disabled,onCall,stakes,presetSu
  return <section className={'rung-banner'+(choosing?' choosing-stake':'')} aria-label="Rung selection"><h3>{caller?(choosing?'CHOOSE RUNG & STAKE':'CHOOSE YOUR RUNG'):'Waiting for trump caller…'}</h3>{timed&&<span role="timer">{seconds}s remaining</span>}{choosing&&<div className="caller-hand-preview" role="group" aria-label="Your five cards">{sortHandAlternating(v.hand.slice(0,5)).map(c=><img key={c.id} src={art('house/cards/'+rank(c.rank)+c.suit+'.webp')} alt={rank(c.rank)+' of '+suitNames[c.suit]}/>)}</div>}<p>{v.mode==='band'?'Select one of your five cards below to seal hidden Rung.':'Examine your five cards, then choose a suit.'}</p>{caller&&v.mode==='open'&&<div className="suit-choices">{Object.entries(SUITS).map(([s,g])=><button key={s} aria-label={g} aria-pressed={choosing?suit===s:undefined} disabled={disabled(s)} onClick={()=>choosing?setSuit(s):onCall(s)}><b>{g}</b><small>{suitNames[s as keyof typeof suitNames]}</small></button>)}</div>}{choosing&&<div className="caller-stakes"><label htmlFor="caller-stake">Stake per player <output>{value}</output></label><div className="caller-stake-range"><button aria-label="Minimum stake" disabled={disabled(suit)||value===stakes.min} onClick={()=>setStake(stakes.min)}>Min</button><input id="caller-stake" aria-label="Stake per player" type="range" min={stakes.min} max={stakes.max} step={stakes.step} value={value} disabled={disabled(suit)||stakes.max===stakes.min} onChange={e=>setStake(Number(e.target.value))}/><button aria-label="Maximum stake" disabled={disabled(suit)||value===stakes.max} onClick={()=>setStake(stakes.max)}>Max</button></div><small>{stakes.min} – {stakes.max} · Pot {value*4}</small><button className="confirm-rung-stake" disabled={!suit||disabled(suit)} onClick={()=>onCall(suit,value)}>Confirm Rung · {value} coins</button></div>}{v.redeals>0&&<small>{caller?'Same caller: choose Rung again.':'The same caller chooses Rung again.'} No points awarded.</small>}</section>;
 }
 
-export type Announcement={id:string;text:string;priority:number;voiceKey:string};
+export type Announcement={id:string;text:string;priority:number;voiceKey:string;mobileLines?:string[]};
 export function tableEvents(previous:View,current:View,seat:number,names:string[]):Announcement[]{
  if(previous.matchId!==current.matchId)return [];
  const events:Announcement[]=[],add=(key:string,text:string,priority:number)=>events.push({id:current.matchId+':'+key,text,priority,voiceKey:key.split(':')[0]});
@@ -57,12 +57,25 @@ export function DealerAnnouncements({v,seat,names,notice,settlement,serverNow,bu
   const extra=settlement.extra;
   const timer=setTimeout(()=>{
    seen.current.add(id);
-   const event={id,text:'Goon Kot! Collecting '+extra.toLocaleString('en-US')+' extra coins from each calling-team player ('+(extra*2).toLocaleString('en-US')+' extra total). Each contributes '+(extra+extra/3).toLocaleString('en-US')+' coins in total.',priority:8,voiceKey:'goon-kot'};
+   const event={id,text:'Goon Kot! Collecting '+extra.toLocaleString('en-US')+' extra coins from each calling-team player ('+(extra*2).toLocaleString('en-US')+' extra total). Each contributes '+(extra+extra/3).toLocaleString('en-US')+' coins in total.',priority:8,voiceKey:'goon-kot',mobileLines:[
+    'Goon Kot! '+extra.toLocaleString('en-US')+' extra coins per calling-team player.',
+    (extra*2).toLocaleString('en-US')+' extra coins from the calling team.',
+    (extra+extra/3).toLocaleString('en-US')+' coins per calling-team player in total.',
+   ]};
    setQueue(q=>[event,...q.filter(e=>e.voiceKey!=='result'&&e.id!==id)]);
   },Math.max(0,800-age));
   return()=>clearTimeout(timer);
  },[settlement?.id,v.matchId,v.phase,busy]);
- const e=queue[0];return e?<div key={e.id} className={'dealer-speech'+(e.voiceKey==='fifth'?' fifth-sar':e.voiceKey==='turn'?' turn-announcement':'')} role="status" data-voice-key={e.voiceKey}><strong>{e.text}</strong></div>:null;
+ const e=queue[0];
+ const [mobileLine,setMobileLine]=useState(0);
+ useEffect(()=>{
+  setMobileLine(0);
+  if(!e?.mobileLines)return;
+  const second=setTimeout(()=>setMobileLine(1),1500);
+  const third=setTimeout(()=>setMobileLine(2),3000);
+  return()=>{clearTimeout(second);clearTimeout(third);};
+ },[e?.id]);
+ return e?<div key={e.id} className={'dealer-speech'+(e.voiceKey==='fifth'?' fifth-sar':e.voiceKey==='turn'?' turn-announcement':'')} role="status" data-voice-key={e.voiceKey}><strong>{e.mobileLines?<><span className="dealer-full-message">{e.text}</span><span className="dealer-mobile-message">{e.mobileLines[mobileLine]}</span></>:e.text}</strong></div>:null;
 }
 export function TablePreferences({settings,onChange}:{settings:any;onChange:(value:any)=>void}){const [open,setOpen]=useState(false);useEffect(()=>{if(!open)return;const close=(e:PointerEvent)=>{if(!(e.target as Element).closest('.table-tools'))setOpen(false);};document.addEventListener('pointerdown',close);return()=>document.removeEventListener('pointerdown',close);},[open]);return <><button className="icon-button" aria-label="Table settings" aria-expanded={open} onClick={()=>setOpen(!open)}><Icon name="settings"/></button>{open&&<section className="table-preferences" role="dialog" aria-label="Table preferences" onKeyDown={e=>{if(e.key==='Escape')setOpen(false);}}><strong>Table preferences</strong><CloseButton label="Close table settings" onClick={()=>setOpen(false)}/>{[['quickPlay','Double-tap quick play'],['motion','Animations'],['sound','Sound effects']].map(([key,label])=><label key={key}>{label}<input type="checkbox" checked={key==='quickPlay'?settings[key]!==false:!!settings[key]} onChange={e=>onChange({...settings,[key]:e.target.checked})}/></label>)}</section>}</>;}
 /** Hydrated cards are a baseline. Only new authoritative transitions create motion. */
@@ -76,10 +89,11 @@ export function TrickCards({v,seat,names,motion}:{v:View;seat:number;names:strin
   if(v.history.length===old.history.length+1){setRecent(v.history.length);const t=setTimeout(()=>setRecent(0),1200);return()=>clearTimeout(t);}
  },[v.matchId,v.history.length]);
  React.useLayoutEffect(()=>{const animate=motion&&!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const compact=globalThis.matchMedia?.('(max-width:1024px) and (orientation:portrait), (orientation:landscape) and (max-height:550px)').matches;
   const scene=root.current?.closest<HTMLElement>('.table-scene'),animations:Animation[]=[];
   root.current?.querySelectorAll<HTMLElement>('[data-play]').forEach(el=>{const p=plays.find(p=>p.card.id===el.dataset.play)!;const key=v.matchId+':'+p.card.id,target=el.getBoundingClientRect();
    const origin=scene?.dataset,source=p.seat===seat&&origin?.originCard===p.card.id?{x:Number(origin.originX),y:Number(origin.originY)}:scene?.querySelector<HTMLElement>(`[data-seat="${p.seat}"]`)?.getBoundingClientRect();
-   if(animate&&el.animate&&source&&!seen.current.has(key))animations.push(el.animate([{translate:`${source.x-target.x}px ${source.y-target.y}px`,scale:'.7',opacity:.4},{translate:'0px 0px',scale:'1',opacity:1}],{duration:240}));
+   if(animate&&el.animate&&source&&!seen.current.has(key))animations.push(el.animate([{translate:`${source.x-target.x}px ${source.y-target.y}px`,scale:compact?'.85':'.7',opacity:compact?1:.4},{translate:'0px 0px',scale:'1',opacity:1}],{duration:240}));
    seen.current.add(key);
   });
   const gatherKey=v.matchId+':'+recent;

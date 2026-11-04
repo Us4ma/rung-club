@@ -45,7 +45,7 @@ export class TableAudio {
   this.loading=this.bytes!.then(bytes=>context.decodeAudioData(bytes.slice(0))).then(buffer=>{this.buffer=buffer;this.next();}).catch(()=>{}).finally(()=>{this.loading=null;});
  }
  setForeground(value:boolean){this.foreground=value;if(!value)this.clear();}
- unlock(){if(!this.enabled)return;try{this.context??=new AudioContext();if(!this.output){this.output=this.context.createGain();this.output.gain.value=this.volume;this.output.connect(this.context.destination);}void this.context.resume().then(()=>this.next()).catch(()=>{});this.load();}catch{/* Unsupported device: silent fallback. */}}
+ unlock(){if(!this.enabled)return;try{const AudioContextClass=globalThis.AudioContext??(globalThis as typeof globalThis & {webkitAudioContext?:typeof AudioContext}).webkitAudioContext;if(!AudioContextClass)return;this.context??=new AudioContextClass();if(!this.output){this.output=this.context.createGain();this.output.gain.value=this.volume;this.output.connect(this.context.destination);}if(this.context.state!=='running')void this.context.resume().then(()=>this.next()).catch(()=>{});this.load();}catch{/* Unsupported device: silent fallback. */}}
  private allowed(){return (this.active||this.interfaceEnabled)&&this.enabled&&this.foreground;}
  clear(){this.interfaceEnabled=false;this.epoch++;this.queue=[];this.playing=false;this.source?.stop();this.source=null;}
  interfaceEffect(cue:TableCue,enabled:boolean){if(!enabled||document.hidden)return;this.interfaceEnabled=true;this.enabled=true;this.enqueue({cue,until:Date.now()+1000,epoch:this.epoch});}
