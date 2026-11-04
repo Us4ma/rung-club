@@ -318,8 +318,15 @@
  }
  .app.screen-table .table-page .table-scene .dealer-speech{
   top:2px;left:4px;right:4px;width:auto;max-width:none;
-  max-height:56px;overflow-y:auto;overscroll-behavior:contain;pointer-events:auto;
+  max-height:none;overflow:visible;pointer-events:auto;
   padding:5px 9px;line-height:14px;
+ }
+ .app.screen-table .table-page .table-scene .dealer-speech>strong{
+  display:block;max-height:42px;overflow-y:auto;overscroll-behavior:contain;
+ }
+ .app.screen-table .table-page .table-scene .dealer-speech:after{
+  display:block;left:auto;right:calc(9% + 29px);top:auto;bottom:-5px;
+  width:8px;height:8px;transform:rotate(45deg);pointer-events:none;
  }
  .app.screen-table .table-page .table .seat-2{
   top:calc(4px - var(--portrait-size)/2);left:50%;right:auto;transform:translateX(-50%);
