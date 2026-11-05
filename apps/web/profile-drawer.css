@@ -31,3 +31,5 @@
 @keyframes collection-enter{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
 @media(max-width:600px){.profile-drawer-title{top:-20px}.profile-collection-links strong{font-size:19px}.profile-collection-links{margin-top:20px}.profile-collection-links>button{gap:14px}.profile-drawer-title h1{font-size:23px}}
 @media(prefers-reduced-motion:reduce){.profile-collection{animation:none}}.app.reduced .profile-collection{animation:none}
+
+.app.screen-profile .profile-drawer .profile-collection-links>button{min-height:76px;padding:18px 20px}
