@@ -38,3 +38,6 @@
 @media(max-width:600px){.caller-hand-preview{gap:4px;margin:6px 0}.caller-hand-preview img{width:31px;height:44px}.app.screen-table .rung-banner.choosing-stake{max-height:calc(100% - 6px)}}
 @media(orientation:landscape) and (max-height:550px){.caller-hand-preview{margin:4px 0}.caller-hand-preview img{width:29px;height:41px}.app.screen-table .rung-banner.choosing-stake{max-height:calc(100dvh - 80px)}}
 @media(prefers-reduced-motion:reduce){.table-loading-dots i{animation:none;opacity:.8}}
+
+/* Do not paint an empty card shadow while the face is loading. */
+.screen-table .played:has(img:not([data-ready])){visibility:hidden}

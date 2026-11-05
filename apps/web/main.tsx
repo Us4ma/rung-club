@@ -127,16 +127,16 @@ const tutorialSpeech=collectionPaused&&latestTutorialCollection
  :cutLessonKey
  ?secondLine===cutLessonKey?(cutSar===1?'Tap J♣ twice to discard it. That’s badd rungi.':cutSar===2?'Tap 2♠ twice. Even the lowest Rung beats A♥, so you become Senior.':'Tap K♠ twice to cut the Bhaag and take Senior.')
  :explainedCut===cutLessonKey?undefined
- :cutSar===1?identities[v!.senior!]+' is Senior. You have no hearts, so you can discard a different suit.':cutSar===2?'The opponent led A♥. You’re out of hearts, so you can cut with Rung.':'The opponent led a Bhaag in clubs. You have no clubs, so you can cut with Rung.'
+ :cutSar===1?identities[v!.senior!]+' is Senior. You have no hearts, so you can discard a different suit.':cutSar===2?'The opponent led A♥. You’re out of hearts, so you can cut with Rung.':'The opponent led 5♣ for Bhaag. You have no clubs, so you can cut with Rung.'
  :tutorialFinished&&tutorialPaidAt&&secondLine===v?.matchId?'For more about Rung, open Settings → Help and Matchmaking.':baseTutorialSpeech;
 useEffect(()=>{if(!tutorialFinished||!v)return;const id=v.matchId;const timer=setTimeout(()=>setSecondLine(id),7300);return()=>clearTimeout(timer);},[tutorialFinished,v?.matchId]);
-useEffect(()=>{if(!cutLessonKey)return;const extraReading=cutSar===1||cutSar===8;const pause=setTimeout(()=>setExplainedCut(cutLessonKey),extraReading?3000:1800);const next=setTimeout(()=>setSecondLine(cutLessonKey),extraReading?4000:2400);return()=>{clearTimeout(pause);clearTimeout(next);};},[cutLessonKey,cutSar]);
+useEffect(()=>{if(!cutLessonKey||collectionPaused)return;const readingMs=cutSar===1?3000:5000;const pause=setTimeout(()=>setExplainedCut(cutLessonKey),readingMs);const next=setTimeout(()=>setSecondLine(cutLessonKey),readingMs+700);return()=>{clearTimeout(pause);clearTimeout(next);};},[cutLessonKey,cutSar,collectionPaused]);
 const cutLessonPaused=collectionPaused||!!cutLessonKey&&secondLine!==cutLessonKey;
 const tutorialDealReady=tutorial<0||tutorial>0&&!!v&&presentationReady===[v.matchId,v.phase,v.redeals].join(':');
 const visibleHand=!started||!v||v.phase==='finished'||tutorial>=0&&!tutorialDealReady&&!presenting?[]:presenting?dealingHand??[]:v.hand;
 const callingLesson=tutorial>=0&&tutorialDealReady&&!presenting&&v?.phase==='calling'?v.matchId:null;
 const [spadesExplained,setSpadesExplained]=useState<string|null>(null);
-useEffect(()=>{if(!callingLesson)return;const timer=setTimeout(()=>setSpadesExplained(callingLesson),2000);return()=>clearTimeout(timer);},[callingLesson]);
+useEffect(()=>{if(!callingLesson)return;const timer=setTimeout(()=>setSpadesExplained(callingLesson),4000);return()=>clearTimeout(timer);},[callingLesson]);
 const callingLessonPaused=!!callingLesson&&spadesExplained!==callingLesson;
 const xp=cloudProfile?.totals.xp??profile.xp;const bandUnlocked=BAND_AVAILABLE&&bandEligible(xp);const serverOffset=useRef(0);
 useEffect(()=>{if(!bandUnlocked||screen==='login'||screen==='account-loading'||screen==='username')return;const key='band-celebration:'+onboardingKey.current;if(!cloudProfile?.bandUnlockSeen&&localStorage.getItem(key)!=='1')setUnlock(true);},[bandUnlocked,screen]);
