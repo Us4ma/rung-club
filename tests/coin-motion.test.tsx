@@ -13,3 +13,12 @@ it('collects once at deal start, pays existing pot, then collects the next deal'
 it('hydrating a completed table does not replay coin payouts',()=>{const coins={stake:200,deal:'one',settlement:{id:'one',at:1000,winner:0,payout:350,rake:100},balances:[2500,2500,2500,2500],waiting:[]};render(<TableCoinMotion coins={coins} seat={0} motion sound hydrated serverNow={1000}/>);act(()=>vi.advanceTimersByTime(4000));expect(audio.effect).not.toHaveBeenCalled();});
 it('welcome coins respect reduced motion, finish once and use the shared sound lane',()=>{const done=vi.fn();render(<WelcomeCoinFlight origin={{x:100,y:100}} onDone={done} motion={false} sound/>);expect(audio.interfaceEffect).toHaveBeenCalledWith('coinGift',true);act(()=>vi.advanceTimersByTime(200));expect(done).toHaveBeenCalledOnce();});
 it('opening cards fit entirely inside small portrait, landscape and desktop felt bounds',async()=>{const {openingCardSlots}=await import('../apps/web/opening-slots.ts');for(const [width,height] of [[260,280],[600,140],[1120,270]]){const felt={left:40,top:100,width,height},slots=Object.values(openingCardSlots(felt,{left:0,top:0}));for(const card of slots){expect(card.left).toBeGreaterThan(felt.left+20);expect(card.left+card.width).toBeLessThan(felt.left+width-20);expect(card.top).toBeGreaterThan(felt.top+15);expect(card.top+card.height).toBeLessThan(felt.top+height-20);}}});
+
+it('shows the winning team settlement total beside the fee using individual payouts',()=>{
+ const coins={stake:200,deal:'one',balances:[2800,2300,2700,2300],waiting:[]};
+ const props={seat:0,motion:true,sound:true,hydrated:false,serverNow:1000};
+ const ui=render(<TableCoinMotion {...props} coins={coins}/>);
+ ui.rerender(<TableCoinMotion {...props} coins={{...coins,settlement:{id:'one',at:1000,winner:0,payout:350,payouts:[400,0,300,0],rake:100}}}/>);
+ expect(ui.container.querySelector('.winning-team-payout')?.textContent).toBe('Winning team 700');
+ expect(ui.container.querySelector('.dealer-chip-tray small')?.textContent).toContain('Table fee 100');
+});
