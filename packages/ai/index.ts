@@ -199,14 +199,29 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
   const planned=planContinuations(v,seat,candidates,info,style);
   if(planned)return planned;
  }
+ // A short search compares suit and control trade-offs when full-deal
+ // planning did not settle the move. Keep the heuristic as the baseline.
+ if(!end&&v.revealed){
+  const candidates=ranked.slice(0,3).map(x=>x.card);
+  const baseline=candidates[0];
+  const teamWinningAfter=(card:Card)=>partner(winning([...v.trick,asPlay(v,seat,card,leading)])!.seat,seat);
+  const baselineWins=teamWinningAfter(baseline);
+  const differentPlan=ranked.find(({card})=>card!==baseline&&(card.suit!==baseline.suit||teamWinningAfter(card)!==baselineWins||card.suit===v.trump||card.rank===14||baseline.rank===14));
+  if(differentPlan&&!candidates.includes(differentPlan.card))candidates.push(differentPlan.card);
+  if(differentPlan){
+   const planned=planContinuations(v,seat,candidates,info,style,2);
+   if(planned)return planned;
+  }
+ }
  return ranked[0].card.id;
 }
 /** Compare continuations on public-information-consistent deals, never real hidden hands.
  * Early/middle candidates must beat the heuristic across most sampled worlds.
  * The existing endgame search retains its complete legal candidate set.
  */
-function planContinuations(v:View,seat:number,candidates:Card[],info:ReturnType<typeof knowledge>,style:PlayingStyle){
- const end=Math.max(...v.counts)<=3;
+function planContinuations(v:View,seat:number,candidates:Card[],info:ReturnType<typeof knowledge>,style:PlayingStyle,sarLimit=Infinity){
+ const shortSearch=Number.isFinite(sarLimit);
+ const end=Math.max(...v.counts)<=3&&!shortSearch;
  let hash=2166136261;
  for(const c of [...v.hand,...v.history.flat().map(p=>p.card),...v.trick.map(p=>p.card)])for(const char of c.id)hash=Math.imul(hash^char.charCodeAt(0),16777619);
  const random=seeded(hash>>>0),values=new Map(candidates.map(c=>[c.id,0])),better=new Map(candidates.map(c=>[c.id,0]));
@@ -236,13 +251,15 @@ function planContinuations(v:View,seat:number,candidates:Card[],info:ReturnType<
   let baselineValue=0;
   for(const [index,candidate] of candidates.entries()){
    let s=play(state,seat,candidate.id);
-   while(s.phase==='playing'){
+   while(s.phase==='playing'&&s.history.length-v.history.length<sarLimit){
     let next=end?view(s,s.turn):rolloutView(s,s.turn);
     if(next.canReveal){s=reveal(s,s.turn);next=end?view(s,s.turn):rolloutView(s,s.turn);}
     s=play(s,s.turn,end?choose(next,s.turn,'intermediate',random,s.turn%2===seat%2?style:'balanced'):rolloutChoice(next,s.turn));
    }
    const ours=s.scores[seat%2],theirs=s.scores[1-seat%2];
-   const value=ours-theirs+(ours>theirs?8:-8)+(ours===13?6:theirs===13?-6:0);
+   const value=shortSearch
+    ?s.winners.slice(v.history.length).reduce((sum,winner)=>sum+(partner(winner,seat)?1:-1),0)+3*((ours-v.scores[seat%2])-(theirs-v.scores[1-seat%2]))
+    :ours-theirs+(ours>theirs?8:-8)+(ours===13?6:theirs===13?-6:0);
    if(index===0)baselineValue=value;
    if(value>baselineValue)better.set(candidate.id,better.get(candidate.id)!+1);
    values.set(candidate.id,values.get(candidate.id)!+value);
@@ -251,7 +268,7 @@ function planContinuations(v:View,seat:number,candidates:Card[],info:ReturnType<
  // Sparse or inconsistent public evidence falls back to the normal heuristic.
  if(samples<4)return null;
  const best=candidates.reduce((best,c)=>values.get(c.id)!>values.get(best.id)!?c:best);
- if(!end&&(better.get(best.id)!<Math.ceil(samples*.625)||values.get(best.id)!-values.get(candidates[0].id)!<samples))return candidates[0].id;
+ if((shortSearch||!end)&&(better.get(best.id)!<Math.ceil(samples*.625)||values.get(best.id)!-values.get(candidates[0].id)!<samples))return candidates[0].id;
  return best.id;
 }
 /** Read-only redaction for disposable simulated states; avoids deep-copying twice. */
