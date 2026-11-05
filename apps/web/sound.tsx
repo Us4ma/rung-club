@@ -7,7 +7,7 @@ export function initialSoundSettings(){
  let saved:any={};try{saved=JSON.parse(localStorage.getItem('settings')||'{}')||{};}catch{}
  return {sound:false,haptic:false,motion:true,...saved,music:saved.lobbyMusicConfigured===true?saved.music!==false:true,musicVolume:Number.isFinite(saved.musicVolume)?Math.max(0,Math.min(1,saved.musicVolume)):.35,lobbyMusicConfigured:true};
 }
-export function useLobbyAudio({active,enabled,volume}:{active:boolean;enabled:boolean;volume:number}){
+export function useLobbyAudio({active,enabled,volume,atTable}:{active:boolean;enabled:boolean;volume:number;atTable:boolean}){
  const player=useRef<LobbyMusic|null>(null);
  const current=useRef({active,enabled,volume});current.current={active,enabled,volume};
  useEffect(()=>{const music=new LobbyMusic();player.current=music;
@@ -21,6 +21,7 @@ export function useLobbyAudio({active,enabled,volume}:{active:boolean;enabled:bo
   return()=>{music.dispose();player.current=null;document.removeEventListener('visibilitychange',visibility);window.removeEventListener('pagehide',hide);window.removeEventListener('pageshow',visibility);window.removeEventListener('rung-app-state',native);gestures.forEach(type=>document.removeEventListener(type,retry,true));};
  },[]);
  useEffect(()=>player.current?.configure(active&&enabled,volume),[active,enabled,volume]);
+ useEffect(()=>{if(atTable)player.current?.rewind();},[atTable]);
 }
 export function SoundDrawer({settings,onChange,onClose}:{settings:any;onChange:(s:any)=>void;onClose:()=>void}){
  const panel=useRef<HTMLElement>(null);

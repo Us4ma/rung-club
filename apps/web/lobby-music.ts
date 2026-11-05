@@ -6,6 +6,7 @@ export class LobbyMusic {
  private volume=.35;
  constructor(private create:()=>HTMLAudioElement=()=>new Audio('/audio/lobby-midnight.mp3')){}
  configure(enabled:boolean,volume:number){this.enabled=enabled;this.volume=Number.isFinite(volume)?Math.max(0,Math.min(1,volume)):.35;this.sync();}
+ rewind(){if(this.track)this.track.currentTime=0;}
  setForeground(active:boolean){this.foreground=active;this.sync();}
  resume(){
   // A failed network/media load leaves an Audio element unusable until reloaded.
