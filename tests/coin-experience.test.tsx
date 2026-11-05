@@ -18,7 +18,7 @@ it('keeps the rebuy dialog open through Back and exits only after confirmation',
  await screen.findByText('Add 2,500 coins');
  fireEvent.click(screen.getByRole('button',{name:'Close coin options'}));
  expect(screen.queryByText('Confirm leave')).toBeNull();
- fireEvent.click(screen.getByRole('button',{name:'Close',exact:true}));
+ fireEvent.click(screen.getByRole('button',{name:/^Close$/}));
  fireEvent.click(screen.getByText('Keep my seat'));
  window.history.back();
  fireEvent.click(await screen.findByText('Keep my seat'));
