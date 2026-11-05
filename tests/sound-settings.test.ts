@@ -6,7 +6,8 @@ it('enables supplied music on introduction without changing prior SFX/haptics',(
 it('keeps an explicit music-off choice and volume after reload',()=>{saved('{"music":false,"musicVolume":0.7,"lobbyMusicConfigured":true}');expect(initialSoundSettings()).toMatchObject({music:false,musicVolume:.7});});
 it('recovers defaults from invalid saved settings',()=>{saved('broken');expect(initialSoundSettings()).toMatchObject({music:true,musicVolume:.35});});
 
-it('starts with sound effects enabled and preserves a saved mute',()=>{
+it('enables the old muted default and preserves a newly chosen mute',()=>{
  saved(null);expect(initialSoundSettings().sound).toBe(true);
- saved('{"sound":false}');expect(initialSoundSettings().sound).toBe(false);
+ saved('{"sound":false}');expect(initialSoundSettings().sound).toBe(true);
+ saved('{"sound":false,"soundEffectsConfigured":true}');expect(initialSoundSettings().sound).toBe(false);
 });
