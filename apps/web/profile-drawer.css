@@ -14,3 +14,13 @@
 .profile-name-edit svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 1px #0008)}
 .profile-name-editor{padding:0 0 20px;margin-bottom:20px;border-bottom:1px solid #b49a6344}.profile-drawer .profile-name-editor .username-form,.profile-drawer .profile-name-editor .local-name{margin-top:0}.name-editor-actions{display:flex;gap:8px;margin-top:12px}
 .profile-stats-grid .stats-gold-icon{width:21px;height:21px;margin-right:6px;vertical-align:baseline}.profile-stats-grid strong{overflow-wrap:anywhere}
+
+.profile-drawer #profile-panel-customization>h3{
+ margin:24px 0 14px;line-height:1.35;
+}
+.profile-drawer .reward-profile-cosmetics{
+ margin-bottom:24px;
+}
+.profile-drawer .reward-profile-cosmetics>h3{
+ margin:0 0 14px;line-height:1.35;
+}
