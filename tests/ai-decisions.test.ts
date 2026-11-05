@@ -21,3 +21,14 @@ it('completes seeded open and band deals legally without hidden hands',()=>{
 });
 
 it('chooses a long trump suit over a lone ace',()=>{expect(chooseTrump(position(['C14','H2','H3','H4','D10']))).toBe('H');});
+
+it('holds the ace when the partner is likely to cover a low lead',()=>{
+ const v=position(['C2','C14','D4','D6'],[played(1,'C5')]);
+ expect(choose(v,0,'intermediate')).toBe('C2');
+});
+
+it('overcuts with the cheapest winning Rung when nobody can respond',()=>{
+ const cut={...played(1,'H8'),trump:true};
+ const v=position(['H9','H14','D4'],[played(3,'C10'),played(2,'C3'),cut]);
+ expect(choose(v,0,'advanced')).toBe('H9');
+});

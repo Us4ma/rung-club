@@ -5,7 +5,7 @@ import {LobbyMusic} from './lobby-music.ts';
 import './sound.css';
 export function initialSoundSettings(){
  let saved:any={};try{saved=JSON.parse(localStorage.getItem('settings')||'{}')||{};}catch{}
- return {sound:false,haptic:false,motion:true,...saved,music:saved.lobbyMusicConfigured===true?saved.music!==false:true,musicVolume:Number.isFinite(saved.musicVolume)?Math.max(0,Math.min(1,saved.musicVolume)):.35,lobbyMusicConfigured:true};
+ return {sound:true,haptic:false,motion:true,...saved,music:saved.lobbyMusicConfigured===true?saved.music!==false:true,musicVolume:Number.isFinite(saved.musicVolume)?Math.max(0,Math.min(1,saved.musicVolume)):.35,lobbyMusicConfigured:true};
 }
 export function useLobbyAudio({active,enabled,volume,atTable}:{active:boolean;enabled:boolean;volume:number;atTable:boolean}){
  const player=useRef<LobbyMusic|null>(null);

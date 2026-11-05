@@ -51,7 +51,17 @@ function knowledge(v:View,seat:number){
   }
   return clamp(safe);
  };
- return {reliability,unseen,voids};
+ const chanceToOvertake=(other:number,winner:Play,led:Suit,opponentsAfter:number[])=>{
+  const higher=(suit:Suit,rank:number)=>unseen.filter(c=>c.suit===suit&&c.rank>rank);
+  const noneCanWin=(cards:Card[],trump:boolean)=>cards.reduce((none,c)=>none*(1-holding(other,[c])*
+   reliability({seat:other,card:c,effective:c.rank,trump,bhaag:false},led,opponentsAfter)),1);
+  const follow=winner.trump&&winner.card.suit!==led?0:
+   1-noneCanWin(higher(led,winner.effective),v.revealed&&v.trump===led);
+  if(!v.revealed||!v.trump||v.trump===led)return follow;
+  const voidChance=1-holding(other,higher(led,1));
+  return clamp(follow+voidChance*(1-noneCanWin(higher(v.trump,winner.trump?winner.effective:1),true)));
+ };
+ return {reliability,unseen,voids,chanceToOvertake};
 }
 function asPlay(v:View,seat:number,c:Card,leading:boolean,lastAce=v.lastAce):Play{
  return {seat,card:c,effective:leading&&v.policy.aceChain&&lastAce&&v.senior===seat&&c.rank===14?2:c.rank,
@@ -96,6 +106,9 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
   const trump=v.revealed&&c.suit===v.trump;
   let value=(c.rank-2)*.65+(c.rank>=11?(c.rank-10)*1.35:0);
   if(trump)value+=7+(c.rank-2)*.45;
+  // An unused ace can take the lead later. Charge a little more while
+  // there are still enough cards left for that control to matter.
+  if(c.rank===14&&!late)value+=4;
   if(style==='conservative'&&trump)value+=4;
   // Preserve a long-suit winner; prefer discarding low cards from a short side suit.
   const length=v.hand.filter(x=>x.suit===c.suit).length;
@@ -124,6 +137,10 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
   const run=continuation(c);
   return chance*run*(setupWeight+sweepPressure)*(skill==='advanced'?1:.8);
  };
+ const teammate=(seat+2)%4;
+ const partnerIndex=remainingSeats.indexOf(teammate);
+ const rescue=best&&!partner(best.seat,seat)&&partnerIndex>=0
+  ?info.chanceToOvertake(teammate,best,v.trick[0].card.suit,remainingSeats.slice(partnerIndex+1)):0;
  const score=(c:Card)=>{
   const p=asPlay(v,seat,c,leading),lead=v.trick[0]??p;
   const winner=winning([...v.trick,p])!;
@@ -154,14 +171,21 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
     value+=followThrough(c,chance,collect);
    }else if(style==='partnership')value+=2;
   }else{
-   // Blocking an opponent's immediate collection is worth more than an ordinary Sar.
-   if(canCollect(v,winner.seat,lead))value-=collectionValue(otherTeam);
+   // When partner still has a turn, estimate whether they can beat the
+   // current winner and survive any opponent still to play after them.
+   value+=rescue*(urgency+(canCollect(v,teammate,lead)?collectionValue(ourTeam):0));
+   if(canCollect(v,winner.seat,lead))value-=(1-rescue)*collectionValue(otherTeam);
   }
   if(style==='attacking'&&winner.seat===seat)value+=4;
   return value;
  };
  // Score once per legal card. Equal-strength decisions conserve the cheaper card.
- const ranked=cards.map(c=>({card:c,value:score(c)})).sort((a,b)=>b.value-a.value||cost(a.card)-cost(b.card)||a.card.id.localeCompare(b.card.id));
+ const winningResponses=remainingSeats.length===0
+  ?cards.filter(c=>winning([...v.trick,asPlay(v,seat,c,false)])!.seat===seat):[];
+ const cheapestWinner=winningResponses.reduce<Card|undefined>((cheap,c)=>!cheap||cost(c)<cost(cheap)?c:cheap,undefined);
+ const candidatesToScore=cheapestWinner?cards.filter(c=>c===cheapestWinner||!winningResponses.includes(c)):cards;
+ const ranked=candidatesToScore.map(c=>({card:c,value:score(c)})).sort((a,b)=>b.value-a.value||cost(a.card)-cost(b.card)||a.card.id.localeCompare(b.card.id));
+ if(ranked.length===1)return ranked[0].card.id;
  const end=Math.max(...v.counts)<=3;
  // Leads shape the opening collection and the resources left for later Sars.
  // Also compare responses when a large uncollected pile is at risk.

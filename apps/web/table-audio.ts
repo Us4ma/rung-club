@@ -7,7 +7,6 @@ type Job={cue:TableCue;until:number;epoch:number;gain?:number;ui?:UICue};
 export class TableAudio {
  private context:AudioContext|null=null;
  private output:GainNode|null=null;
- private volume=.35;
  private buffer:AudioBuffer|null=null;
  private uiBuffer:AudioBuffer|null=null;
  private uiBytes:Promise<ArrayBuffer>|null=null;
@@ -23,7 +22,6 @@ export class TableAudio {
  private queue:Job[]=[];
  private playing=false;
  private source:AudioBufferSourceNode|null=null;
- setVolume(value:number){this.volume=Number.isFinite(value)?Math.max(0,Math.min(1,value)):.35;if(this.context&&this.output)this.output.gain.setTargetAtTime(this.volume,this.context.currentTime,.015);}
  configure(active:boolean,enabled:boolean){this.active=active;this.enabled=enabled;this.preload();if(!active||!enabled)this.clear();}
  private preload(){
   if(!this.uiBytes&&!this.uiBuffer){
@@ -44,8 +42,8 @@ export class TableAudio {
   this.preload();const context=this.context;
   this.loading=this.bytes!.then(bytes=>context.decodeAudioData(bytes.slice(0))).then(buffer=>{this.buffer=buffer;this.next();}).catch(()=>{}).finally(()=>{this.loading=null;});
  }
- setForeground(value:boolean){this.foreground=value;if(!value)this.clear();}
- unlock(){if(!this.enabled)return;try{const AudioContextClass=globalThis.AudioContext??(globalThis as typeof globalThis & {webkitAudioContext?:typeof AudioContext}).webkitAudioContext;if(!AudioContextClass)return;this.context??=new AudioContextClass();if(!this.output){this.output=this.context.createGain();this.output.gain.value=this.volume;this.output.connect(this.context.destination);}if(this.context.state!=='running')void this.context.resume().then(()=>this.next()).catch(()=>{});this.load();}catch{/* Unsupported device: silent fallback. */}}
+ setForeground(value:boolean){this.foreground=value;if(!value)this.clear();else if(this.context&&this.enabled)this.unlock();}
+ unlock(){if(!this.enabled)return;try{const AudioContextClass=globalThis.AudioContext??(globalThis as typeof globalThis & {webkitAudioContext?:typeof AudioContext}).webkitAudioContext;if(!AudioContextClass)return;this.context??=new AudioContextClass();if(!this.output){this.output=this.context.createGain();this.output.gain.value=.35;this.output.connect(this.context.destination);}if(this.context.state!=='running')void this.context.resume().then(()=>this.next()).catch(()=>{});this.load();}catch{/* Unsupported device: silent fallback. */}}
  private allowed(){return (this.active||this.interfaceEnabled)&&this.enabled&&this.foreground;}
  clear(){this.interfaceEnabled=false;this.epoch++;this.queue=[];this.playing=false;this.source?.stop();this.source=null;}
  interfaceEffect(cue:TableCue,enabled:boolean){if(!enabled||document.hidden)return;this.interfaceEnabled=true;this.enabled=true;this.enqueue({cue,until:Date.now()+1000,epoch:this.epoch});}
@@ -60,9 +58,10 @@ export class TableAudio {
  private next(){
   if(this.playing||!this.allowed()||!this.context||this.context.state!=='running')return;
   while(this.queue.length&&(this.queue[0].until<Date.now()||this.queue[0].epoch!==this.epoch))this.queue.shift();
-  const pending=this.queue[0];if(!pending)return;
-  const buffer=pending.ui?this.uiBuffer:this.buffer;if(!buffer)return;
-  const job=this.queue.shift()!;
+  const ready=this.queue.findIndex(job=>job.until>=Date.now()&&job.epoch===this.epoch&&(job.ui?this.uiBuffer:this.buffer));
+  if(ready<0)return;
+  const [job]=this.queue.splice(ready,1);
+  const buffer=job.ui?this.uiBuffer:this.buffer;
   const epoch=this.epoch;this.playing=true;let done=false;
   const finish=()=>{if(done||epoch!==this.epoch)return;done=true;this.source=null;this.playing=false;if(!this.queue.length)this.interfaceEnabled=false;this.next();};
   try{
