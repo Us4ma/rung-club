@@ -1,0 +1,38 @@
+/* Experimental lesson only: no selectors below apply to the published lesson. */
+.app:has(.test-tutorial) .test-lesson-dock{position:fixed;z-index:96;bottom:max(8px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(520px,calc(100% - 28px));display:flex;align-items:center;justify-content:center;gap:8px;padding:8px;background:#0a3026;border:1px solid #ac965b;border-radius:12px;box-shadow:0 4px 20px #0008}
+.app:has(.test-tutorial) .test-lesson-dock button{flex:1;min-height:44px;min-width:0;white-space:normal;padding:8px;font-size:14px}
+.test-rank-strip{flex:0 0 100%;padding:6px;color:#ffe1a1;text-align:center;font-size:14px;line-height:1.8;animation:test-rank-enter 240ms ease-out}
+.app:has(.test-tutorial) .test-lesson-dock:has(.test-rank-strip){flex-wrap:wrap;bottom:auto;top:38%;max-width:430px}.test-lesson-dock>span{flex:0 0 100%;text-align:center;color:#f6e5b8}
+.app:has(.test-tutorial) .test-lesson-progress{position:fixed;z-index:65;left:50%;top:82px;transform:translateX(-50%);font-size:12px;line-height:1.4;color:#ead8a9;background:#092a20e8;padding:5px 12px;border-radius:8px;pointer-events:none;max-width:48%;text-align:center}
+.test-lesson-progress span{display:block;color:#8fe3ae}.app:has(.test-tutorial) .test-skip{position:fixed;z-index:97;bottom:max(10px,env(safe-area-inset-bottom));left:16px;font-size:12px;min-height:44px;padding:8px 12px}
+.app:has(.test-tutorial) .test-hint-control{position:fixed;bottom:12px;right:16px;z-index:93}.test-hint-control button{min-height:44px;padding:8px 16px}
+.app:has(.test-tutorial):has(.test-lesson-dock) .test-tutorial .actions{visibility:hidden;pointer-events:none}
+.test-tutorial .rung-banner h3{font-size:0}.test-tutorial .rung-banner h3:after{content:'CHOOSE RUNG';font-size:18px}.test-tutorial .caller-stakes>label,.test-tutorial .caller-stake-range,.test-tutorial .caller-stakes>small{display:none!important}
+.test-tutorial [data-test-focus=spades] .caller-hand-preview img[alt$='spades' i]{outline:2px solid #e9ce81;outline-offset:2px}
+.test-tutorial [data-test-focus=pile] .pile,.test-tutorial [data-test-focus=led] .plays .played:first-child{outline:2px solid #e2c37b;outline-offset:4px;border-radius:8px}
+.test-tutorial [data-test-focus=partner] .seat-2 .seat-portrait{outline:2px solid #e2c37b;outline-offset:4px;border-radius:50%}
+@keyframes test-rank-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(max-width:600px) and (orientation:portrait){
+ .app.screen-table .table-page.test-tutorial{grid-template-rows:42px 46px 4px minmax(180px,1fr) 14px var(--fan-hand-height) 120px;min-height:0}
+ .app:has(.test-tutorial) .test-lesson-dock{bottom:max(52px,calc(env(safe-area-inset-bottom) + 44px));padding:6px;gap:6px}
+ .app:has(.test-tutorial) .test-skip{bottom:max(4px,env(safe-area-inset-bottom));left:14px;background:transparent;box-shadow:none;border:0}
+ .app:has(.test-tutorial) .test-lesson-progress{top:96px;font-size:10px;max-width:70%;padding:3px 8px}
+ .test-tutorial .table-scene{--felt-top:110px;--felt-height:calc(100% - 146px)}
+ .test-tutorial .table-scene>.table{top:110px!important;height:calc(100% - 146px)!important}
+ .test-tutorial .dealer-speech{top:24px!important}.test-tutorial .dealer-speech strong{max-height:62px!important;font-size:12px!important;line-height:1.4!important;overflow-y:auto}
+ .app:has(.test-tutorial) .test-hint-control{bottom:6px}
+ .app:has(.test-tutorial) .test-lesson-dock:has(.test-rank-strip){top:37%;bottom:auto}
+}
+@media(max-height:550px) and (orientation:landscape){
+ .app:has(.test-tutorial) .test-lesson-dock{left:auto;right:max(10px,env(safe-area-inset-right));transform:none;width:180px;bottom:55px;flex-wrap:wrap}
+ .app:has(.test-tutorial) .test-lesson-dock button{flex:1 1 45%;font-size:12px}
+ .app:has(.test-tutorial) .test-lesson-progress{top:5px;font-size:10px;max-width:35%}
+ .app:has(.test-tutorial) .test-lesson-dock:has(.test-rank-strip){top:28%;bottom:auto;left:30%;right:auto;width:40%}
+ .app:has(.test-tutorial) .test-skip{left:auto;right:10px;bottom:4px}
+}
+@media(prefers-reduced-motion:reduce){.test-rank-strip{animation:none}}
+.app.reduced .test-rank-strip{animation:none}
+.test-rank-strip~button img{width:34px;height:48px;object-fit:contain;margin-right:8px;vertical-align:middle}.test-streak i{display:inline-block;width:8px;height:8px;border:1px solid #ccb57b;border-radius:50%;margin-right:5px}.test-streak i.active{background:#e9cf83}
+.test-tutorial [data-tutorial-seats=opponents] .center{outline:1px dashed #d6be7b;border-radius:12px;outline-offset:6px}
+.test-tutorial:has([data-test-focus=discard]) .hand [data-card=C11]{outline:2px solid #d6be7b}
+.test-tutorial [data-test-focus=discard] .plays .played:first-child{outline:2px solid #d6be7b}
