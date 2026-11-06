@@ -54,3 +54,11 @@
 }
 .guided-open-rung .tutorial-card .tap-pointer svg{width:100%;height:100%}
 .guided-open-rung .tutorial-card .tap-pointer path{fill:#ffe39a;stroke:#201508;stroke-width:3}
+/* Tutorial pauses use an accessible dock; the shared table geometry is unchanged. */
+.app.screen-table .tutorial-reading-controls{position:fixed;z-index:95;bottom:max(16px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(440px,calc(100% - 32px));display:flex;gap:12px;padding:12px;background:#092b22;border:1px solid #bfa15f;border-radius:14px;box-shadow:0 6px 28px #0009}
+.app.screen-table .tutorial-reading-controls button{flex:1;min-width:0;min-height:48px;padding:10px 12px;font-size:14px;white-space:normal}
+.app.screen-table .tutorial-check{flex-wrap:wrap}.tutorial-check p{flex:0 0 100%;margin:0 0 6px;color:#ffedbe;font-size:14px;line-height:1.45}
+.table-scene[data-tutorial-seats=all] .seat-portrait,.table-scene[data-tutorial-seats=team] .seat-2 .seat-portrait,.table-scene[data-tutorial-seats=team] .self-seat .seat-portrait,.table-scene[data-tutorial-seats=opponents] .seat-1 .seat-portrait,.table-scene[data-tutorial-seats=opponents] .seat-3 .seat-portrait{outline:3px solid #ffe295;outline-offset:5px;filter:drop-shadow(0 0 8px #e9bd56);border-radius:50%}
+.table-scene[data-tutorial-follow=true] .plays .played{outline:2px solid #ffe295;outline-offset:4px}
+.app.screen-table:has(>.tutorial-reading-controls) .actions{visibility:hidden;pointer-events:none}
+.app.screen-table .table-page:has([data-tutorial-seats]) .hand-hint{visibility:hidden}
