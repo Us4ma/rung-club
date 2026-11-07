@@ -4,8 +4,8 @@ import {invariants,type State,type View} from '../../packages/core/index.ts';
 import {firstDealCard} from '../../packages/core/first-deal.ts';
 import './test-tutorial.css';
 const SAVE='rung:test-tutorial:v1';
-export function saveTestTutorial(game:State){try{sessionStorage.setItem(SAVE,JSON.stringify(game));}catch{}}
-export function restoreTestTutorial():State|null{try{const s=JSON.parse(sessionStorage.getItem(SAVE)||'null');if(!s||s.mode!=='open'||s.caller!==0||!s.matchId)return null;invariants(s);return s;}catch{return null;}}
+export function saveTestTutorial(game:State,stake:number){try{sessionStorage.setItem(SAVE,JSON.stringify({...game,practiceStake:stake}));}catch{}}
+export function restoreTestTutorial():(State & {practiceStake?:number})|null{try{const s=JSON.parse(sessionStorage.getItem(SAVE)||'null');if(!s||s.mode!=='open'||s.caller!==0||!s.matchId)return null;invariants(s);return s;}catch{return null;}}
 export function clearTestTutorial(){sessionStorage.removeItem(SAVE);}
 const host=()=>document.querySelector('.app')||document.body;
 export function TestIntro({match,onDone,onMessage,onFocus}:{match:string;onDone:()=>void;onMessage:(message:string)=>void;onFocus:(focus:string)=>void}){
@@ -18,6 +18,7 @@ export function TestIntro({match,onDone,onMessage,onFocus}:{match:string;onDone:
 type Lesson={id:string;text:string;choices?:{label:string;correct:boolean;feedback?:string}[]};
 export function useTestTutorial(enabled:boolean,v:View|null,presenting:boolean,onExit:()=>void){
  const [done,setDone]=useState<string[]>([]),[feedback,setFeedback]=useState(''),[hint,setHint]=useState(false);
+ const [spadesHint,setSpadesHint]=useState('');
  const match=v?.matchId||'',h=v?.history.length??0,turn=v?.turn===0,trick=v?.trick.length??0;
  useEffect(()=>{setFeedback('');setHint(false);},[v?.revision]);
  useEffect(()=>{try{setDone(JSON.parse(sessionStorage.getItem('test-lessons:'+match)||'[]'));}catch{setDone([]);}setFeedback('');setHint(false);},[match,enabled]);
@@ -47,13 +48,13 @@ export function useTestTutorial(enabled:boolean,v:View|null,presenting:boolean,o
  }
  const lesson=lessons[0];
  const tips=['Lead 10♥. The first card sets the suit everyone follows.','Play J♣ as a legal discard. Hearts were led, so this Club will not win.','Play 2♠ to cut. Even the lowest Rung beats A♥ here.','Lead A♦. Controlling Senior helps you prepare to collect the opening pile.','Lead K♦. A winning non-Ace, non-Rung lead can complete your Double Saar.','Lead 9♠ to draw Rung out of opponents’ hands. Saving strong cards can also help.','Lead 10♠. You are removing more Rung while preserving your ace.','Lead J♠ and compare it with the other Rung cards.','Hamza led 5♣. You have no Clubs: cutting is optional. Use K♠ to stop his Bhaag.','Lead Q♦. Another qualifying win can collect this fresh pile.','Lead 10♦. You choose Diamonds and save your last Rung, A♠.','Lead J♦. Keep your useful A♠ for the final Saar.','The final Saar’s winner collects whatever remains. Lead your last Rung, A♠.'];
- const text=feedback||lesson?.text||(v?.phase==='calling'?'Two strong Spades make a good Rung choice. Select Spades. We use 5 practice coins automatically.':v?.phase==='finished'?'Lesson complete. These practice coins do not change your wallet.':turn?tips[h]:'Watch the led suit and compare the cards played.');
+ const text=feedback||lesson?.text||(v?.phase==='calling'?'Two strong Spades make a good Rung choice. Choose Spades, then set your practice stake.':v?.phase==='finished'?'Lesson complete. These practice coins do not change your wallet.':turn?tips[h]:'Watch the led suit and compare the cards played.');
  const paused=!!lesson;
  function alternative(){const id=firstDealCard(v!),name=({S:'spades',H:'hearts',D:'diamonds',C:'clubs'}[id[0] as 'S'])||'';setFeedback('That card is legal. This example uses '+id.slice(1)+' of '+name+' to demonstrate the lesson. Use Hint to find it.');}
  const finished=enabled&&v?.phase==='finished'&&!lesson;
- const focus=lesson?.id==='middle'||lesson?.id==='double'||lesson?.id.startsWith('collect:')?'pile':lesson?.id==='uzair'?'partner':h===1&&turn?'discard':lesson?.id==='five'||lesson?.id==='strong-spades'?'spades':h===0&&trick>0?'led':'';
+ const focus=lesson?.id==='middle'||lesson?.id==='double'||lesson?.id.startsWith('collect:')?'pile':lesson?.id==='uzair'?'partner':h===1&&turn?'discard':v?.phase==='calling'&&spadesHint===match?'spades':h===0&&trick>0?'led':'';
  const hintText:Record<string,string>={
- five:'A suit is a card family: Spades, Hearts, Diamonds or Clubs. Look for strong cards of the same suit.',
+ five:'A suit is a card family: Spades, Hearts, Diamonds or Clubs. Look at your A♠ and K♠: two strong cards in one suit.',
  'strong-spades':'Look at A♠ and K♠. Both belong to Spades, so that suit gives you two high cards.',
  follow:'Look at the first card in the middle: it is a Heart. Players with Hearts must match that suit.',
  void:'With no Hearts, a non-Rung discard is legal too. You do not have to cut.',
@@ -68,7 +69,7 @@ export function useTestTutorial(enabled:boolean,v:View|null,presenting:boolean,o
  ordinary:'In an ordinary deal, collecting seven Sars is enough to finish ahead of six.',
  help:'You can leave now and return through Settings → Help & Matchmaking.',
  };
- function showHint(){setHint(true);setFeedback(lesson?(hintText[lesson.id]||'Look at the collected score and the pile: these Sars now belong to your team.'):tips[h]);}
+ function showHint(){if(v?.phase==='calling')setSpadesHint(match);setHint(true);setFeedback(lesson?(hintText[lesson.id]||'Look at the collected score and the pile: these Sars now belong to your team.'):tips[h]);}
  const ui=enabled&&!presenting?<>
  <div className="test-lesson-progress" role="status">Test lesson · {v?.phase==='calling'?'Choose Rung':v?.phase==='finished'?'Complete':'Saar '+(h+1)+' / 13'}{(h===4||h===5)&&<span className="test-streak"><i className={h===4||!done.includes('collect:5')?'active':''}/><i className={h===5&&!done.includes('collect:5')?'active':''}/>{h===4?'First consecutive win':done.includes('collect:5')?'5 collected · streak reset':'Double Saar · 5 collected'}</span>}</div>
  {lesson?<div className="test-lesson-dock" role="group" aria-label="Test tutorial checkpoint">{lesson.choices?lesson.choices.map(c=><button key={c.label} onClick={()=>c.correct?complete(lesson.id):setFeedback(c.feedback||'Try again.')}>{c.label}</button>):<button className="gold" onClick={()=>complete(lesson.id)}>Continue</button>}<button aria-pressed={hint} onClick={showHint}>{hint?'Hint shown above':'Hint'}</button></div>:finished?<div className="test-lesson-dock"><button className="gold" onClick={onExit}>Back to lobby</button></div>:null}

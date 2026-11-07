@@ -7,7 +7,7 @@
 .test-lesson-progress span{display:block;color:#8fe3ae}.app:has(.test-tutorial) .test-skip{position:fixed;z-index:97;bottom:max(10px,env(safe-area-inset-bottom));left:16px;font-size:12px;min-height:44px;padding:8px 12px}
 .app:has(.test-tutorial) .test-hint-control{position:fixed;bottom:12px;right:16px;z-index:93}.test-hint-control button{min-height:44px;padding:8px 16px}
 .app:has(.test-tutorial):has(.test-lesson-dock) .test-tutorial .actions{visibility:hidden;pointer-events:none}
-.test-tutorial .caller-stakes>label,.test-tutorial .caller-stake-range,.test-tutorial .caller-stakes>small{display:none!important}
+
 .test-tutorial [data-test-focus=spades] .caller-hand-preview img[alt$='spades' i]{outline:2px solid #e9ce81;outline-offset:2px}
 .test-tutorial [data-test-focus=pile] .pile,.test-tutorial [data-test-focus=led] .plays .played:first-child{outline:2px solid #e2c37b;outline-offset:4px;border-radius:8px}
 .test-tutorial [data-test-focus=partner] .seat-2 .seat-portrait{outline:2px solid #e2c37b;outline-offset:4px;border-radius:50%}
@@ -53,3 +53,11 @@
  .app.screen-table .table-page.test-tutorial{grid-template-rows:42px 46px 4px minmax(180px,1fr) 14px var(--fan-hand-height) 100px!important}
  .app.screen-table:has(.test-tutorial) .test-lesson-dock:not(:has(.test-rank-strip)){bottom:max(14px,env(safe-area-inset-bottom))}
 }
+
+.test-tutorial .practice-stake-note p{display:block!important;margin:5px 0;font-size:12px;line-height:1.35;text-align:left;color:#e7d7ae}
+.test-tutorial .card-button:has(.test-card-cue){position:relative}
+.test-card-cue{position:absolute;inset:2px;pointer-events:none;border:2px solid #ead19a;border-radius:8px;box-shadow:0 0 10px #ead19a66}
+.app.screen-table .test-tutorial:has([data-test-focus=spades]) .hand .card-button:not([data-card=S14]):not([data-card=S13]){opacity:.42}
+.app.screen-table .test-tutorial:has([data-test-focus=spades]) .hand .card-button:is([data-card=S14],[data-card=S13]){opacity:1!important;filter:none!important;transform:translateY(-9px)}
+.test-tutorial [data-test-focus=spades] .caller-hand-preview img:not([alt$='spades' i]){opacity:.45}
+.test-tutorial [data-test-focus=spades] .caller-hand-preview img[alt$='spades' i]{opacity:1!important;filter:none!important}
