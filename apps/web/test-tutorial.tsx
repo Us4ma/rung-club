@@ -52,9 +52,26 @@ export function useTestTutorial(enabled:boolean,v:View|null,presenting:boolean,o
  function alternative(){const id=firstDealCard(v!),name=({S:'spades',H:'hearts',D:'diamonds',C:'clubs'}[id[0] as 'S'])||'';setFeedback('That card is legal. This example uses '+id.slice(1)+' of '+name+' to demonstrate the lesson. Use Hint to find it.');}
  const finished=enabled&&v?.phase==='finished'&&!lesson;
  const focus=lesson?.id==='middle'||lesson?.id==='double'||lesson?.id.startsWith('collect:')?'pile':lesson?.id==='uzair'?'partner':h===1&&turn?'discard':lesson?.id==='five'||lesson?.id==='strong-spades'?'spades':h===0&&trick>0?'led':'';
+ const hintText:Record<string,string>={
+ five:'A suit is a card family: Spades, Hearts, Diamonds or Clubs. Look for strong cards of the same suit.',
+ 'strong-spades':'Look at A♠ and K♠. Both belong to Spades, so that suit gives you two high cards.',
+ follow:'Look at the first card in the middle: it is a Heart. Players with Hearts must match that suit.',
+ void:'With no Hearts, a non-Rung discard is legal too. You do not have to cut.',
+ discard:'Compare J♣ with the Hearts in the middle. It is legal, but a Club cannot beat a Heart here.',
+ cut:'Spades are the chosen trump suit. Only the spade in these two choices can beat that Heart.',
+ control:'Senior chooses the first card and therefore the suit others must follow. The Rung suit does not change.',
+ middle:'The pile holds the four completed Sars. It has not been awarded to either team yet.',
+ double:'Your own win in Saar 4 must be followed by another win by you. Your partner winning does not extend your streak.',
+ eligible:'Use Aces and Rung to gain control. To complete Bhaag, lead a different suit with a card below an Ace.',
+ higher:'Compare Q♠ and J♠. Both are Spades, so the Queen is higher.',
+ kot:'Your team collected every Sar in this example. That is Kot.',
+ ordinary:'In an ordinary deal, collecting seven Sars is enough to finish ahead of six.',
+ help:'You can leave now and return through Settings → Help & Matchmaking.',
+ };
+ function showHint(){setHint(true);setFeedback(lesson?(hintText[lesson.id]||'Look at the collected score and the pile: these Sars now belong to your team.'):tips[h]);}
  const ui=enabled&&!presenting?<>
  <div className="test-lesson-progress" role="status">Test lesson · {v?.phase==='calling'?'Choose Rung':v?.phase==='finished'?'Complete':'Saar '+(h+1)+' / 13'}{(h===4||h===5)&&<span className="test-streak"><i className={h===4||!done.includes('collect:5')?'active':''}/><i className={h===5&&!done.includes('collect:5')?'active':''}/>{h===4?'First consecutive win':done.includes('collect:5')?'5 collected · streak reset':'Double Saar · 5 collected'}</span>}</div>
- {lesson?<div className="test-lesson-dock" role="group" aria-label="Test tutorial checkpoint">{lesson.choices?lesson.choices.map(c=><button key={c.label} onClick={()=>c.correct?complete(lesson.id):setFeedback(c.feedback||'Try again.')}>{c.label}</button>):<button className="gold" onClick={()=>complete(lesson.id)}>Continue</button>}<button onClick={()=>setFeedback(lesson.choices?'Think about the led suit, the chosen Rung, and who leads next.':lesson.text)}>Hint</button></div>:finished?<div className="test-lesson-dock"><button className="gold" onClick={onExit}>Back to lobby</button></div>:turn&&v?.phase==='playing'?<div className="test-hint-control"><button onClick={()=>{setHint(true);setFeedback(tips[h]);}}>Hint</button></div>:null}
+ {lesson?<div className="test-lesson-dock" role="group" aria-label="Test tutorial checkpoint">{lesson.choices?lesson.choices.map(c=><button key={c.label} onClick={()=>c.correct?complete(lesson.id):setFeedback(c.feedback||'Try again.')}>{c.label}</button>):<button className="gold" onClick={()=>complete(lesson.id)}>Continue</button>}<button aria-pressed={hint} onClick={showHint}>{hint?'Hint shown above':'Hint'}</button></div>:finished?<div className="test-lesson-dock"><button className="gold" onClick={onExit}>Back to lobby</button></div>:null}
  </>:null;
- return {message:text,paused,ui,focus,reveal:hint||h===0||done.includes('cut')&&h===2,alternative};
+ return {message:text,paused,ui,focus,showHint,reveal:hint||h===0||done.includes('cut')&&h===2,alternative};
 }
