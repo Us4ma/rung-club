@@ -28,7 +28,7 @@ The default preset is `double-sar-v3-continuous`:
 
 - Public highest-rank contest only for a table’s first deal; tied highest seats redraw. Then reshuffle the full 52 and deal 5+4+4. Subsequent caller/D rights come from the previous result.
 - Follow the original suit. Open Rung cutting is optional by default; superior-trump and Band reveal obligations are separate named policies.
-- First potential pile collection at Sar 5. Same individual must win consecutively and complete with an eligible non-Ace, non-Rung Senior lead. Qualification is automatic. Ace/Rung can win and maintain Senior without completing collection. Sar 13 always allocates the remaining pile.
+- First potential pile collection at Sar 5. Same individual must win consecutively and complete with an eligible Senior lead. Qualification is automatic. Aces and the highest remaining Rung can win and maintain Senior without completing collection. Sar 13 always allocates the remaining pile.
 - All 13 Sars settle: normal 7–12 win +0 points, calling-team all13 Kot +13, opposing-team all13 Goon Kot +26. Match points, Sars and deals won remain separate.
 - Shared seat helpers keep D to the caller’s right for every result. After the result beat, the next deal starts automatically without resetting identities or table totals.
 - Intentional exits replace the same seat with a labelled bot. The human partner chooses Continue With Bot/Leave after completion. Disconnects reserve the seat for 60 seconds. Interrupted/replacement-bot deals earn no Kot/Goon Kot points or completion rewards.

@@ -1,3 +1,4 @@
+import {eligibleBhaagCard} from '../core/index.ts';
 import {partnerOf} from '../core/seats.ts';
 import {DEFAULT,type State} from '../core/index.ts';
 import {Session} from './index.ts';
@@ -29,4 +30,4 @@ export function advanceTable(session:Session,m:Membership,now:number){
 }
 export function roomDeadline(m:Membership,clock:Clock|undefined,updated:number){const times=[clock?decisionAt(clock):undefined,...m.disconnectedAt.filter((n):n is number=>n!==null).map(n=>n+RECONNECT_GRACE_MS),...(!m.pendingPartners.length&&m.transitionAt?[m.transitionAt]:[]),updated+86400000].filter((n):n is number=>n!==undefined);return Math.min(...times);}
 /** Restore older saved tables without rerunning the opening contest or changing seats. */
-export function restoreRules(s:State){s.policy={...s.policy,version:DEFAULT.version,collectionLead:'eligible-senior'};if(s.mode==='open'&&s.trick[0]){const lead=s.trick[0];lead.bhaag=s.senior===lead.seat&&lead.card.rank!==14&&lead.card.suit!==s.trump;}return s;}
+export function restoreRules(s:State){s.policy={...s.policy,version:DEFAULT.version,collectionLead:'eligible-senior'};if(s.trick[0]&&(s.mode==='open'||s.trick[0].trump)){const lead=s.trick[0];lead.bhaag=s.senior===lead.seat&&eligibleBhaagCard(s,lead.card);}return s;}

@@ -3,7 +3,7 @@ export type Suit='S'|'H'|'D'|'C';
 export type Card={id:string,suit:Suit,rank:number};
 export type Play={seat:number,card:Card,effective:number,trump:boolean,bhaag:boolean};
 export type Policy={version:string,opening:number,superior:'off'|'opponent-only'|'always',voidTrump?:'optional'|'compulsory',aceChain:boolean,maxRedeals:number,collectionLead?:'eligible-senior'|'any'};
-export const DEFAULT:Policy={version:'double-sar-v3-continuous',opening:5,voidTrump:'optional',superior:'off',aceChain:true,maxRedeals:64,collectionLead:'eligible-senior'};
+export const DEFAULT:Policy={version:'double-sar-v4-senior-rung',opening:5,voidTrump:'optional',superior:'off',aceChain:true,maxRedeals:64,collectionLead:'eligible-senior'};
 export type DealSummary={id:string;number:number;caller:number;dealer:number;winnerTeam:number;sars:number[];outcome:DealOutcome;points:number;eligible:boolean;winners:number[]};
 export type TableProgress={id:string;dealNumber:number;points:number[];dealsWon:number[];rounds:DealSummary[]};
 export type Collection={sar:number;winner:number;team:number;recipient:number;count:number};
@@ -39,7 +39,20 @@ function superior(cards:Card[],best:Play|undefined,s:State,seat:number){
 }
 export function canReveal(s:State,seat:number){return s.mode==='band'&&!s.revealed&&s.phase==='playing'&&s.turn===seat&&!!s.trick.length&&!s.hands[seat].some(c=>c.suit===s.trick[0].card.suit);}
 export function reveal(s:State,seat:number):State{if(!canReveal(s,seat))throw Error('Reveal requires inability to follow suit on your turn');const n=structuredClone(s);n.revealed=true;if(n.indicator){n.hands[n.caller].push(n.indicator);n.indicator=null;}n.forceTrump=seat;n.revision++;return n;}
-export function classifyBhaag(s:State,seat:number,c:Card,_legacyIntent?:boolean){return s.senior===seat&&s.trick.length===0&&c.rank!==14&&s.revealed&&c.suit!==s.trump;}
+export function eligibleBhaagCard(s:Pick<State,'revealed'|'trump'|'history'>,card:Card,alsoPlayed:Card[]=[]){
+ if(!s.revealed||card.rank===14)return false;
+ if(card.suit!==s.trump)return true;
+ // Each physical card appears at most once, so count higher trumps already played.
+ let remaining=14-card.rank;
+ for(const trick of s.history)for(const play of trick){
+  if(play.card.suit===card.suit&&play.card.rank>card.rank)remaining--;
+ }
+ for(const played of alsoPlayed){
+  if(played.suit===card.suit&&played.rank>card.rank)remaining--;
+ }
+ return remaining>0;
+}
+export function classifyBhaag(s:State,seat:number,c:Card,_legacyIntent?:boolean){return s.senior===seat&&s.trick.length===0&&eligibleBhaagCard(s,c);}
 export function play(s:State,seat:number,id:string,intent=false):State{const card=legal(s,seat).find(c=>c.id===id);if(!card)throw Error('Illegal card or turn');const n=structuredClone(s);n.hands[seat]=n.hands[seat].filter(c=>c.id!==id);const downgraded=n.policy.aceChain&&n.trick.length===0&&n.senior===seat&&n.lastAce&&card.rank===14;n.trick.push({seat,card,effective:downgraded?2:card.rank,trump:n.revealed&&card.suit===n.trump,bhaag:classifyBhaag(s,seat,card,intent)});n.forceTrump=null;n.revision++;if(n.trick.length<4){n.turn=nextToPlay(seat);return n;}
 const best=winning(n.trick)!;n.history.push(n.trick);n.winners.push(best.seat);n.pile++;n.streak=n.streakSeat===best.seat?n.streak+1:1;n.streakSeat=best.seat;const sar=n.history.length;const lead=n.trick[0];const qualifies=n.policy.collectionLead==='any'||(lead.bhaag&&lead.seat===best.seat);const collects=sar===13||(sar>=n.policy.opening&&n.streak>=2&&qualifies);if(collects){const team=teamOf(best.seat);n.collections??=[];n.collections.push({sar,winner:best.seat,team,recipient:team===teamOf(n.caller)?n.caller:n.dealer??rightOf(n.caller),count:n.pile});n.scores[team]+=n.pile;n.pile=0;n.streak=0;n.streakSeat=null;}n.senior=best.seat;n.lastAce=best.card.rank===14;n.turn=best.seat;n.trick=[];if(sar===12&&n.mode==='band'&&!n.revealed){n.revealed=true;if(n.indicator){n.hands[n.caller].push(n.indicator);n.indicator=null;}}if(sar===13){n.phase='finished';const team=n.scores[0]>n.scores[1]?0:1;n.result=n.scores[team]===13?(team===n.caller%2?'Kot':'Goon Kot'):'Team '+(team+1)+' wins';settleDeal(n);}return n;}
 export type View=Omit<State,'hands'|'stock'|'indicator'|'trump'|'invalidDeal'> & {hand:Card[],invalidDeal?:{hand:Card[]},counts:number[],trump:Suit|null,indicator:Card|null,legal:string[],canReveal:boolean};

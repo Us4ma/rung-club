@@ -1,4 +1,4 @@
-import {deck,winning,play,view,seeded,legal as legalCards,canReveal,reveal,type State,type View,type Card,type Play,type Suit} from '../core/index.ts';
+import {eligibleBhaagCard,deck,winning,play,view,seeded,legal as legalCards,canReveal,reveal,type State,type View,type Card,type Play,type Suit} from '../core/index.ts';
 export type Skill='beginner'|'intermediate'|'advanced';
 export type PlayingStyle='balanced'|'conservative'|'attacking'|'partnership';
 const clamp=(n:number)=>Math.max(0,Math.min(1,n));
@@ -63,21 +63,34 @@ function knowledge(v:View,seat:number){
  };
  return {reliability,unseen,voids,chanceToOvertake};
 }
-function asPlay(v:View,seat:number,c:Card,leading:boolean,lastAce=v.lastAce):Play{
+function asPlay(v:View,seat:number,c:Card,leading:boolean,lastAce=v.lastAce,alsoPlayed:Card[]=[]):Play{
  return {seat,card:c,effective:leading&&v.policy.aceChain&&lastAce&&v.senior===seat&&c.rank===14?2:c.rank,
   trump:v.revealed&&c.suit===v.trump,
-  bhaag:leading&&v.senior===seat&&v.revealed&&c.rank!==14&&c.suit!==v.trump};
+  bhaag:leading&&v.senior===seat&&eligibleBhaagCard(v,c,alsoPlayed)};
 }
 function canCollect(v:View,winner:number,lead:Play){
  return v.history.length===12||(v.history.length+1>=v.policy.opening&&v.streakSeat===winner&&v.streak>=1&&
   (v.policy.collectionLead==='any'||lead.bhaag&&lead.seat===winner));
 }
 export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math.random,style:PlayingStyle='balanced'):string{
- const cards=v.hand.filter(c=>v.legal.includes(c.id));
+ let cards=v.hand.filter(c=>v.legal.includes(c.id));
  if(!cards.length)throw Error('No legal move');
  if(skill==='beginner')return cards[Math.min(cards.length-1,Math.floor(random()*cards.length))].id;
  if(cards.length===1)return cards[0].id;
- const info=knowledge(v,seat),best=winning(v.trick),leading=!best;
+ const best=winning(v.trick),leading=!best;
+ if(best&&v.history.length>=10&&v.history.length<12){
+  const lead=v.trick[0];
+  const canDefendPile=!partner(best.seat,seat)&&canCollect(v,best.seat,lead);
+  const canSecurePile=cards.some(c=>winning([...v.trick,asPlay(v,seat,c,false)])!.seat===seat&&canCollect(v,seat,lead));
+  if(!canDefendPile&&!canSecurePile){
+   const loneTrump=v.revealed&&v.hand.filter(c=>c.suit===v.trump).length===1;
+   const cheaper=cards.filter(c=>!(loneTrump&&c.suit===v.trump)&&
+    !(v.history.length===10&&c.rank===14&&c.suit===lead.card.suit&&best.card.rank===13&&!partner(best.seat,seat)));
+   if(cheaper.length)cards=cheaper;
+  }
+ }
+ if(cards.length===1)return cards[0].id;
+ const info=knowledge(v,seat);
  const opponents=[0,1,2,3].filter(s=>!partner(s,seat));
  const remainingSeats=Array.from({length:3-v.trick.length},(_,i)=>(seat-i-1+8)%4);
  const opponentsAfter=remainingSeats.filter(s=>!partner(s,seat));
@@ -120,9 +133,8 @@ export function choose(v:View,seat:number,skill:Skill='intermediate',random=Math
   let strongest=0;
   for(const c of v.hand){
    if(c.id===played.id)continue;
-   const p=asPlay(next,seat,c,true);
+   const p=asPlay(next,seat,c,true,next.lastAce,[...v.trick.map(p=>p.card),played]);
    const chance=info.reliability(p,c.suit,opponents);
-   // Under eligible-senior rules only a non-Ace, non-trump lead can collect.
    const eligible=v.policy.collectionLead==='any'||p.bhaag;
    strongest=Math.max(strongest,eligible?chance:0);
   }

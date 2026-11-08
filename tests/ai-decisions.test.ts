@@ -32,3 +32,20 @@ it('overcuts with the cheapest winning Rung when nobody can respond',()=>{
  const v=position(['H9','H14','D4'],[played(3,'C10'),played(2,'C3'),cut]);
  expect(choose(v,0,'advanced')).toBe('H9');
 });
+
+it('keeps the only Rung for the end when cutting cannot protect a collection',()=>{
+ const v=position(['H2','D3','S4'],[played(1,'C13')]);
+ v.history=Array.from({length:10},()=>[]);
+ expect(choose(v,0,'advanced')).not.toBe('H2');
+});
+it('saves the Ace on Saar 11 after a partner draws out the King',()=>{
+ const v=position(['C14','C2','S4'],[played(2,'C11'),played(1,'C13')]);
+ v.history=Array.from({length:10},()=>[]);
+ expect(choose(v,0,'advanced')).toBe('C2');
+});
+it('spends the Ace when it can deny an immediate opposing claim',()=>{
+ const v=position(['C14','C2','S4'],[{...played(1,'C13'),bhaag:true}]);
+ v.history=Array.from({length:10},()=>[]);
+ v.streakSeat=1;v.streak=1;v.pile=6;
+ expect(choose(v,0,'intermediate')).toBe('C14');
+});
