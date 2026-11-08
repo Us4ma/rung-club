@@ -35,9 +35,13 @@ export function useTestTutorial(enabled:boolean,v:View|null,presenting:boolean,o
  add('help','Keep practising! You can replay lessons in Settings → Help & Matchmaking.');
  }else{
  if(h===0&&trick===0)add('rung-power','Spades are Rung! Even 2♠ can beat an ace of another suit when you cannot follow suit.');
+ if(h===0&&turn&&trick===0){
+ add('opening-read','The first Saar gives you clues. Watch who spends a high card and who plays low.');
+ add('opening-heart','The 10♥ is your only Heart. Play it now and save your stronger Diamonds and Spades for later.');
+ }
  if(h===0&&trick===1)add('follow','Hearts started this Saar. If you have a Heart, what must you play?',[{label:'Follow Hearts',correct:true},{label:'Any suit',correct:false,feedback:'When you have the led suit, you must follow it. Other suits are allowed when you have none.'}]);
  if(h===1&&trick===0)add('uzair','Uzair’s Q♥ was highest. He won this Saar and is Senior: the winner who leads next.');
- if(h===1&&turn){add('void','You have no Hearts left. Now you may play another suit. Must you use Rung?',[{label:'Yes, always',correct:false,feedback:'No. Cutting with Rung is optional when you cannot follow suit.'},{label:'No, I may discard',correct:true}]);add('discard','J♣ is a legal discard (badd rungi). It cannot beat Hearts here, but it saves your Rung.');}
+ if(h===1&&turn){add('void','You played your only Heart in Saar 1. Hearts were led again, so you can discard or cut with Rung. Must you cut?',[{label:'Yes, always',correct:false,feedback:'No. Cutting with Rung is optional when you cannot follow suit.'},{label:'No, I may discard',correct:true}]);add('discard','J♣ is a legal discard (badd rungi). It cannot beat Hearts here, but it saves your Rung.');}
  if(h===2&&turn)add('cut','Hamza led A♥ and you have no Hearts. A discard saves your Rung. To take the lead next Saar, which card can cut his ace?',[{label:'K♦',correct:false,feedback:"K♦ is a legal badd rungi. It saves your Spades, but Hamza’s A♥ stays ahead. Try cutting with Rung to take the lead."},{label:'2♠',correct:true}]);
  if(h===3&&trick===0){add('cut-result','Correct! Your 2♠ beat A♥ because Spades are Rung. You won and are Senior now.');add('control','Being Senior is powerful. You choose which suit starts next. Why does this help?',[{label:'I control the led suit',correct:true},{label:'My cards all become Rung',correct:false,feedback:'Only Spades are Rung. Being Senior lets you choose the suit everyone must follow.'}]);}
  if(h===4&&trick===0){add('middle','The first four Sars wait in the middle. From Saar 5, you can collect that pile.');add('double','You won Saar 4. Who must win Saar 5 to complete your consecutive-win streak?',[{label:'Me again',correct:true},{label:'Either teammate',correct:false,feedback:'The same player must win consecutively. One win by each teammate does not complete Double Saar.'}]);}
@@ -47,13 +51,15 @@ export function useTestTutorial(enabled:boolean,v:View|null,presenting:boolean,o
  }
  }
  const lesson=lessons[0];
- const tips=['Lead 10♥. The first card sets the suit everyone follows.','Play J♣ as a legal discard. Hearts were led, so this Club will not win.','Cut with 2♠. Your lowest Rung beats A♥ and saves your higher Spades for later.','Lead A♦. Controlling Senior helps you prepare to collect the opening pile.','Lead K♦. A winning non-Ace, non-Rung lead can complete your Double Saar.','Lead 9♠ to draw Rung out of opponents’ hands. Saving strong cards can also help.','Lead 10♠. You are removing more Rung while preserving your ace.','Lead J♠ and compare it with the other Rung cards.','Hamza led 5♣. You have no Clubs: cutting is optional. Use K♠ to stop his Bhaag.','Lead Q♦. Another qualifying win can collect this fresh pile.','Lead 10♦. You choose Diamonds and save your last Rung, A♠.','Lead J♦. Keep your useful A♠ for the final Saar.','The final Saar’s winner collects whatever remains. Lead your last Rung, A♠.'];
+ const tips=['Lead 10♥. Anyone who has a Heart must follow suit.','Play J♣ as a legal discard. Hearts were led, so this Club will not win.','Cut with 2♠. Your lowest Rung beats A♥ and saves your higher Spades for later.','Lead A♦. Controlling Senior helps you prepare to collect the opening pile.','Lead K♦. A winning non-Ace, non-Rung lead can complete your Double Saar.','Lead 9♠ to draw Rung out of opponents’ hands. Saving strong cards can also help.','Lead 10♠. You are removing more Rung while preserving your ace.','Lead J♠ and compare it with the other Rung cards.','Hamza led 5♣. You have no Clubs: cutting is optional. Use K♠ to stop his Bhaag.','Lead Q♦. Another qualifying win can collect this fresh pile.','Lead 10♦. You choose Diamonds and save your last Rung, A♠.','Lead J♦. Keep your useful A♠ for the final Saar.','The final Saar’s winner collects whatever remains. Lead your last Rung, A♠.'];
  const text=feedback||lesson?.text||(v?.phase==='calling'?'Two strong Spades make a good Rung choice. Choose Spades, then set your practice stake.':v?.phase==='finished'?'Lesson complete. These practice coins do not change your wallet.':turn?tips[h]:'Watch the led suit and compare the cards played.');
  const paused=!!lesson;
  function alternative(){const id=firstDealCard(v!),name=({S:'spades',H:'hearts',D:'diamonds',C:'clubs'}[id[0] as 'S'])||'';setFeedback('That card is legal. This example uses '+id.slice(1)+' of '+name+' to demonstrate the lesson. Use Hint to find it.');}
  const finished=enabled&&v?.phase==='finished'&&!lesson;
  const focus=lesson?.id==='middle'||lesson?.id==='double'||lesson?.id.startsWith('collect:')?'pile':lesson?.id==='uzair'?'partner':h===1&&turn?'discard':v?.phase==='calling'&&spadesHint===match?'spades':v?.phase==='calling'&&(lesson?.id==='five'||lesson?.id==='strong-spades')?'opening-hand':h===0&&trick>0?'led':'';
  const hintText:Record<string,string>={
+ 'opening-read':'Notice which high Hearts come out. Those cards cannot win a later Saar.',
+ 'opening-heart':'Look for 10♥, your only Heart. Your Diamonds and Spades can stay in your hand for later.',
  five:'A suit is a card family: Spades, Hearts, Diamonds or Clubs. Look at your A♠ and K♠: two strong cards in one suit.',
  'strong-spades':'Look at A♠ and K♠. Both belong to Spades, so that suit gives you two high cards.',
  follow:'Look at the first card in the middle: it is a Heart. Players with Hearts must match that suit.',
@@ -71,8 +77,8 @@ export function useTestTutorial(enabled:boolean,v:View|null,presenting:boolean,o
  };
  function showHint(){if(v?.phase==='calling')setSpadesHint(match);setHint(true);setFeedback(lesson?(hintText[lesson.id]||'Look at the collected score and the pile: these Sars now belong to your team.'):tips[h]);}
  const ui=enabled&&!presenting?<>
- <div className="test-lesson-progress" role="status">Test lesson · {v?.phase==='calling'?'Choose Rung':v?.phase==='finished'?'Complete':'Saar '+(h+1)+' / 13'}{(h===4||h===5)&&<span className="test-streak"><i className={h===4||!done.includes('collect:5')?'active':''}/><i className={h===5&&!done.includes('collect:5')?'active':''}/>{h===4?'First consecutive win':done.includes('collect:5')?'5 collected · streak reset':'Double Saar · 5 collected'}</span>}</div>
+ <div className="test-lesson-progress" role="status">{v?.phase==='calling'?'Choose Rung':v?.phase==='finished'?'Complete':'Saar '+(h+1)+' / 13'}{(h===4||h===5)&&<span className="test-streak"><i className={h===4||!done.includes('collect:5')?'active':''}/><i className={h===5&&!done.includes('collect:5')?'active':''}/>{h===4?'First consecutive win':done.includes('collect:5')?'5 collected · streak reset':'Double Saar · 5 collected'}</span>}</div>
  {lesson?<div className="test-lesson-dock" role="group" aria-label="Test tutorial checkpoint">{lesson.choices?lesson.choices.map(c=><button key={c.label} onClick={()=>c.correct?complete(lesson.id):setFeedback(c.feedback||'Try again.')}>{c.label}</button>):<button className="gold" onClick={()=>complete(lesson.id)}>Continue</button>}<button aria-pressed={hint} onClick={showHint}>{hint?'Hint shown above':'Hint'}</button></div>:finished?<div className="test-lesson-dock"><button className="gold" onClick={onExit}>Back to lobby</button></div>:null}
  </>:null;
- return {message:text,paused,ui,focus,showHint,reveal:hint||h===0||done.includes('cut')&&h===2,alternative};
+ return {message:text,paused,ui,focus,showHint,reveal:!paused&&(hint||h===0)||done.includes('cut')&&h===2,alternative};
 }
