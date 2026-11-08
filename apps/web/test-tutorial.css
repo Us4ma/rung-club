@@ -70,3 +70,14 @@
  outline:none;
  filter:drop-shadow(0 0 5px #e9bd56);
 }
+
+/* The stake selector has its own preview, separate from the hand below it. */
+.app .guided-open-rung.test-tutorial .caller-hand-preview img {
+  opacity: 1;
+  filter: none;
+}
+.test-tutorial .caller-hand-preview img[alt$="of spades" i] {
+  outline: 2px solid #eac574;
+  outline-offset: 1px;
+  transform: translateY(-2px);
+}
