@@ -8,9 +8,9 @@
 .app:has(.test-tutorial) .test-hint-control{position:fixed;bottom:12px;right:16px;z-index:93}.test-hint-control button{min-height:44px;padding:8px 16px}
 .app:has(.test-tutorial):has(.test-lesson-dock) .test-tutorial .actions{visibility:hidden;pointer-events:none}
 
-.test-tutorial [data-test-focus=spades] .caller-hand-preview img[alt$='spades' i]{outline:2px solid #e9ce81;outline-offset:2px}
+.test-tutorial [data-test-focus=spades] .caller-hand-preview img[alt$='spades' i]{filter:drop-shadow(0 0 5px #e9bd56)}
 .test-tutorial [data-test-focus=pile] .pile,.test-tutorial [data-test-focus=led] .plays .played:first-child{outline:none;filter:drop-shadow(0 0 5px #e9bd56);border-radius:8px}
-.test-tutorial [data-test-focus=partner] .seat-2 .seat-portrait{outline:2px solid #e2c37b;outline-offset:4px;border-radius:50%}
+.test-tutorial [data-test-focus=partner] .seat-2 .seat-portrait{outline:none;filter:drop-shadow(0 0 5px #39c4bc);border-radius:50%}
 @keyframes test-rank-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media(max-width:600px) and (orientation:portrait){
  .app.screen-table .table-page.test-tutorial{grid-template-rows:42px 46px 4px minmax(180px,1fr) 14px var(--fan-hand-height) 120px;min-height:0}
@@ -31,8 +31,8 @@
 .app.reduced .test-rank-strip{animation:none}
 .test-rank-strip~button img{width:34px;height:48px;object-fit:contain;margin-right:8px;vertical-align:middle}.test-streak i{display:inline-block;width:8px;height:8px;border:1px solid #ccb57b;border-radius:50%;margin-right:5px}.test-streak i.active{background:#e9cf83}
 
-.test-tutorial:has([data-test-focus=discard]) .hand [data-card=C11]{outline:2px solid #d6be7b}
-.test-tutorial [data-test-focus=discard] .plays .played:first-child{outline:2px solid #d6be7b}
+.test-tutorial:has([data-test-focus=discard]) .hand [data-card=C11]{filter:drop-shadow(0 0 5px #e9bd56)}
+.test-tutorial [data-test-focus=discard] .plays .played:first-child{filter:drop-shadow(0 0 5px #e9bd56)}
 
 /* Match the emerald navigation buttons; no neon artwork or extra button outlines. */
 .app.screen-table:has(.test-tutorial) .test-lesson-dock{border:0!important;box-shadow:none!important;background:transparent!important;padding:0;gap:12px;width:min(440px,calc(100% - 32px))}
@@ -42,7 +42,7 @@
 .app.screen-table:has(.test-tutorial) .test-lesson-dock:has(.test-rank-strip){background:#0b2d23!important;padding:16px;border:1px solid #9f8b5b88!important;border-radius:14px;box-sizing:border-box}
 .app.screen-table:has(.test-tutorial) .test-lesson-dock button:hover,.app.screen-table:has(.test-tutorial) .test-hint-control button:hover{filter:brightness(1.1)}
 .app.screen-table .test-tutorial .ftue-target{outline:none!important;animation:none!important}
-.test-tutorial:has([data-test-focus=spades]) .hand [data-card=S14] .card-face,.test-tutorial:has([data-test-focus=spades]) .hand [data-card=S13] .card-face{box-shadow:0 0 0 2px #c5ae77}
+.test-tutorial:has([data-test-focus=spades]) .hand [data-card=S14] .card-face,.test-tutorial:has([data-test-focus=spades]) .hand [data-card=S13] .card-face{box-shadow:0 0 9px #e9bd56}
 
 /* Hint uses the existing action-row slot, so it cannot cover Play. */
 .app.screen-table .table-page.test-tutorial .sort-button{background:linear-gradient(150deg,#234b37,#0b2b22)!important;background-image:linear-gradient(150deg,#234b37,#0b2b22)!important;border:1px solid #b49a63!important;color:#f3e4b9!important;box-shadow:none!important;text-shadow:none!important}
@@ -74,7 +74,7 @@
 }
 
 .test-tutorial:has([data-test-focus=rung-power]) .hand [data-card=S2] .card-face {
-  box-shadow: 0 0 0 3px #e9ce81;
+  box-shadow: 0 0 9px #e9bd56;
 }
 
 .test-tutorial .table-scene:is([data-tutorial-seats=opponents],[data-tutorial-seats=all]) :is(.seat-1,.seat-3) .seat-portrait{
