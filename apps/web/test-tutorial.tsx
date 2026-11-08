@@ -43,7 +43,11 @@ export function useTestTutorial(enabled:boolean,v:View|null,presenting:boolean,o
  if(h===1&&trick===0)add('uzair','Uzair’s Q♥ was highest. He won this Saar and is Senior: the winner who leads next.');
  if(h===1&&trick===0)add('opening-pile','Winning a Saar gives you the next lead. This Saar goes into the shared pile. Neither team can collect it before Saar 5.');
  if(h===1&&turn){add('void','You played your only Heart in Saar 1. Hearts were led again, so you can discard or cut with Rung. Must you cut?',[{label:'Yes, always',correct:false,feedback:'No. Cutting with Rung is optional when you cannot follow suit.'},{label:'No, I may discard',correct:true}]);add('discard','J♣ is a legal discard (badd rungi). It cannot beat Hearts here, but it saves your Rung.');}
- if(h===2&&turn)add('cut','Hamza led A♥ and you have no Hearts. A discard saves your Rung. To take the lead next Saar, which card can cut his ace?',[{label:'K♦',correct:false,feedback:"K♦ is a legal badd rungi. It saves your Spades, but Hamza’s A♥ stays ahead. Try cutting with Rung to take the lead."},{label:'2♠',correct:true}]);
+ if(h===2&&turn){
+ add('cut-save','Hamza led A♥ and you have no Hearts. A discard saves your Rung for later.');
+ add('cut-risk','If Hamza keeps the lead, he can build toward a run and claim the pile. Cutting now can take away his lead.');
+ add('cut','Which card can cut Hamza’s A♥ while saving your stronger Rung?',[{label:'K♦',correct:false,feedback:"K♦ is a legal badd rungi. It saves your Spades, but Hamza’s A♥ stays ahead. Try cutting with Rung to take the lead."},{label:'2♠',correct:true}]);
+ }
  if(h===3&&trick===0){add('cut-result','Correct! Your 2♠ beat A♥ because Spades are Rung. You won and are Senior now.');add('control','Being Senior is powerful. You choose which suit starts next. Why does this help?',[{label:'I control the led suit',correct:true},{label:'My cards all become Rung',correct:false,feedback:'Only Spades are Rung. Being Senior lets you choose the suit everyone must follow.'}]);}
  if(h===4&&trick===0){add('middle','The first chance to collect is Saar 5. If every pile is claimed at the first chance, the 13 Sars split into 5, then 2, 2, 2 and 2.');add('double','You won Saar 4. Who must win Saar 5 to complete your consecutive-win streak?',[{label:'Me again',correct:true},{label:'Either teammate',correct:false,feedback:'The same player must win consecutively. One win by each teammate does not complete Double Saar.'}]);}
  const collection=v.collections?.at(-1);
@@ -68,6 +72,8 @@ export function useTestTutorial(enabled:boolean,v:View|null,presenting:boolean,o
  follow:'Look at the first card in the middle: it is a Heart. Players with Hearts must match that suit.',
  void:'With no Hearts, a non-Rung discard is legal too. You do not have to cut.',
  discard:'Compare J♣ with the Hearts in the middle. It is legal, but a Club cannot beat a Heart here.',
+ 'cut-save':'A Diamond is a legal discard here. It keeps your Spades for later.',
+ 'cut-risk':'Think about who gets to lead the next Saar if Hamza’s Ace holds.',
  cut:'Use 2♠ to take the lead. Even the lowest Spade beats A♥ because Spades are Rung. Save your higher Spades for later.',
  control:'Senior chooses the first card and therefore the suit others must follow. The Rung suit does not change.',
  uzair:'Look for the S badge on Uzair. It means he is Senior and leads next. The Saar is still in the shared pile.',
