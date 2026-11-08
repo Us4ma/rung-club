@@ -306,6 +306,8 @@
 @media (max-width:1024px) and (orientation:portrait){
  .app.screen-table .table-page .table-scene{
   --felt-top:78px;
+  --dealer-rail:calc(var(--felt-top) + var(--felt-height)*.13);
+  --dealer-top:max(60px,calc(var(--dealer-rail) - 61px));
   --felt-height:calc(100% - 114px);
  }
  .app.screen-table .table-page .table{
@@ -322,7 +324,7 @@
   padding:5px 9px;line-height:14px;
  }
  .app.screen-table .table-page .table-scene .dealer-speech>strong{
-  display:block;max-height:42px;overflow-y:auto;overscroll-behavior:contain;
+  display:block;max-height:min(56px,calc(var(--dealer-top) - 24px));overflow-y:auto;overscroll-behavior:contain;
  }
  .app.screen-table .table-page .table-scene .dealer-speech:after{
   display:block;left:auto;right:calc(9% + 29px);top:auto;bottom:-5px;
@@ -371,8 +373,7 @@
 }
 @media (max-width:1024px) and (orientation:portrait){
  .app.screen-table .table-page .table-scene .table-host{
-  --dealer-rail:calc(var(--felt-top) + var(--felt-height)*.13);
-  top:max(60px,calc(var(--dealer-rail) - 61px));right:9%;
+  top:var(--dealer-top);right:9%;
   height:min(64px,calc(var(--dealer-rail) - 57px));
  }
  .app.screen-table .table-page .table .plays{
