@@ -57,7 +57,7 @@ export function useTestTutorial(enabled:boolean,v:View|null,presenting:boolean,o
  const paused=!!lesson;
  function alternative(){const id=firstDealCard(v!),name=({S:'spades',H:'hearts',D:'diamonds',C:'clubs'}[id[0] as 'S'])||'';setFeedback('That card is legal. This example uses '+id.slice(1)+' of '+name+' to demonstrate the lesson. Use Hint to find it.');}
  const finished=enabled&&v?.phase==='finished'&&!lesson;
- const focus=lesson?.id==='opening-pile'||lesson?.id==='middle'||lesson?.id==='double'||lesson?.id.startsWith('collect:')?'pile':lesson?.id==='uzair'?'partner':h===1&&turn?'discard':v?.phase==='calling'&&spadesHint===match?'spades':v?.phase==='calling'&&(lesson?.id==='five'||lesson?.id==='strong-spades')?'opening-hand':h===0&&trick>0?'led':'';
+ const focus=lesson?.id==='rung-power'?'rung-power':lesson?.id==='opening-pile'||lesson?.id==='middle'||lesson?.id==='double'||lesson?.id.startsWith('collect:')?'pile':lesson?.id==='uzair'?'partner':h===1&&turn?'discard':v?.phase==='calling'&&spadesHint===match?'spades':v?.phase==='calling'&&(lesson?.id==='five'||lesson?.id==='strong-spades')?'opening-hand':h===0&&trick>0?'led':'';
  const hintText:Record<string,string>={
  'opening-read':'Notice which high Hearts come out. Those cards cannot win a later Saar.',
  'opening-heart':'Look for 10♥, your only Heart. Your Diamonds and Spades can stay in your hand for later.',

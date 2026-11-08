@@ -69,7 +69,11 @@
  border-radius:50%;
 }
 
-.app.screen-table .test-tutorial:has([data-test-focus=opening-hand]) .hand .card-button {
+.app.screen-table .test-tutorial:has(:is([data-test-focus=opening-hand], [data-test-focus=rung-power])) .hand .card-button {
   opacity: 1 !important;
   filter: none !important;
+}
+
+.test-tutorial:has([data-test-focus=rung-power]) .hand [data-card=S2] .card-face {
+  box-shadow: 0 0 0 3px #e9ce81;
 }
