@@ -21,3 +21,25 @@
 .entry-stage{background:none!important}.entry-form{background:none!important}.entry-form-inner{background-color:#00271c}.entry-screen button,.entry-form h2{font-family:ui-sans-serif,system-ui,-apple-system,sans-serif}.provider-mark{width:25px;height:25px;flex:none}.entry-social button:after{content:'›';margin-left:auto;color:#ddbe80}.entry-social button .provider-mark{margin-right:auto}
 @media(min-width:701px) and (min-height:501px){.entry-screen{padding-top:48px;padding-bottom:48px}}
 @media(max-height:500px) and (min-width:701px){.entry-screen{padding-top:16px;padding-bottom:16px}.entry-form-inner{padding-top:16px;padding-bottom:12px}.entry-form h2{margin-bottom:10px}.entry-guest-note{margin:5px 0}.entry-divider{margin:8px 0}.app.screen-login .entry-choices button{padding:6px;font-size:12px;min-height:52px}.entry-social button{min-height:48px}}
+
+/* Keep the desktop room anchored when the account panel changes modes. */
+@media (min-width:701px) and (min-height:501px) {
+  .entry-screen {
+    height: 100dvh;
+    grid-template-rows: minmax(0, 1fr);
+    align-items: stretch;
+    padding-block: 0;
+  }
+  .entry-form {
+    min-height: 0;
+    margin-top: 0;
+    padding: clamp(76px, 11.5dvh, 120px) 5px 24px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable both-edges;
+  }
+  .entry-stage-caption {
+    top: 26px;
+    bottom: auto;
+  }
+}
