@@ -308,7 +308,7 @@
   --felt-top:78px;
   --dealer-rail:calc(var(--felt-top) + var(--felt-height)*.13);
   --dealer-top:max(60px,calc(var(--dealer-rail) - 61px));
-  --felt-height:calc(100% - 114px);
+  --felt-height:calc(100% - var(--felt-top) - clamp(22px, calc(110px - 10dvh), 36px));
  }
  .app.screen-table .table-page .table{
   inset:var(--felt-top) 16px auto;
@@ -319,7 +319,7 @@
   right:12%;width:68px;height:64px;z-index:4;
  }
  .app.screen-table .table-page .table-scene .dealer-speech{
-  top:2px;left:4px;right:4px;width:auto;max-width:none;
+  top:2px;left:4px;right:4px;width:auto;max-width:none;transform:none;
   max-height:none;overflow:visible;pointer-events:auto;
   padding:5px 9px;line-height:14px;
  }
@@ -383,7 +383,7 @@
  .app.screen-table .table-page .table .plays .play-1{--trick-x:64%}
  .app.screen-table .table-page .table .plays .play-2{--trick-y:41%}
  .app.screen-table .table-page .table .plays .play-3{--trick-x:36%}
- .app.screen-table .table-page .table .center>.pile{left:23%;top:25%}
+ .app.screen-table .table-page .table .center>.pile{left:28%;top:29%}
  .app.screen-table .table-page .table-coin-layer{
   --bank-0-x:34%;--bank-0-y:86%;
   --bank-1-x:81%;--bank-1-y:75%;

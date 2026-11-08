@@ -17,8 +17,6 @@
  .app:has(.test-tutorial) .test-lesson-dock{bottom:max(52px,calc(env(safe-area-inset-bottom) + 44px));padding:6px;gap:6px}
  .app:has(.test-tutorial) .test-skip{bottom:max(4px,env(safe-area-inset-bottom));left:14px;background:transparent;box-shadow:none;border:0}
  .app:has(.test-tutorial) .test-lesson-progress{top:96px;font-size:10px;max-width:70%;padding:3px 8px}
- .test-tutorial .table-scene{--felt-top:110px;--felt-height:calc(100% - 146px)}
- .test-tutorial .table-scene>.table{top:110px!important;height:calc(100% - 146px)!important}
  .app:has(.test-tutorial) .test-hint-control{bottom:6px}
  .app:has(.test-tutorial) .test-lesson-dock:has(.test-rank-strip){top:37%;bottom:auto}
 }
