@@ -51,7 +51,7 @@ export function useTestTutorial(enabled:boolean,v:View|null,presenting:boolean,o
  if(h===3&&trick===0){add('cut-result','Correct! Your 2♠ beat A♥ because Spades are Rung. You won and are Senior now.');add('control','Being Senior is powerful. You choose which suit starts next. Why does this help?',[{label:'I control the led suit',correct:true},{label:'My cards all become Rung',correct:false,feedback:'Only Spades are Rung. Being Senior lets you choose the suit everyone must follow.'}]);}
  if(h===4&&trick===0){add('middle','The first chance to collect is Saar 5. If every pile is claimed at the first chance, the 13 Sars split into 5, then 2, 2, 2 and 2.');add('double','You won Saar 4. Who must win Saar 5 to complete your consecutive-win streak?',[{label:'Me again',correct:true},{label:'Either teammate',correct:false,feedback:'The same player must win consecutively. One win by each teammate does not complete Double Saar.'}]);}
  const collection=v.collections?.at(-1);
- if(collection?.sar===h){add('collect:'+h,h===5?'You won twice in a row! Your team collected all 5 Sars. Your collection streak now resets.':'Your team collected '+collection.count+' more Sars. The collection streak resets.');if(h===5)add('defend','If a Kot looks unlikely, focus on claiming piles for your team. Miss a chance to collect and the unclaimed Sars carry forward.');if(h===5)add('eligible','An Ace or the highest remaining Rung can win a Saar. Neither can collect the pile through Bhaag.');if(h===5)add('lower-rung','If A♠ is gone and Spades are Rung, K♠ is senior. Q♠ can Bhaag if it wins while K♠ is still unplayed.');}
+ if(collection?.sar===h){add('collect:'+h,h===5?'You won twice in a row! Your team collected all 5 Sars. Your collection streak now resets.':'Your team collected '+collection.count+' more Sars. The collection streak resets.');if(h===5)add('growing-pile','Say you win Saar 6, but Hamza wins Saar 7. Your streak ends, Hamza becomes Senior, and both Saars stay in the pile.');if(h===5)add('claim-three','If Hamza then wins Saar 8 with an eligible lead, he collects all three Saars for his team. If nobody qualifies, the pile keeps growing.');if(h===5)add('defend','If a Kot looks unlikely, focus on claiming piles for your team. Miss a chance to collect and the unclaimed Sars carry forward.');if(h===5)add('eligible','An Ace or the highest remaining Rung can win a Saar. Neither can collect the pile through Bhaag.');if(h===5)add('lower-rung','If A♠ is gone and Spades are Rung, K♠ is senior. Q♠ can Bhaag if it wins while K♠ is still unplayed.');}
  if(h===8&&trick===0)add('higher','Hamza’s Q♠ beat your J♠: both are Rung, so the higher rank wins. He leads next.');
  }
  }
@@ -63,7 +63,7 @@ export function useTestTutorial(enabled:boolean,v:View|null,presenting:boolean,o
  const paused=!!lesson;
  function alternative(){const id=firstDealCard(v!),name=({S:'spades',H:'hearts',D:'diamonds',C:'clubs'}[id[0] as 'S'])||'';setFeedback('That card is legal. This example uses '+(({11:'Jack',12:'Queen',13:'King',14:'Ace'} as Record<string,string>)[id.slice(1)]??id.slice(1))+' of '+name+' to demonstrate the lesson. Use Hint to find it.');}
  const finished=enabled&&v?.phase==='finished'&&!lesson;
- const focus=lesson?.id==='rung-power'?'rung-power':lesson?.id==='opening-pile'||lesson?.id==='middle'||lesson?.id==='double'||lesson?.id.startsWith('collect:')?'pile':lesson?.id==='uzair'?'partner':h===1&&turn?'discard':v?.phase==='calling'&&spadesHint===match?'spades':v?.phase==='calling'&&(lesson?.id==='five'||lesson?.id==='strong-spades')?'opening-hand':h===0&&trick>0?'led':'';
+ const focus=lesson?.id==='rung-power'?'rung-power':lesson?.id==='opening-pile'||lesson?.id==='middle'||lesson?.id==='growing-pile'||lesson?.id==='claim-three'||lesson?.id==='double'||lesson?.id.startsWith('collect:')?'pile':lesson?.id==='uzair'?'partner':h===1&&turn?'discard':v?.phase==='calling'&&spadesHint===match?'spades':v?.phase==='calling'&&(lesson?.id==='five'||lesson?.id==='strong-spades')?'opening-hand':h===0&&trick>0?'led':'';
  const hintText:Record<string,string>={
  'opening-read':'Notice which high Hearts come out. Those cards cannot win a later Saar.',
  'opening-heart':'Look for 10♥, your only Heart. Your Diamonds and Spades can stay in your hand for later.',
@@ -79,6 +79,8 @@ export function useTestTutorial(enabled:boolean,v:View|null,presenting:boolean,o
  uzair:'Look for the S badge on Uzair. It means he is Senior and leads next. The Saar is still in the shared pile.',
  'opening-pile':'The pile shows one Saar. Both teams still have zero collected Sars.',
  defend:'Claiming a pile adds those Sars to your score and keeps them out of your opponents’ reach.',
+ 'growing-pile':'A change of winner breaks the streak. Neither team collects those two Saars yet.',
+ 'claim-three':'The same player won Sars 7 and 8. With an eligible winning lead on Saar 8, their team takes the whole pile.',
  middle:'The pile holds the four completed Sars. It has not been awarded to either team yet.',
  double:'Your own win in Saar 4 must be followed by another win by you. Your partner winning does not extend your streak.',
  eligible:'If A♠ is gone, K♠ is senior Rung. Q♠ can Bhaag if it wins while K♠ is still unplayed.',
