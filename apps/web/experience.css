@@ -62,3 +62,15 @@
 .table-scene[data-tutorial-follow=true] .plays .played{outline:2px solid #ffe295;outline-offset:4px}
 .app.screen-table:has(>.tutorial-reading-controls) .actions{visibility:hidden;pointer-events:none}
 .app.screen-table .table-page:has([data-tutorial-seats]) .hand-hint{visibility:hidden}
+
+@media (max-width:1024px) and (orientation:portrait){
+ .app.screen-table .guided-open-rung .hand .tutorial-card{
+  outline:2px solid #ffdc86;
+  outline-offset:2px;
+  box-shadow:none;
+ }
+ .app.screen-table .guided-open-rung .hand .tutorial-card .card-face{
+  box-shadow:none;
+ }
+ .app.screen-table .rung-banner .suit-choices button{touch-action:manipulation}
+}
