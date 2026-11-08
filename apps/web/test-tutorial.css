@@ -9,7 +9,7 @@
 .app:has(.test-tutorial):has(.test-lesson-dock) .test-tutorial .actions{visibility:hidden;pointer-events:none}
 
 .test-tutorial [data-test-focus=spades] .caller-hand-preview img[alt$='spades' i]{outline:2px solid #e9ce81;outline-offset:2px}
-.test-tutorial [data-test-focus=pile] .pile,.test-tutorial [data-test-focus=led] .plays .played:first-child{outline:2px solid #e2c37b;outline-offset:4px;border-radius:8px}
+.test-tutorial [data-test-focus=pile] .pile,.test-tutorial [data-test-focus=led] .plays .played:first-child{outline:none;filter:drop-shadow(0 0 5px #e9bd56);border-radius:8px}
 .test-tutorial [data-test-focus=partner] .seat-2 .seat-portrait{outline:2px solid #e2c37b;outline-offset:4px;border-radius:50%}
 @keyframes test-rank-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media(max-width:600px) and (orientation:portrait){
@@ -60,9 +60,8 @@
 .test-tutorial [data-test-focus=spades] .caller-hand-preview img[alt$='spades' i]{opacity:1!important;filter:none!important}
 
 .test-tutorial .table-scene:is([data-tutorial-seats=team],[data-tutorial-seats=opponents],[data-tutorial-seats=all]) :is(.seat-2,.self-seat) .seat-portrait{
- outline:3px solid #78e3da;
- outline-offset:5px;
- filter:drop-shadow(0 0 8px #39c4bc);
+ outline:none;
+ filter:drop-shadow(0 0 5px #39c4bc);
  border-radius:50%;
 }
 
@@ -73,4 +72,9 @@
 
 .test-tutorial:has([data-test-focus=rung-power]) .hand [data-card=S2] .card-face {
   box-shadow: 0 0 0 3px #e9ce81;
+}
+
+.test-tutorial .table-scene:is([data-tutorial-seats=opponents],[data-tutorial-seats=all]) :is(.seat-1,.seat-3) .seat-portrait{
+ outline:none;
+ filter:drop-shadow(0 0 5px #e9bd56);
 }
