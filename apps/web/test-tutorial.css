@@ -52,8 +52,11 @@
 }
 
 .test-tutorial .practice-stake-note p{display:block!important;margin:5px 0;font-size:12px;line-height:1.35;text-align:left;color:#e7d7ae}
-.test-tutorial .card-button:has(.test-card-cue){position:relative}
-.test-card-cue{position:absolute;inset:2px;pointer-events:none;border:2px solid #ead19a;border-radius:8px;box-shadow:0 0 10px #ead19a66}
+.app.screen-table .test-tutorial .hand > .card-button:has(.test-card-cue):not(.selected){
+ translate:0 -7px;
+ z-index:30;
+}
+.test-card-cue{display:none}
 .app.screen-table .test-tutorial:has([data-test-focus=spades]) .hand .card-button:not([data-card=S14]):not([data-card=S13]){opacity:.42}
 .app.screen-table .test-tutorial:has([data-test-focus=spades]) .hand .card-button:is([data-card=S14],[data-card=S13]){opacity:1!important;filter:none!important;transform:translateY(-9px)}
 .test-tutorial [data-test-focus=spades] .caller-hand-preview img:not([alt$='spades' i]){opacity:.45}
