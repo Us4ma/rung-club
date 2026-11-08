@@ -61,3 +61,10 @@
 .app.screen-table .test-tutorial:has([data-test-focus=spades]) .hand .card-button:is([data-card=S14],[data-card=S13]){opacity:1!important;filter:none!important;transform:translateY(-9px)}
 .test-tutorial [data-test-focus=spades] .caller-hand-preview img:not([alt$='spades' i]){opacity:.45}
 .test-tutorial [data-test-focus=spades] .caller-hand-preview img[alt$='spades' i]{opacity:1!important;filter:none!important}
+
+.test-tutorial .table-scene:is([data-tutorial-seats=team],[data-tutorial-seats=opponents],[data-tutorial-seats=all]) :is(.seat-2,.self-seat) .seat-portrait{
+ outline:3px solid #78e3da;
+ outline-offset:5px;
+ filter:drop-shadow(0 0 8px #39c4bc);
+ border-radius:50%;
+}
