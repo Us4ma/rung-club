@@ -45,7 +45,8 @@
 }
 
 .app.screen-login .entry-screen .entry-guest,
-.app.screen-login .entry-screen[data-mode="signup"] .entry-submit {
+.app.screen-login .entry-screen .entry-submit,
+.app .settings-drawer .account-protection .email-link-button {
   color: #192d20;
   border-color: #ffe2a8;
   background: linear-gradient(#f1d897, #c3a058);
