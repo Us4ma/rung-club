@@ -43,3 +43,11 @@
     bottom: auto;
   }
 }
+
+.app.screen-login .entry-screen .entry-guest,
+.app.screen-login .entry-screen[data-mode="signup"] .entry-submit {
+  color: #192d20;
+  border-color: #ffe2a8;
+  background: linear-gradient(#f1d897, #c3a058);
+  box-shadow: inset 0 1px #fff8, 0 3px 0 #7c6332;
+}
