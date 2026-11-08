@@ -28,7 +28,7 @@ export function useTestTutorial(enabled:boolean,v:View|null,presenting:boolean,o
  if(enabled&&v&&!presenting){
  if(v.phase==='calling'){
  add('five','These are your first five cards. Choose a suit to make it Rung (trump).');
- add('strong-spades','You have A♠ and K♠. Which suit gives you two strong cards?',[{label:'Diamonds',correct:false,feedback:'K♦ is strong, but you have both A♠ and K♠. Look at Spades.'},{label:'Spades',correct:true}]);
+ add('strong-spades','You have A♠ and K♠. Which suit gives you two strong cards?',[{label:'♦ Diamonds',correct:false,feedback:'K♦ is strong, but you have both A♠ and K♠. Look at Spades.'},{label:'♠ Spades',correct:true}]);
  }else if(v.phase==='finished'){
  add('kot','Kot! Your team collected all 13 Sars!');
  add('ordinary','Most deals end with ordinary wins, like 7–6 or 8–5. You do not need Kot to win.');
@@ -52,7 +52,7 @@ export function useTestTutorial(enabled:boolean,v:View|null,presenting:boolean,o
  const paused=!!lesson;
  function alternative(){const id=firstDealCard(v!),name=({S:'spades',H:'hearts',D:'diamonds',C:'clubs'}[id[0] as 'S'])||'';setFeedback('That card is legal. This example uses '+id.slice(1)+' of '+name+' to demonstrate the lesson. Use Hint to find it.');}
  const finished=enabled&&v?.phase==='finished'&&!lesson;
- const focus=lesson?.id==='middle'||lesson?.id==='double'||lesson?.id.startsWith('collect:')?'pile':lesson?.id==='uzair'?'partner':h===1&&turn?'discard':v?.phase==='calling'&&spadesHint===match?'spades':h===0&&trick>0?'led':'';
+ const focus=lesson?.id==='middle'||lesson?.id==='double'||lesson?.id.startsWith('collect:')?'pile':lesson?.id==='uzair'?'partner':h===1&&turn?'discard':v?.phase==='calling'&&spadesHint===match?'spades':v?.phase==='calling'&&(lesson?.id==='five'||lesson?.id==='strong-spades')?'opening-hand':h===0&&trick>0?'led':'';
  const hintText:Record<string,string>={
  five:'A suit is a card family: Spades, Hearts, Diamonds or Clubs. Look at your A♠ and K♠: two strong cards in one suit.',
  'strong-spades':'Look at A♠ and K♠. Both belong to Spades, so that suit gives you two high cards.',

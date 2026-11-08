@@ -68,3 +68,8 @@
  filter:drop-shadow(0 0 8px #39c4bc);
  border-radius:50%;
 }
+
+.app.screen-table .test-tutorial:has([data-test-focus=opening-hand]) .hand .card-button {
+  opacity: 1 !important;
+  filter: none !important;
+}
