@@ -46,6 +46,16 @@ export function RungReward({uid,xp=0,sound=false}:{uid?:string;xp?:number;sound?
  async function refresh(){if(!uid||pending.current)return;const account=uid,id=++request.current;pending.current=true;try{const result=await socialRequest('rewards');if(scope.current===account&&id===request.current){setData(result);setError('');}}catch(e){if(scope.current===account)setError((e as Error).message);}finally{pending.current=false;}}
  useEffect(()=>{setData(null);setError('');request.current++;pending.current=false;setBusy(false);void refresh();},[uid]);
  useEffect(()=>{void refresh();},[xp]);
+ useEffect(()=>{setMissions(null);},[uid]);
+ useEffect(()=>{
+  if(!uid)return;
+  const update=()=>{if(!document.hidden)void loadMissions();};
+  update();
+  window.addEventListener('focus',update);
+  document.addEventListener('visibilitychange',update);
+  const timer=setInterval(update,30000);
+  return()=>{clearInterval(timer);window.removeEventListener('focus',update);document.removeEventListener('visibilitychange',update);};
+ },[uid,xp]);
  useEffect(()=>{if(!uid)return;const update=()=>{if(!document.hidden)void refresh();};window.addEventListener('focus',update);document.addEventListener('visibilitychange',update);const timer=setInterval(update,30000);return()=>{clearInterval(timer);window.removeEventListener('focus',update);document.removeEventListener('visibilitychange',update);};},[uid]);
  const level=data?.level??levelProgress(xp).level,ready=data?Array.from({length:Math.max(0,data.level-1)},(_,i)=>i+2).filter(n=>!data.claimed.includes(n)):[];
  function updateEdges(){const el=carousel.current;if(!el)return;const left=el.scrollLeft>4,right=el.scrollLeft+el.clientWidth<el.scrollWidth-4;setEdges(old=>old.left===left&&old.right===right?old:{left,right});}
@@ -74,10 +84,10 @@ export function RungReward({uid,xp=0,sound=false}:{uid?:string;xp?:number;sound?
  const shortcuts=(mobile:boolean)=><><button type="button" ref={mobile?undefined:trigger} className="rung-reward-entry" disabled={level<2} title={level<2?"Unlocks at level 2":undefined} aria-label={'Rung Rewards'+(ready.length?`, ${ready.length} unclaimed rewards`:'')} aria-haspopup="dialog" aria-expanded={open} onClick={()=>{if(mobile)shortcutDrawer.current?.close();setFAQ(false);setOpen(true);}}>
    <img src={art('lobby/rung-reward-clean.webp')} alt="" draggable={false}/><span className="shortcut-full">Rung Rewards</span><span className="shortcut-short" aria-hidden="true">Rewards</span>{ready.length>0&&<i className="reward-notification" aria-hidden="true"/>}
   </button>
-  <button type="button" className="rung-reward-entry daily-mission-entry" aria-label="Daily Missions" aria-haspopup="dialog" onClick={()=>{if(mobile)shortcutDrawer.current?.close();missionDialog.current?.showModal();void loadMissions();}}><svg viewBox="0 0 32 32" aria-hidden="true" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 6H8a2 2 0 0 0-2 2v19a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-4"/><rect x="12" y="3" width="8" height="6" rx="2"/><path d="m16 12 6 7-6 7-6-7Z" fill="currentColor" stroke="none"/></svg><span className="shortcut-full">Daily Missions</span><span className="shortcut-short" aria-hidden="true">Missions</span></button></>;
+  <button type="button" className="rung-reward-entry daily-mission-entry" aria-label={missionCoins>0?"Daily Missions, rewards ready to claim":"Daily Missions"} aria-haspopup="dialog" onClick={()=>{if(mobile)shortcutDrawer.current?.close();missionDialog.current?.showModal();void loadMissions();}}><svg viewBox="0 0 32 32" aria-hidden="true" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 6H8a2 2 0 0 0-2 2v19a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-4"/><rect x="12" y="3" width="8" height="6" rx="2"/><path d="m16 12 6 7-6 7-6-7Z" fill="currentColor" stroke="none"/></svg><span className="shortcut-full">Daily Missions</span><span className="shortcut-short" aria-hidden="true">Missions</span>{missionCoins>0&&<i className="reward-notification" aria-hidden="true"/>}</button></>;
  return <>
   <div className="lobby-reward-shortcuts">{shortcuts(false)}</div>
-  <button type="button" className="mobile-club-menu" aria-label="Rewards and missions menu" aria-haspopup="dialog" onClick={()=>shortcutDrawer.current?.showModal()}><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>{ready.length>0&&<i className="reward-notification" aria-hidden="true"/>}</button>
+  <button type="button" className="mobile-club-menu" aria-label="Rewards and missions menu" aria-haspopup="dialog" onClick={()=>shortcutDrawer.current?.showModal()}><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>{(ready.length>0||missionCoins>0)&&<i className="reward-notification" aria-hidden="true"/>}</button>
   {createPortal(<dialog ref={shortcutDrawer} className="daily-mission-preview mobile-club-drawer" aria-labelledby="mobile-club-title"><CloseButton label="Close club menu" onClick={()=>shortcutDrawer.current?.close()}/><h2 id="mobile-club-title">Club menu</h2><div className="club-drawer-links">{shortcuts(true)}</div></dialog>,document.body)}
   {createPortal(<dialog ref={missionDialog} className="daily-mission-preview daily-mission-board" aria-labelledby="daily-mission-title"><CloseButton label="Close Daily Missions" onClick={()=>missionDialog.current?.close()}/><h2 id="daily-mission-title">Daily Missions</h2>
   {!uid?<p>Sign in to earn daily rewards.</p>:<>
